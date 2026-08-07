@@ -45,20 +45,20 @@ describe('useTabSelfVisuals', () => {
       {
         id: 'tab-1',
         type: 'route',
-        url: '/app/chat?topicId=topic-1',
+        url: '/app/agents?sessionId=s1',
         title: 'Old title'
       }
     ]
 
     render(
       <TabIdProvider tabId="tab-1">
-        <TabVisualsWriter title="Topic title" emoji="spark" appId="assistants" />
+        <TabVisualsWriter title="Session title" emoji="spark" appId="agents" />
       </TabIdProvider>
     )
 
     await waitFor(() =>
       expect(mocks.updateTab).toHaveBeenCalledWith('tab-1', {
-        title: 'Topic title',
+        title: 'Session title',
         icon: 'icon:spark'
       })
     )
@@ -76,7 +76,7 @@ describe('useTabSelfVisuals', () => {
 
     render(
       <TabIdProvider tabId="tab-1">
-        <TabVisualsWriter title="Topic title" emoji="spark" appId="assistants" />
+        <TabVisualsWriter title="Topic title" emoji="spark" appId="agents" />
       </TabIdProvider>
     )
 
@@ -90,15 +90,15 @@ describe('useTabSelfVisuals', () => {
       {
         id: 'tab-1',
         type: 'route',
-        url: '/app/chat?topicId=topic-1',
-        title: 'Stored topic title',
+        url: '/app/agents?sessionId=session-1',
+        title: 'Stored session title',
         icon: 'icon:stored'
       }
     ]
 
     render(
       <TabIdProvider tabId="tab-1">
-        <TabVisualsWriter title="Chat" appId="assistants" preserveVisuals />
+        <TabVisualsWriter title="Session" appId="agents" preserveVisuals />
       </TabIdProvider>
     )
 

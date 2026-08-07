@@ -21,6 +21,16 @@ const PINNED_FILES_TAB: Tab = {
   isPinned: true
 }
 
+const PINNED_KNOWLEDGE_TAB: Tab = {
+  id: 'knowledge',
+  type: 'route',
+  url: '/app/knowledge',
+  title: 'Knowledge',
+  lastAccessTime: 0,
+  isDormant: false,
+  isPinned: true
+}
+
 const LEGACY_LIBRARY_PINNED_TAB: Tab = {
   id: 'library',
   type: 'route',
@@ -105,7 +115,7 @@ vi.mock('@renderer/utils/routeTitle', async () => {
   const titles: Record<string, Record<string, string>> = {
     '/app/agents': { en: 'Agent', zh: '代理' },
     '/app/chat': { en: 'Chat', zh: '聊天' },
-    '/app/files': { en: 'Files', zh: '文件' },
+    '/app/knowledge': { en: 'Knowledge', zh: '知识库' },
     '/app/launchpad': { en: 'Launchpad', zh: '启动台' }
   }
   return {
@@ -136,9 +146,9 @@ function TabTitleWriter() {
   return <div data-testid="home-title">{tabs.find((tab) => tab.id === 'home')?.title}</div>
 }
 
-function PinnedRouteTitle() {
+function PinnedKnowledgeRouteTitle() {
   const { tabs } = useTabsContext()
-  return <div data-testid="files-title">{tabs.find((tab) => tab.id === 'files')?.title}</div>
+  return <div data-testid="knowledge-title">{tabs.find((tab) => tab.id === 'knowledge')?.title}</div>
 }
 
 function TabIds() {
@@ -327,22 +337,24 @@ describe('TabsProvider', () => {
   })
 
   it('refreshes localized route tab titles when the app language changes', async () => {
+    pinnedTabsValue = [PINNED_KNOWLEDGE_TAB]
+
     // A fresh element each render so React doesn't bail out on referential equality.
     const renderUi = () => (
       <TabsProvider initialDefaultTab={HOME_TAB}>
-        <PinnedRouteTitle />
+        <PinnedKnowledgeRouteTitle />
       </TabsProvider>
     )
     const { rerender } = render(renderUi())
 
-    await waitFor(() => expect(screen.getByTestId('files-title')).toHaveTextContent('Files'))
+    await waitFor(() => expect(screen.getByTestId('knowledge-title')).toHaveTextContent('Knowledge'))
 
     // Switch language and re-render: the tabs useMemo must recompute via its
     // i18n.language dependency so the route-derived title re-localizes.
     currentLanguage = 'zh'
     rerender(renderUi())
 
-    await waitFor(() => expect(screen.getByTestId('files-title')).toHaveTextContent('文件'))
+    await waitFor(() => expect(screen.getByTestId('knowledge-title')).toHaveTextContent('知识库'))
   })
 
   it('keeps isPinned on a tab materialized in a sub-window so it round-trips on re-attach', async () => {

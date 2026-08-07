@@ -147,11 +147,6 @@ export const aiHandlers: IpcHandlersFor<typeof aiRequestSchemas> = {
     exposeAiError('ai.text.generate', () => application.get('AiService').generateText(request)),
   'ai.embedding.embed_many': (request) =>
     exposeAiError('ai.embedding.embed_many', () => application.get('AiService').embedMany(request)),
-  'ai.image.generate': ({ requestId, payload }) =>
-    exposeAiError('ai.image.generate', () => application.get('AiService').runImageRequest(requestId, payload)),
-  'ai.image.abort': async ({ requestId }) => {
-    application.get('AiService').abortImage(requestId)
-  },
 
   // ── Provider model catalog & reachability probe. ──
   'ai.provider.model.list': (request) =>

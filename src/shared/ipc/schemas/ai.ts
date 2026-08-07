@@ -1,4 +1,3 @@
-import { imageParamsSchema } from '@cherrystudio/provider-registry'
 import type {
   AiStreamAttachResponse,
   AiStreamOpenResponse,
@@ -18,9 +17,8 @@ import {
 } from '@shared/data/api/schemas/agents'
 import { AgentSessionWorkspaceSourceSchema } from '@shared/data/api/schemas/agentWorkspaces'
 import { JobScheduleNameAtomSchema, TriggerSchema } from '@shared/data/api/schemas/jobs'
-import { CleanupPolicySchema, type FileEntry, FileEntrySchema } from '@shared/data/types/file'
 import type { CherryMessagePart } from '@shared/data/types/message'
-import { ImageGenerationModeSchema, ModelSchema, UniqueModelIdSchema } from '@shared/data/types/model'
+import { ModelSchema, UniqueModelIdSchema } from '@shared/data/types/model'
 import { ReasoningEffortOptionSchema } from '@shared/types/aiSdk'
 import type { EmbeddingModelUsage, LanguageModelUsage, ModelMessage } from 'ai'
 import * as z from 'zod'
@@ -28,14 +26,14 @@ import * as z from 'zod'
 import { defineRoute } from '../define'
 
 /**
- * AI IPC schemas — `AiService`'s non-streaming model operations (text/embedding/image
+ * AI IPC schemas — `AiService`'s non-streaming model operations (text/embedding
  * generation, model probe, model listing) plus the `AiStreamManager` streaming-chat
  * link (open/attach/detach/abort requests + chunk/done/error events). Each route
  * delegates to a stateful service method in main.
  *
  * Routes are namespaced `ai.<subdomain>[.<resource>].<verb>` — the subtree groups by
- * domain, not by owning service: `text` / `embedding` / `image` (one-shot calls by
- * output modality), `provider.model` (catalog + probe), `stream` (chat link and its
+ * domain, not by owning service: `text` / `embedding` (one-shot calls by output
+ * modality), `provider.model` (catalog + probe), `stream` (chat link and its
  * events), `tool` (deferred results, approvals), `agent.session` / `agent.task`,
  * and `topic` (auto-naming events).
  *
@@ -43,7 +41,7 @@ import { defineRoute } from '../define'
  * clone-safe subset of the in-process request types: the in-process-only
  * `AbortSignal`, `callOverrides` (an AI SDK `ToolSet`, not structured-clone-safe),
  * and main-internal `contextOwner` are deliberately absent. Outputs reuse the canonical entity schemas
- * (`FileEntrySchema`, `ModelSchema`) where they exist and `z.custom<T>()` for opaque
+ * (`ModelSchema`) where they exist and `z.custom<T>()` for opaque
  * AI SDK / transport types (usage, stream responses) — the router never parses
  * `output`, and these are built by trusted main, so a field mirror buys nothing
  * (see ipc-migration-guide.md).
@@ -110,32 +108,6 @@ const aiBaseRequestShape = {
   requestOptions: aiTransportOptionsSchema.optional()
 }
 
-const aiImagePayloadSchema = z.strictObject({
-  ...aiBaseRequestShape,
-  prompt: z.string(),
-  /**
-   * The image-generation mode (which tab). A request property — NOT a param — so
-   * main can derive per-model transport routing (`vendorTransport` → descriptor)
-   * from the registry itself. Defaults to `generate` when absent.
-   */
-  mode: ImageGenerationModeSchema.optional(),
-  /**
-   * The canonical param bag, validated + coerced at the IPC boundary by the
-   * catalog value schema — the router's `safeParse` yields a typed `ParamValues`
-   * (non-catalog keys stripped). Per-model option/range constraints already ran
-   * in the renderer's `buildParamsSchema`; this is the value-type gate.
-   */
-  paramValues: imageParamsSchema,
-  /** Attached images / mask are encoded file bytes (data URLs), not form params. */
-  inputImages: z.array(z.string()).optional(),
-  mask: z.string().optional(),
-  // Required: the calling business feature decides the cleanup intent for the
-  // generated OUTPUT entries (file-entry-cleanup.md §4.1) — main never defaults it.
-  // It does not reach the job path's input / mask copies: those are transport
-  // scratch owned by the job, pinned to `delete_when_unreferenced`.
-  cleanupPolicy: CleanupPolicySchema
-})
-
 export const aiRequestSchemas = {
   // ── One-shot model calls, grouped by output modality (AiService) ──
   'ai.text.generate': defineRoute({
@@ -150,18 +122,6 @@ export const aiRequestSchemas = {
   'ai.embedding.embed_many': defineRoute({
     input: z.strictObject({ ...aiBaseRequestShape, values: z.array(z.string()) }),
     output: z.object({ embeddings: z.array(z.array(z.number())), usage: z.custom<EmbeddingModelUsage>().optional() })
-  }),
-  'ai.image.generate': defineRoute({
-    // requestId pairs the request with `ai.image.abort` (the abort registry lives in AiService).
-    input: z.strictObject({ requestId: z.string().min(1), payload: aiImagePayloadSchema }),
-    // Pin the output to the named `FileEntry` so declaration-emit references the alias
-    // instead of trying to name FileEntry's module-private phantom path brand (TS4023).
-    output: z.object({ files: z.array(FileEntrySchema) }) as z.ZodType<{ files: FileEntry[] }>
-  }),
-  'ai.image.abort': defineRoute({
-    // Was a one-way `ipcOn`; per the migration guide a one-off becomes a `void` request.
-    input: z.strictObject({ requestId: z.string().min(1) }),
-    output: z.void()
   }),
 
   // ── Provider model catalog & reachability probe (AiService) ──

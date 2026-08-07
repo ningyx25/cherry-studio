@@ -130,7 +130,6 @@ The maintained application shell currently includes:
 
 - `app.sidebar`, `app.tab-bar`, `app.content`, and `app.search`;
 - `app.detached-window` for the detached route window root;
-- `quick-assistant.view`, `selection.toolbar`, and `selection.action` for auxiliary windows and surfaces;
 - `file-preview.view` for the shared file preview boundary.
 
 The maintained feature surfaces currently include:
@@ -146,7 +145,7 @@ The maintained feature surfaces currently include:
 
 The maintained chat surface currently includes:
 
-- `chat.view`, `chat.topic-list`, `chat.topic-list.action.create`, `chat.message-list`, `chat.message`, and
+- `chat.view`, `chat.topic-list`, `chat.message-list`, `chat.message`, and
   `chat.message.group`;
 - `chat.composer`, `chat.composer.action.send`, and `chat.composer.action.pause`;
 - `part:conversation-navigation`, `part:conversation-main`, and `part:conversation-inspector`;

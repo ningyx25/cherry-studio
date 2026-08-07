@@ -28,7 +28,6 @@ export function HistoryRecordsContent<T>({
       className="flex min-h-0 flex-1 flex-col overflow-hidden bg-card pb-3 text-card-foreground"
       aria-label={t('history.records.shortTitle')}>
       <HistoryTopBar
-        mode={descriptor.mode}
         toolbarLeading={toolbarLeading}
         searchText={controller.searchText}
         searchPlaceholder={descriptor.strings.searchPlaceholder}
@@ -41,11 +40,8 @@ export function HistoryRecordsContent<T>({
         statusPlaceholder={t('history.records.filter.statusPlaceholder')}
         selectedStatus={controller.selectedStatus}
         onStatusSelect={controller.setSelectedStatus}
-        selectedCount={controller.selectedCount}
         bulkDeleteCount={controller.bulkDeleteCount}
-        bulkMoveTargets={descriptor.bulkMoveTargets}
         onBulkDelete={controller.handleBulkDelete}
-        onBulkMove={descriptor.onBulkMove ? controller.handleBulkMove : undefined}
       />
 
       <HistoryRecordList

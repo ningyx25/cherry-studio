@@ -1,6 +1,5 @@
 import type { EntityToolOutputCodec } from '@cherrystudio/ai-core'
 import type { Assistant } from '@shared/data/types/assistant'
-import type { ImageGenerationSupport, UniqueModelId } from '@shared/data/types/model'
 import type { WebToolRoutes } from '@shared/utils/provider'
 import type { Tool } from 'ai'
 
@@ -19,11 +18,6 @@ export interface ToolOutputCodec extends EntityToolOutputCodec {
  */
 export interface ToolApplyScope {
   readonly assistant?: Assistant
-  /** Painting model resolved once for this request; dynamic builtins derive their schema from it. */
-  readonly paintingModel?: {
-    readonly uniqueModelId: UniqueModelId
-    readonly support: ImageGenerationSupport | null
-  }
   /** Server allowlist + per-tool disable already applied. */
   readonly mcpToolIds: ReadonlySet<string>
   /** True when the request carries first-party file attachments — gates the `read_file` tool. Defaults to false. */

@@ -26,7 +26,7 @@ const mocks = vi.hoisted(() => ({
   miniApps: [] as MiniAppType[],
   pinned: [] as MiniAppType[],
   openedKeepAliveMiniApps: [] as MiniAppType[],
-  sidebarFavorites: [{ type: 'app', id: 'assistants' }] as SidebarFavoriteItem[]
+  sidebarFavorites: [{ type: 'app', id: 'agents' }] as SidebarFavoriteItem[]
 }))
 
 vi.mock('@cherrystudio/ui', () => ({
@@ -114,7 +114,7 @@ afterEach(() => {
   mocks.miniApps = []
   mocks.pinned = []
   mocks.openedKeepAliveMiniApps = []
-  mocks.sidebarFavorites = [{ type: 'app', id: 'assistants' }]
+  mocks.sidebarFavorites = [{ type: 'app', id: 'agents' }]
 })
 
 describe('MiniApp launchpad pin menu', () => {
@@ -151,7 +151,7 @@ describe('MiniApp launchpad pin menu', () => {
     fireEvent.click(screen.getByRole('button', { name: 'miniApp.add_to_sidebar' }))
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
-      { type: 'app', id: 'assistants' },
+      { type: 'app', id: 'agents' },
       { type: 'mini_app', id: 'calculator' }
     ])
   })
@@ -171,7 +171,7 @@ describe('MiniApp launchpad pin menu', () => {
 
   it('removes a mini app from sidebar favorites', () => {
     mocks.sidebarFavorites = [
-      { type: 'app', id: 'assistants' },
+      { type: 'app', id: 'agents' },
       { type: 'mini_app', id: 'calculator' },
       { type: 'mini_app', id: 'weather' }
     ]
@@ -181,7 +181,7 @@ describe('MiniApp launchpad pin menu', () => {
     fireEvent.click(screen.getByRole('button', { name: 'miniApp.remove_from_sidebar' }))
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
-      { type: 'app', id: 'assistants' },
+      { type: 'app', id: 'agents' },
       { type: 'mini_app', id: 'weather' }
     ])
   })

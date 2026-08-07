@@ -51,21 +51,6 @@ describe('command definitions', () => {
   })
 
   it('preserves special keybinding metadata when deriving rules', () => {
-    expect(REGISTERED_KEYBINDINGS.find((rule) => rule.command === 'quick_assistant.toggle')).toMatchObject({
-      command: 'quick_assistant.toggle',
-      defaultBinding: ['CommandOrControl', 'E'],
-      global: true,
-      scope: 'main',
-      whenSource: 'feature.quick_assistant.enabled'
-    })
-    expect(REGISTERED_KEYBINDINGS.find((rule) => rule.command === 'selection.toggle')).toMatchObject({
-      command: 'selection.toggle',
-      defaultBinding: [],
-      global: true,
-      scope: 'main',
-      supportedPlatforms: ['darwin', 'win32', 'linux'],
-      whenSource: 'feature.selection.enabled'
-    })
     expect(REGISTERED_KEYBINDINGS.find((rule) => rule.command === 'app.zoom.in')).toMatchObject({
       command: 'app.zoom.in',
       defaultBinding: ['CommandOrControl', '='],
@@ -177,27 +162,17 @@ describe('resolveCommandKeybinding', () => {
   })
 
   it('filters by context and platform', () => {
-    expect(resolveCommandKeybinding({ command: 'quick_assistant.toggle', context: {} })).toBeUndefined()
+    expect(resolveCommandKeybinding({ command: 'app.zoom.in', context: {} })?.binding).toEqual([
+      'CommandOrControl',
+      '='
+    ])
     expect(
       resolveCommandKeybinding({
-        command: 'quick_assistant.toggle',
-        context: { 'feature.quick_assistant.enabled': true }
-      })?.binding
-    ).toEqual(['CommandOrControl', 'E'])
-    expect(
-      resolveCommandKeybinding({
-        command: 'quick_assistant.toggle',
-        context: { 'feature.quick_assistant.enabled': true }
-      })?.enabled
-    ).toBe(false)
-
-    expect(
-      resolveCommandKeybinding({
-        command: 'selection.toggle',
-        context: { 'feature.selection.enabled': true },
+        command: 'app.zoom.in',
+        context: {},
         platform: 'linux'
       })?.binding
-    ).toEqual([])
+    ).toEqual(['CommandOrControl', '='])
   })
 })
 
@@ -242,23 +217,6 @@ describe('resolveCommandByKeybinding', () => {
         scope: 'renderer'
       })
     ).toBeUndefined()
-
-    expect(
-      resolveCommandByKeybinding({
-        binding: ['CommandOrControl', 'E'],
-        context: { 'feature.quick_assistant.enabled': true },
-        scope: 'main'
-      })
-    ).toBeUndefined()
-
-    expect(
-      resolveCommandByKeybinding({
-        binding: ['CommandOrControl', 'E'],
-        preferences: { 'quick_assistant.toggle': { binding: ['CommandOrControl', 'E'], enabled: true } },
-        context: { 'feature.quick_assistant.enabled': true },
-        scope: 'main'
-      })
-    ).toBe('quick_assistant.toggle')
 
     expect(
       resolveCommandByKeybinding({

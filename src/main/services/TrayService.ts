@@ -59,15 +59,7 @@ export class TrayService extends BaseService implements Activatable {
     })
 
     this.tray.on('click', () => {
-      const preferenceService = application.get('PreferenceService')
-      const quickAssistantEnabled = preferenceService.get('feature.quick_assistant.enabled')
-      const clickTrayToShowQuickAssistant = preferenceService.get('feature.quick_assistant.click_tray_to_show')
-
-      if (quickAssistantEnabled && clickTrayToShowQuickAssistant) {
-        application.get('QuickAssistantService').showQuickAssistant()
-      } else {
-        application.get('MainWindowService').showMainWindow()
-      }
+      application.get('MainWindowService').showMainWindow()
     })
   }
 
@@ -81,34 +73,19 @@ export class TrayService extends BaseService implements Activatable {
 
   private updateContextMenu() {
     const i18n = getI18n()
-    const { tray: trayLocale, selection: selectionLocale } = i18n.translation
-
-    const preferenceService = application.get('PreferenceService')
-    const quickAssistantEnabled = preferenceService.get('feature.quick_assistant.enabled')
-    const selectionAssistantEnabled = preferenceService.get('feature.selection.enabled')
+    const { tray: trayLocale } = i18n.translation
 
     const template = [
       {
         label: trayLocale.show_window,
         click: () => application.get('MainWindowService').showMainWindow()
       },
-      quickAssistantEnabled && {
-        label: trayLocale.show_quick_assistant,
-        click: () => application.get('QuickAssistantService').showQuickAssistant()
-      },
-      (isWin || isMac) && {
-        label: selectionLocale.name + (selectionAssistantEnabled ? ' - On' : ' - Off'),
-        click: () => {
-          application.get('SelectionService').toggleEnabled()
-          this.updateContextMenu()
-        }
-      },
       { type: 'separator' },
       {
         label: trayLocale.quit,
         click: () => this.quit()
       }
-    ].filter(Boolean) as MenuItemConstructorOptions[]
+    ] as MenuItemConstructorOptions[]
 
     this.contextMenu = Menu.buildFromTemplate(template)
   }
@@ -123,16 +100,6 @@ export class TrayService extends BaseService implements Activatable {
     )
     this.registerDisposable(
       preferenceService.subscribeChange('app.language', () => {
-        if (this.isActivated) this.updateContextMenu()
-      })
-    )
-    this.registerDisposable(
-      preferenceService.subscribeChange('feature.quick_assistant.enabled', () => {
-        if (this.isActivated) this.updateContextMenu()
-      })
-    )
-    this.registerDisposable(
-      preferenceService.subscribeChange('feature.selection.enabled', () => {
         if (this.isActivated) this.updateContextMenu()
       })
     )

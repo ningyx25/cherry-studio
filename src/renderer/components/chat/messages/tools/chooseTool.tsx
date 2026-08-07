@@ -1,6 +1,5 @@
 import type { NormalToolResponse } from '@renderer/types/mcpTool'
 import {
-  GENERATE_IMAGE_TOOL_NAME,
   KB_LIST_TOOL_NAME,
   KB_MANAGE_TOOL_NAME,
   KB_READ_TOOL_NAME,
@@ -12,13 +11,11 @@ import {
 import { AgentExecutionTimeline } from './agent'
 import { MessageKnowledgeSearchToolTitle } from './knowledge/MessageKnowledgeSearch'
 import MessageMetaTool, { isMetaToolName } from './meta/MessageMetaTool'
-import { MessageGenerateImageToolTitle } from './painting/MessageGenerateImage'
 import { AgentToolsType, isAskUserQuestionToolName } from './shared/agentToolTypes'
 import { MessageWebSearchToolTitle } from './webSearch/MessageWebSearch'
 
 const builtinToolsPrefix = 'builtin_'
 const agentMcpToolsPrefix = 'mcp__'
-const agentGenerateImageToolName = `mcp__cherry-tools__${GENERATE_IMAGE_TOOL_NAME}`
 const agentTools = new Set<string>(Object.values(AgentToolsType))
 /** cherry-tools that carry short wire names rather than the `mcp__` prefix. */
 const CHERRY_AGENT_TOOL_NAMES = new Set([
@@ -49,9 +46,6 @@ export function chooseTool(toolResponse: NormalToolResponse): React.ReactNode | 
   }
   if (toolName === WEB_SEARCH_TOOL_NAME || toolName === PROVIDER_WEB_SEARCH_TOOL_NAME) {
     return <MessageWebSearchToolTitle toolResponse={toolResponse} />
-  }
-  if (toolName === GENERATE_IMAGE_TOOL_NAME || toolName === agentGenerateImageToolName) {
-    return <MessageGenerateImageToolTitle toolResponse={toolResponse} />
   }
   // Short-name tools without a bespoke card render through the standard agent tool-call card.
   if (CHERRY_AGENT_TOOL_NAMES.has(toolName)) {

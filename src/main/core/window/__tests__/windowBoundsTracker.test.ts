@@ -162,7 +162,7 @@ describe('peekSavedState', () => {
   })
 
   it('returns undefined when nothing is saved for the type', () => {
-    seedBounds({ [WindowType.QuickAssistant]: savedRect() })
+    seedBounds({ [WindowType.SubWindow]: savedRect() })
     expect(peekSavedState(WindowType.Main)).toBeUndefined()
   })
 
@@ -174,7 +174,7 @@ describe('peekSavedState', () => {
 
 describe('persistNow', () => {
   it('captures normal bounds, maximized flag, and the current display, merging with other types', () => {
-    seedBounds({ [WindowType.QuickAssistant]: savedRect({ x: 5, y: 5 }) })
+    seedBounds({ [WindowType.SubWindow]: savedRect({ x: 5, y: 5 }) })
     getDisplayMatching.mockReturnValue(PRIMARY)
     const window = mockWindow({ isMaximized: vi.fn(() => true) })
 
@@ -182,7 +182,7 @@ describe('persistNow', () => {
 
     expect(window.getNormalBounds).toHaveBeenCalled()
     expect(cache().setPersist).toHaveBeenCalledWith('window.bounds', {
-      [WindowType.QuickAssistant]: savedRect({ x: 5, y: 5 }),
+      [WindowType.SubWindow]: savedRect({ x: 5, y: 5 }),
       [WindowType.Main]: {
         x: 50,
         y: 60,
@@ -204,15 +204,15 @@ describe('persistNow', () => {
 describe('clearSavedBounds', () => {
   it("removes only the target type's slot, leaving other types intact", () => {
     const qa = savedRect({ x: 5, y: 5 })
-    seedBounds({ [WindowType.Main]: savedRect(), [WindowType.QuickAssistant]: qa })
+    seedBounds({ [WindowType.Main]: savedRect(), [WindowType.SubWindow]: qa })
 
     clearSavedBounds(WindowType.Main)
 
-    expect(cache().setPersist).toHaveBeenCalledWith('window.bounds', { [WindowType.QuickAssistant]: qa })
+    expect(cache().setPersist).toHaveBeenCalledWith('window.bounds', { [WindowType.SubWindow]: qa })
   })
 
   it('is a no-op when the type has no saved slot', () => {
-    seedBounds({ [WindowType.QuickAssistant]: savedRect() })
+    seedBounds({ [WindowType.SubWindow]: savedRect() })
     clearSavedBounds(WindowType.Main)
     expect(cache().setPersist).not.toHaveBeenCalled()
   })

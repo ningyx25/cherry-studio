@@ -371,7 +371,7 @@ export function useTopicMutations() {
   const deleteTopic = useCallback(
     async (topicId: string): Promise<void> => {
       await deleteTrigger({ params: { id: topicId } })
-      closeConversationTabs('assistants', [topicId])
+      closeConversationTabs('agents', [topicId])
       logger.info('Deleted topic', { id: topicId })
     },
     [closeConversationTabs, deleteTrigger]
@@ -380,7 +380,7 @@ export function useTopicMutations() {
   const deleteTopics = useCallback(
     async (ids: string[]): Promise<DeleteTopicsResult> => {
       const result = await deleteManyTrigger({ query: { ids: ids.join(',') } })
-      closeConversationTabs('assistants', result.deletedIds)
+      closeConversationTabs('agents', result.deletedIds)
       logger.info('Deleted topics', { count: result.deletedCount })
       return result
     },
@@ -390,7 +390,7 @@ export function useTopicMutations() {
   const deleteTopicsByAssistantId = useCallback(
     async (assistantId: string): Promise<DeleteTopicsResult> => {
       const result = await deleteByAssistantTrigger({ params: { assistantId } })
-      closeConversationTabs('assistants', result.deletedIds)
+      closeConversationTabs('agents', result.deletedIds)
       logger.info('Deleted assistant topics', { assistantId, count: result.deletedCount })
       return result
     },

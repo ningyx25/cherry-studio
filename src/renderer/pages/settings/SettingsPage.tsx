@@ -1,5 +1,4 @@
 import { MenuDivider, MenuItem, MenuList, PageHeader } from '@cherrystudio/ui'
-import { GatewayIcon } from '@renderer/components/icons/GatewayIcon'
 import { McpLogo } from '@renderer/components/icons/SvgIcon'
 import Scrollbar from '@renderer/components/Scrollbar'
 import useMacTransparentWindow from '@renderer/hooks/useMacTransparentWindow'
@@ -24,13 +23,11 @@ import {
   Info,
   Package,
   Palette,
-  PictureInPicture2,
   Radio,
   ScanText,
   Search,
   Settings2,
   Terminal,
-  TextCursorInput,
   ToolCase
 } from 'lucide-react'
 import type { CSSProperties, FC } from 'react'
@@ -84,14 +81,6 @@ const SettingsPage: FC = () => {
                 label={t('settings.dependencies.localModels.title')}
                 active={isActive('/settings/local-models')}
                 onClick={() => go('/settings/local-models')}
-              />
-              <MenuItem
-                className={settingsSubmenuItemClassName}
-                labelClassName={settingsSubmenuItemLabelClassName}
-                icon={<GatewayIcon />}
-                label={t('apiGateway.title')}
-                active={isActive('/settings/api-gateway')}
-                onClick={() => go('/settings/api-gateway')}
               />
               <MenuDivider className={settingsSubmenuDividerClassName} />
               <div className={settingsSubmenuSectionTitleClassName}>{t('settings.menuGroups.capabilities')}</div>
@@ -194,22 +183,6 @@ const SettingsPage: FC = () => {
                 label={t('settings.shortcuts.title')}
                 active={isActive('/settings/shortcut')}
                 onClick={() => go('/settings/shortcut')}
-              />
-              <MenuItem
-                className={settingsSubmenuItemClassName}
-                labelClassName={settingsSubmenuItemLabelClassName}
-                icon={<PictureInPicture2 />}
-                label={t('settings.quickAssistant.title')}
-                active={isActive('/settings/quick-assistant')}
-                onClick={() => go('/settings/quick-assistant')}
-              />
-              <MenuItem
-                className={settingsSubmenuItemClassName}
-                labelClassName={settingsSubmenuItemLabelClassName}
-                icon={<TextCursorInput />}
-                label={t('selection.name')}
-                active={isActive('/settings/selection-assistant')}
-                onClick={() => go('/settings/selection-assistant')}
               />
               <MenuDivider className={settingsSubmenuDividerClassName} />
               <div className={settingsSubmenuSectionTitleClassName}>{t('settings.menuGroups.system')}</div>

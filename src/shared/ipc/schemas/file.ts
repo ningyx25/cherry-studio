@@ -1,9 +1,7 @@
 import {
   CleanupPolicySchema,
   ContentHashSchema,
-  DanglingStateSchema,
   FileEntryIdSchema,
-  FileEntrySchema,
   FileHandleSchema,
   SafeNameSchema
 } from '@shared/data/types/file'
@@ -22,8 +20,6 @@ import { uint8ArraySchema } from './common'
 
 /** Maximum entry ids accepted by one file batch IPC call. */
 export const FILE_IPC_MAX_BATCH_IDS = 500
-/** Maximum items accepted by one internal-entry batch-create IPC call. */
-export const FILE_IPC_MAX_BATCH_CREATE_ITEMS = 100
 /** Maximum bytes returned by one range-read IPC call. */
 export const FILE_IPC_MAX_READ_CHUNK_BYTES = 4 * 1024 * 1024
 
@@ -33,16 +29,6 @@ const fileEntryIdsInputSchema = z.strictObject({
 
 const batchGetMetadataInputSchema = z.strictObject({
   items: z.array(z.strictObject({ key: z.string().min(1), handle: FileHandleSchema })).max(FILE_IPC_MAX_BATCH_IDS)
-})
-
-const batchMutationResultSchema = z.strictObject({
-  succeeded: z.array(FileEntryIdSchema),
-  failed: z.array(z.strictObject({ id: FileEntryIdSchema, error: z.string() }))
-})
-
-const batchCreateResultSchema = z.strictObject({
-  succeeded: z.array(z.strictObject({ id: FileEntryIdSchema, sourceRef: z.string() })),
-  failed: z.array(z.strictObject({ sourceRef: z.string(), error: z.string() }))
 })
 
 const binaryReadOptionsSchema = z.discriminatedUnion('mode', [
@@ -100,10 +86,6 @@ export const createInternalEntryInputSchema = z.discriminatedUnion('source', [
 
 export type CreateInternalEntryInput = z.infer<typeof createInternalEntryInputSchema>
 
-const batchCreateInternalEntriesInputSchema = z.strictObject({
-  items: z.array(createInternalEntryInputSchema).min(1).max(FILE_IPC_MAX_BATCH_CREATE_ITEMS)
-})
-
 /**
  * File IPC schemas — filesystem-backed FileManager operations.
  *
@@ -121,22 +103,6 @@ export const fileRequestSchemas = {
   'file.batch_get_physical_paths': defineRoute({
     input: fileEntryIdsInputSchema,
     output: z.record(z.string(), AbsoluteFilePathSchema.nullable())
-  }),
-  'file.batch_get_dangling_states': defineRoute({
-    input: fileEntryIdsInputSchema,
-    output: z.record(z.string(), DanglingStateSchema)
-  }),
-  'file.batch_create_internal_entries': defineRoute({
-    input: batchCreateInternalEntriesInputSchema,
-    output: batchCreateResultSchema
-  }),
-  'file.batch_trash': defineRoute({ input: fileEntryIdsInputSchema, output: batchMutationResultSchema }),
-  'file.batch_restore': defineRoute({ input: fileEntryIdsInputSchema, output: batchMutationResultSchema }),
-  'file.batch_permanent_delete': defineRoute({ input: fileEntryIdsInputSchema, output: batchMutationResultSchema }),
-  'file.empty_trash': defineRoute({ input: z.void(), output: batchMutationResultSchema }),
-  'file.rename': defineRoute({
-    input: z.strictObject({ id: FileEntryIdSchema, newName: SafeNameSchema }),
-    output: FileEntrySchema
   }),
   'file.open': defineRoute({ input: FileHandleSchema, output: z.void() }),
   'file.show_in_folder': defineRoute({ input: FileHandleSchema, output: z.void() })

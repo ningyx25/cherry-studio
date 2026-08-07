@@ -2,7 +2,6 @@ import type { ResolvedAction } from '@renderer/components/chat/actions/actionTyp
 import type { ReactElement, ReactNode } from 'react'
 
 import type {
-  HistoryBulkMoveTarget,
   HistoryRecordsMode,
   HistorySourceOption,
   HistorySourceStatus,
@@ -75,9 +74,6 @@ export interface HistoryRecordDescriptor<T> {
   /** Renders the shared assistant/agent selector as the source filter (null = all). */
   renderSourceFilter: (selectedId: string | null, onSelect: (id: string | null) => void) => ReactNode
   statusOptions?: HistoryStatusOption[]
-  bulkMoveTargets?: readonly HistoryBulkMoveTarget[]
-  /** Assistant mode only: move `ids` to `targetId`; resolves to the ids actually moved (for selection pruning). */
-  onBulkMove?: (targetId: string, ids: string[]) => Promise<readonly string[] | undefined>
 
   // --- rename dialog + strings ---
   onRename: (id: string, name: string) => void | Promise<void>

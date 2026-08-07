@@ -10,10 +10,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 const { languageState, getT } = vi.hoisted(() => {
   const labels: Record<string, Record<string, string>> = {
     'en-US': {
-      assistants: 'Assistants'
+      agents: 'Work',
+      knowledge: 'Knowledge'
     },
     'zh-CN': {
-      assistants: '助手'
+      agents: '工作',
+      knowledge: '知识库'
     }
   }
 
@@ -94,8 +96,10 @@ describe('Sidebar language refresh', () => {
     MockUseCacheUtils.resetMocks()
     MockUseDataApiUtils.resetMocks()
     MockUseDataApiUtils.mockQueryData('/mini-apps', [])
-    MockUsePreferenceUtils.setPreferenceValue('ui.sidebar.favorites', [{ type: 'app', id: 'assistants' }])
-    MockUsePreferenceUtils.setPreferenceValue('feature.paintings.default_provider', 'zhipu')
+    MockUsePreferenceUtils.setPreferenceValue('ui.sidebar.favorites', [
+      { type: 'app', id: 'agents' },
+      { type: 'app', id: 'knowledge' }
+    ])
     MockUseCacheUtils.setPersistCacheValue('ui.sidebar.width', 170)
   })
 
@@ -107,11 +111,13 @@ describe('Sidebar language refresh', () => {
   it('refreshes menu item labels when the app language changes', () => {
     const { rerender } = render(<Sidebar />)
 
-    expect(screen.getByRole('button', { name: 'Assistants' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Work' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Knowledge' })).toBeInTheDocument()
 
     languageState.language = 'zh-CN'
     rerender(<Sidebar />)
 
-    expect(screen.getByRole('button', { name: '助手' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '工作' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '知识库' })).toBeInTheDocument()
   })
 })

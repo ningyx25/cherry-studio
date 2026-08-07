@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-export type HistoryRecordsMode = 'assistant' | 'agent'
+export type HistoryRecordsMode = 'agent'
 
 export type HistorySourceStatus = 'all' | 'running' | 'completed' | 'failed'
 
@@ -16,11 +16,4 @@ export interface HistoryStatusOption {
   id: HistorySourceStatus
   label: string
   dotClassName?: string
-}
-
-/** A bulk-move destination assistant (assistant mode only). */
-export interface HistoryBulkMoveTarget {
-  id: string
-  label: string
-  icon?: ReactNode
 }

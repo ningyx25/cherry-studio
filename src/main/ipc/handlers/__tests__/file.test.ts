@@ -71,24 +71,16 @@ const metadata = {
   mime: 'text/plain'
 }
 
-const batchResult = { succeeded: [ids[0]], failed: [{ id: ids[1], error: 'failed' }] }
 const version = { mtime: 1, size: 4 }
 
 const fileManager = {
   read: vi.fn(),
   getMetadata: vi.fn(),
   getPhysicalPath: vi.fn(),
-  batchGetDanglingStates: vi.fn(),
-  batchTrash: vi.fn(),
-  batchRestore: vi.fn(),
-  batchPermanentDelete: vi.fn(),
-  emptyTrash: vi.fn(),
-  rename: vi.fn(),
   readChunk: vi.fn(),
   open: vi.fn(),
   showInFolder: vi.fn(),
-  writeIfUnchanged: vi.fn(),
-  batchCreateInternalEntries: vi.fn()
+  writeIfUnchanged: vi.fn()
 }
 
 beforeEach(() => {
@@ -287,41 +279,6 @@ describe('fileHandlers', () => {
     expect(fileManager.getPhysicalPath).toHaveBeenCalledWith(ids[1])
   })
 
-  it('delegates batch entry operations to FileManager', async () => {
-    fileManager.batchGetDanglingStates.mockResolvedValue({ [ids[0]]: 'present' })
-    fileManager.batchTrash.mockResolvedValue(batchResult)
-    fileManager.batchRestore.mockResolvedValue(batchResult)
-    fileManager.batchPermanentDelete.mockResolvedValue(batchResult)
-    fileManager.emptyTrash.mockResolvedValue(batchResult)
-
-    await expect(fileHandlers['file.batch_get_dangling_states']({ ids }, ctx)).resolves.toEqual({
-      [ids[0]]: 'present'
-    })
-    await expect(fileHandlers['file.batch_trash']({ ids }, ctx)).resolves.toBe(batchResult)
-    await expect(fileHandlers['file.batch_restore']({ ids }, ctx)).resolves.toBe(batchResult)
-    await expect(fileHandlers['file.batch_permanent_delete']({ ids }, ctx)).resolves.toBe(batchResult)
-    await expect(fileHandlers['file.empty_trash'](undefined, ctx)).resolves.toBe(batchResult)
-
-    expect(fileManager.batchGetDanglingStates).toHaveBeenCalledWith({ ids })
-    expect(fileManager.batchTrash).toHaveBeenCalledWith(ids)
-    expect(fileManager.batchRestore).toHaveBeenCalledWith(ids)
-    expect(fileManager.batchPermanentDelete).toHaveBeenCalledWith(ids)
-    expect(fileManager.emptyTrash).toHaveBeenCalled()
-  })
-
-  it('delegates single-entry commands to FileManager', async () => {
-    const renamed = { id: ids[0], origin: 'internal', name: 'renamed', ext: 'txt', size: 1, createdAt: 1, updatedAt: 2 }
-    fileManager.rename.mockResolvedValue(renamed)
-
-    await expect(fileHandlers['file.rename']({ id: ids[0], newName: 'renamed' }, ctx)).resolves.toBe(renamed)
-    await fileHandlers['file.open']({ kind: 'entry', entryId: ids[0] }, ctx)
-    await fileHandlers['file.show_in_folder']({ kind: 'entry', entryId: ids[0] }, ctx)
-
-    expect(fileManager.rename).toHaveBeenCalledWith(ids[0], 'renamed')
-    expect(fileManager.open).toHaveBeenCalledWith(ids[0])
-    expect(fileManager.showInFolder).toHaveBeenCalledWith(ids[0])
-  })
-
   it('dispatches path system commands without FileManager entry lookup', async () => {
     await fileHandlers['file.open']({ kind: 'path', path: '/tmp/report.md' as AbsoluteFilePath }, ctx)
     await fileHandlers['file.show_in_folder']({ kind: 'path', path: '/tmp/report.md' as AbsoluteFilePath }, ctx)
@@ -356,17 +313,5 @@ describe('fileHandlers', () => {
 
     expect(fileManager.readChunk).toHaveBeenCalledWith(ids[0], 10, 3)
     expect(readChunkByPathMock).toHaveBeenCalledWith('/tmp/report.pdf', 20, 2)
-  })
-
-  it('delegates internal-entry batch create items to FileManager', async () => {
-    const result = { succeeded: [{ id: ids[0], sourceRef: '/tmp/a.txt' }], failed: [] }
-    const items = [
-      { source: 'path' as const, path: '/tmp/a.txt' as AbsoluteFilePath, cleanupPolicy: 'manual' as const },
-      { source: 'path' as const, path: '/tmp/b.txt' as AbsoluteFilePath, cleanupPolicy: 'manual' as const }
-    ]
-    fileManager.batchCreateInternalEntries.mockResolvedValue(result)
-
-    await expect(fileHandlers['file.batch_create_internal_entries']({ items }, ctx)).resolves.toBe(result)
-    expect(fileManager.batchCreateInternalEntries).toHaveBeenCalledWith(items)
   })
 })

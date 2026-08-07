@@ -16,14 +16,7 @@ vi.mock('@data/PreferenceService', async () => {
   return MockMainPreferenceServiceExport
 })
 
-const {
-  windowServiceMock,
-  windowManagerMock,
-  selectionServiceMock,
-  quickAssistantServiceMock,
-  commandServiceMock,
-  globalShortcutMock
-} = vi.hoisted(() => ({
+const { windowServiceMock, windowManagerMock, commandServiceMock, globalShortcutMock } = vi.hoisted(() => ({
   windowServiceMock: {
     onMainWindowCreated: vi.fn(),
     showMainWindow: vi.fn(),
@@ -32,13 +25,6 @@ const {
   windowManagerMock: {
     open: vi.fn(),
     broadcastToType: vi.fn()
-  },
-  selectionServiceMock: {
-    toggleEnabled: vi.fn(),
-    processSelectTextByShortcut: vi.fn()
-  },
-  quickAssistantServiceMock: {
-    toggleQuickAssistant: vi.fn()
   },
   commandServiceMock: {
     execute: vi.fn()
@@ -54,8 +40,6 @@ vi.mock('@application', async () => {
   return mockApplicationFactory({
     MainWindowService: windowServiceMock,
     WindowManager: windowManagerMock,
-    SelectionService: selectionServiceMock,
-    QuickAssistantService: quickAssistantServiceMock,
     CommandService: commandServiceMock
   } as any)
 })
@@ -89,8 +73,6 @@ import { MockMainPreferenceServiceUtils } from '@test-mocks/main/PreferenceServi
 
 import { ShortcutService } from '../ShortcutService'
 
-// Mirrors the selection commands' supportedPlatforms (darwin/win32/linux) — SelectionService supports linux too.
-const supportsSelectionShortcuts = ['darwin', 'win32', 'linux'].includes(process.platform)
 const settingsShortcutHandledByNativeMenu = process.platform === 'darwin'
 
 class MockBrowserWindow {
@@ -224,44 +206,6 @@ describe('ShortcutService', () => {
     expect(globalShortcutMock.unregister).toHaveBeenCalledWith('CommandOrControl+=')
     expect(globalShortcutMock.register).toHaveBeenCalledWith('Alt+=', expect.any(Function))
     expect(globalShortcutMock.register).not.toHaveBeenCalledWith('CommandOrControl+=', expect.any(Function))
-  })
-
-  it('reacts to quick assistant enablement changes for quick assistant shortcut', async () => {
-    MockMainPreferenceServiceUtils.setPreferenceValue('shortcut.quick_assistant.toggle', {
-      binding: ['CommandOrControl', 'E'],
-      enabled: true
-    })
-    MockMainPreferenceServiceUtils.setPreferenceValue('feature.quick_assistant.enabled', false)
-
-    await (service as any).onInit()
-
-    expect(globalShortcutMock.register).not.toHaveBeenCalledWith('CommandOrControl+E', expect.any(Function))
-
-    globalShortcutMock.register.mockClear()
-    MockMainPreferenceServiceUtils.setPreferenceValue('feature.quick_assistant.enabled', true)
-
-    expect(globalShortcutMock.register).toHaveBeenCalledWith('CommandOrControl+E', expect.any(Function))
-  })
-
-  it('reacts to selection assistant enablement changes for selection shortcuts', async () => {
-    MockMainPreferenceServiceUtils.setPreferenceValue('shortcut.selection.toggle', {
-      binding: ['CommandOrControl', 'Shift', 'S'],
-      enabled: true
-    })
-    MockMainPreferenceServiceUtils.setPreferenceValue('feature.selection.enabled', false)
-
-    await (service as any).onInit()
-
-    expect(globalShortcutMock.register).not.toHaveBeenCalledWith('CommandOrControl+Shift+S', expect.any(Function))
-
-    globalShortcutMock.register.mockClear()
-    MockMainPreferenceServiceUtils.setPreferenceValue('feature.selection.enabled', true)
-
-    if (supportsSelectionShortcuts) {
-      expect(globalShortcutMock.register).toHaveBeenCalledWith('CommandOrControl+Shift+S', expect.any(Function))
-    } else {
-      expect(globalShortcutMock.register).not.toHaveBeenCalledWith('CommandOrControl+Shift+S', expect.any(Function))
-    }
   })
 
   it('re-registers window-bound shortcuts when the main window instance changes', async () => {

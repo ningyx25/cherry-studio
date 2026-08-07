@@ -12,7 +12,6 @@ import { CLI_INSTALL_TOOL_NAME, CLI_LIST_TOOL_NAME, CLI_SEARCH_TOOL_NAME } from 
 import {
   CONFIG_TOOL_NAME,
   CRON_TOOL_NAME,
-  GENERATE_IMAGE_TOOL_NAME,
   KB_LIST_TOOL_NAME,
   KB_MANAGE_TOOL_NAME,
   KB_READ_TOOL_NAME,
@@ -37,14 +36,10 @@ export const toCherryBuiltinRuntimeName = (toolName: string): string => `mcp__${
  * cherry-tools that MUST go through per-call user approval — never auto-approved, even for
  * agent/assistant sessions:
  * - kb_manage mutates the user's knowledge bases (add / delete / refresh sources);
- * - generate_image calls a user-configured external provider (which may bill) and persists a
- *   FileEntry into the user's library, so — unlike the read-only lookups — an autonomous agent
- *   (including headless / channel turns) must not run it unattended;
  * - cli_install persists a definition and mutates Cherry's shared isolated mise environment.
  */
 export const CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES: readonly string[] = [
   KB_MANAGE_TOOL_NAME,
-  GENERATE_IMAGE_TOOL_NAME,
   CLI_INSTALL_TOOL_NAME
 ]
 

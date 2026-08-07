@@ -47,12 +47,6 @@ describe('claudeUserFacingTools', () => {
     expect(byName.get('mcp__cherry-tools__config')?.label).toBe('Configuration')
     expect(byName.has('mcp__cherry-tools__kb_read')).toBe(false) // internal — follows kb capability
   })
-
-  it('exposes generate_image as a user-facing media tool', () => {
-    const tool = byName.get('mcp__cherry-tools__generate_image')
-    expect(tool?.label).toBe('Generate Image')
-    expect(tool?.category).toBe('media')
-  })
 })
 
 describe('CLAUDE_KNOWLEDGE_TOOL_NAMES', () => {
@@ -71,6 +65,5 @@ describe('CLAUDE_KNOWLEDGE_TOOL_NAMES', () => {
     expect(CLAUDE_KNOWLEDGE_TOOL_NAMES.has('mcp__cherry-tools__kb_manage')).toBe(true)
     // Non-kb cherry tools must not be swept in.
     expect(CLAUDE_KNOWLEDGE_TOOL_NAMES.has('mcp__cherry-tools__web_search')).toBe(false)
-    expect(CLAUDE_KNOWLEDGE_TOOL_NAMES.has('mcp__cherry-tools__generate_image')).toBe(false)
   })
 })

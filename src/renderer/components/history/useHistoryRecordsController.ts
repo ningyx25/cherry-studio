@@ -32,7 +32,6 @@ export interface HistoryRecordsController<T> {
   toggleSelection: (id: string, checked: boolean) => void
   toggleSelectAll: (checked: boolean) => void
   handleBulkDelete: () => Promise<void>
-  handleBulkMove: (targetId: string) => Promise<void>
 }
 
 /**
@@ -49,17 +48,8 @@ export function useHistoryRecordsController<T>({
   sourceSorted,
   activeRecordId
 }: UseHistoryRecordsControllerParams<T>): HistoryRecordsController<T> {
-  const {
-    getId,
-    isPinned,
-    getSourceId,
-    statusOf,
-    matchesSearch,
-    sources,
-    onBulkDelete,
-    onActiveRecordChange,
-    onBulkMove
-  } = descriptor
+  const { getId, isPinned, getSourceId, statusOf, matchesSearch, sources, onBulkDelete, onActiveRecordChange } =
+    descriptor
 
   const [searchText, setSearchText] = useState('')
   const [selectedSourceId, setSelectedSourceId] = useState<string>(ALL_SOURCE_ID)
@@ -153,20 +143,6 @@ export function useHistoryRecordsController<T>({
     }
   }, [activeRecordId, getId, onActiveRecordChange, onBulkDelete, selectedDeletableIds, timeSorted])
 
-  const handleBulkMove = useCallback(
-    async (targetId: string) => {
-      const ids = selectedIds
-      if (ids.length === 0 || !onBulkMove) return
-
-      const movedIds = await onBulkMove(targetId, ids)
-      if (!movedIds) return
-
-      const movedIdSet = new Set(movedIds)
-      setSelectedIds((current) => current.filter((id) => !movedIdSet.has(id)))
-    },
-    [onBulkMove, selectedIds]
-  )
-
   return {
     searchText,
     setSearchText,
@@ -183,7 +159,6 @@ export function useHistoryRecordsController<T>({
     isSelected,
     toggleSelection,
     toggleSelectAll,
-    handleBulkDelete,
-    handleBulkMove
+    handleBulkDelete
   }
 }

@@ -397,7 +397,6 @@ export default function OnboardingPage() {
                         showSettingsButton={false}
                         showDescription={false}
                         showDividers={false}
-                        showPaintingModel={false}
                         modelFilter={isOnboardingModel}
                         compact
                         className="mt-4 min-h-0 w-full flex-none overflow-visible"

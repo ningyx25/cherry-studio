@@ -17,19 +17,9 @@ describe('transformShortcuts', () => {
     const result = transformShortcuts({
       shortcuts: [
         {
-          key: 'mini_window',
-          shortcut: ['CommandOrControl', 'E'],
-          enabled: false
-        },
-        {
           key: 'show_settings',
           shortcut: ['CommandOrControl', ','],
           enabled: true
-        },
-        {
-          key: 'selection_assistant_toggle',
-          shortcut: [],
-          enabled: false
         },
         {
           key: 'toggle_new_context',
@@ -40,17 +30,9 @@ describe('transformShortcuts', () => {
     })
 
     expect(result).toEqual({
-      'shortcut.quick_assistant.toggle': {
-        binding: ['CommandOrControl', 'E'],
-        enabled: false
-      },
       'shortcut.app.settings.open': {
         binding: ['CommandOrControl', ','],
         enabled: true
-      },
-      'shortcut.selection.toggle': {
-        binding: [],
-        enabled: false
       },
       'shortcut.chat.context.toggle_new': {
         binding: ['CommandOrControl', 'Alt', 'K'],

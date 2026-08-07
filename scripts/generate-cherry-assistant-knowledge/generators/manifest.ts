@@ -59,7 +59,6 @@ export interface ProductManifest {
     channelTypes: string[]
     scheduleTriggerKinds: string[]
     codeCli: {
-      route: string
       tools: string[]
     }
   }
@@ -175,17 +174,11 @@ function readScheduleTriggerKinds(): string[] {
   })
 }
 
-function readAgentCapabilities(primaryRoutes: ProductManifest['routes']['primary']): ProductManifest['agents'] {
-  const codeCliRoute = primaryRoutes.find(({ id }) => id === 'code_tools')?.path
-  if (!codeCliRoute) {
-    throw new Error('SIDEBAR_APP_DEFINITIONS does not contain the code_tools route')
-  }
-
+function readAgentCapabilities(): ProductManifest['agents'] {
   return {
     channelTypes: readChannelTypes(),
     scheduleTriggerKinds: readScheduleTriggerKinds(),
     codeCli: {
-      route: codeCliRoute,
       tools: Object.values(CodeCli)
     }
   }
@@ -203,7 +196,7 @@ export function generateProductManifest(): ProductManifest {
     commands: JSON.parse(JSON.stringify(COMMAND_DEFINITIONS)) as ProductManifest['commands'],
     providers: readProviders(),
     locales: [...appLanguageOptions],
-    agents: readAgentCapabilities(primaryRoutes)
+    agents: readAgentCapabilities()
   }
 }
 

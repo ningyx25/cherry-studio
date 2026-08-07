@@ -146,44 +146,6 @@ export const COMMAND_DEFINITIONS = [
     }
   }),
   defineCommand({
-    id: 'quick_assistant.toggle',
-    titleKey: 'settings.shortcuts.quick_assistant',
-    categoryKey: 'settings.shortcuts.feature.quick_assistant',
-    scope: 'main',
-    enablement: 'feature.quick_assistant.enabled',
-    keybinding: {
-      defaultBinding: ['CommandOrControl', 'E'],
-      global: true,
-      when: 'feature.quick_assistant.enabled'
-    }
-  }),
-  defineCommand({
-    id: 'selection.capture_text',
-    titleKey: 'settings.shortcuts.selection_assistant_select_text',
-    categoryKey: 'settings.shortcuts.feature.selection',
-    scope: 'main',
-    enablement: 'feature.selection.enabled',
-    keybinding: {
-      defaultBinding: [],
-      global: true,
-      when: 'feature.selection.enabled',
-      supportedPlatforms: ['darwin', 'win32', 'linux']
-    }
-  }),
-  defineCommand({
-    id: 'selection.toggle',
-    titleKey: 'settings.shortcuts.selection_assistant_toggle',
-    categoryKey: 'settings.shortcuts.feature.selection',
-    scope: 'main',
-    enablement: 'feature.selection.enabled',
-    keybinding: {
-      defaultBinding: [],
-      global: true,
-      when: 'feature.selection.enabled',
-      supportedPlatforms: ['darwin', 'win32', 'linux']
-    }
-  }),
-  defineCommand({
     id: 'topic.create',
     titleKey: 'settings.shortcuts.new_topic',
     categoryKey: 'settings.shortcuts.topic',

@@ -36,56 +36,11 @@ function wrapperFor(value: TabsContextValue) {
   }
 }
 
-const activeConversationCases = [
-  ['conversation', 'assistants', 'topic-a', '/app/chat', 'topicId'],
-  ['agent session', 'agents', 'session-a', '/app/agents', 'sessionId']
-] as const
+const activeConversationCases = [['agent session', 'agents', 'session-a', '/app/agents', 'sessionId']] as const
 
 describe('useCloseConversationTabs', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-  })
-
-  it('closes assistant tabs matching deleted topic ids', () => {
-    const closeTabs = vi.fn()
-    const context = createTabsContext(
-      [
-        {
-          id: 'topic-a-tab',
-          type: 'route',
-          url: '/app/chat?topicId=topic-a',
-          title: 'Topic A'
-        },
-        {
-          id: 'topic-b-url-tab',
-          type: 'route',
-          url: '/app/chat?topicId=topic-b',
-          title: 'Topic B'
-        },
-        {
-          id: 'message-only-tab',
-          type: 'route',
-          url: '/app/chat?view=message&topicId=topic-a',
-          title: 'Message'
-        },
-        {
-          id: 'session-tab',
-          type: 'route',
-          url: '/app/agents?sessionId=topic-a',
-          title: 'Session'
-        }
-      ],
-      closeTabs,
-      'session-tab'
-    )
-
-    const { result } = renderHook(() => useCloseConversationTabs(), { wrapper: wrapperFor(context) })
-
-    act(() => {
-      result.current('assistants', ['topic-a', 'topic-b'])
-    })
-
-    expect(closeTabs).toHaveBeenCalledWith(['topic-a-tab', 'topic-b-url-tab'])
   })
 
   it('closes agent tabs matching deleted session ids', () => {
@@ -154,20 +109,20 @@ describe('useCloseConversationTabs', () => {
     const context = createTabsContext(
       [
         {
-          id: 'active-topic-tab',
+          id: 'active-session-tab',
           type: 'route',
-          url: '/app/chat?topicId=topic-a',
-          title: 'Active Topic'
+          url: '/app/agents?sessionId=session-a',
+          title: 'Active Session'
         }
       ],
       closeTabs,
-      'active-topic-tab'
+      'active-session-tab'
     )
 
     const { result } = renderHook(() => useCloseConversationTabs(), { wrapper: wrapperFor(context) })
 
     act(() => {
-      result.current('assistants', ['topic-a'])
+      result.current('agents', ['session-a'])
     })
 
     expect(closeTabs).toHaveBeenCalledWith([])

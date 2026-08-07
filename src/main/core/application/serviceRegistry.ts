@@ -41,8 +41,6 @@ import { OvmsManager } from '@main/services/OvmsManager'
 import { ProtocolService } from '@main/services/protocol/ProtocolService'
 import { ProxyService } from '@main/services/proxy/ProxyService'
 import { PythonService } from '@main/services/PythonService'
-import { QuickAssistantService } from '@main/services/QuickAssistantService'
-import { SelectionService } from '@main/services/selection/SelectionService'
 import { ShortcutService } from '@main/services/ShortcutService'
 import { StorageMonitorService } from '@main/services/StorageMonitorService'
 import { SubWindowService } from '@main/services/SubWindowService'
@@ -94,7 +92,6 @@ export const services = {
   DirectoryTreeManager,
   FileProcessingService,
   PowerService,
-  SelectionService,
   ShortcutService,
   ThemeService,
   TraceStorageService,
@@ -110,7 +107,6 @@ export const services = {
   WebviewService,
   OAuthRuntimeService,
   MainWindowService,
-  QuickAssistantService,
   McpPackageService,
   McpRuntimeService,
   McpCatalogService,

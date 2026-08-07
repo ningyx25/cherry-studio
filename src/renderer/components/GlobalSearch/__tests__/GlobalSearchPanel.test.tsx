@@ -557,11 +557,10 @@ afterEach(() => {
 describe('GlobalSearchPanel', () => {
   beforeEach(() => {
     testOnlyClearRefreshHistory()
-    // Conversation tabs open on the conversation's own URL (`/app/chat?topicId=…`), so match the
+    // Conversations open via agent sessions on `/app/agents?sessionId=…`, so match the
     // route prefix rather than the bare path.
     mocks.openTab.mockImplementation((route: string) => {
       if (route.startsWith('/app/agents')) return 'opened-agent-tab'
-      if (route.startsWith('/app/chat')) return 'opened-chat-tab'
       return 'opened-route-tab'
     })
     mocks.recentItems = [
@@ -988,13 +987,13 @@ describe('GlobalSearchPanel', () => {
     await user.type(screen.getByLabelText('Search conversations, tasks, assistants, agents, and knowledge...'), 'topic')
     await user.click(await screen.findByRole('option', { name: /Topic A/ }))
 
-    expect(mocks.openTab).toHaveBeenCalledWith('/app/chat?topicId=topic-1', { forceNew: true })
+    expect(mocks.openTab).toHaveBeenCalledWith('/app/agents?sessionId=topic-1', { forceNew: true })
     expect(mocks.emitResourceListReveal).not.toHaveBeenCalled()
     expect(mocks.eventEmit).not.toHaveBeenCalledWith('GLOBAL_SEARCH_SELECT_TOPIC', expect.anything())
     expect(mocks.onClose).toHaveBeenCalledTimes(1)
   })
 
-  it('reveals the assistant resource list when opening a topic result', async () => {
+  it('reveals the agent resource list when opening a topic result', async () => {
     const user = userEvent.setup()
     mocks.recentItems = []
     mocks.dataApiGet.mockResolvedValueOnce({
@@ -1028,8 +1027,8 @@ describe('GlobalSearchPanel', () => {
     await user.click(await screen.findByRole('option', { name: /Topic A/ }))
 
     expect(mocks.emitResourceListReveal).toHaveBeenCalledWith({
-      source: 'assistants',
-      tabId: 'opened-chat-tab'
+      source: 'agents',
+      tabId: 'opened-agent-tab'
     })
   })
 
@@ -1617,14 +1616,14 @@ describe('GlobalSearchPanel', () => {
         body: { nodeId: 'message-leaf' }
       })
       expect(mocks.invalidateCache).toHaveBeenCalledWith(['/topics/topic-1/messages', '/topics/topic-1/tree'])
-      expect(mocks.openTab).toHaveBeenCalledWith('/app/chat?topicId=topic-1', { forceNew: true })
+      expect(mocks.openTab).toHaveBeenCalledWith('/app/agents?sessionId=topic-1', { forceNew: true })
     })
     await waitFor(() => {
       expect(mocks.eventEmit).toHaveBeenCalledWith(
         'GLOBAL_SEARCH_SELECT_TOPIC_MESSAGE',
         expect.objectContaining({
           messageId: 'message-1',
-          targetTabId: 'opened-chat-tab',
+          targetTabId: 'opened-agent-tab',
           topic: expect.objectContaining({ activeNodeId: 'message-leaf', id: 'topic-1' })
         })
       )
@@ -1688,7 +1687,7 @@ describe('GlobalSearchPanel', () => {
         'GLOBAL_SEARCH_SELECT_TOPIC_MESSAGE',
         expect.objectContaining({
           messageId: 'message-1',
-          targetTabId: 'opened-chat-tab',
+          targetTabId: 'opened-agent-tab',
           topic: expect.objectContaining({ activeNodeId: 'message-leaf', id: 'topic-1' })
         })
       )
@@ -1742,7 +1741,7 @@ describe('GlobalSearchPanel', () => {
       })
       expect(mocks.eventEmit).toHaveBeenCalledWith(
         'GLOBAL_SEARCH_SELECT_TOPIC_MESSAGE',
-        expect.objectContaining({ messageId: 'preview-message-other', targetTabId: 'opened-chat-tab' })
+        expect.objectContaining({ messageId: 'preview-message-other', targetTabId: 'opened-agent-tab' })
       )
     })
     expect(mocks.eventEmit).not.toHaveBeenCalledWith(

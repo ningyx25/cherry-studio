@@ -1,5 +1,4 @@
-import { Button, InfoTooltip, PageSidePanel, Tooltip } from '@cherrystudio/ui'
-import { usePreference } from '@data/hooks/usePreference'
+import { Button, InfoTooltip, PageSidePanel } from '@cherrystudio/ui'
 import { loggerService } from '@logger'
 import {
   SettingContainer,
@@ -14,13 +13,11 @@ import {
 import { useDefaultModel } from '@renderer/hooks/useModel'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useTheme } from '@renderer/hooks/useTheme'
-import { TranslateSettingsPanelContent } from '@renderer/pages/translate/TranslateSettings'
 import { toast } from '@renderer/services/toast'
 import { cn } from '@renderer/utils/style'
-import { TRANSLATE_PROMPT } from '@shared/ai/prompts'
 import { type Model } from '@shared/data/types/model'
-import { isGenerateImageModel, isNonChatModel } from '@shared/utils/model'
-import { Languages, MessageSquareMore, Palette, Rocket, RotateCcw, Settings2 } from 'lucide-react'
+import { isNonChatModel } from '@shared/utils/model'
+import { MessageSquareMore, Rocket, Settings2 } from 'lucide-react'
 import type { FC, ReactNode } from 'react'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -34,7 +31,6 @@ interface ModelSettingsProps {
   showSettingsButton?: boolean
   showDescription?: boolean
   showDividers?: boolean
-  showPaintingModel?: boolean
   modelFilter?: (model: Model) => boolean
   autoFillEmptyModels?: boolean
   onDefaultModelSelected?: (model: Model) => void | Promise<void>
@@ -65,10 +61,9 @@ const ModelSettingRow: FC<ModelSettingRowProps> = ({ icon, title, description, c
   </SettingRow>
 )
 
-type ModelSettingsPanel = 'quick-model' | 'translate' | null
+type ModelSettingsPanel = 'quick-model' | null
 
 const MODEL_SETTINGS_DRAWER_WIDTH_CLASS = '!w-[min(31.25rem,calc(100%-1rem))]'
-const TRANSLATE_DRAWER_WIDTH_CLASS = '!w-[min(31.25rem,calc(100%-1rem))]'
 const SETTINGS_DRAWER_BODY_CLASS = 'space-y-0 px-6 py-5'
 
 const drawerTitleClassName = 'truncate font-semibold text-foreground text-sm leading-4'
@@ -77,29 +72,17 @@ const ModelSettings: FC<ModelSettingsProps> = ({
   showSettingsButton = true,
   showDescription = true,
   showDividers = true,
-  showPaintingModel = true,
   modelFilter,
   autoFillEmptyModels = false,
   onDefaultModelSelected,
   compact = false,
   className
 }) => {
-  const {
-    defaultModel,
-    quickModel,
-    translateModel,
-    paintingModel,
-    setDefaultModel,
-    setQuickModel,
-    setTranslateModel,
-    setPaintingModel
-  } = useDefaultModel()
+  const { defaultModel, quickModel, setDefaultModel, setQuickModel } = useDefaultModel()
   const { providers } = useProviders({ enabled: true })
   const [activePanel, setActivePanel] = useState<ModelSettingsPanel>(null)
   const { theme } = useTheme()
   const { t } = useTranslation()
-
-  const [translateModelPrompt, setTranslateModelPrompt] = usePreference('feature.translate.model_prompt')
 
   const chatModelFilter = useCallback(
     (model: Model) => !isNonChatModel(model) && (modelFilter?.(model) ?? true),
@@ -107,9 +90,7 @@ const ModelSettings: FC<ModelSettingsProps> = ({
   )
   const selectableDefaultModel = defaultModel && chatModelFilter(defaultModel) ? defaultModel : undefined
   const selectableQuickModel = quickModel && chatModelFilter(quickModel) ? quickModel : undefined
-  const selectableTranslateModel = translateModel && chatModelFilter(translateModel) ? translateModel : undefined
-  const shouldAutoFillEmptyModels =
-    autoFillEmptyModels && !selectableDefaultModel && !selectableQuickModel && !selectableTranslateModel
+  const shouldAutoFillEmptyModels = autoFillEmptyModels && !selectableDefaultModel && !selectableQuickModel
 
   const onSelectDefault = useCallback(
     (selected: Model | undefined) => {
@@ -135,26 +116,6 @@ const ModelSettings: FC<ModelSettingsProps> = ({
     },
     [setQuickModel]
   )
-
-  const onSelectTranslate = useCallback(
-    (selected: Model | undefined) => {
-      if (!selected) return
-      void setTranslateModel(selected)
-    },
-    [setTranslateModel]
-  )
-
-  const onSelectPainting = useCallback(
-    (selected: Model | undefined) => {
-      if (!selected) return
-      void setPaintingModel(selected)
-    },
-    [setPaintingModel]
-  )
-
-  const onResetTranslatePrompt = () => {
-    void setTranslateModelPrompt(TRANSLATE_PROMPT)
-  }
 
   const closePanel = useCallback(() => {
     setActivePanel(null)
@@ -220,58 +181,6 @@ const ModelSettings: FC<ModelSettingsProps> = ({
             )}
           </ModelSettingRow>
           {showDividers && <SettingDivider />}
-          <ModelSettingRow
-            compact={compact}
-            icon={<Languages size={16} className="lucide-custom shrink-0 text-foreground" />}
-            title={t('settings.models.translate_model')}
-            description={showDescription ? t('settings.models.translate_model_description') : undefined}>
-            <DefaultModelSelector
-              model={selectableTranslateModel}
-              providers={providers}
-              filter={chatModelFilter}
-              compact={compact}
-              onSelect={onSelectTranslate}
-              placeholder={t('settings.models.empty')}
-            />
-            {showSettingsButton && (
-              <>
-                <Button
-                  aria-label={t('settings.translate.title')}
-                  className="shrink-0"
-                  onClick={() => setActivePanel('translate')}
-                  size="icon-sm"
-                  variant="outline">
-                  <Settings2 size={16} />
-                </Button>
-                {translateModelPrompt !== TRANSLATE_PROMPT && (
-                  <Tooltip content={t('common.reset')}>
-                    <Button className="shrink-0" onClick={onResetTranslatePrompt} size="icon-sm" variant="outline">
-                      <RotateCcw size={16} />
-                    </Button>
-                  </Tooltip>
-                )}
-              </>
-            )}
-          </ModelSettingRow>
-          {showPaintingModel && (
-            <>
-              <SettingDivider />
-              <ModelSettingRow
-                compact={compact}
-                icon={<Palette size={16} className="lucide-custom shrink-0 text-foreground" />}
-                title={t('settings.models.painting_model')}
-                description={showDescription ? t('settings.models.painting_model_description') : undefined}>
-                <DefaultModelSelector
-                  model={paintingModel}
-                  providers={providers}
-                  filter={isGenerateImageModel}
-                  compact={compact}
-                  onSelect={onSelectPainting}
-                  placeholder={t('settings.models.empty')}
-                />
-              </ModelSettingRow>
-            </>
-          )}
         </SettingGroup>
       </ContainerComponent>
       {showSettingsButton && (
@@ -284,15 +193,6 @@ const ModelSettings: FC<ModelSettingsProps> = ({
             contentClassName={MODEL_SETTINGS_DRAWER_WIDTH_CLASS}
             bodyClassName={SETTINGS_DRAWER_BODY_CLASS}>
             <TopicNamingSettings />
-          </PageSidePanel>
-          <PageSidePanel
-            open={activePanel === 'translate'}
-            onClose={closePanel}
-            closeLabel={t('common.close')}
-            header={<h2 className={drawerTitleClassName}>{t('settings.translate.title')}</h2>}
-            contentClassName={TRANSLATE_DRAWER_WIDTH_CLASS}
-            bodyClassName={SETTINGS_DRAWER_BODY_CLASS}>
-            <TranslateSettingsPanelContent />
           </PageSidePanel>
         </>
       )}

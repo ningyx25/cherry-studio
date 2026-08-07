@@ -1,11 +1,7 @@
 import { WebSearchConfigError, type WebSearchConfigErrorCode } from '@main/services/webSearch'
-import type { ImageGenerationSupport } from '@shared/data/types/model'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const { getImageGenerationSupport, loggerWarn } = vi.hoisted(() => ({
-  getImageGenerationSupport: vi.fn(),
-  loggerWarn: vi.fn()
-}))
+const { loggerWarn } = vi.hoisted(() => ({ loggerWarn: vi.fn() }))
 
 const searchKeywords = vi.fn()
 const fetchUrls = vi.fn()
@@ -18,12 +14,6 @@ const kbDeleteConcepts = vi.fn()
 const kbRefreshConcepts = vi.fn()
 const listBases = vi.fn()
 const listRootItems = vi.fn()
-const getPreference = vi.fn()
-const generateImage = vi.fn()
-const fileRead = vi.fn()
-vi.mock('@data/services/ProviderRegistryService', () => ({
-  providerRegistryService: { getImageGenerationSupport }
-}))
 
 vi.mock('@logger', () => ({
   loggerService: {
@@ -48,9 +38,6 @@ vi.mock('@application', () => ({
           listRootItems
         }
       }
-      if (name === 'PreferenceService') return { get: getPreference }
-      if (name === 'AiService') return { generateImage }
-      if (name === 'FileManager') return { read: fileRead }
       throw new Error(`unexpected service: ${name}`)
     }
   }
@@ -123,18 +110,12 @@ describe('cherryBuiltinTools', () => {
     kbRefreshConcepts.mockReset()
     listBases.mockReset()
     listRootItems.mockReset()
-    getPreference.mockReset()
-    generateImage.mockReset()
-    fileRead.mockReset()
-    getImageGenerationSupport.mockReset()
-    getImageGenerationSupport.mockReturnValue(null)
     loggerWarn.mockReset()
   })
 
   it('advertises builtin tools with object input schemas and no $schema marker', () => {
     const tools = listCherryBuiltinTools(['kb-1'])
     expect(tools.map((t) => t.name).sort()).toEqual([
-      'generate_image',
       'kb_list',
       'kb_manage',
       'kb_read',
@@ -154,7 +135,7 @@ describe('cherryBuiltinTools', () => {
     const names = listCherryBuiltinTools([])
       .map((t) => t.name)
       .sort()
-    expect(names).toEqual(['generate_image', 'report_artifacts', 'web_fetch', 'web_search'])
+    expect(names).toEqual(['report_artifacts', 'web_fetch', 'web_search'])
   })
 
   it('exposes every kb_* tool for unrestricted built-in Assistant access', async () => {
@@ -596,109 +577,6 @@ describe('cherryBuiltinTools', () => {
     expect(textOf(result)).toContain('Error:')
   })
 
-  it('routes generate_image through AiService, summarizes it, and attaches the image inline', async () => {
-    getPreference.mockReturnValue('openai::dall-e-3')
-    generateImage.mockResolvedValue({ files: [{ id: 'f1', name: 'image-1.png' }] })
-    fileRead.mockResolvedValue({ content: 'BASE64DATA', mime: 'image/png', version: 1 })
-
-    const result = await callCherryBuiltinTool('generate_image', { prompt: 'a cat' }, signal)
-
-    expect(result.isError).toBeFalsy()
-    expect(generateImage).toHaveBeenCalledWith(
-      expect.objectContaining({ uniqueModelId: 'openai::dall-e-3', prompt: 'a cat' })
-    )
-    // Model-facing text summary comes first…
-    expect(textOf(result)).toContain('Generated 1 image(s)')
-    expect(textOf(result)).toContain('image-1.png')
-    // …followed by the base64 image content block the agent renderer shows inline.
-    expect(fileRead).toHaveBeenCalledWith('f1', { encoding: 'base64' })
-    expect(result.content[1]).toEqual({ type: 'image', data: 'BASE64DATA', mimeType: 'image/png' })
-  })
-
-  it('advertises provider-accurate generate_image params from the configured model', () => {
-    const support = {
-      modes: {
-        generate: {
-          supports: {
-            size: { type: 'enum', options: ['1024x1024', '1792x1024'] },
-            numImages: { type: 'range', min: 1, max: 3 }
-          }
-        }
-      }
-    } satisfies ImageGenerationSupport
-    getPreference.mockReturnValue('openai::dall-e-3')
-    getImageGenerationSupport.mockReturnValue(support)
-
-    const tool = listCherryBuiltinTools(['kb-1']).find(({ name }) => name === 'generate_image')!
-    const schema = tool.inputSchema as {
-      properties: Record<string, { enum?: string[]; maximum?: number }>
-    }
-
-    expect(schema.properties.size.enum).toEqual(['1024x1024', '1792x1024'])
-    expect(schema.properties.numImages.maximum).toBe(3)
-    expect(schema.properties.image_ids).toBeUndefined()
-  })
-
-  it('resolves image ids and calls the edit mode with edit-specific params', async () => {
-    const support = {
-      modes: {
-        generate: { supports: { size: { type: 'enum', options: ['1024x1024'] } } },
-        edit: { supports: { quality: { type: 'enum', options: ['low', 'high'] } } }
-      }
-    } satisfies ImageGenerationSupport
-    getPreference.mockReturnValue('openai::gpt-image-1')
-    getImageGenerationSupport.mockReturnValue(support)
-    fileRead.mockResolvedValue({ content: 'AAAA', mime: 'image/png' })
-    generateImage.mockResolvedValue({ files: [] })
-
-    const result = await callCherryBuiltinTool(
-      'generate_image',
-      { prompt: 'make it blue', image_ids: ['f1'], quality: 'high' },
-      signal
-    )
-
-    expect(result.isError).toBeFalsy()
-    expect(fileRead).toHaveBeenCalledWith('f1', { encoding: 'base64' })
-    expect(generateImage).toHaveBeenCalledWith(
-      expect.objectContaining({
-        mode: 'edit',
-        inputImages: ['data:image/png;base64,AAAA'],
-        paramValues: { quality: 'high' }
-      })
-    )
-  })
-
-  it('still summarizes generate_image when reading the file back for inline rendering fails', async () => {
-    getPreference.mockReturnValue('openai::dall-e-3')
-    generateImage.mockResolvedValue({ files: [{ id: 'f1', name: 'image-1.png' }] })
-    fileRead.mockRejectedValue(new Error('file gone'))
-
-    const result = await callCherryBuiltinTool('generate_image', { prompt: 'a cat' }, signal)
-
-    // A failed read drops the inline image but must not fail the generation.
-    expect(result.isError).toBeFalsy()
-    expect(textOf(result)).toContain('Generated 1 image(s)')
-    expect(result.content).toHaveLength(1)
-  })
-
-  it('steers the model to configure a painting model when none is set', async () => {
-    getPreference.mockReturnValue(null)
-
-    const result = await callCherryBuiltinTool('generate_image', { prompt: 'a cat' }, signal)
-
-    expect(result.isError).toBeFalsy()
-    expect(textOf(result)).toContain('No painting model is configured')
-    expect(textOf(result)).toContain('do not retry')
-    expect(generateImage).not.toHaveBeenCalled()
-  })
-
-  it('propagates AbortError from generate_image instead of converting it to an MCP error', async () => {
-    getPreference.mockReturnValue('openai::dall-e-3')
-    generateImage.mockRejectedValue(Object.assign(new Error('aborted'), { name: 'AbortError' }))
-
-    await expect(callCherryBuiltinTool('generate_image', { prompt: 'a cat' }, signal)).rejects.toThrow()
-  })
-
   it('returns an error result for an unknown tool', async () => {
     const result = await callCherryBuiltinTool('nope', {}, signal)
     expect(result.isError).toBe(true)
@@ -730,7 +608,7 @@ describe('CherryBuiltinToolsServer autonomy tool registration', () => {
     const result = await handlers.get('tools/list')({ method: 'tools/list', params: {} }, {})
     const names = result.tools.map((t: any) => t.name)
     // Autonomy + stateless builtins stay; only the knowledge tools drop out.
-    expect(names).toEqual(expect.arrayContaining(['cron', 'notify', 'config', 'web_search', 'generate_image']))
+    expect(names).toEqual(expect.arrayContaining(['cron', 'notify', 'config', 'web_search']))
     expect(names).not.toContain('kb_search')
     expect(names).not.toContain('kb_read')
     expect(names).not.toContain('kb_list')

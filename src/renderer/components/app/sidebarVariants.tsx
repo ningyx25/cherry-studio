@@ -19,7 +19,6 @@ function assertNever(value: never): never {
  */
 export interface SidebarVariantContext {
   t: (key: string) => string
-  defaultPaintingProvider: string
   installedMiniApps: Map<string, MiniApp>
   isRequiredApp: (id: SidebarAppId) => boolean
   openApp: (id: SidebarAppId) => void
@@ -43,7 +42,7 @@ const appVariant: SidebarVariantDescriptor<Extract<SidebarFavoriteItem, { type: 
   resolve: (item, ctx) => {
     const id = item.id
     if (!isSidebarAppId(id)) return null
-    const path = getSidebarMenuPath(id, ctx.defaultPaintingProvider)
+    const path = getSidebarMenuPath(id)
     const Icon = SIDEBAR_ICON_COMPONENTS[id]
     // Unrenderable app (no route or no icon) is dropped from the list but stays in
     // the preference.

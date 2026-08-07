@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 
-import { WindowType } from '../types'
 import { WINDOW_TYPE_REGISTRY } from '../windowRegistry'
 
 // On macOS, `setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true })` without
@@ -16,15 +15,6 @@ describe('WINDOW_TYPE_REGISTRY behavior invariants', () => {
       if (declaration?.visibleOnFullScreen) {
         expect(declaration.skipTransformProcessType, `WindowType '${entry.type}'`).toBe(true)
       }
-    }
-  })
-
-  it('SelectionToolbar and QuickAssistant declare the flag (regression: enabling selection assistant hid the app)', () => {
-    for (const type of [WindowType.SelectionToolbar, WindowType.QuickAssistant]) {
-      expect(
-        WINDOW_TYPE_REGISTRY[type]?.behavior?.visibleOnAllWorkspaces?.skipTransformProcessType,
-        `WindowType '${type}'`
-      ).toBe(true)
     }
   })
 })

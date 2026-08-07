@@ -42,7 +42,6 @@ import { resolveAssistantMcpToolIds } from '../../../tools/adapters/aiSdk/mcp/re
 import { registry, ToolRegistry } from '../../../tools/adapters/aiSdk/registry'
 import { createAiRepair } from '../../../tools/adapters/aiSdk/repair'
 import type { ToolEntry } from '../../../tools/adapters/aiSdk/types'
-import { resolveConfiguredPaintingModel } from '../../../tools/painting'
 import type { AiBaseRequest, CallOverrides } from '../../../types'
 import {
   adjustMaxOutputTokensForReasoning,
@@ -361,10 +360,8 @@ export async function resolveTools(
     await syncMcpToolsToRegistry(undefined, { selectedToolIds: mcpToolIds })
   }
 
-  const paintingModel = resolveConfiguredPaintingModel()
   const activeEntries = registry.selectActive({
     assistant,
-    paintingModel: paintingModel ?? undefined,
     mcpToolIds,
     hasFileAttachments,
     hasAnyKnowledgeBase,

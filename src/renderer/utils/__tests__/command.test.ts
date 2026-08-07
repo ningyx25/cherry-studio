@@ -43,11 +43,15 @@ describe('getCommandShortcutLabel', () => {
       ''
     )
     expect(
-      getCommandShortcutLabel('selection.toggle', undefined, {
-        context: { 'feature.selection.enabled': true },
-        isMac: false,
-        platform: 'linux'
-      })
+      getCommandShortcutLabel(
+        'app.zoom.in',
+        { binding: ['CommandOrControl', '='], enabled: false },
+        {
+          context: {},
+          isMac: false,
+          platform: 'linux'
+        }
+      )
     ).toBe('')
   })
 })

@@ -206,10 +206,9 @@ export interface AiImageRequest extends AiBaseRequest {
    *  (`vendorTransport` → descriptor) from the registry using this. */
   mode?: ImageGenerationMode
   /**
-   * Canonical param bag — already a strict, coerced `ParamValues` (the
-   * `ai.image.generate` IPC validated it via the catalog `imageParamsSchema`).
-   * main derives the structured request fields + the vendor bag from it via
-   * `splitParamValues`.
+   * Canonical param bag — already a strict, coerced `ParamValues` (validated at
+   * the IPC boundary via the catalog `imageParamsSchema`). main derives the
+   * structured request fields + the vendor bag from it via `splitParamValues`.
    */
   paramValues: ParamValues
   /**
@@ -296,14 +295,6 @@ export interface AiRerankResult {
 @ServicePhase(Phase.WhenReady)
 @DependsOn(['McpRuntimeService', 'McpCatalogService', 'AiStreamManager', 'JobManager'])
 export class AiService extends BaseService {
-  // Per-request AbortControllers for the `ai.image.generate` route, paired with the
-  // `ai.image.abort` route. Key is the renderer-generated requestId. Entries are
-  // self-cleaning via `runImageRequest`'s `finally` block; abort on an unknown id is
-  // a no-op.
-  // TODO(abort-registry): collapse with MCP/stream/LAN registries once
-  // the shared `ipcHandleWithAbort` helper lands.
-  private readonly imageRequests = new Map<string, AbortController>()
-
   protected async onInit(): Promise<void> {
     registerBuiltinTools()
     // Restore provider custom `User-Agent` headers that Chromium's net.fetch stack
@@ -596,29 +587,6 @@ export class AiService extends BaseService {
 
   // ── Image generation ──
 
-  /**
-   * Run an image request under an abort registry entry keyed by the renderer-supplied
-   * `requestId`, so `ai.image.abort` can cancel it. Self-cleaning via `finally`; the
-   * `ai.image.generate` handler delegates here (the registry is service state).
-   */
-  async runImageRequest(requestId: string, payload: AiImageRequest): Promise<AiImageResult> {
-    const controller = new AbortController()
-    this.imageRequests.set(requestId, controller)
-    try {
-      return await this.generateImage({
-        ...payload,
-        requestOptions: { ...payload.requestOptions, signal: controller.signal }
-      })
-    } finally {
-      this.imageRequests.delete(requestId)
-    }
-  }
-
-  /** Abort the in-flight image request for `requestId`; a no-op on an unknown id. */
-  abortImage(requestId: string): void {
-    this.imageRequests.get(requestId)?.abort()
-  }
-
   async generateImage(request: AsInProcess<AiImageRequest>): Promise<AiImageResult> {
     logger.info('generateImage started', { assistantId: request.assistantId, uniqueModelId: request.uniqueModelId })
     const signal = request.requestOptions?.signal
@@ -626,12 +594,12 @@ export class AiService extends BaseService {
     const { provider, model, assistant } = this.getProviderAndModel(request)
     const source = sourceSnapshotForAssistant(assistant)
 
-    // `request.paramValues` is already a strict, coerced `ParamValues` — the
-    // `ai.image.generate` IPC validated it via the catalog `imageParamsSchema` at
-    // the boundary (no main-side re-parse / cast). Split it into the structured
-    // fields the AI SDK call consumes (n/size/seed/aspectRatio → imageParams
-    // below) vs the leftover vendor bag (cfg, the diffusion/openai knobs, …) the
-    // WireProfile engine forwards.
+    // `request.paramValues` is already a strict, coerced `ParamValues` (validated
+    // at the IPC boundary via the catalog `imageParamsSchema` — no main-side
+    // re-parse / cast). Split it into the structured fields the AI SDK call
+    // consumes (n/size/seed/aspectRatio → imageParams below) vs the leftover
+    // vendor bag (cfg, the diffusion/openai knobs, …) the WireProfile engine
+    // forwards.
     const params = request.paramValues
     const { structured, vendorBag } = splitParamValues(params)
 
@@ -823,8 +791,8 @@ export class AiService extends BaseService {
       throw error
     }
 
-    // Reuse the existing IPC AbortController (ai.image.abort): when it fires,
-    // cancel the job (which aborts the handler + remote task).
+    // Reuse the request's AbortSignal (when it fires, cancel the job, which aborts
+    // the handler + remote task).
     const onAbort = () => void jobManager.cancel(handle.id, 'aborted by user').catch(() => {})
     if (signal?.aborted) onAbort()
     else signal?.addEventListener('abort', onAbort, { once: true })

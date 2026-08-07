@@ -83,38 +83,26 @@ describe('useConversationNavigation', () => {
     expect(tabsMock.emitResourceListReveal).not.toHaveBeenCalled()
   })
 
-  it('openConversationTab builds the chat url from the topic key', () => {
-    const ctx = makeCtx([])
-    tabsMock.ctx = ctx
-    const { result } = renderHook(() => useConversationNavigation('assistants'))
-
-    result.current.openConversationTab('t1', 'Topic 1')
-    expect(ctx.openTab).toHaveBeenCalledWith('/app/chat?topicId=t1', {
-      forceNew: true,
-      title: 'Topic 1'
-    })
-  })
-
   it('no-ops without a tabs provider', () => {
     tabsMock.ctx = null
-    const { result } = renderHook(() => useConversationNavigation('assistants'))
+    const { result } = renderHook(() => useConversationNavigation('agents'))
 
-    expect(() => result.current.openConversationTab('t1')).not.toThrow()
+    expect(() => result.current.openConversationTab('s1')).not.toThrow()
   })
 
   it('openConversationWindow detaches a fresh window for the conversation key without touching tabs', () => {
-    const ctx = makeCtx([{ id: 'tab-1', type: 'route', url: '/app/chat?topicId=t1' }])
+    const ctx = makeCtx([{ id: 'tab-1', type: 'route', url: '/app/agents?sessionId=s1' }])
     tabsMock.ctx = ctx
-    const { result } = renderHook(() => useConversationNavigation('assistants'))
+    const { result } = renderHook(() => useConversationNavigation('agents'))
 
-    result.current.openConversationWindow('t1', 'Topic 1')
+    result.current.openConversationWindow('s1', 'Session 1')
 
     expect(ipcMock.request).toHaveBeenCalledTimes(1)
     const [channel, payload] = ipcMock.request.mock.calls[0] as [string, Record<string, unknown>]
     expect(channel).toBe('tab.detach')
     expect(payload).toMatchObject({
-      url: '/app/chat?topicId=t1',
-      title: 'Topic 1',
+      url: '/app/agents?sessionId=s1',
+      title: 'Session 1',
       type: 'route'
     })
     expect(payload.metadata).toBeUndefined()

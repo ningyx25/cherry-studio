@@ -63,7 +63,6 @@ describe('generateProductManifest', () => {
     expect(new Set(manifest.agents.channelTypes).size).toBe(manifest.agents.channelTypes.length)
     expect(manifest.agents.scheduleTriggerKinds.length).toBeGreaterThan(0)
     expect(new Set(manifest.agents.scheduleTriggerKinds).size).toBe(manifest.agents.scheduleTriggerKinds.length)
-    expect(manifest.agents.codeCli.route).toBe(manifest.routes.primary.find(({ id }) => id === 'code_tools')?.path)
     expect(manifest.agents.codeCli.tools).toEqual(Object.values(CodeCli))
   })
 

@@ -47,7 +47,6 @@ export function isMessageOnlyConversationUrl(url: string): boolean {
     const parsedUrl = new URL(url, 'app://x')
     if (parsedUrl.searchParams.get('view') !== 'message') return false
 
-    if (parsedUrl.pathname === '/app/chat') return Boolean(parsedUrl.searchParams.get('topicId'))
     if (parsedUrl.pathname === '/app/agents') return Boolean(parsedUrl.searchParams.get('sessionId'))
     return false
   } catch {
@@ -58,16 +57,10 @@ export function isMessageOnlyConversationUrl(url: string): boolean {
 /**
  * Single source of truth for sidebar applications.
  * Order here is the canonical sidebar order and drives preference defaults.
+ *
+ * Slim build: only the retained modules (agents + knowledge) are registered.
  */
 const SIDEBAR_APP_DEFINITIONS = [
-  {
-    id: 'assistants',
-    routePrefix: '/app/chat',
-    conversationRoute: {
-      keyFromUrl: (url) => getNormalConversationSearchParamFromUrl(url, 'topicId'),
-      urlForKey: (key) => `/app/chat?topicId=${encodeURIComponent(key)}`
-    }
-  },
   {
     id: 'agents',
     routePrefix: '/app/agents',
@@ -77,34 +70,8 @@ const SIDEBAR_APP_DEFINITIONS = [
     }
   },
   {
-    id: 'paintings',
-    routePrefix: '/app/paintings',
-    resolveUrl: ({ defaultPaintingProvider }) => `/app/paintings/${defaultPaintingProvider}`
-  },
-  {
-    id: 'translate',
-    routePrefix: '/app/translate'
-  },
-  {
-    id: 'mini_app',
-    routePrefix: '/app/mini-app',
-    exactRouteFocus: true
-  },
-  {
     id: 'knowledge',
     routePrefix: '/app/knowledge'
-  },
-  {
-    id: 'files',
-    routePrefix: '/app/files'
-  },
-  {
-    id: 'code_tools',
-    routePrefix: '/app/code'
-  },
-  {
-    id: 'notes',
-    routePrefix: '/app/notes'
   }
 ] as const satisfies readonly SidebarAppDefinition[]
 
@@ -145,14 +112,14 @@ export const SIDEBAR_FAVORITE_ORDER: SidebarAppId[] = SIDEBAR_APPS.map((app) => 
  * 这些收藏项必须始终在侧边栏中可见
  * 抽取为参数方便未来扩展
  */
-export const REQUIRED_SIDEBAR_FAVORITES: SidebarAppId[] = ['assistants']
+export const REQUIRED_SIDEBAR_FAVORITES: SidebarAppId[] = ['agents']
 
 const sidebarFavoriteSet = new Set<SidebarAppId>(SIDEBAR_FAVORITE_ORDER)
 
-export function getSidebarMenuPath(favorite: SidebarAppId, defaultPaintingProvider: string): string {
+export function getSidebarMenuPath(favorite: SidebarAppId): string {
   const app = getSidebarApp(favorite)
   if (!app) return ''
-  return app.resolveUrl?.({ defaultPaintingProvider }) ?? app.routePrefix
+  return app.routePrefix
 }
 
 export function resolveSidebarActiveItem(url: string): SidebarAppId | '' {

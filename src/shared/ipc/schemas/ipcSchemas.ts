@@ -15,21 +15,16 @@ import { fileProcessingRequestSchemas } from './fileProcessing'
 import { knowledgeRequestSchemas } from './knowledge'
 import { type LocalModelEventSchemas, localModelRequestSchemas } from './localModel'
 import { type McpEventSchemas, mcpRequestSchemas } from './mcp'
-import { miniAppRequestSchemas } from './miniApp'
 import { type NavigationEventSchemas, navigationRequestSchemas } from './navigation'
 import { type NotificationEventSchemas, notificationRequestSchemas } from './notification'
 import { type OAuthEventSchemas, oauthRequestSchemas } from './oauth'
 import { openclawRequestSchemas } from './openclaw'
 import { ovmsRequestSchemas } from './ovms'
-import { printRequestSchemas } from './print'
 import { profileRequestSchemas } from './profile'
 import { providerRequestSchemas } from './provider'
-import { type QuickAssistantEventSchemas, quickAssistantRequestSchemas } from './quickAssistant'
-import { type SelectionEventSchemas, selectionRequestSchemas } from './selection'
 import { skillRequestSchemas } from './skill'
 import { type SystemEventSchemas, systemRequestSchemas } from './system'
 import { type TabEventSchemas, tabRequestSchemas } from './tab'
-import { translateRequestSchemas } from './translate'
 import { webSearchRequestSchemas } from './webSearch'
 import { type WebviewEventSchemas, webviewRequestSchemas } from './webview'
 import { type WindowEventSchemas, windowRequestSchemas } from './window'
@@ -58,21 +53,16 @@ export const ipcRequestSchemas = {
   ...knowledgeRequestSchemas,
   ...localModelRequestSchemas,
   ...mcpRequestSchemas,
-  ...miniAppRequestSchemas,
   ...navigationRequestSchemas,
   ...notificationRequestSchemas,
   ...oauthRequestSchemas,
   ...openclawRequestSchemas,
   ...ovmsRequestSchemas,
-  ...printRequestSchemas,
   ...profileRequestSchemas,
   ...providerRequestSchemas,
-  ...quickAssistantRequestSchemas,
-  ...selectionRequestSchemas,
   ...skillRequestSchemas,
   ...systemRequestSchemas,
   ...tabRequestSchemas,
-  ...translateRequestSchemas,
   ...webSearchRequestSchemas,
   ...webviewRequestSchemas,
   ...windowRequestSchemas
@@ -97,8 +87,6 @@ export type IpcEventSchemas = AiEventSchemas &
   NavigationEventSchemas &
   NotificationEventSchemas &
   OAuthEventSchemas &
-  QuickAssistantEventSchemas &
-  SelectionEventSchemas &
   SystemEventSchemas &
   TabEventSchemas &
   WebviewEventSchemas &

@@ -193,7 +193,7 @@ describe('useTopicMutations', () => {
     await act(async () => result.current.deleteTopic('topic-a'))
 
     expect(deleteTrigger).toHaveBeenCalledWith({ params: { id: 'topic-a' } })
-    expect(mockCloseConversationTabs).toHaveBeenCalledWith('assistants', ['topic-a'])
+    expect(mockCloseConversationTabs).toHaveBeenCalledWith('agents', ['topic-a'])
   })
 
   it('deletes selected topics through comma-separated query ids', async () => {
@@ -205,7 +205,7 @@ describe('useTopicMutations', () => {
     const deleted = await act(async () => result.current.deleteTopics(['topic-a', 'topic-b']))
 
     expect(deleteTrigger).toHaveBeenCalledWith({ query: { ids: 'topic-a,topic-b' } })
-    expect(mockCloseConversationTabs).toHaveBeenCalledWith('assistants', response.deletedIds)
+    expect(mockCloseConversationTabs).toHaveBeenCalledWith('agents', response.deletedIds)
     expect(deleted).toBe(response)
   })
 
@@ -218,7 +218,7 @@ describe('useTopicMutations', () => {
     const deleted = await act(async () => result.current.deleteTopicsByAssistantId('assistant-a'))
 
     expect(deleteTrigger).toHaveBeenCalledWith({ params: { assistantId: 'assistant-a' } })
-    expect(mockCloseConversationTabs).toHaveBeenCalledWith('assistants', response.deletedIds)
+    expect(mockCloseConversationTabs).toHaveBeenCalledWith('agents', response.deletedIds)
     expect(deleted).toBe(response)
   })
 

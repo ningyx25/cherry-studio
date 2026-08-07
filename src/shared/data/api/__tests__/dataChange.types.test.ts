@@ -40,7 +40,6 @@ describe('endpoint classification', () => {
       | '/mcp-servers'
       | '/mini-apps'
       | '/models'
-      | '/notes'
       | '/paintings'
       | '/pins'
       | '/prompts'

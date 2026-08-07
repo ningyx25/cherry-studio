@@ -17,21 +17,16 @@ import { fileProcessingHandlers } from './fileProcessing'
 import { knowledgeHandlers } from './knowledge'
 import { localModelHandlers } from './localModel'
 import { mcpHandlers } from './mcp'
-import { miniAppHandlers } from './miniApp'
 import { navigationHandlers } from './navigation'
 import { notificationHandlers } from './notification'
 import { oauthHandlers } from './oauth'
 import { openclawHandlers } from './openclaw'
 import { ovmsHandlers } from './ovms'
-import { printHandlers } from './print'
 import { profileHandlers } from './profile'
 import { providerHandlers } from './provider'
-import { quickAssistantHandlers } from './quickAssistant'
-import { selectionHandlers } from './selection'
 import { skillHandlers } from './skill'
 import { systemHandlers } from './system'
 import { tabHandlers } from './tab'
-import { translateHandlers } from './translate'
 import { webSearchHandlers } from './webSearch'
 import { webviewHandlers } from './webview'
 import { windowHandlers } from './window'
@@ -62,21 +57,16 @@ export const ipcHandlers: IpcHandlersFor<IpcRequestSchemas> = {
   ...knowledgeHandlers,
   ...localModelHandlers,
   ...mcpHandlers,
-  ...miniAppHandlers,
   ...navigationHandlers,
   ...notificationHandlers,
   ...oauthHandlers,
   ...openclawHandlers,
   ...ovmsHandlers,
-  ...printHandlers,
   ...profileHandlers,
   ...providerHandlers,
-  ...quickAssistantHandlers,
-  ...selectionHandlers,
   ...skillHandlers,
   ...systemHandlers,
   ...tabHandlers,
-  ...translateHandlers,
   ...webSearchHandlers,
   ...webviewHandlers,
   ...windowHandlers

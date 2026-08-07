@@ -30,6 +30,7 @@ import { mapApiTopicToRendererTopic } from '@renderer/hooks/useTopic'
 import { EVENT_NAMES, EventEmitter } from '@renderer/services/EventService'
 import { emitResourceListReveal } from '@renderer/services/resourceListRevealEvents'
 import { toast } from '@renderer/services/toast'
+import { extractAgentSessionIdFromTopicId } from '@renderer/utils/agentSession'
 import { cn } from '@renderer/utils/style'
 import type { EntitySearchItem } from '@shared/data/api/schemas/search'
 import type { GlobalSearchRecentEntry } from '@shared/data/cache/cacheValueTypes'
@@ -304,7 +305,6 @@ function TimeFilterDropdown({
 export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
   const { t, i18n } = useTranslation()
   const { openTab } = useTabs()
-  const chatNav = useConversationNavigation('assistants')
   const agentNav = useConversationNavigation('agents')
   const invalidateCache = useInvalidateCache()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -477,13 +477,13 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
     async (topicId: string) => {
       const apiTopic = await dataApiService.get(`/topics/${topicId}`)
       const topic = mapApiTopicToRendererTopic(apiTopic)
-      const targetTabId = chatNav.openConversationTab(topic.id)
+      const targetTabId = agentNav.openConversationTab(extractAgentSessionIdFromTopicId(topic.id))
       if (!targetTabId) {
         logMissingSelectionTarget({ eventName: EVENT_NAMES.GLOBAL_SEARCH_SELECT_TOPIC, topicId })
         onClose()
         return
       }
-      emitResourceListReveal({ source: 'assistants', tabId: targetTabId })
+      emitResourceListReveal({ source: 'agents', tabId: targetTabId })
       window.requestAnimationFrame(() => {
         emitGlobalSearchSelection(
           EVENT_NAMES.GLOBAL_SEARCH_SELECT_TOPIC,
@@ -500,7 +500,7 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
       })
       onClose()
     },
-    [onClose, chatNav]
+    [onClose, agentNav]
   )
 
   const openSession = useCallback(
@@ -548,13 +548,13 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
 
       await dataApiService.put(`/topics/${topicId}/active-node`, { body: { nodeId: activeNodeId } })
       await invalidateCache([`/topics/${topicId}/messages`, `/topics/${topicId}/tree`])
-      const targetTabId = chatNav.openConversationTab(topic.id)
+      const targetTabId = agentNav.openConversationTab(extractAgentSessionIdFromTopicId(topic.id))
       if (!targetTabId) {
         logMissingSelectionTarget({ eventName: EVENT_NAMES.GLOBAL_SEARCH_SELECT_TOPIC_MESSAGE, messageId, topicId })
         onClose()
         return
       }
-      emitResourceListReveal({ source: 'assistants', tabId: targetTabId })
+      emitResourceListReveal({ source: 'agents', tabId: targetTabId })
       window.requestAnimationFrame(() => {
         emitGlobalSearchSelection(
           EVENT_NAMES.GLOBAL_SEARCH_SELECT_TOPIC_MESSAGE,
@@ -569,7 +569,7 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
       })
       onClose()
     },
-    [invalidateCache, onClose, chatNav]
+    [invalidateCache, onClose, agentNav]
   )
 
   const openSessionMessageById = useCallback(

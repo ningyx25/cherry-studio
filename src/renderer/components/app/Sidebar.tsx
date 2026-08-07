@@ -49,7 +49,6 @@ export default function Sidebar({ ref }: { ref?: Ref<HTMLDivElement | null> }) {
   const { favorites, miniAppFavoriteIds, setAppPinned, removeMiniApp, reorderFavorites } = useSidebarFavorites()
   const { activeTab, updateTab, openTab } = useTabs()
   const { miniApps, pinned } = useMiniApps({ enabled: miniAppFavoriteIds.length > 0 })
-  const [defaultPaintingProvider] = usePreference('feature.paintings.default_provider')
 
   // Sidebar width — persisted across restarts. Dragging through the
   // intermediate 50-120px range uses a local preview width so the UI can
@@ -132,7 +131,7 @@ export default function Sidebar({ ref }: { ref?: Ref<HTMLDivElement | null> }) {
     (menuItemId: string) => {
       const menuId = menuItemId as SidebarAppId
       const app = getSidebarApp(menuId)
-      const path = getSidebarMenuPath(menuId, defaultPaintingProvider)
+      const path = getSidebarMenuPath(menuId)
       if (!app || !path) return
 
       // Conversation apps: any owned tab is already "there" — its URL carries its own
@@ -165,7 +164,7 @@ export default function Sidebar({ ref }: { ref?: Ref<HTMLDivElement | null> }) {
 
       openTab(path, { forceNew: true, title })
     },
-    [activeTab, defaultPaintingProvider, openTab, updateTab]
+    [activeTab, openTab, updateTab]
   )
   const handleOpenSettingsTab = useCallback(() => {
     openSettingsTab('/settings/provider')
@@ -212,7 +211,6 @@ export default function Sidebar({ ref }: { ref?: Ref<HTMLDivElement | null> }) {
   const variantContext = useMemo<SidebarVariantContext>(
     () => ({
       t,
-      defaultPaintingProvider,
       installedMiniApps: openableMiniAppById,
       isRequiredApp: (id) => REQUIRED_SIDEBAR_FAVORITE_SET.has(id),
       openApp: handleNavigate,
@@ -220,15 +218,7 @@ export default function Sidebar({ ref }: { ref?: Ref<HTMLDivElement | null> }) {
       removeApp: handleRemoveSidebarFavorite,
       removeMiniApp
     }),
-    [
-      t,
-      defaultPaintingProvider,
-      openableMiniAppById,
-      handleNavigate,
-      handleOpenMiniAppTab,
-      handleRemoveSidebarFavorite,
-      removeMiniApp
-    ]
+    [t, openableMiniAppById, handleNavigate, handleOpenMiniAppTab, handleRemoveSidebarFavorite, removeMiniApp]
   )
 
   // One continuous list: built-in apps and mini apps interleaved in their stored
