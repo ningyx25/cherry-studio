@@ -6,6 +6,7 @@ import { ConversationNavigationPane } from '@renderer/components/chat/shell/Conv
 import type { AgentSessionsSource } from '@renderer/hooks/resourceViewSources'
 import type { AgentSessionEntity } from '@shared/data/api/schemas/agentSessions'
 import type { TopicTabPosition } from '@shared/data/preference/preferenceTypes'
+import type { PresetAgentId } from '@shared/data/presets/presetAgents'
 
 import Sessions from './components/Sessions'
 import type { CreateAgentSessionDefaults } from './types'
@@ -14,6 +15,8 @@ interface AgentSidePanelProps {
   activeSessionId: string | null
   dataEnabled?: boolean
   historyRecordsActive?: boolean
+  /** Fixed-agent module mode: the list is bound to one agent (科普AI / 问诊AI). */
+  fixedAgentId?: PresetAgentId
   agentSessionsSource: AgentSessionsSource
   onActiveAgentDeleted?: (agentId: string) => void | Promise<void>
   onAddAgent?: () => void | Promise<void>
@@ -33,6 +36,7 @@ const AgentSidePanel = ({
   activeSessionId,
   dataEnabled,
   historyRecordsActive,
+  fixedAgentId,
   agentSessionsSource,
   onActiveAgentDeleted,
   onAddAgent,
@@ -51,6 +55,7 @@ const AgentSidePanel = ({
         agentSessionsSource={agentSessionsSource}
         activeSessionId={activeSessionId}
         dataEnabled={dataEnabled}
+        fixedAgentId={fixedAgentId}
         historyRecordsActive={historyRecordsActive}
         setActiveSessionId={setActiveSessionId}
         onActiveAgentDeleted={onActiveAgentDeleted}

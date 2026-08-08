@@ -12,7 +12,8 @@ interface NavigateToolInput {
 const ROUTE_LABELS: Record<string, { icon: string; labelKey: string }> = {
   // Top-level pages
   '/app/knowledge': { icon: '📚', labelKey: 'title.knowledge' },
-  '/app/agents': { icon: '🤖', labelKey: 'agent.sidebar_title' },
+  '/app/pop-science': { icon: '🧪', labelKey: 'title.pop_science' },
+  '/app/clinic': { icon: '🩺', labelKey: 'title.clinic' },
 
   // Settings pages
   '/settings/provider': { icon: '🔑', labelKey: 'settings.provider.title' },

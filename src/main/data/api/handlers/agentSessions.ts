@@ -14,6 +14,7 @@ import {
   type AgentSessionSchemas,
   CreateAgentSessionSchema,
   DeleteAgentSessionsQuerySchema,
+  LatestAgentSessionQuerySchema,
   ListAgentSessionsQuerySchema,
   SetAgentSessionWorkspaceSchema,
   UpdateAgentSessionSchema
@@ -47,8 +48,10 @@ export const agentSessionHandlers: HandlersFor<AgentSessionSchemas> = {
   },
 
   '/agent-sessions/latest': {
-    GET: async () => {
-      return { session: agentSessionService.getLatestUpdated() }
+    GET: async ({ query }) => {
+      const parsed = LatestAgentSessionQuerySchema.safeParse(query ?? {})
+      if (!parsed.success) throw toDataApiError(parsed.error)
+      return { session: agentSessionService.getLatestUpdated(parsed.data.agentId) }
     }
   },
 

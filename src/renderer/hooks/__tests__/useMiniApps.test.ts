@@ -362,7 +362,7 @@ describe('useMiniApps', () => {
       const trigger = vi.fn().mockResolvedValue(undefined)
       MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/mini-apps/:appId', trigger)
       MockUsePreferenceUtils.setPreferenceValue('ui.sidebar.favorites', [
-        { type: 'app', id: 'agents' },
+        { type: 'app', id: 'pop-science' },
         { type: 'mini_app', id: 'custom-app' },
         { type: 'mini_app', id: 'other-app' }
       ])
@@ -375,7 +375,8 @@ describe('useMiniApps', () => {
 
       expect(trigger).toHaveBeenCalledWith({ params: { appId: 'custom-app' } })
       expect(MockUsePreferenceUtils.getPreferenceValue('ui.sidebar.favorites')).toEqual([
-        { type: 'app', id: 'agents' },
+        { type: 'app', id: 'clinic' },
+        { type: 'app', id: 'pop-science' },
         { type: 'mini_app', id: 'other-app' }
       ])
     })

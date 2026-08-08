@@ -14,7 +14,7 @@ vi.mock('@data/DataApiService', () => ({
   dataApiService: { get: mocks.get }
 }))
 
-import { resolveAgentEntrySessionId, resolveChatEntryTopicId } from '@renderer/utils/conversationEntry'
+import { resolveChatEntryTopicId, resolvePresetAgentEntrySessionId } from '@renderer/utils/conversationEntry'
 
 const notFoundError = () => new DataApiError(ErrorCode.NOT_FOUND, 'not found', 404)
 
@@ -76,28 +76,43 @@ describe('resolveChatEntryTopicId', () => {
   })
 })
 
-describe('resolveAgentEntrySessionId', () => {
-  it('resolves the last-used session when it still exists', async () => {
+describe('resolvePresetAgentEntrySessionId', () => {
+  it('reuses the last-used session when it belongs to the module agent', async () => {
     mocks.getPersist.mockReturnValue('session-last')
-    mocks.get.mockResolvedValue({ id: 'session-last' })
+    mocks.get.mockResolvedValue({ id: 'session-last', agentId: 'pop-science' })
 
-    await expect(resolveAgentEntrySessionId()).resolves.toBe('session-last')
+    await expect(resolvePresetAgentEntrySessionId('pop-science')).resolves.toBe('session-last')
     expect(mocks.getPersist).toHaveBeenCalledWith('ui.agent.last_used_session_id')
     expect(mocks.get).toHaveBeenCalledWith('/agent-sessions/session-last')
+    expect(mocks.get).toHaveBeenCalledTimes(1)
   })
 
-  it('falls through to the latest session when the last-used session was deleted', async () => {
+  it('does not reuse the last-used session when it belongs to another agent', async () => {
+    mocks.getPersist.mockReturnValue('session-last')
+    mocks.get.mockResolvedValue({ id: 'session-last', agentId: 'clinic' })
+    mocks.get.mockResolvedValueOnce({ id: 'session-last', agentId: 'clinic' }).mockResolvedValueOnce({
+      session: { id: 'pop-session', agentId: 'pop-science' }
+    })
+
+    await expect(resolvePresetAgentEntrySessionId('pop-science')).resolves.toBe('pop-session')
+    expect(mocks.get).toHaveBeenNthCalledWith(2, '/agent-sessions/latest', { query: { agentId: 'pop-science' } })
+  })
+
+  it('falls through to the module latest session when the last-used session was deleted', async () => {
     mocks.getPersist.mockReturnValue('session-deleted')
-    mocks.get.mockRejectedValueOnce(notFoundError()).mockResolvedValueOnce({ session: { id: 'session-latest' } })
+    mocks.get.mockRejectedValueOnce(notFoundError()).mockResolvedValueOnce({
+      session: { id: 'session-latest', agentId: 'pop-science' }
+    })
 
-    await expect(resolveAgentEntrySessionId()).resolves.toBe('session-latest')
-    expect(mocks.get).toHaveBeenNthCalledWith(2, '/agent-sessions/latest')
+    await expect(resolvePresetAgentEntrySessionId('pop-science')).resolves.toBe('session-latest')
+    expect(mocks.get).toHaveBeenNthCalledWith(2, '/agent-sessions/latest', { query: { agentId: 'pop-science' } })
   })
 
-  it('returns null when no sessions exist', async () => {
+  it('returns null when the module has no sessions', async () => {
     mocks.getPersist.mockReturnValue(null)
     mocks.get.mockResolvedValue({ session: null })
 
-    await expect(resolveAgentEntrySessionId()).resolves.toBeNull()
+    await expect(resolvePresetAgentEntrySessionId('clinic')).resolves.toBeNull()
+    expect(mocks.get).toHaveBeenCalledWith('/agent-sessions/latest', { query: { agentId: 'clinic' } })
   })
 })

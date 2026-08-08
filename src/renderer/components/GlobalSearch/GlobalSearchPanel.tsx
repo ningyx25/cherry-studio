@@ -153,6 +153,10 @@ function getSessionTargetId(target: EntitySearchItem['target']) {
   return 'sessionId' in target && typeof target.sessionId === 'string' ? target.sessionId : undefined
 }
 
+function getSessionTargetAgentId(target: EntitySearchItem['target']) {
+  return 'sessionId' in target && typeof target.agentId === 'string' ? target.agentId : undefined
+}
+
 function getKnowledgeBaseTargetId(target: EntitySearchItem['target']) {
   return 'knowledgeBaseId' in target && typeof target.knowledgeBaseId === 'string' ? target.knowledgeBaseId : undefined
 }
@@ -167,6 +171,7 @@ type GlobalSearchMessageJumpTarget =
       sourceType: 'session'
       sessionId: string
       messageId: string
+      agentId?: string
     }
 
 function getMessageSearchResultJumpTarget(result: GlobalMessageSearchResult): GlobalSearchMessageJumpTarget {
@@ -181,7 +186,8 @@ function getMessageSearchResultJumpTarget(result: GlobalMessageSearchResult): Gl
   return {
     sourceType: 'session',
     sessionId: result.sessionId,
-    messageId: result.messageId
+    messageId: result.messageId,
+    agentId: result.agentId
   }
 }
 
@@ -200,7 +206,8 @@ function getPreviewMessageJumpTarget(
   return {
     sourceType: 'session',
     sessionId: target.sessionId,
-    messageId
+    messageId,
+    agentId: target.agentId
   }
 }
 
@@ -305,7 +312,7 @@ function TimeFilterDropdown({
 export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
   const { t, i18n } = useTranslation()
   const { openTab } = useTabs()
-  const agentNav = useConversationNavigation('agents')
+  const agentNav = useConversationNavigation()
   const invalidateCache = useInvalidateCache()
   const inputRef = useRef<HTMLInputElement>(null)
   const messageListRef = useRef<DynamicVirtualListRef>(null)
@@ -477,7 +484,8 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
     async (topicId: string) => {
       const apiTopic = await dataApiService.get(`/topics/${topicId}`)
       const topic = mapApiTopicToRendererTopic(apiTopic)
-      const targetTabId = agentNav.openConversationTab(extractAgentSessionIdFromTopicId(topic.id))
+      // Chat topics have no fixed module — default to the 科普AI module.
+      const targetTabId = agentNav.openConversationTab('pop-science', extractAgentSessionIdFromTopicId(topic.id))
       if (!targetTabId) {
         logMissingSelectionTarget({ eventName: EVENT_NAMES.GLOBAL_SEARCH_SELECT_TOPIC, topicId })
         onClose()
@@ -504,8 +512,10 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
   )
 
   const openSession = useCallback(
-    (sessionId: string) => {
-      const targetTabId = agentNav.openConversationTab(sessionId)
+    (sessionId: string, agentId?: string) => {
+      // Agent sessions belong to a fixed module agent — resolve the owning module
+      // (defaulting to 科普AI for sessions whose agent can't be determined).
+      const targetTabId = agentNav.openConversationTab(agentId ?? 'pop-science', sessionId)
       if (!targetTabId) {
         logMissingSelectionTarget({ eventName: EVENT_NAMES.GLOBAL_SEARCH_SELECT_AGENT_SESSION, sessionId })
         onClose()
@@ -548,7 +558,7 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
 
       await dataApiService.put(`/topics/${topicId}/active-node`, { body: { nodeId: activeNodeId } })
       await invalidateCache([`/topics/${topicId}/messages`, `/topics/${topicId}/tree`])
-      const targetTabId = agentNav.openConversationTab(extractAgentSessionIdFromTopicId(topic.id))
+      const targetTabId = agentNav.openConversationTab('pop-science', extractAgentSessionIdFromTopicId(topic.id))
       if (!targetTabId) {
         logMissingSelectionTarget({ eventName: EVENT_NAMES.GLOBAL_SEARCH_SELECT_TOPIC_MESSAGE, messageId, topicId })
         onClose()
@@ -573,13 +583,13 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
   )
 
   const openSessionMessageById = useCallback(
-    async (sessionId: string, messageId: string) => {
+    async (sessionId: string, messageId: string, agentId?: string) => {
       await invalidateCache([
         '/agent-sessions',
         `/agent-sessions/${sessionId}`,
         `/agent-sessions/${sessionId}/messages`
       ])
-      const targetTabId = agentNav.openConversationTab(sessionId)
+      const targetTabId = agentNav.openConversationTab(agentId ?? 'pop-science', sessionId)
       if (!targetTabId) {
         logMissingSelectionTarget({
           eventName: EVENT_NAMES.GLOBAL_SEARCH_SELECT_AGENT_SESSION_MESSAGE,
@@ -631,7 +641,7 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
         return
       }
 
-      void openSessionMessageById(target.sessionId, target.messageId).catch((error) => {
+      void openSessionMessageById(target.sessionId, target.messageId, target.agentId).catch((error) => {
         logOpenFailure(error, target)
         toast.error(t('globalSearch.open_failed'))
       })
@@ -738,7 +748,7 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
               await openTopic(item.recent.topicId)
               return
             case 'session':
-              openSession(item.recent.sessionId)
+              openSession(item.recent.sessionId, item.recent.agentId ?? undefined)
               return
           }
         }
@@ -767,7 +777,7 @@ export function GlobalSearchPanel({ onClose }: GlobalSearchPanelProps) {
           case 'session': {
             const sessionId = getSessionTargetId(result.target)
             if (!sessionId) return
-            openSession(sessionId)
+            openSession(sessionId, getSessionTargetAgentId(result.target))
             return
           }
           case 'knowledge-base': {

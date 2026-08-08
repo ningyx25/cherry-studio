@@ -119,7 +119,7 @@ describe('ResourceViewSourceProvider', () => {
   })
 
   it('publishes progressive agent sessions on cold start and keeps the complete snapshot during refresh', async () => {
-    sourceMocks.tabs = [createTab('agent', '/app/agents')]
+    sourceMocks.tabs = [createTab('agent', '/app/pop-science')]
     sourceMocks.activeTabId = 'agent'
     sourceMocks.agentSource = createAgentSource(['session-partial'], { complete: false })
 
@@ -146,7 +146,7 @@ describe('ResourceViewSourceProvider', () => {
   })
 
   it('stops reporting refreshing when a failed background refresh goes idle', async () => {
-    sourceMocks.tabs = [createTab('agent', '/app/agents')]
+    sourceMocks.tabs = [createTab('agent', '/app/pop-science')]
     sourceMocks.activeTabId = 'agent'
     sourceMocks.agentSource = createAgentSource(['session-1'], { complete: true })
 
@@ -169,7 +169,7 @@ describe('ResourceViewSourceProvider', () => {
   })
 
   it('does not publish another snapshot when a refresh resolves to the same references', async () => {
-    sourceMocks.tabs = [createTab('agent', '/app/agents')]
+    sourceMocks.tabs = [createTab('agent', '/app/pop-science')]
     sourceMocks.activeTabId = 'agent'
     const agentSource = createAgentSource(['session-1'], { complete: true })
     sourceMocks.agentSource = agentSource
@@ -190,7 +190,7 @@ describe('ResourceViewSourceProvider', () => {
   })
 
   it('reports a failed background refresh without tearing down the stale snapshot', async () => {
-    sourceMocks.tabs = [createTab('agent', '/app/agents')]
+    sourceMocks.tabs = [createTab('agent', '/app/pop-science')]
     sourceMocks.activeTabId = 'agent'
     sourceMocks.agentSource = createAgentSource(['session-1'], { complete: true })
 
@@ -213,7 +213,7 @@ describe('ResourceViewSourceProvider', () => {
   })
 
   it('keeps the published pin state in step with the map togglePin acts on', async () => {
-    sourceMocks.tabs = [createTab('agent', '/app/agents')]
+    sourceMocks.tabs = [createTab('agent', '/app/pop-science')]
     sourceMocks.activeTabId = 'agent'
     sourceMocks.agentSource = createAgentSource(['session-1', 'session-2'], { complete: true })
 
@@ -239,9 +239,9 @@ describe('ResourceViewSourceProvider', () => {
 
   it('loads only the source owned by the active non-dormant, non-message-only route tab', () => {
     sourceMocks.tabs = [
-      createTab('agent-message', '/app/agents?sessionId=session-1&view=message'),
-      createTab('agent-dormant', '/app/agents?sessionId=session-2', true),
-      createTab('agent', '/app/agents?sessionId=session-3')
+      createTab('agent-message', '/app/pop-science?sessionId=session-1&view=message'),
+      createTab('agent-dormant', '/app/pop-science?sessionId=session-2', true),
+      createTab('agent', '/app/pop-science?sessionId=session-3')
     ]
     sourceMocks.activeTabId = 'agent'
 
@@ -250,9 +250,9 @@ describe('ResourceViewSourceProvider', () => {
     expect(sourceMocks.agentEnabled.at(-1)).toBe(true)
     expect(
       shouldLoadResourceViewSource(
-        [createTab('malformed-message', '/app/agents?view=message')],
+        [createTab('malformed-message', '/app/pop-science?view=message')],
         'malformed-message',
-        'agents'
+        'pop-science'
       )
     ).toBe(true)
   })

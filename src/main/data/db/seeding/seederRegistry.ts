@@ -5,6 +5,7 @@ import { DefaultAssistantSeeder } from './seeders/defaultAssistantSeeder'
 import { LocalModelSeeder } from './seeders/LocalModelSeeder'
 import { MiniAppSeeder } from './seeders/miniAppSeeder'
 import { PreferenceSeeder } from './seeders/preferenceSeeder'
+import { PresetAgentSeeder } from './seeders/presetAgentSeeder'
 import { PresetProviderSeeder } from './seeders/presetProviderSeeder'
 import { TranslateLanguageSeeder } from './seeders/translateLanguageSeeder'
 
@@ -25,5 +26,6 @@ export const seeders: ISeeder[] = [
   new TranslateLanguageSeeder(),
   new PresetProviderSeeder(),
   new LocalModelSeeder(),
-  new MiniAppSeeder()
+  new MiniAppSeeder(),
+  new PresetAgentSeeder()
 ]

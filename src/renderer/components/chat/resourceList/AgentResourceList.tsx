@@ -10,7 +10,7 @@ import {
 import { useMutation } from '@renderer/data/hooks/useDataApi'
 import { useAgents } from '@renderer/hooks/agent/useAgent'
 import type { AgentSessionsSource } from '@renderer/hooks/resourceViewSources'
-import { useCloseConversationTabs } from '@renderer/hooks/tab'
+import { ALL_CONVERSATION_APP_IDS, useCloseConversationTabs } from '@renderer/hooks/tab'
 import { usePins } from '@renderer/hooks/usePins'
 import { popup } from '@renderer/services/popup'
 import { toast } from '@renderer/services/toast'
@@ -237,7 +237,7 @@ export function AgentResourceList({
           if (sessionIds.length > 0 && !(await deleteSessions(sessionIds))) return
         } else {
           const result = await deleteAgent({ params: { agentId }, query: { deleteSessions: true } })
-          closeConversationTabs('agents', result.deletedSessionIds ?? [])
+          closeConversationTabs(ALL_CONVERSATION_APP_IDS, result.deletedSessionIds ?? [])
         }
         if (activeAgentId === agentId) {
           await onActiveAgentDeleted?.(agentId)

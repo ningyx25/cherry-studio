@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import type { TabsContextValue } from '@renderer/hooks/tab'
 import { TabsContext } from '@renderer/hooks/tab/useTabsContext'
+import type { ConversationAppId } from '@renderer/types/conversation'
 import type { Tab } from '@shared/data/cache/cacheValueTypes'
 import { act, renderHook } from '@testing-library/react'
 import type { ReactNode } from 'react'
@@ -36,7 +37,21 @@ function wrapperFor(value: TabsContextValue) {
   }
 }
 
-const activeConversationCases = [['agent session', 'agents', 'session-a', '/app/agents', 'sessionId']] as const
+const activeConversationCases = [
+  {
+    label: 'pop-science session',
+    appId: 'pop-science',
+    key: 'session-a',
+    baseUrl: '/app/pop-science',
+    queryKey: 'sessionId'
+  }
+] as const satisfies ReadonlyArray<{
+  label: string
+  appId: ConversationAppId
+  key: string
+  baseUrl: string
+  queryKey: string
+}>
 
 describe('useCloseConversationTabs', () => {
   beforeEach(() => {
@@ -50,19 +65,19 @@ describe('useCloseConversationTabs', () => {
         {
           id: 'session-a-tab',
           type: 'route',
-          url: '/app/agents?sessionId=session-a',
+          url: '/app/pop-science?sessionId=session-a',
           title: 'Session A'
         },
         {
           id: 'session-b-url-tab',
           type: 'route',
-          url: '/app/agents?sessionId=session-b',
+          url: '/app/clinic?sessionId=session-b',
           title: 'Session B'
         },
         {
           id: 'topic-tab',
           type: 'route',
-          url: '/app/chat?topicId=session-a',
+          url: '/app/knowledge?topicId=session-a',
           title: 'Topic'
         }
       ],
@@ -73,13 +88,13 @@ describe('useCloseConversationTabs', () => {
     const { result } = renderHook(() => useCloseConversationTabs(), { wrapper: wrapperFor(context) })
 
     act(() => {
-      result.current('agents', ['session-a', 'session-b'])
+      result.current(['pop-science', 'clinic'], ['session-a', 'session-b'])
     })
 
     expect(closeTabs).toHaveBeenCalledWith(['session-a-tab', 'session-b-url-tab'])
   })
 
-  it.each(activeConversationCases)('keeps the active matching %s tab open', (_label, appId, key, baseUrl, queryKey) => {
+  it.each(activeConversationCases)('keeps the active matching $label tab open', ({ appId, key, baseUrl, queryKey }) => {
     const activeTab: Tab = {
       id: `active-${key}-tab`,
       type: 'route',
@@ -98,7 +113,7 @@ describe('useCloseConversationTabs', () => {
     const { result } = renderHook(() => useCloseConversationTabs(), { wrapper: wrapperFor(context) })
 
     act(() => {
-      result.current(appId, [key])
+      result.current([appId], [key])
     })
 
     expect(closeTabs).toHaveBeenCalledWith([backgroundTab.id])
@@ -111,7 +126,7 @@ describe('useCloseConversationTabs', () => {
         {
           id: 'active-session-tab',
           type: 'route',
-          url: '/app/agents?sessionId=session-a',
+          url: '/app/pop-science?sessionId=session-a',
           title: 'Active Session'
         }
       ],
@@ -122,7 +137,7 @@ describe('useCloseConversationTabs', () => {
     const { result } = renderHook(() => useCloseConversationTabs(), { wrapper: wrapperFor(context) })
 
     act(() => {
-      result.current('agents', ['session-a'])
+      result.current(['pop-science'], ['session-a'])
     })
 
     expect(closeTabs).toHaveBeenCalledWith([])

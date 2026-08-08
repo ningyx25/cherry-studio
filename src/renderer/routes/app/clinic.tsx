@@ -1,9 +1,9 @@
 import AgentPage from '@renderer/pages/agents/AgentPage'
 import { parseAgentRouteSearch } from '@renderer/pages/agents/routeSearch'
-import { resolveAgentEntrySessionId } from '@renderer/utils/conversationEntry'
+import { resolvePresetAgentEntrySessionId } from '@renderer/utils/conversationEntry'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/app/agents')({
+export const Route = createFileRoute('/app/clinic')({
   validateSearch: (search) => parseAgentRouteSearch(search),
   // Bare entries resolve their session here, before the page mounts, so the page
   // renders the final conversation in one pass. Explicit targets and the
@@ -12,8 +12,8 @@ export const Route = createFileRoute('/app/agents')({
   // No resolvable session → fall through bare; the page creates the first session itself.
   beforeLoad: async ({ search }) => {
     if (search.sessionId || search.intent === 'feedback') return
-    const sessionId = await resolveAgentEntrySessionId()
-    if (sessionId) throw redirect({ to: '/app/agents', search: { sessionId }, replace: true })
+    const sessionId = await resolvePresetAgentEntrySessionId('clinic')
+    if (sessionId) throw redirect({ to: '/app/clinic', search: { sessionId }, replace: true })
   },
-  component: AgentPage
+  component: () => <AgentPage moduleId="clinic" />
 })

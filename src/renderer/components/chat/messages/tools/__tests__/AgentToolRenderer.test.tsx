@@ -169,6 +169,7 @@ describe('AgentToolRenderer', () => {
     'agent.askUserQuestion.title': 'Questions from Agent',
     'agent.askUserQuestion.answered': 'answered',
     'agent.sidebar_title': 'Agents',
+    'title.pop_science': 'Pop Science',
     'settings.tool.file_processing.features.document_to_markdown.title': 'Document Processing',
     'message.tools.status.done': 'Done',
     'message.tools.units.item_one': '{{count}} item',
@@ -820,19 +821,19 @@ describe('AgentToolRenderer', () => {
         },
         status: 'done',
         arguments: {
-          path: '/app/agents',
+          path: '/app/pop-science',
           query: { sessionId: 'session-1' }
         },
-        response: 'Navigate link created: /app/agents'
+        response: 'Navigate link created: /app/pop-science'
       })
 
       render(<AgentToolRenderer toolResponse={toolResponse} />)
 
-      expect(screen.getByText(/Agents/)).toBeInTheDocument()
+      expect(screen.getByText(/Pop Science|科普AI/)).toBeInTheDocument()
       fireEvent.click(screen.getByRole('button'))
 
       expect(navigateToRoute).toHaveBeenCalledWith({
-        path: '/app/agents',
+        path: '/app/pop-science',
         query: { sessionId: 'session-1' }
       })
     })

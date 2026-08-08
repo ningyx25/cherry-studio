@@ -27,7 +27,7 @@ export const FEEDBACK_GITHUB_URL = 'https://github.com/CherryHQ/cherry-studio/is
 const logger = loggerService.withContext('FeedbackDialog')
 
 export function getFeedbackAgentRoute(sessionId: string): string {
-  return `/app/agents?intent=feedback&sessionId=${encodeURIComponent(sessionId)}`
+  return `/app/pop-science?intent=feedback&sessionId=${encodeURIComponent(sessionId)}`
 }
 
 export function isChineseFeedbackLanguage(language: string | undefined): boolean {

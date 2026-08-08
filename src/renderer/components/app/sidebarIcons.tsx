@@ -1,6 +1,6 @@
 import type { SidebarAppId } from '@renderer/utils/sidebar'
 import type { LucideIcon } from 'lucide-react'
-import { FileSearch, MousePointerClick } from 'lucide-react'
+import { FileSearch, FlaskConical, Stethoscope } from 'lucide-react'
 
 /**
  * Icon component for each built-in sidebar app. Keyed by the `SidebarAppId` union so the
@@ -9,6 +9,7 @@ import { FileSearch, MousePointerClick } from 'lucide-react'
  * components; the navigation data and logic live in `@renderer/utils/sidebar`.
  */
 export const SIDEBAR_ICON_COMPONENTS: Record<SidebarAppId, LucideIcon> = {
-  agents: MousePointerClick,
+  'pop-science': FlaskConical,
+  clinic: Stethoscope,
   knowledge: FileSearch
 }

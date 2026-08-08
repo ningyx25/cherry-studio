@@ -57,6 +57,7 @@ describe('globalSearchGroups', () => {
         kind: 'session' as const,
         sessionId: 'session-1',
         title: 'Session 1',
+        agentId: 'pop-science',
         lastAccessTime: 10
       }
     ]
@@ -241,10 +242,19 @@ describe('globalSearchGroups', () => {
 
     expect(
       createRecentRouteEntryFromTab({
-        id: 'agents',
+        id: 'pop-science',
         type: 'route',
-        url: '/app/agents',
-        title: 'Agents',
+        url: '/app/pop-science',
+        title: 'Pop Science',
+        lastAccessTime: 10
+      })
+    ).toBeNull()
+    expect(
+      createRecentRouteEntryFromTab({
+        id: 'clinic',
+        type: 'route',
+        url: '/app/clinic',
+        title: 'Clinic',
         lastAccessTime: 10
       })
     ).toBeNull()
@@ -268,7 +278,8 @@ describe('globalSearchGroups', () => {
       createRecentSessionEntryFromSession(
         {
           id: 'session-1',
-          name: 'Session title'
+          name: 'Session title',
+          agentId: 'clinic'
         },
         30
       )
@@ -276,6 +287,7 @@ describe('globalSearchGroups', () => {
       kind: 'session',
       sessionId: 'session-1',
       title: 'Session title',
+      agentId: 'clinic',
       lastAccessTime: 30
     })
   })

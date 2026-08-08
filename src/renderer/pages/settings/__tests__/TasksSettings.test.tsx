@@ -966,7 +966,7 @@ describe('TasksSettings routing and creation', () => {
     const agentCreate = screen.getByRole('menuitem', { name: 'settings.scheduledTasks.agentCreate' })
     expect(agentCreate).toBeEnabled()
     fireEvent.click(agentCreate)
-    expect(navigationMocks.openRoute).toHaveBeenCalledWith('/app/agents')
+    expect(navigationMocks.openRoute).toHaveBeenCalledWith('/app/pop-science')
   })
 
   it('uses the header as the only creation entry when the empty state has an Agent', async () => {
@@ -1188,7 +1188,7 @@ describe('TasksSettings detail behavior', () => {
     expect(screen.queryByText('other result')).not.toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'agent.tasks.logs.viewSession' }))
-    expect(navigationMocks.openConversation).toHaveBeenCalledWith('session-1')
+    expect(navigationMocks.openConversation).toHaveBeenCalledWith('agent-1', 'session-1')
   })
 
   it('filters channels to the owning Agent and uses Alert for delivery warnings', async () => {

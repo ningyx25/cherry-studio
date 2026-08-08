@@ -1,6 +1,7 @@
 import { cacheService } from '@data/CacheService'
 import { WindowFrameProvider } from '@renderer/components/chat/shell/WindowFrameContext'
 import { useCommandHandler } from '@renderer/hooks/command'
+import type * as TabHooks from '@renderer/hooks/tab'
 import { AGENT_WORKSPACE_TYPE } from '@shared/data/api/schemas/agentWorkspaces'
 import { DefaultPreferences } from '@shared/data/preference/preferenceSchemas'
 import { MIN_WINDOW_HEIGHT, SECOND_MIN_WINDOW_WIDTH } from '@shared/utils/window'
@@ -315,12 +316,16 @@ vi.mock('@renderer/components/resourceCatalog/catalog', () => ({
   )
 }))
 
-vi.mock('@renderer/hooks/tab', () => ({
-  useCloseConversationTabs: () => agentPageMocks.closeConversationTabs,
-  useCurrentTabId: () => 'agent-tab',
-  useIsActiveTab: () => agentPageMocks.isActiveTab,
-  useTabSelfVisuals: vi.fn()
-}))
+vi.mock('@renderer/hooks/tab', async (importOriginal) => {
+  const actual = await importOriginal<typeof TabHooks>()
+  return {
+    ...actual,
+    useCloseConversationTabs: () => agentPageMocks.closeConversationTabs,
+    useCurrentTabId: () => 'agent-tab',
+    useIsActiveTab: () => agentPageMocks.isActiveTab,
+    useTabSelfVisuals: vi.fn()
+  }
+})
 
 vi.mock('@renderer/services/EventService', () => ({
   EVENT_NAMES: {
@@ -678,6 +683,7 @@ vi.mock('@renderer/components/history/HistoryRecordsView', () => ({
 import { useTabSelfVisuals } from '@renderer/hooks/tab'
 import { EVENT_NAMES, EventEmitter } from '@renderer/services/EventService'
 import { toast } from '@renderer/services/toast'
+import { ALL_CONVERSATION_APP_IDS } from '@renderer/types/conversation'
 
 import AgentPage from '../AgentPage'
 
@@ -778,7 +784,7 @@ describe('AgentPage', () => {
       }
     })
     expect(agentPageMocks.navigate).toHaveBeenCalledWith({
-      to: '/app/agents',
+      to: '/app/pop-science',
       search: { sessionId: 'session-feedback' },
       replace: true
     })
@@ -1334,7 +1340,7 @@ describe('AgentPage', () => {
     await waitFor(() => expect(agentPageMocks.dataApiPost).toHaveBeenCalled())
     await waitFor(() => expect(agentPageMocks.activeSessionOptions?.activeSessionId).toBeNull())
     expect(agentPageMocks.navigate).toHaveBeenCalledWith({
-      to: '/app/agents',
+      to: '/app/pop-science',
       search: {},
       replace: true
     })
@@ -1350,7 +1356,7 @@ describe('AgentPage', () => {
 
     await waitFor(() =>
       expect(agentPageMocks.navigate).toHaveBeenCalledWith({
-        to: '/app/agents',
+        to: '/app/pop-science',
         search: {},
         replace: true
       })
@@ -1536,7 +1542,9 @@ describe('AgentPage', () => {
         query: { ids: 'session-empty-system-old' }
       })
     )
-    expect(agentPageMocks.closeConversationTabs).toHaveBeenCalledWith('agents', ['session-empty-system-old'])
+    expect(agentPageMocks.closeConversationTabs).toHaveBeenCalledWith(ALL_CONVERSATION_APP_IDS, [
+      'session-empty-system-old'
+    ])
   })
 
   it('reuses the latest empty session when an older candidate has an invalid timestamp', async () => {
@@ -1691,7 +1699,7 @@ describe('AgentPage', () => {
         query: { ids: 'session-empty-system-middle,session-empty-system-oldest' }
       })
     )
-    expect(agentPageMocks.closeConversationTabs).toHaveBeenCalledWith('agents', [
+    expect(agentPageMocks.closeConversationTabs).toHaveBeenCalledWith(ALL_CONVERSATION_APP_IDS, [
       'session-empty-system-middle',
       'session-empty-system-oldest'
     ])
@@ -2319,7 +2327,7 @@ describe('AgentPage', () => {
 
     expect(screen.getByTestId('active-session')).toHaveTextContent('session-1')
     expect(vi.mocked(useTabSelfVisuals)).toHaveBeenLastCalledWith(
-      expect.objectContaining({ appId: 'agents', preserveVisuals: false })
+      expect.objectContaining({ appId: undefined, preserveVisuals: false })
     )
 
     agentPageMocks.routeSearch = { sessionId: 'session-2' }
@@ -2331,7 +2339,7 @@ describe('AgentPage', () => {
     expect(screen.getByTestId('active-session')).toHaveTextContent('session-1')
     expect(screen.getByTestId('active-session-loading')).toHaveTextContent('true')
     expect(vi.mocked(useTabSelfVisuals)).toHaveBeenLastCalledWith(
-      expect.objectContaining({ appId: 'agents', preserveVisuals: true })
+      expect.objectContaining({ appId: undefined, preserveVisuals: true })
     )
 
     activeSessionMocks.session = {
@@ -2347,7 +2355,7 @@ describe('AgentPage', () => {
     expect(screen.getByTestId('active-session')).toHaveTextContent('session-2')
     expect(screen.getByTestId('active-session-loading')).toHaveTextContent('false')
     expect(vi.mocked(useTabSelfVisuals)).toHaveBeenLastCalledWith(
-      expect.objectContaining({ appId: 'agents', preserveVisuals: false })
+      expect.objectContaining({ appId: undefined, preserveVisuals: false })
     )
   })
 

@@ -15,7 +15,7 @@ import {
   useQuery
 } from '@renderer/data/hooks/useDataApi'
 import { useReorder } from '@renderer/data/hooks/useReorder'
-import { useCloseConversationTabs } from '@renderer/hooks/tab'
+import { ALL_CONVERSATION_APP_IDS, useCloseConversationTabs } from '@renderer/hooks/tab'
 import { useIpcOn } from '@renderer/ipc'
 import { toast } from '@renderer/services/toast'
 import type { UpdateAgentBaseOptions } from '@renderer/types/agent'
@@ -310,7 +310,7 @@ export const useSessions = (
     async (id: string): Promise<boolean> => {
       try {
         await deleteTrigger({ params: { sessionId: id } })
-        closeConversationTabs('agents', [id])
+        closeConversationTabs(ALL_CONVERSATION_APP_IDS, [id])
         return true
       } catch (error) {
         toast.error(formatErrorMessageWithPrefix(error, t('agent.session.delete.error.failed')))
@@ -324,7 +324,7 @@ export const useSessions = (
     async (ids: string[]): Promise<DeleteAgentSessionsResult | null> => {
       try {
         const result = await deleteManyTrigger({ query: { ids: ids.join(',') } })
-        closeConversationTabs('agents', result.deletedIds)
+        closeConversationTabs(ALL_CONVERSATION_APP_IDS, result.deletedIds)
         return result
       } catch (error) {
         toast.error(formatErrorMessageWithPrefix(error, t('agent.session.delete.error.failed')))

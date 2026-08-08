@@ -31,8 +31,9 @@ import { Route as SettingsCodeExecutionRouteImport } from './routes/settings/cod
 import { Route as SettingsChannelsRouteImport } from './routes/settings/channels'
 import { Route as SettingsAppearanceRouteImport } from './routes/settings/appearance'
 import { Route as SettingsAboutRouteImport } from './routes/settings/about'
+import { Route as AppPopScienceRouteImport } from './routes/app/pop-science'
 import { Route as AppKnowledgeRouteImport } from './routes/app/knowledge'
-import { Route as AppAgentsRouteImport } from './routes/app/agents'
+import { Route as AppClinicRouteImport } from './routes/app/clinic'
 import { Route as SettingsScheduledTasksIndexRouteImport } from './routes/settings/scheduled-tasks.index'
 import { Route as SettingsMcpIndexRouteImport } from './routes/settings/mcp.index'
 import { Route as SettingsScheduledTasksTaskIdRouteImport } from './routes/settings/scheduled-tasks.$taskId'
@@ -154,14 +155,19 @@ const SettingsAboutRoute = SettingsAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => SettingsRoute,
 } as any)
+const AppPopScienceRoute = AppPopScienceRouteImport.update({
+  id: '/pop-science',
+  path: '/pop-science',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
   id: '/knowledge',
   path: '/knowledge',
   getParentRoute: () => AppRoute,
 } as any)
-const AppAgentsRoute = AppAgentsRouteImport.update({
-  id: '/agents',
-  path: '/agents',
+const AppClinicRoute = AppClinicRouteImport.update({
+  id: '/clinic',
+  path: '/clinic',
   getParentRoute: () => AppRoute,
 } as any)
 const SettingsScheduledTasksIndexRoute =
@@ -221,8 +227,9 @@ const SettingsMcpSettingsServerIdRoute =
 export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
-  '/app/agents': typeof AppAgentsRoute
+  '/app/clinic': typeof AppClinicRoute
   '/app/knowledge': typeof AppKnowledgeRoute
+  '/app/pop-science': typeof AppPopScienceRoute
   '/settings/about': typeof SettingsAboutRoute
   '/settings/appearance': typeof SettingsAppearanceRoute
   '/settings/channels': typeof SettingsChannelsRoute
@@ -256,8 +263,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/app': typeof AppRouteWithChildren
-  '/app/agents': typeof AppAgentsRoute
+  '/app/clinic': typeof AppClinicRoute
   '/app/knowledge': typeof AppKnowledgeRoute
+  '/app/pop-science': typeof AppPopScienceRoute
   '/settings/about': typeof SettingsAboutRoute
   '/settings/appearance': typeof SettingsAppearanceRoute
   '/settings/channels': typeof SettingsChannelsRoute
@@ -291,8 +299,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/app': typeof AppRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
-  '/app/agents': typeof AppAgentsRoute
+  '/app/clinic': typeof AppClinicRoute
   '/app/knowledge': typeof AppKnowledgeRoute
+  '/app/pop-science': typeof AppPopScienceRoute
   '/settings/about': typeof SettingsAboutRoute
   '/settings/appearance': typeof SettingsAppearanceRoute
   '/settings/channels': typeof SettingsChannelsRoute
@@ -329,8 +338,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/app'
     | '/settings'
-    | '/app/agents'
+    | '/app/clinic'
     | '/app/knowledge'
+    | '/app/pop-science'
     | '/settings/about'
     | '/settings/appearance'
     | '/settings/channels'
@@ -364,8 +374,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/app'
-    | '/app/agents'
+    | '/app/clinic'
     | '/app/knowledge'
+    | '/app/pop-science'
     | '/settings/about'
     | '/settings/appearance'
     | '/settings/channels'
@@ -398,8 +409,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/app'
     | '/settings'
-    | '/app/agents'
+    | '/app/clinic'
     | '/app/knowledge'
+    | '/app/pop-science'
     | '/settings/about'
     | '/settings/appearance'
     | '/settings/channels'
@@ -593,6 +605,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsAboutRouteImport
       parentRoute: typeof SettingsRoute
     }
+    '/app/pop-science': {
+      id: '/app/pop-science'
+      path: '/pop-science'
+      fullPath: '/app/pop-science'
+      preLoaderRoute: typeof AppPopScienceRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/knowledge': {
       id: '/app/knowledge'
       path: '/knowledge'
@@ -600,11 +619,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppKnowledgeRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/agents': {
-      id: '/app/agents'
-      path: '/agents'
-      fullPath: '/app/agents'
-      preLoaderRoute: typeof AppAgentsRouteImport
+    '/app/clinic': {
+      id: '/app/clinic'
+      path: '/clinic'
+      fullPath: '/app/clinic'
+      preLoaderRoute: typeof AppClinicRouteImport
       parentRoute: typeof AppRoute
     }
     '/settings/scheduled-tasks/': {
@@ -681,13 +700,15 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
-  AppAgentsRoute: typeof AppAgentsRoute
+  AppClinicRoute: typeof AppClinicRoute
   AppKnowledgeRoute: typeof AppKnowledgeRoute
+  AppPopScienceRoute: typeof AppPopScienceRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAgentsRoute: AppAgentsRoute,
+  AppClinicRoute: AppClinicRoute,
   AppKnowledgeRoute: AppKnowledgeRoute,
+  AppPopScienceRoute: AppPopScienceRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

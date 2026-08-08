@@ -1,4 +1,5 @@
 import type { SidebarFavorite, SidebarFavoriteItem } from '@shared/data/preference/preferenceTypes'
+import { PRESET_AGENT_ROUTE_PREFIX } from '@shared/data/presets/presetAgents'
 
 /**
  * Context passed to sidebar navigation handlers. Carries per-call state the
@@ -42,12 +43,14 @@ function getNormalConversationSearchParamFromUrl(url: string, name: string): str
   }
 }
 
+const PRESET_AGENT_PATHS = new Set<string>(Object.values(PRESET_AGENT_ROUTE_PREFIX))
+
 export function isMessageOnlyConversationUrl(url: string): boolean {
   try {
     const parsedUrl = new URL(url, 'app://x')
     if (parsedUrl.searchParams.get('view') !== 'message') return false
 
-    if (parsedUrl.pathname === '/app/agents') return Boolean(parsedUrl.searchParams.get('sessionId'))
+    if (PRESET_AGENT_PATHS.has(parsedUrl.pathname)) return Boolean(parsedUrl.searchParams.get('sessionId'))
     return false
   } catch {
     return false
@@ -58,15 +61,24 @@ export function isMessageOnlyConversationUrl(url: string): boolean {
  * Single source of truth for sidebar applications.
  * Order here is the canonical sidebar order and drives preference defaults.
  *
- * Slim build: only the retained modules (agents + knowledge) are registered.
+ * Slim build: the retained modules are 科普AI / 问诊AI (two fixed agent modules,
+ * split from the former unified "agents" module) plus the knowledge base.
  */
 const SIDEBAR_APP_DEFINITIONS = [
   {
-    id: 'agents',
-    routePrefix: '/app/agents',
+    id: 'pop-science',
+    routePrefix: PRESET_AGENT_ROUTE_PREFIX['pop-science'],
     conversationRoute: {
       keyFromUrl: (url) => getNormalConversationSearchParamFromUrl(url, 'sessionId'),
-      urlForKey: (key) => `/app/agents?sessionId=${encodeURIComponent(key)}`
+      urlForKey: (key) => `${PRESET_AGENT_ROUTE_PREFIX['pop-science']}?sessionId=${encodeURIComponent(key)}`
+    }
+  },
+  {
+    id: 'clinic',
+    routePrefix: PRESET_AGENT_ROUTE_PREFIX.clinic,
+    conversationRoute: {
+      keyFromUrl: (url) => getNormalConversationSearchParamFromUrl(url, 'sessionId'),
+      urlForKey: (key) => `${PRESET_AGENT_ROUTE_PREFIX.clinic}?sessionId=${encodeURIComponent(key)}`
     }
   },
   {
@@ -112,7 +124,7 @@ export const SIDEBAR_FAVORITE_ORDER: SidebarAppId[] = SIDEBAR_APPS.map((app) => 
  * 这些收藏项必须始终在侧边栏中可见
  * 抽取为参数方便未来扩展
  */
-export const REQUIRED_SIDEBAR_FAVORITES: SidebarAppId[] = ['agents']
+export const REQUIRED_SIDEBAR_FAVORITES: SidebarAppId[] = ['pop-science', 'clinic']
 
 const sidebarFavoriteSet = new Set<SidebarAppId>(SIDEBAR_FAVORITE_ORDER)
 

@@ -635,7 +635,7 @@ const TaskSessionReuseField: FC<{
 const TaskLogsInline: FC<{ taskId: string; agentId: string }> = ({ taskId, agentId }) => {
   const { t, i18n } = useTranslation()
   const locale = i18n.language
-  const { openConversation } = useConversationNavigation('agents')
+  const { openConversation } = useConversationNavigation()
   const { logs, isLoading, error: logsError } = useTaskLogs(agentId, taskId)
   const [searchText, setSearchText] = useState('')
 
@@ -719,7 +719,7 @@ const TaskLogsInline: FC<{ taskId: string; agentId: string }> = ({ taskId, agent
                     variant="ghost"
                     size="icon-sm"
                     aria-label={t('agent.tasks.logs.viewSession')}
-                    onClick={() => openConversation(record.sessionId!)}>
+                    onClick={() => openConversation(agentId, record.sessionId!)}>
                     <ArrowRight size={13} />
                   </Button>
                 </Tooltip>
@@ -780,7 +780,7 @@ const TaskDetail: FC<{
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { channels: rawChannels } = useChannels()
-  const { openConversation } = useConversationNavigation('agents')
+  const { openConversation } = useConversationNavigation()
   const isCompleted = task.status === 'completed'
   const agentName = agents.find((agent) => agent.id === task.agentId)?.name ?? task.agentId
   const taskChannels = useMemo(
@@ -846,7 +846,7 @@ const TaskDetail: FC<{
           variant="link"
           size="sm"
           className="h-auto p-0"
-          onClick={() => openConversation(task.reuseSessionId as string)}>
+          onClick={() => openConversation(task.agentId, task.reuseSessionId as string)}>
           {t('agent.tasks.reuseSession.bound')}
           <ArrowRight size={13} />
         </Button>
@@ -1542,7 +1542,7 @@ const TasksSettings: FC = () => {
                   <PencilLine />
                   {t('settings.scheduledTasks.manualCreate')}
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => openRoute('/app/agents')}>
+                <DropdownMenuItem onSelect={() => openRoute('/app/pop-science')}>
                   <Bot />
                   {t('settings.scheduledTasks.agentCreate')}
                 </DropdownMenuItem>
@@ -1567,7 +1567,7 @@ const TasksSettings: FC = () => {
             }
             actionLabel={agents.length === 0 ? t('settings.scheduledTasks.agentCreate') : undefined}
             className="py-20"
-            onAction={agents.length === 0 ? () => openRoute('/app/agents') : undefined}
+            onAction={agents.length === 0 ? () => openRoute('/app/pop-science') : undefined}
           />
         ) : (
           <>

@@ -39,7 +39,7 @@ interface AgentHistoryRecordsProps {
 const AgentHistoryRecords = ({ activeRecordId, onClose, onRecordSelect, toolbarLeading }: AgentHistoryRecordsProps) => {
   const { t } = useTranslation()
   const [groupNow] = useState(() => new Date())
-  const conversationNav = useConversationNavigation('agents')
+  const conversationNav = useConversationNavigation()
 
   const {
     sessions,
@@ -94,7 +94,8 @@ const AgentHistoryRecords = ({ activeRecordId, onClose, onRecordSelect, toolbarL
   const handleSessionSelect = useCallback(
     (session: SessionListItem) => {
       const title = session.name || t('common.unnamed')
-      if (conversationNav.openConversationTab(session.id, title, { forceNew: true })) return
+      if (conversationNav.openConversationTab(session.agentId ?? 'pop-science', session.id, title, { forceNew: true }))
+        return
 
       onRecordSelect?.(session.id)
       onClose()

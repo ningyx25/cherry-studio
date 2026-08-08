@@ -34,7 +34,7 @@ import { useMultiplePreferences, usePreference } from '@renderer/data/hooks/useP
 import { useAgents } from '@renderer/hooks/agent/useAgent'
 import { useUpdateSession } from '@renderer/hooks/agent/useSession'
 import type { AgentSessionsSource } from '@renderer/hooks/resourceViewSources'
-import { useCloseConversationTabs } from '@renderer/hooks/tab'
+import { ALL_CONVERSATION_APP_IDS, useCloseConversationTabs } from '@renderer/hooks/tab'
 import { useConversationNavigation } from '@renderer/hooks/useConversationNavigation'
 import { useImageCaptureTargets } from '@renderer/hooks/useImageCaptureTargets'
 import { useNotesSettings } from '@renderer/hooks/useNotesSettings'
@@ -101,6 +101,7 @@ import {
   type AgentWorkspaceEntity
 } from '@shared/data/api/schemas/agentWorkspaces'
 import type { AssistantIconType, TopicTabPosition } from '@shared/data/preference/preferenceTypes'
+import type { PresetAgentId } from '@shared/data/presets/presetAgents'
 import { Folder, FolderOpen, MoreHorizontal, Plus } from 'lucide-react'
 import { memo, type RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -127,6 +128,8 @@ type SessionsBaseProps = {
   agentSessionsSource: AgentSessionsSource
   agentIdFilter?: string | null
   dataEnabled?: boolean
+  /** Fixed-agent module mode: force time display and filter to this one agent. */
+  fixedAgentId?: PresetAgentId
   historyRecordsActive?: boolean
   onActiveAgentDeleted?: (agentId: string) => void | Promise<void>
   onAddAgent?: () => void | Promise<void>
@@ -342,6 +345,7 @@ const Sessions = ({
   activeSessionId,
   agentIdFilter,
   dataEnabled = true,
+  fixedAgentId,
   historyRecordsActive,
   onActiveAgentDeleted,
   onAddAgent,
@@ -358,7 +362,8 @@ const Sessions = ({
   const { t } = useTranslation()
   const closeConversationTabs = useCloseConversationTabs()
   const isRightPanel = presentation === 'right-panel'
-  const conversationNav = useConversationNavigation('agents')
+  const isModuleMode = !!fixedAgentId
+  const conversationNav = useConversationNavigation()
   const isWindowFrame = useWindowFrame().mode === 'window'
   const [groupNow] = useState(() => new Date())
   const { notesPath } = useNotesSettings()
@@ -433,11 +438,13 @@ const Sessions = ({
     return map
   }, [channels])
 
-  const displayMode: AgentSessionDisplayMode = isRightPanel
+  const displayMode: AgentSessionDisplayMode = isModuleMode
     ? 'time'
-    : sessionDisplayMode === 'workdir' || sessionDisplayMode === 'agent'
-      ? sessionDisplayMode
-      : 'time'
+    : isRightPanel
+      ? 'time'
+      : sessionDisplayMode === 'workdir' || sessionDisplayMode === 'agent'
+        ? sessionDisplayMode
+        : 'time'
   const defaultGroupVisibleCount =
     !isRightPanel && displayMode === 'time'
       ? LEFT_PANEL_TIME_SESSION_GROUP_VISIBLE_COUNT
@@ -608,10 +615,10 @@ const Sessions = ({
     [baseGroupedSessions, optimisticMove]
   )
   const filteredGroupedSessions = useMemo(() => {
-    if (!isRightPanel) return groupedSessions
-    if (!agentIdFilter) return []
-    return groupedSessions.filter((session) => session.agentId === agentIdFilter)
-  }, [agentIdFilter, groupedSessions, isRightPanel])
+    const filterAgentId = isModuleMode ? fixedAgentId : isRightPanel ? agentIdFilter : null
+    if (!filterAgentId) return groupedSessions
+    return groupedSessions.filter((session) => session.agentId === filterAgentId)
+  }, [agentIdFilter, fixedAgentId, groupedSessions, isModuleMode, isRightPanel])
 
   const sessionOrderSignature = useMemo(
     () =>
@@ -670,12 +677,14 @@ const Sessions = ({
   )
   const headerCreateSessionSeed = useMemo(
     () =>
-      isRightPanel
-        ? agentIdFilter
-          ? { agentId: agentIdFilter, workspace: { type: AGENT_WORKSPACE_TYPE.SYSTEM } }
-          : null
-        : createSessionSeedIndex.latest,
-    [agentIdFilter, createSessionSeedIndex.latest, isRightPanel]
+      isModuleMode
+        ? { agentId: fixedAgentId, workspace: { type: AGENT_WORKSPACE_TYPE.SYSTEM } }
+        : isRightPanel
+          ? agentIdFilter
+            ? { agentId: agentIdFilter, workspace: { type: AGENT_WORKSPACE_TYPE.SYSTEM } }
+            : null
+          : createSessionSeedIndex.latest,
+    [agentIdFilter, createSessionSeedIndex.latest, fixedAgentId, isModuleMode, isRightPanel]
   )
 
   const sessionSectionBy = useMemo(() => {
@@ -1139,7 +1148,7 @@ const Sessions = ({
           if (sessionIds.length > 0 && !(await deleteSessions(sessionIds))) return
         } else {
           const result = await deleteAgent({ params: { agentId }, query: { deleteSessions: true } })
-          closeConversationTabs('agents', result.deletedSessionIds ?? [])
+          closeConversationTabs(ALL_CONVERSATION_APP_IDS, result.deletedSessionIds ?? [])
         }
         if (currentActiveSession?.agentId === agentId) {
           if (onActiveAgentDeleted) {
@@ -1202,7 +1211,7 @@ const Sessions = ({
 
       try {
         const result = await deleteWorkspace({ params: { workspaceId } })
-        closeConversationTabs('agents', result.deletedIds)
+        closeConversationTabs(ALL_CONVERSATION_APP_IDS, result.deletedIds)
         const affectedSessionIds = new Set(result.deletedIds)
 
         if (activeSessionId && affectedSessionIds.has(activeSessionId)) {
@@ -1283,15 +1292,24 @@ const Sessions = ({
   }, [])
   const openSessionInNewTab = useCallback(
     (session: AgentSessionEntity) => {
-      conversationNav.openConversationTab(session.id, session.name || t('common.unnamed'), { forceNew: true })
+      conversationNav.openConversationTab(
+        session.agentId ?? fixedAgentId ?? 'pop-science',
+        session.id,
+        session.name || t('common.unnamed'),
+        { forceNew: true }
+      )
     },
-    [conversationNav, t]
+    [conversationNav, fixedAgentId, t]
   )
   const openSessionInNewWindow = useCallback(
     (session: AgentSessionEntity) => {
-      conversationNav.openConversationWindow(session.id, session.name || t('common.unnamed'))
+      conversationNav.openConversationWindow(
+        session.agentId ?? fixedAgentId ?? 'pop-science',
+        session.id,
+        session.name || t('common.unnamed')
+      )
     },
-    [conversationNav, t]
+    [conversationNav, fixedAgentId, t]
   )
 
   const handleToggleAgentPin = useCallback(
@@ -1832,7 +1850,7 @@ const Sessions = ({
       ? !onAddAgent
       : creatingSession || (!headerCreateSessionSeed && !onShowMissingAgentSelection)
   const handleHeaderCreate = displayMode === 'agent' ? () => void onAddAgent?.() : handleHeaderCreateSession
-  const canSetPanePosition = displayMode === 'agent' || isRightPanel
+  const canSetPanePosition = isModuleMode ? false : displayMode === 'agent' || isRightPanel
 
   return (
     <SessionResourceList<SessionListItem>
@@ -1891,21 +1909,23 @@ const Sessions = ({
               label={headerCreateLabel}
               onClick={handleHeaderCreate}
               actions={
-                <SessionListOptionsMenu
-                  historyRecordsActive={historyRecordsActive}
-                  manageAgentsActive={manageAgentsMenuItem?.active}
-                  mode={displayMode}
-                  onChange={(nextMode) => void setSessionDisplayMode(nextMode)}
-                  onManageAgents={manageAgentsMenuItem?.onSelect}
-                  onOpenHistoryRecords={onOpenHistoryRecords}
-                  sectionIds={
-                    displayMode === 'agent'
-                      ? [SESSION_AGENT_SECTION_ID]
-                      : displayMode === 'workdir'
-                        ? [SESSION_WORKDIR_SECTION_ID]
-                        : undefined
-                  }
-                />
+                isModuleMode ? undefined : (
+                  <SessionListOptionsMenu
+                    historyRecordsActive={historyRecordsActive}
+                    manageAgentsActive={manageAgentsMenuItem?.active}
+                    mode={displayMode}
+                    onChange={(nextMode) => void setSessionDisplayMode(nextMode)}
+                    onManageAgents={manageAgentsMenuItem?.onSelect}
+                    onOpenHistoryRecords={onOpenHistoryRecords}
+                    sectionIds={
+                      displayMode === 'agent'
+                        ? [SESSION_AGENT_SECTION_ID]
+                        : displayMode === 'workdir'
+                          ? [SESSION_WORKDIR_SECTION_ID]
+                          : undefined
+                    }
+                  />
+                )
               }
             />
           </>

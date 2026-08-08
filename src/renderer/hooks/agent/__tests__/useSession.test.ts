@@ -1,4 +1,6 @@
+import type * as TabHooks from '@renderer/hooks/tab'
 import { toast } from '@renderer/services/toast'
+import { ALL_CONVERSATION_APP_IDS } from '@renderer/types/conversation'
 import { DataApiErrorFactory } from '@shared/data/api/errors'
 import type { AgentSessionEntity } from '@shared/data/api/schemas/agentSessions'
 import { MockUseCacheUtils } from '@test-mocks/renderer/useCache'
@@ -24,9 +26,13 @@ const mockCloseConversationTabs = vi.hoisted(() => vi.fn())
 const mockUseIpcOn = vi.hoisted(() => vi.fn())
 const mockT = vi.hoisted(() => (key: string) => key)
 
-vi.mock('@renderer/hooks/tab', () => ({
-  useCloseConversationTabs: () => mockCloseConversationTabs
-}))
+vi.mock('@renderer/hooks/tab', async (importOriginal) => {
+  const actual = await importOriginal<typeof TabHooks>()
+  return {
+    ...actual,
+    useCloseConversationTabs: () => mockCloseConversationTabs
+  }
+})
 
 vi.mock('@renderer/ipc', () => ({
   useIpcOn: mockUseIpcOn
@@ -644,7 +650,7 @@ describe('useSessions', () => {
     const deleted = await act(async () => result.current.deleteSession('session-a'))
 
     expect(deleteTrigger).toHaveBeenCalledWith({ params: { sessionId: 'session-a' } })
-    expect(mockCloseConversationTabs).toHaveBeenCalledWith('agents', ['session-a'])
+    expect(mockCloseConversationTabs).toHaveBeenCalledWith(ALL_CONVERSATION_APP_IDS, ['session-a'])
     expect(deleted).toBe(true)
   })
 
@@ -657,7 +663,7 @@ describe('useSessions', () => {
     const deleted = await act(async () => result.current.deleteSessions(['session-a', 'session-b']))
 
     expect(deleteTrigger).toHaveBeenCalledWith({ query: { ids: 'session-a,session-b' } })
-    expect(mockCloseConversationTabs).toHaveBeenCalledWith('agents', response.deletedIds)
+    expect(mockCloseConversationTabs).toHaveBeenCalledWith(ALL_CONVERSATION_APP_IDS, response.deletedIds)
     expect(deleted).toBe(response)
   })
 

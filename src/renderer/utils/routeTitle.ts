@@ -7,7 +7,8 @@ const BASE_URL = 'https://www.cherry-ai.com/'
  * Route to i18n key mapping for default tab titles
  */
 const routeTitleKeys: Record<string, string> = {
-  '/app/agents': 'title.work',
+  '/app/pop-science': 'title.pop_science',
+  '/app/clinic': 'title.clinic',
   '/app/knowledge': 'title.knowledge',
   '/settings': 'title.settings'
 }
@@ -87,7 +88,7 @@ export function isTopLevelRoute(url: string): boolean {
  * Callers that auto-relabel tabs from the route (route localization, url-sync)
  * must skip these, or they clobber the page-set title/icon.
  */
-const PAGE_TITLED_ROUTE_BASE_PATHS = new Set(['/app/agents'])
+const PAGE_TITLED_ROUTE_BASE_PATHS = new Set(['/app/pop-science', '/app/clinic'])
 
 export function isPageTitledRoute(url: string): boolean {
   const pathname = new URL(url, BASE_URL).pathname

@@ -24,7 +24,13 @@ import { useAgents } from '@renderer/hooks/agent/useAgent'
 import { useActiveSession, useSession, useUpdateSession } from '@renderer/hooks/agent/useSession'
 import { useCommandHandler } from '@renderer/hooks/command'
 import { useAgentSessionsSource } from '@renderer/hooks/resourceViewSources'
-import { useCloseConversationTabs, useCurrentTabId, useIsActiveTab, useTabSelfVisuals } from '@renderer/hooks/tab'
+import {
+  ALL_CONVERSATION_APP_IDS,
+  useCloseConversationTabs,
+  useCurrentTabId,
+  useIsActiveTab,
+  useTabSelfVisuals
+} from '@renderer/hooks/tab'
 import { useClassicLayoutRightPaneOpen } from '@renderer/hooks/useClassicLayoutRightPaneOpen'
 import {
   type ConversationCenterResourceDefinition,
@@ -46,6 +52,7 @@ import type { AgentSessionEntity } from '@shared/data/api/schemas/agentSessions'
 import { AGENT_WORKSPACE_TYPE, type AgentSessionWorkspaceSource } from '@shared/data/api/schemas/agentWorkspaces'
 import type { CursorPaginationResponse } from '@shared/data/api/types'
 import type { TopicTabPosition } from '@shared/data/preference/preferenceTypes'
+import { PRESET_AGENT_ROUTE_PREFIX, type PresetAgentId } from '@shared/data/presets/presetAgents'
 import { MIN_WINDOW_HEIGHT, SECOND_MIN_WINDOW_WIDTH } from '@shared/utils/window'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Bot } from 'lucide-react'
@@ -166,11 +173,18 @@ async function findReusableEmptySessions(
   return sortLatestSessions(reusableSessions)
 }
 
-const AgentPage = () => {
+const AgentPage = ({ moduleId }: { moduleId?: PresetAgentId }) => {
   const [showSidebar, setShowSidebar] = usePreference('topic.tab.show')
   const [sessionDisplayMode, setSessionDisplayMode] = usePreference('agent.session.display_mode')
   const [panePosition, setPanePosition] = usePreference('agent.session.position')
-  const isClassicSessionLayout = sessionDisplayMode === 'agent'
+  // Fixed-agent module mode (科普AI / 问诊AI): the module owns one agent and a
+  // single session list. Classic layout (entity rail + right session panel) and
+  // the display-mode switcher are for the general agents experience only, so
+  // module mode pins `time` and hides management surfaces.
+  const isModuleMode = !!moduleId
+  const moduleAgentId = moduleId ?? null
+  const agentRoute = moduleId ? PRESET_AGENT_ROUTE_PREFIX[moduleId] : ('/app/pop-science' as const)
+  const isClassicSessionLayout = isModuleMode ? false : sessionDisplayMode === 'agent'
   const routeSearch = parseAgentRouteSearch(useSearch({ strict: false }) as Record<string, unknown>)
   const navigate = useNavigate()
   const isFeedbackIntent = routeSearch.intent === 'feedback'
@@ -212,10 +226,10 @@ const AgentPage = () => {
     (id: string | null) => {
       setActiveSessionIdState(id)
       if (id && !isMessageOnlyView) {
-        void navigate({ to: '/app/agents', search: { sessionId: id }, replace: true })
+        void navigate({ to: agentRoute, search: { sessionId: id }, replace: true })
       }
     },
-    [isMessageOnlyView, navigate]
+    [agentRoute, isMessageOnlyView, navigate]
   )
   const [sessionPaneOpen, setSessionPaneOpen] = useClassicLayoutRightPaneOpen('agent', {
     enabled: isClassicSessionLayout,
@@ -280,8 +294,8 @@ const AgentPage = () => {
   const reenterAgentRoute = useCallback(() => {
     initialEmptySessionEvaluatedRef.current = false
     clearActiveSession()
-    void navigate({ to: '/app/agents', search: {}, replace: true })
-  }, [clearActiveSession, navigate])
+    void navigate({ to: agentRoute, search: {}, replace: true })
+  }, [agentRoute, clearActiveSession, navigate])
   // The URL-bound session no longer exists: its by-id query settled with NOT_FOUND (deleted while
   // this tab was dormant, or a rotted deep link). Recovery is a plain replace-navigation back
   // through the entry interceptor, which resolves the next target — no in-page state surgery.
@@ -333,15 +347,20 @@ const AgentPage = () => {
   const resourceViewDefinitions = useMemo<
     readonly ConversationCenterResourceDefinition<AgentConversationResourceKind>[]
   >(
-    () => [
-      {
-        icon: <Bot />,
-        id: 'agent-resource-view',
-        kind: 'agent',
-        label: t('chat.resource_view.menu.agent')
-      }
-    ],
-    [t]
+    () =>
+      // Module mode owns a single fixed agent: agent management (create / edit /
+      // pick) is not part of the module surface, so no resource view to switch to.
+      isModuleMode
+        ? []
+        : [
+            {
+              icon: <Bot />,
+              id: 'agent-resource-view',
+              kind: 'agent',
+              label: t('chat.resource_view.menu.agent')
+            }
+          ],
+    [isModuleMode, t]
   )
   const {
     activeResourceKind,
@@ -352,7 +371,7 @@ const AgentPage = () => {
   } = useConversationCenterSurface<AgentConversationResourceKind>({
     conversationKey: resourceConversationKey,
     resourceDefinitions: resourceViewDefinitions,
-    disabled: isMessageOnlyView || isWindowFrame
+    disabled: isMessageOnlyView || isWindowFrame || isModuleMode
   })
   // All non-dormant tabs mount at once (Activity keep-alive), so each agent tab runs its
   // own AgentPage. `useIsActiveTab` answers "am I the globally-focused tab" (gates last_used).
@@ -397,9 +416,9 @@ const AgentPage = () => {
   const targetSessionId = isMessageOnlyView ? routeSessionId : (activeSessionId ?? undefined)
   const preserveTabVisuals = !!targetSessionId && visibleSession?.id !== targetSessionId
   useTabSelfVisuals({
-    title: visibleSession?.name?.trim() || visibleAgent?.name?.trim() || getDefaultRouteTitle('/app/agents'),
+    title: visibleSession?.name?.trim() || visibleAgent?.name?.trim() || getDefaultRouteTitle(agentRoute),
     emoji: visibleAgent?.configuration?.avatar,
-    appId: 'agents',
+    appId: moduleId,
     preserveVisuals: preserveTabVisuals
   })
 
@@ -506,7 +525,7 @@ const AgentPage = () => {
         await dataApiService.delete('/agent-sessions', {
           query: { ids: sessionIds.join(',') }
         })
-        closeConversationTabs('agents', sessionIds)
+        closeConversationTabs(ALL_CONVERSATION_APP_IDS, sessionIds)
         await invalidateCache([
           '/agent-sessions',
           '/agent-workspaces',
@@ -524,7 +543,7 @@ const AgentPage = () => {
       if (isCreatingEmptySessionRef.current) return null
       isCreatingEmptySessionRef.current = true
 
-      const agentId = defaults.agentId ?? visibleSession?.agentId ?? null
+      const agentId = defaults.agentId ?? (isModuleMode ? moduleAgentId : null) ?? visibleSession?.agentId ?? null
       try {
         closeSurface()
 
@@ -586,6 +605,8 @@ const AgentPage = () => {
       deleteDuplicateEmptySystemSessions,
       getSessionReuseCandidates,
       invalidateCache,
+      isModuleMode,
+      moduleAgentId,
       resolveCreateWorkspaceSource,
       t,
       visibleSession
@@ -608,11 +629,13 @@ const AgentPage = () => {
       setPendingSession(null)
 
       const excluded = new Set(excludedAgentIds)
-      const rememberedAgent =
-        lastUsedAgentId && !excluded.has(lastUsedAgentId)
+      // Module mode is bound to one fixed agent — never chase a remembered or
+      // arbitrary agent; the fixed row is seeded with the module.
+      const defaultAgent = isModuleMode
+        ? agents.find((agent) => agent.id === moduleAgentId)
+        : lastUsedAgentId && !excluded.has(lastUsedAgentId)
           ? agents.find((agent) => agent.id === lastUsedAgentId)
-          : undefined
-      const defaultAgent = rememberedAgent ?? agents.find((agent) => !excluded.has(agent.id))
+          : agents.find((agent) => !excluded.has(agent.id))
       if (!defaultAgent) {
         setActiveSessionId(null)
         setMissingAgentSelection(true)
@@ -621,7 +644,16 @@ const AgentPage = () => {
 
       return createAndActivateEmptySession({ agentId: defaultAgent.id })
     },
-    [agents, closeSurface, createAndActivateEmptySession, lastUsedAgentId, setActiveSessionId, setPendingSession]
+    [
+      agents,
+      closeSurface,
+      createAndActivateEmptySession,
+      isModuleMode,
+      lastUsedAgentId,
+      moduleAgentId,
+      setActiveSessionId,
+      setPendingSession
+    ]
   )
 
   // Stable wrapper for the classic-layout rail's per-agent "new session" action. Adapting the
@@ -821,7 +853,7 @@ const AgentPage = () => {
     } finally {
       try {
         await navigate({
-          to: '/app/agents',
+          to: agentRoute,
           search: routeSessionId ? { sessionId: routeSessionId } : {},
           replace: true
         })
@@ -1053,10 +1085,9 @@ const AgentPage = () => {
         activeSessionId={activeSessionId}
         dataEnabled={shellPaneOpen}
         agentSessionsSource={agentSessionsSource}
-        onActiveAgentDeleted={handleActiveAgentDeleted}
-        onAddAgent={() => {
-          setAgentCreateOpen(true)
-        }}
+        fixedAgentId={moduleId}
+        onActiveAgentDeleted={isModuleMode ? undefined : handleActiveAgentDeleted}
+        onAddAgent={isModuleMode ? undefined : () => setAgentCreateOpen(true)}
         historyRecordsActive={historyRecordsActive}
         revealRequest={sessionRevealRequest}
         onOpenHistoryRecords={isWindowFrame ? undefined : openHistoryRecords}
@@ -1176,11 +1207,13 @@ const AgentPage = () => {
           composerLaunchOptions={composerLaunchOptions}
         />
       </div>
-      <AgentCreateDialog
-        open={agentCreateOpen}
-        onOpenChange={setAgentCreateOpen}
-        onCreated={handleAgentConversationSelect}
-      />
+      {!isModuleMode && (
+        <AgentCreateDialog
+          open={agentCreateOpen}
+          onOpenChange={setAgentCreateOpen}
+          onCreated={handleAgentConversationSelect}
+        />
+      )}
     </Container>
   )
 }

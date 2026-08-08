@@ -1,5 +1,5 @@
 import type { Tab } from '@renderer/hooks/tab'
-import { FileSearch, Globe, MessageCircle, MousePointerClick } from 'lucide-react'
+import { FileSearch, FlaskConical, Globe, MessageCircle, Stethoscope } from 'lucide-react'
 import { describe, expect, it } from 'vitest'
 
 import { getTabIcon } from '../tabIcons'
@@ -24,7 +24,8 @@ function webviewTab(url: string): Tab {
 
 describe('getTabIcon', () => {
   it.each([
-    ['/app/agents', MousePointerClick],
+    ['/app/pop-science', FlaskConical],
+    ['/app/clinic', Stethoscope],
     ['/app/knowledge', FileSearch]
   ])('returns the shared app icon for %s', (url, Icon) => {
     expect(getTabIcon(routeTab(url))).toBe(Icon)

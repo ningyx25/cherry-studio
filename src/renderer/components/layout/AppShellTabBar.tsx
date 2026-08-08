@@ -779,7 +779,7 @@ export const AppShellTabBar = ({
   // ─── Action handlers ────────────────────────────────────────────────────────
 
   const handleOpenNewTab = () => {
-    openTab('/app/agents', { title: t('title.work'), forceNew: true })
+    openTab('/app/pop-science', { title: t('title.pop_science'), forceNew: true })
   }
 
   // ─── Close-in-place freeze/thaw ─────────────────────────────────────────────
@@ -1123,7 +1123,7 @@ export const AppShellTabBar = ({
               <button
                 type="button"
                 data-launchpad-button
-                aria-label={t('title.work')}
+                aria-label={t('title.pop_science')}
                 onClick={handleOpenNewTab}
                 className={cn(
                   'sticky right-0 ml-0.5 flex h-7 w-7 shrink-0 appearance-none items-center justify-center rounded-[10px] border-0 bg-transparent p-0 text-muted-foreground shadow-none transition-colors [-webkit-app-region:no-drag] hover:text-sidebar-foreground',

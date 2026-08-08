@@ -4,6 +4,7 @@ import * as path from 'node:path'
 import { Node, type ObjectLiteralExpression, Project, SyntaxKind } from 'ts-morph'
 
 import { appLanguageOptions } from '../../../src/renderer/i18n/languages'
+import { PRESET_AGENT_ROUTE_PREFIX } from '../../../src/shared/data/presets/presetAgents'
 import { CodeCli } from '../../../src/shared/types/codeCli'
 import { COMMAND_DEFINITIONS } from '../../../src/shared/utils/command/definitions'
 
@@ -105,10 +106,31 @@ function readStringProperty(object: ObjectLiteralExpression, propertyName: strin
     throw new Error(`${propertyName} must be a property assignment in SIDEBAR_APP_DEFINITIONS`)
   }
   const value = property.getInitializerOrThrow()
-  if (!Node.isStringLiteral(value)) {
-    throw new Error(`${propertyName} must be a string literal in SIDEBAR_APP_DEFINITIONS`)
+  if (Node.isStringLiteral(value)) {
+    return value.getLiteralValue()
   }
-  return value.getLiteralValue()
+  // `PRESET_AGENT_ROUTE_PREFIX['pop-science']` / `PRESET_AGENT_ROUTE_PREFIX.clinic`
+  // reference: resolve through the shared constant instead of requiring an inline literal.
+  if (Node.isPropertyAccessExpression(value)) {
+    const objectText = value.getExpression().getText()
+    const propertyNameText = value.getNameNode().getText()
+    if (objectText === 'PRESET_AGENT_ROUTE_PREFIX' && propertyNameText in PRESET_AGENT_ROUTE_PREFIX) {
+      return PRESET_AGENT_ROUTE_PREFIX[propertyNameText as keyof typeof PRESET_AGENT_ROUTE_PREFIX]
+    }
+  }
+  if (Node.isElementAccessExpression(value)) {
+    const objectText = value.getExpression().getText()
+    const argument = value.getArgumentExpression()
+    if (objectText === 'PRESET_AGENT_ROUTE_PREFIX' && argument && Node.isStringLiteral(argument)) {
+      const key = argument.getLiteralValue()
+      if (key in PRESET_AGENT_ROUTE_PREFIX) {
+        return PRESET_AGENT_ROUTE_PREFIX[key as keyof typeof PRESET_AGENT_ROUTE_PREFIX]
+      }
+    }
+  }
+  throw new Error(
+    `${propertyName} must be a string literal or a PRESET_AGENT_ROUTE_PREFIX reference in SIDEBAR_APP_DEFINITIONS`
+  )
 }
 
 function readPrimaryRoutes(): ProductManifest['routes']['primary'] {

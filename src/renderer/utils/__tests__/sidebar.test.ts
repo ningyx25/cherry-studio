@@ -23,13 +23,14 @@ const miniAppFavorite = (id: string): SidebarFavoriteItem => ({ type: 'mini_app'
 
 describe('sidebar config helpers', () => {
   it('keeps the fixed sidebar app order available', () => {
-    expect(SIDEBAR_FAVORITE_ORDER).toEqual(['agents', 'knowledge'])
+    expect(SIDEBAR_FAVORITE_ORDER).toEqual(['pop-science', 'clinic', 'knowledge'])
   })
 
   it('preserves the preference order when reading ordered visible sidebar favorites', () => {
-    expect(getOrderedVisibleSidebarFavorites([appFavorite('knowledge'), appFavorite('agents')])).toEqual([
+    expect(getOrderedVisibleSidebarFavorites([appFavorite('knowledge'), appFavorite('pop-science')])).toEqual([
+      'clinic',
       'knowledge',
-      'agents'
+      'pop-science'
     ])
   })
 
@@ -40,7 +41,7 @@ describe('sidebar config helpers', () => {
         { type: 'app', id: 'unknown' } as never,
         appFavorite('knowledge')
       ])
-    ).toEqual(['agents', 'knowledge'])
+    ).toEqual(['pop-science', 'clinic', 'knowledge'])
   })
 
   it('ignores mini app favorites when reading system sidebar favorites', () => {
@@ -48,23 +49,25 @@ describe('sidebar config helpers', () => {
       getOrderedVisibleSidebarFavorites([
         appFavorite('knowledge'),
         miniAppFavorite('calculator'),
-        appFavorite('agents')
+        appFavorite('pop-science')
       ])
-    ).toEqual(['knowledge', 'agents'])
+    ).toEqual(['clinic', 'knowledge', 'pop-science'])
   })
 
   it('returns the full mixed list interleaved in stored order with required apps forced in', () => {
     expect(getOrderedVisibleSidebarFavoriteItems([appFavorite('knowledge'), miniAppFavorite('calculator')])).toEqual([
-      appFavorite('agents'),
+      appFavorite('pop-science'),
+      appFavorite('clinic'),
       appFavorite('knowledge'),
       miniAppFavorite('calculator')
     ])
   })
 
   it('does not prepend a required app that is already present at any position', () => {
-    expect(getOrderedVisibleSidebarFavoriteItems([miniAppFavorite('calculator'), appFavorite('agents')])).toEqual([
+    expect(getOrderedVisibleSidebarFavoriteItems([miniAppFavorite('calculator'), appFavorite('pop-science')])).toEqual([
+      appFavorite('clinic'),
       miniAppFavorite('calculator'),
-      appFavorite('agents')
+      appFavorite('pop-science')
     ])
   })
 
@@ -73,7 +76,7 @@ describe('sidebar config helpers', () => {
       getSidebarMiniAppFavoriteIds([
         appFavorite('knowledge'),
         miniAppFavorite('calculator'),
-        appFavorite('agents'),
+        appFavorite('pop-science'),
         miniAppFavorite('calculator'),
         miniAppFavorite('weather')
       ])
@@ -85,11 +88,11 @@ describe('sidebar config helpers', () => {
       getSidebarFavoriteItems([
         appFavorite('knowledge'),
         miniAppFavorite('calculator'),
-        appFavorite('agents'),
+        appFavorite('pop-science'),
         miniAppFavorite('calculator'),
         { type: 'app', id: 'unknown' } as never
       ])
-    ).toEqual([appFavorite('knowledge'), miniAppFavorite('calculator'), appFavorite('agents')])
+    ).toEqual([appFavorite('knowledge'), miniAppFavorite('calculator'), appFavorite('pop-science')])
   })
 
   it('drops unknown favorite types from visible reads while keeping surrounding leaves', () => {
@@ -104,22 +107,24 @@ describe('sidebar config helpers', () => {
   it('preserves extra per-item fields through normalization (non-lossy round-trip)', () => {
     // Future per-item params must survive the normalize round-trip instead of being
     // rebuilt away from just the id.
-    const appWithExtra = { type: 'app', id: 'agents', badge: 3 } as unknown as SidebarFavoriteItem
+    const appWithExtra = { type: 'app', id: 'pop-science', badge: 3 } as unknown as SidebarFavoriteItem
     const miniWithExtra = { type: 'mini_app', id: 'calculator', color: '#fff' } as unknown as SidebarFavoriteItem
 
     expect(getSidebarFavoriteItems([appWithExtra, miniWithExtra])).toEqual([
-      { type: 'app', id: 'agents', badge: 3 },
+      { type: 'app', id: 'pop-science', badge: 3 },
       { type: 'mini_app', id: 'calculator', color: '#fff' }
     ])
   })
 
   it('resolves menu paths for registered apps', () => {
     expect(getSidebarMenuPath('knowledge')).toBe('/app/knowledge')
-    expect(getSidebarMenuPath('agents')).toBe('/app/agents')
+    expect(getSidebarMenuPath('pop-science')).toBe('/app/pop-science')
+    expect(getSidebarMenuPath('clinic')).toBe('/app/clinic')
   })
 
   it('resolves the active item for query-keyed conversation routes', () => {
-    expect(resolveSidebarActiveItem('/app/agents?sessionId=xyz')).toBe('agents')
+    expect(resolveSidebarActiveItem('/app/pop-science?sessionId=xyz')).toBe('pop-science')
+    expect(resolveSidebarActiveItem('/app/clinic?sessionId=xyz')).toBe('clinic')
     expect(resolveSidebarActiveItem('/app/knowledge')).toBe('knowledge')
   })
 
@@ -129,52 +134,63 @@ describe('sidebar config helpers', () => {
   })
 
   it('classifies a message-view URL as message-only only when it carries its conversation id', () => {
-    expect(isMessageOnlyConversationUrl('/app/agents?sessionId=session&view=message')).toBe(true)
+    expect(isMessageOnlyConversationUrl('/app/pop-science?sessionId=session&view=message')).toBe(true)
+    expect(isMessageOnlyConversationUrl('/app/clinic?sessionId=session&view=message')).toBe(true)
     // Malformed: `view=message` without an id is a bare entry, not a message-only popup.
-    expect(isMessageOnlyConversationUrl('/app/agents?view=message')).toBe(false)
-    expect(isMessageOnlyConversationUrl('/app/agents?sessionId=session')).toBe(false)
+    expect(isMessageOnlyConversationUrl('/app/pop-science?view=message')).toBe(false)
+    expect(isMessageOnlyConversationUrl('/app/pop-science?sessionId=session')).toBe(false)
   })
 })
 
 describe('sidebar favorites mutations', () => {
   it('pins an app to the very end of the mixed list', () => {
-    expect(setSidebarAppPinned([appFavorite('agents'), miniAppFavorite('calculator')], 'knowledge', true)).toEqual([
-      appFavorite('agents'),
-      miniAppFavorite('calculator'),
-      appFavorite('knowledge')
-    ])
+    // Stored [pop-science, calculator] gains the missing required clinic app at the front.
+    expect(setSidebarAppPinned([appFavorite('pop-science'), miniAppFavorite('calculator')], 'knowledge', true)).toEqual(
+      [appFavorite('clinic'), appFavorite('pop-science'), miniAppFavorite('calculator'), appFavorite('knowledge')]
+    )
   })
 
   it('unpins an app while preserving mini apps', () => {
+    // Stored [pop-science, knowledge, calculator] gains missing required clinic at the front.
     expect(
       setSidebarAppPinned(
-        [appFavorite('agents'), appFavorite('knowledge'), miniAppFavorite('calculator')],
+        [appFavorite('pop-science'), appFavorite('knowledge'), miniAppFavorite('calculator')],
         'knowledge',
         false
       )
-    ).toEqual([appFavorite('agents'), miniAppFavorite('calculator')])
+    ).toEqual([appFavorite('clinic'), appFavorite('pop-science'), miniAppFavorite('calculator')])
   })
 
   it('never unpins a required app', () => {
-    expect(setSidebarAppPinned([appFavorite('agents'), appFavorite('knowledge')], 'agents', false)).toEqual([
-      appFavorite('agents'),
-      appFavorite('knowledge')
+    expect(setSidebarAppPinned([appFavorite('pop-science'), appFavorite('clinic')], 'pop-science', false)).toEqual([
+      appFavorite('pop-science'),
+      appFavorite('clinic')
     ])
   })
 
   it('toggles a mini app on and off, preserving apps', () => {
-    const added = toggleSidebarMiniApp([appFavorite('agents'), miniAppFavorite('calculator')], 'weather')
-    expect(added).toEqual([appFavorite('agents'), miniAppFavorite('calculator'), miniAppFavorite('weather')])
-    expect(toggleSidebarMiniApp(added, 'calculator')).toEqual([appFavorite('agents'), miniAppFavorite('weather')])
+    const added = toggleSidebarMiniApp([appFavorite('pop-science'), miniAppFavorite('calculator')], 'weather')
+    expect(added).toEqual([
+      appFavorite('clinic'),
+      appFavorite('pop-science'),
+      miniAppFavorite('calculator'),
+      miniAppFavorite('weather')
+    ])
+    expect(toggleSidebarMiniApp(added, 'calculator')).toEqual([
+      appFavorite('clinic'),
+      appFavorite('pop-science'),
+      miniAppFavorite('weather')
+    ])
   })
 
   it('removes a mini app while preserving apps and other mini apps', () => {
+    // Stored [pop-science, calculator, weather] gains missing required clinic at the front.
     expect(
       removeSidebarMiniApp(
-        [appFavorite('agents'), miniAppFavorite('calculator'), miniAppFavorite('weather')],
+        [appFavorite('pop-science'), miniAppFavorite('calculator'), miniAppFavorite('weather')],
         'calculator'
       )
-    ).toEqual([appFavorite('agents'), miniAppFavorite('weather')])
+    ).toEqual([appFavorite('clinic'), appFavorite('pop-science'), miniAppFavorite('weather')])
   })
 
   it('preserves forward-compatible unknown items when mutating favorites', () => {
@@ -185,8 +201,9 @@ describe('sidebar favorites mutations', () => {
       items: [miniAppFavorite('calculator')]
     } as unknown as SidebarFavoriteItem
 
-    expect(toggleSidebarMiniApp([appFavorite('agents'), group], 'weather')).toEqual([
-      appFavorite('agents'),
+    expect(toggleSidebarMiniApp([appFavorite('pop-science'), group], 'weather')).toEqual([
+      appFavorite('clinic'),
+      appFavorite('pop-science'),
       miniAppFavorite('weather'),
       group
     ])
@@ -195,37 +212,52 @@ describe('sidebar favorites mutations', () => {
 
 describe('reorderSidebarFavorites (mixed cross-type reorder)', () => {
   it('reorders apps and mini apps together into any interleaved order', () => {
+    // Visible list is [pop-science, clinic, knowledge, calculator]; reordering
+    // keeps the unrequested required clinic app at the end.
     expect(
       reorderSidebarFavorites(
-        [appFavorite('agents'), appFavorite('knowledge'), miniAppFavorite('calculator')],
-        [miniAppFavorite('calculator'), appFavorite('agents'), appFavorite('knowledge')]
+        [appFavorite('pop-science'), appFavorite('knowledge'), miniAppFavorite('calculator')],
+        [miniAppFavorite('calculator'), appFavorite('pop-science'), appFavorite('knowledge')]
       )
-    ).toEqual([miniAppFavorite('calculator'), appFavorite('agents'), appFavorite('knowledge')])
+    ).toEqual([
+      miniAppFavorite('calculator'),
+      appFavorite('pop-science'),
+      appFavorite('knowledge'),
+      appFavorite('clinic')
+    ])
   })
 
   it('keeps stored favorites missing from a partial order at the end', () => {
+    // Visible list is [pop-science, clinic, calculator, stale].
     expect(
       reorderSidebarFavorites(
-        [appFavorite('agents'), miniAppFavorite('calculator'), miniAppFavorite('stale')],
-        [miniAppFavorite('calculator'), appFavorite('agents')]
+        [appFavorite('pop-science'), miniAppFavorite('calculator'), miniAppFavorite('stale')],
+        [miniAppFavorite('calculator'), appFavorite('pop-science')]
       )
-    ).toEqual([miniAppFavorite('calculator'), appFavorite('agents'), miniAppFavorite('stale')])
+    ).toEqual([
+      miniAppFavorite('calculator'),
+      appFavorite('pop-science'),
+      appFavorite('clinic'),
+      miniAppFavorite('stale')
+    ])
   })
 
   it('drops requested items that are not stored favorites', () => {
+    // Visible list is [pop-science, clinic, calculator].
     expect(
       reorderSidebarFavorites(
-        [appFavorite('agents'), miniAppFavorite('calculator')],
-        [miniAppFavorite('ghost'), miniAppFavorite('calculator'), appFavorite('agents')]
+        [appFavorite('pop-science'), miniAppFavorite('calculator')],
+        [miniAppFavorite('ghost'), miniAppFavorite('calculator'), appFavorite('pop-science')]
       )
-    ).toEqual([miniAppFavorite('calculator'), appFavorite('agents')])
+    ).toEqual([miniAppFavorite('calculator'), appFavorite('pop-science'), appFavorite('clinic')])
   })
 
   it('keeps a required app once when the requested reorder omits it', () => {
     const reordered = reorderSidebarFavorites([appFavorite('knowledge')], [appFavorite('knowledge')])
 
-    expect(reordered).toEqual([appFavorite('knowledge'), appFavorite('agents')])
-    expect(reordered.filter((item) => item.type === 'app' && item.id === 'agents')).toHaveLength(1)
+    expect(reordered).toEqual([appFavorite('knowledge'), appFavorite('pop-science'), appFavorite('clinic')])
+    expect(reordered.filter((item) => item.type === 'app' && item.id === 'pop-science')).toHaveLength(1)
+    expect(reordered.filter((item) => item.type === 'app' && item.id === 'clinic')).toHaveLength(1)
   })
 })
 
@@ -250,14 +282,14 @@ describe('launchpad app order (independent from sidebar favorites)', () => {
   })
 
   it('reorders to the requested order and keeps missing apps at the end', () => {
-    const next = reorderLaunchpadApps(['agents', 'knowledge'], ['knowledge', 'agents'])
-    expect(next.slice(0, 2)).toEqual(['knowledge', 'agents'])
+    const next = reorderLaunchpadApps(['pop-science', 'knowledge'], ['knowledge', 'pop-science'])
+    expect(next.slice(0, 2)).toEqual(['knowledge', 'pop-science'])
     expect([...next].sort()).toEqual([...SIDEBAR_FAVORITE_ORDER].sort())
   })
 
   it('drops unknown ids from a requested reorder', () => {
-    const next = reorderLaunchpadApps(['agents', 'knowledge'], ['ghost', 'knowledge', 'agents'])
-    expect(next.slice(0, 2)).toEqual(['knowledge', 'agents'])
+    const next = reorderLaunchpadApps(['pop-science', 'knowledge'], ['ghost', 'knowledge', 'pop-science'])
+    expect(next.slice(0, 2)).toEqual(['knowledge', 'pop-science'])
     expect(next).not.toContain('ghost')
   })
 })

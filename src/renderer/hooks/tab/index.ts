@@ -10,4 +10,5 @@ export {
   useTabsContext
 } from './useTabsContext'
 export { type TabSelfVisuals, useTabSelfVisuals } from './useTabSelfVisuals'
+export { ALL_CONVERSATION_APP_IDS } from '@renderer/types/conversation'
 export type { Tab, TabsState, TabType } from '@shared/data/cache/cacheValueTypes'

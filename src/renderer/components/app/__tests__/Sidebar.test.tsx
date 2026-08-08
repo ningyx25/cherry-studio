@@ -45,7 +45,7 @@ const mocks = vi.hoisted(() => ({
   showUserPopup: vi.fn(),
   sidebarWidth: 50,
   tabs: [] as FakeTab[],
-  sidebarFavorites: [{ type: 'app', id: 'agents' }] as SidebarFavoriteItem[],
+  sidebarFavorites: [{ type: 'app', id: 'pop-science' }] as SidebarFavoriteItem[],
   sidebarMiniAppFavorites: [] as SidebarFavoriteItem[],
   allApps: [] as FakeMiniApp[],
   visibleMiniApps: null as FakeMiniApp[] | null,
@@ -92,7 +92,8 @@ vi.mock('@renderer/hooks/useMiniApps', () => ({
 vi.mock('@renderer/i18n/label', () => ({
   getSidebarIconLabelKey: (icon: string) =>
     ({
-      agents: 'Work',
+      'pop-science': 'Work',
+      clinic: 'Clinic',
       knowledge: 'Knowledge'
     })[icon] ?? icon
 }))
@@ -100,7 +101,8 @@ vi.mock('@renderer/i18n/label', () => ({
 vi.mock('@renderer/utils/routeTitle', () => ({
   getDefaultRouteTitle: (url: string) =>
     ({
-      '/app/agents': 'Work',
+      '/app/pop-science': 'Work',
+      '/app/clinic': 'Clinic',
       '/app/chat': 'Chat',
       '/app/knowledge': 'Knowledge'
     })[url] ?? 'Chat'
@@ -309,7 +311,7 @@ function configureMiniApps(favoriteIds: string[], apps: FakeMiniApp[] = [calcula
 afterEach(() => {
   cleanup()
   vi.clearAllMocks()
-  mocks.sidebarFavorites = [appFavorite('agents')]
+  mocks.sidebarFavorites = [appFavorite('pop-science')]
   mocks.sidebarMiniAppFavorites = []
   mocks.setSidebarFavorites.mockReset()
   mocks.setSidebarFavorites.mockResolvedValue(undefined)
@@ -365,14 +367,15 @@ describe('app Sidebar', () => {
   })
 
   it('renders sidebar menu items in visible preference order', () => {
-    mocks.sidebarFavorites = [appFavorite('knowledge'), appFavorite('agents')]
+    mocks.sidebarFavorites = [appFavorite('knowledge'), appFavorite('pop-science')]
 
     render(<Sidebar />)
 
     const labels = Array.from(screen.getByTestId('sidebar-items').querySelectorAll('span')).map(
       (element) => element.textContent
     )
-    expect(labels).toEqual(['Knowledge', 'Work'])
+    // Required apps (科普AI / 问诊AI) are forced to the front of the visible list.
+    expect(labels).toEqual(['Clinic', 'Knowledge', 'Work'])
   })
 
   it('removes a sidebar app favorite from the context menu', () => {
@@ -386,15 +389,15 @@ describe('app Sidebar', () => {
 
     fireEvent.click(screen.getByTestId('sidebar-menu-sidebar.remove-app.knowledge'))
 
-    expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([appFavorite('agents')])
+    expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([appFavorite('pop-science'), appFavorite('clinic')])
   })
 
   it('keeps required sidebar favorites protected in the context menu', () => {
     render(<Sidebar />)
 
-    expect(screen.getByTestId('sidebar-menu-sidebar.remove-app.agents')).toBeDisabled()
+    expect(screen.getByTestId('sidebar-menu-sidebar.remove-app.pop-science')).toBeDisabled()
 
-    fireEvent.click(screen.getByTestId('sidebar-menu-sidebar.remove-app.agents'))
+    fireEvent.click(screen.getByTestId('sidebar-menu-sidebar.remove-app.pop-science'))
 
     expect(mocks.setSidebarFavorites).not.toHaveBeenCalled()
   })
@@ -430,7 +433,11 @@ describe('app Sidebar', () => {
 
     fireEvent.click(screen.getByTestId('sidebar-menu-sidebar.remove-mini-app.calculator'))
 
-    expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([appFavorite('agents'), miniAppFavorite('weather')])
+    expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
+      appFavorite('pop-science'),
+      appFavorite('clinic'),
+      miniAppFavorite('weather')
+    ])
   })
 
   it('reorders sidebar favorites through a single mixed drag', () => {
@@ -439,12 +446,13 @@ describe('app Sidebar', () => {
     mocks.allApps = [calculatorMiniApp]
 
     render(<Sidebar />)
-    // Mixed list is [agents, knowledge, calculator]; drag knowledge to front.
-    act(() => mocks.onEntriesReorder?.({ oldIndex: 1, newIndex: 0 }))
+    // Mixed list is [pop-science, clinic, knowledge, calculator]; drag knowledge to front.
+    act(() => mocks.onEntriesReorder?.({ oldIndex: 2, newIndex: 0 }))
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
       appFavorite('knowledge'),
-      appFavorite('agents'),
+      appFavorite('pop-science'),
+      appFavorite('clinic'),
       miniAppFavorite('calculator')
     ])
   })
@@ -453,11 +461,12 @@ describe('app Sidebar', () => {
     configureMiniApps(['calculator', 'weather'], [calculatorMiniApp, weatherMiniApp])
 
     render(<Sidebar />)
-    // Mixed list is [agents, calculator, weather]; drag weather above calculator.
-    act(() => mocks.onEntriesReorder?.({ oldIndex: 2, newIndex: 1 }))
+    // Mixed list is [pop-science, clinic, calculator, weather]; drag weather above calculator.
+    act(() => mocks.onEntriesReorder?.({ oldIndex: 3, newIndex: 2 }))
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
-      appFavorite('agents'),
+      appFavorite('pop-science'),
+      appFavorite('clinic'),
       miniAppFavorite('weather'),
       miniAppFavorite('calculator')
     ])
@@ -470,10 +479,14 @@ describe('app Sidebar', () => {
     configureMiniApps(['calculator'])
 
     render(<Sidebar />)
-    // Mixed list is [agents, calculator]; drag calculator to the very top.
-    act(() => mocks.onEntriesReorder?.({ oldIndex: 1, newIndex: 0 }))
+    // Mixed list is [pop-science, clinic, calculator]; drag calculator to the very top.
+    act(() => mocks.onEntriesReorder?.({ oldIndex: 2, newIndex: 0 }))
 
-    expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([miniAppFavorite('calculator'), appFavorite('agents')])
+    expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
+      miniAppFavorite('calculator'),
+      appFavorite('pop-science'),
+      appFavorite('clinic')
+    ])
   })
 
   it('does not render mini apps unless they are sidebar favorites', () => {
@@ -563,16 +576,16 @@ describe('app Sidebar', () => {
   })
 
   it('does nothing when the active tab is already on the target route', () => {
-    mocks.sidebarFavorites = [appFavorite('agents')]
+    mocks.sidebarFavorites = [appFavorite('pop-science')]
     mocks.activeTab = {
-      id: 'agents',
+      id: 'pop-science',
       type: 'route',
-      url: '/app/agents',
+      url: '/app/pop-science',
       title: 'Work'
     }
 
     render(<Sidebar />)
-    fireEvent.click(screen.getByTestId('sidebar-item-agents'))
+    fireEvent.click(screen.getByTestId('sidebar-item-pop-science'))
 
     expect(mocks.updateTab).not.toHaveBeenCalled()
     expect(mocks.openTab).not.toHaveBeenCalled()
@@ -580,20 +593,20 @@ describe('app Sidebar', () => {
   })
 
   it('reuses the active tab without revealing its resource list', () => {
-    mocks.sidebarFavorites = [appFavorite('agents')]
+    mocks.sidebarFavorites = [appFavorite('pop-science')]
     mocks.activeTab = {
       id: 'chat',
       type: 'route',
       url: '/app/chat',
       title: 'Chat'
     }
-    mocks.tabs = [{ id: 'agents-1', type: 'route', url: '/app/agents?sessionId=s-1', title: 'Session 1' }]
+    mocks.tabs = [{ id: 'agents-1', type: 'route', url: '/app/pop-science?sessionId=s-1', title: 'Session 1' }]
 
     render(<Sidebar />)
-    fireEvent.click(screen.getByTestId('sidebar-item-agents'))
+    fireEvent.click(screen.getByTestId('sidebar-item-pop-science'))
 
     expect(mocks.updateTab).toHaveBeenCalledWith('chat', {
-      url: '/app/agents',
+      url: '/app/pop-science',
       title: 'Work',
       icon: undefined,
       metadata: undefined
@@ -604,7 +617,7 @@ describe('app Sidebar', () => {
   })
 
   it('replaces the active tab with the bare route', () => {
-    mocks.sidebarFavorites = [appFavorite('agents')]
+    mocks.sidebarFavorites = [appFavorite('pop-science')]
     mocks.activeTab = {
       id: 'chat',
       type: 'route',
@@ -614,12 +627,12 @@ describe('app Sidebar', () => {
     }
 
     render(<Sidebar />)
-    fireEvent.click(screen.getByTestId('sidebar-item-agents'))
+    fireEvent.click(screen.getByTestId('sidebar-item-pop-science'))
 
     // Which session the tab lands on is the route interceptor's decision — the
     // sidebar only replaces the tab with the app's bare entry route.
     expect(mocks.updateTab).toHaveBeenCalledWith('chat', {
-      url: '/app/agents',
+      url: '/app/pop-science',
       title: 'Work',
       icon: undefined,
       metadata: undefined
@@ -629,16 +642,16 @@ describe('app Sidebar', () => {
   })
 
   it('stays put when the active tab already holds a conversation of the target app', () => {
-    mocks.sidebarFavorites = [appFavorite('agents')]
+    mocks.sidebarFavorites = [appFavorite('pop-science')]
     mocks.activeTab = {
       id: 'agents-1',
       type: 'route',
-      url: '/app/agents?sessionId=session-1',
+      url: '/app/pop-science?sessionId=session-1',
       title: 'Session 1'
     }
 
     render(<Sidebar />)
-    fireEvent.click(screen.getByTestId('sidebar-item-agents'))
+    fireEvent.click(screen.getByTestId('sidebar-item-pop-science'))
 
     // Re-entering through the interceptor would rebind the tab to the last-used
     // conversation — an owned tab is already "there", whatever session it shows.
@@ -647,19 +660,19 @@ describe('app Sidebar', () => {
   })
 
   it('navigates a message-only viewer of the same app back to the app entry', () => {
-    mocks.sidebarFavorites = [appFavorite('agents')]
+    mocks.sidebarFavorites = [appFavorite('pop-science')]
     mocks.activeTab = {
       id: 'viewer',
       type: 'route',
-      url: '/app/agents?sessionId=session-1&view=message',
+      url: '/app/pop-science?sessionId=session-1&view=message',
       title: 'Session 1'
     }
 
     render(<Sidebar />)
-    fireEvent.click(screen.getByTestId('sidebar-item-agents'))
+    fireEvent.click(screen.getByTestId('sidebar-item-pop-science'))
 
     expect(mocks.updateTab).toHaveBeenCalledWith('viewer', {
-      url: '/app/agents',
+      url: '/app/pop-science',
       title: 'Work',
       icon: undefined,
       metadata: undefined
@@ -712,7 +725,7 @@ describe('app Sidebar', () => {
   })
 
   it('opens a forced tab without revealing its resource list when the active tab is pinned', () => {
-    mocks.sidebarFavorites = [appFavorite('agents')]
+    mocks.sidebarFavorites = [appFavorite('pop-science')]
     mocks.activeTab = {
       id: 'chat',
       type: 'route',
@@ -723,9 +736,9 @@ describe('app Sidebar', () => {
     mocks.openTab.mockReturnValue('agents-new')
 
     render(<Sidebar />)
-    fireEvent.click(screen.getByTestId('sidebar-item-agents'))
+    fireEvent.click(screen.getByTestId('sidebar-item-pop-science'))
 
-    expect(mocks.openTab).toHaveBeenCalledWith('/app/agents', {
+    expect(mocks.openTab).toHaveBeenCalledWith('/app/pop-science', {
       forceNew: true,
       title: 'Work'
     })

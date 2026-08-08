@@ -64,7 +64,7 @@ const PINNED_CODE_TAB: Tab = {
 const PINNED_AGENTS_TAB: Tab = {
   id: 'agents',
   type: 'route',
-  url: '/app/agents',
+  url: '/app/pop-science',
   title: 'Agents',
   lastAccessTime: 0,
   isDormant: false,
@@ -123,7 +123,7 @@ vi.mock('react-i18next', async (importOriginal) => {
 vi.mock('@renderer/utils/routeTitle', async () => {
   const actual = await vi.importActual<typeof RouteTitle>('@renderer/utils/routeTitle')
   const titles: Record<string, Record<string, string>> = {
-    '/app/agents': { en: 'Agent', zh: '代理' },
+    '/app/pop-science': { en: 'Agent', zh: '代理' },
     '/app/chat': { en: 'Chat', zh: '聊天' },
     '/app/knowledge': { en: 'Knowledge', zh: '知识库' }
   }
@@ -273,7 +273,7 @@ function CloseHomeAfterSecondTabOpens() {
   useEffect(() => {
     if (didOpenRef.current) return
     didOpenRef.current = true
-    openTab('/app/agents', { id: 'agents', forceNew: true })
+    openTab('/app/pop-science', { id: 'agents', forceNew: true })
   }, [openTab])
 
   useEffect(() => {
@@ -293,7 +293,7 @@ function ForceNewSameUrlOpener() {
   useEffect(() => {
     if (didOpenRef.current) return
     didOpenRef.current = true
-    openTab('/app/agents', { forceNew: true })
+    openTab('/app/pop-science', { forceNew: true })
   }, [openTab])
 
   return <TabSnapshot />
@@ -332,7 +332,7 @@ describe('TabsProvider', () => {
         initialDefaultTab={{
           id: 'home',
           type: 'route',
-          url: '/app/agents',
+          url: '/app/pop-science',
           title: '',
           lastAccessTime: Date.now(),
           isDormant: false
@@ -434,10 +434,10 @@ describe('TabsProvider', () => {
       </TabsProvider>
     )
 
-    expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/agents,/app/files,/app/chat')
+    expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/pop-science,/app/files,/app/chat')
     await waitFor(() =>
       expect(setPinnedTabsMock).toHaveBeenCalledWith([
-        { ...PINNED_OPENCLAW_TAB, url: '/app/agents', title: 'Agent', isDormant: true },
+        { ...PINNED_OPENCLAW_TAB, url: '/app/pop-science', title: 'Agent', isDormant: true },
         { ...PINNED_FILES_TAB, isDormant: true }
       ])
     )
@@ -601,7 +601,7 @@ describe('TabsProvider', () => {
       </TabsProvider>
     )
 
-    await waitFor(() => expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/agents'))
+    await waitFor(() => expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/pop-science'))
     expect(screen.getByTestId('tab-titles')).toHaveTextContent('Agent')
     expect(screen.getByTestId('active-tab-id')).not.toHaveTextContent('home')
   })
@@ -614,8 +614,8 @@ describe('TabsProvider', () => {
     )
 
     await waitFor(() => expect(screen.getByTestId('tab-ids')).toHaveTextContent('agents'))
-    expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/agents')
-    expect(screen.getByTestId('tab-urls')).not.toHaveTextContent('/app/agents,/app/agents')
+    expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/pop-science')
+    expect(screen.getByTestId('tab-urls')).not.toHaveTextContent('/app/pop-science,/app/pop-science')
     expect(screen.getByTestId('active-tab-id')).toHaveTextContent('agents')
   })
 
@@ -625,7 +625,7 @@ describe('TabsProvider', () => {
         initialDefaultTab={{
           id: 'home',
           type: 'route',
-          url: '/app/agents',
+          url: '/app/pop-science',
           title: '',
           lastAccessTime: 0,
           isDormant: false
@@ -635,7 +635,7 @@ describe('TabsProvider', () => {
       </TabsProvider>
     )
 
-    await waitFor(() => expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/agents,/app/agents'))
+    await waitFor(() => expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/pop-science,/app/pop-science'))
     const ids = (screen.getByTestId('tab-ids').textContent ?? '').split(',')
     expect(ids).toHaveLength(2)
     expect(new Set(ids).size).toBe(2)
@@ -645,7 +645,14 @@ describe('TabsProvider', () => {
 describe('TabsProvider session restore', () => {
   it('restores the persisted session and keeps only the active tab awake', async () => {
     const tabA: Tab = { id: 'a', type: 'route', url: '/app/chat', title: '', lastAccessTime: 1, isDormant: false }
-    const tabB: Tab = { id: 'b', type: 'route', url: '/app/agents', title: '', lastAccessTime: 2, isDormant: false }
+    const tabB: Tab = {
+      id: 'b',
+      type: 'route',
+      url: '/app/pop-science',
+      title: '',
+      lastAccessTime: 2,
+      isDormant: false
+    }
     normalTabsValue = [tabA, tabB]
     activeTabIdValue = 'b'
 
@@ -666,7 +673,14 @@ describe('TabsProvider session restore', () => {
     // Active id points at a tab that no longer exists in either the pinned or normal set. The
     // resolved active tab (first normal tab) must still be awake, or AppShell renders no TabRouter.
     const tabA: Tab = { id: 'a', type: 'route', url: '/app/chat', title: '', lastAccessTime: 1, isDormant: false }
-    const tabB: Tab = { id: 'b', type: 'route', url: '/app/agents', title: '', lastAccessTime: 2, isDormant: false }
+    const tabB: Tab = {
+      id: 'b',
+      type: 'route',
+      url: '/app/pop-science',
+      title: '',
+      lastAccessTime: 2,
+      isDormant: false
+    }
     normalTabsValue = [tabA, tabB]
     activeTabIdValue = 'ghost'
 
@@ -757,7 +771,7 @@ describe('migratePinnedTabs', () => {
   it('redirects an OpenClaw pin to the work page and flags the change', () => {
     const { tabs, changed } = migratePinnedTabs([PINNED_OPENCLAW_TAB, PINNED_FILES_TAB])
     expect(changed).toBe(true)
-    expect(tabs).toEqual([{ ...PINNED_OPENCLAW_TAB, url: '/app/agents', title: 'Agent' }, PINNED_FILES_TAB])
+    expect(tabs).toEqual([{ ...PINNED_OPENCLAW_TAB, url: '/app/pop-science', title: 'Agent' }, PINNED_FILES_TAB])
   })
 
   it('drops the OpenClaw pin instead of duplicating an existing work pin', () => {
@@ -768,13 +782,13 @@ describe('migratePinnedTabs', () => {
 
   it('collapses two OpenClaw pins into a single work pin', () => {
     const { tabs } = migratePinnedTabs([PINNED_OPENCLAW_TAB, { ...PINNED_OPENCLAW_TAB, id: 'openclaw2' }])
-    expect(tabs).toEqual([{ ...PINNED_OPENCLAW_TAB, url: '/app/agents', title: 'Agent' }])
+    expect(tabs).toEqual([{ ...PINNED_OPENCLAW_TAB, url: '/app/pop-science', title: 'Agent' }])
   })
 
   it('redirects a Code pin to the work page too', () => {
     const { tabs, changed } = migratePinnedTabs([PINNED_CODE_TAB])
     expect(changed).toBe(true)
-    expect(tabs).toEqual([{ ...PINNED_CODE_TAB, url: '/app/agents', title: 'Agent' }])
+    expect(tabs).toEqual([{ ...PINNED_CODE_TAB, url: '/app/pop-science', title: 'Agent' }])
   })
 
   it('drops legacy library pins', () => {

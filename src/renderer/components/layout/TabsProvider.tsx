@@ -15,7 +15,7 @@ const logger = loggerService.withContext('TabsProvider')
 const DEFAULT_TAB: Tab = {
   id: 'home',
   type: 'route',
-  url: '/app/agents',
+  url: '/app/pop-science',
   title: '',
   lastAccessTime: Date.now(),
   isDormant: false
@@ -25,8 +25,8 @@ function createFallbackTab(): Tab {
   return {
     id: uuid(),
     type: 'route',
-    url: '/app/agents',
-    title: getDefaultRouteTitle('/app/agents'),
+    url: '/app/pop-science',
+    title: getDefaultRouteTitle('/app/pop-science'),
     lastAccessTime: Date.now(),
     isDormant: false
   }
@@ -35,11 +35,11 @@ function createFallbackTab(): Tab {
 // Routes no longer served — their orphaned pinned tabs are dropped or redirected on restore.
 const LEGACY_LIBRARY_ROUTE_PATH = '/app/library'
 // OpenClaw and Code pages were removed during the slim-down, so already-persisted pins for
-// `/app/openclaw` and `/app/code` are redirected to the surviving work page rather than
-// restoring to a dead route.
+// `/app/openclaw` and `/app/code` are redirected to the surviving work page (科普AI) rather
+// than restoring to a dead route.
 const LEGACY_OPENCLAW_ROUTE_PATH = '/app/openclaw'
 const LEGACY_CODE_ROUTE_PATH = '/app/code'
-const AGENTS_ROUTE_PATH = '/app/agents'
+const POP_SCIENCE_ROUTE_PATH = '/app/pop-science'
 
 function routePathOfTab(tab: Tab): string | null {
   if (tab.type !== 'route') return null
@@ -53,12 +53,12 @@ function routePathOfTab(tab: Tab): string | null {
 /**
  * Reconcile persisted pinned tabs against routes that have since been removed or relocated: drop
  * `/app/library` pins outright, and redirect `/app/openclaw` and `/app/code` pins to
- * `/app/agents` (deduping so the redirect never produces a second agents pin). `changed` is true
+ * `/app/pop-science` (deduping so the redirect never produces a second pop-science pin). `changed` is true
  * when anything was dropped or rewritten, signalling the caller to write the reconciled list back
  * to the persistent cache.
  */
 export function migratePinnedTabs(pinnedTabs: Tab[]): { tabs: Tab[]; changed: boolean } {
-  let hasAgentsPin = pinnedTabs.some((tab) => routePathOfTab(tab) === AGENTS_ROUTE_PATH)
+  let hasPopSciencePin = pinnedTabs.some((tab) => routePathOfTab(tab) === POP_SCIENCE_ROUTE_PATH)
   const tabs: Tab[] = []
   let changed = false
   for (const tab of pinnedTabs) {
@@ -69,9 +69,9 @@ export function migratePinnedTabs(pinnedTabs: Tab[]): { tabs: Tab[]; changed: bo
     }
     if (path === LEGACY_OPENCLAW_ROUTE_PATH || path === LEGACY_CODE_ROUTE_PATH) {
       changed = true
-      if (hasAgentsPin) continue // an agents pin already exists — drop rather than duplicate it
-      hasAgentsPin = true
-      tabs.push({ ...tab, url: AGENTS_ROUTE_PATH, title: getDefaultRouteTitle(AGENTS_ROUTE_PATH) })
+      if (hasPopSciencePin) continue // a pop-science pin already exists — drop rather than duplicate it
+      hasPopSciencePin = true
+      tabs.push({ ...tab, url: POP_SCIENCE_ROUTE_PATH, title: getDefaultRouteTitle(POP_SCIENCE_ROUTE_PATH) })
       continue
     }
     tabs.push(tab)

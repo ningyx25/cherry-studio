@@ -3,7 +3,7 @@ import {
   AgentSessionsSourceContext,
   useRawAgentSessionsSource
 } from '@renderer/hooks/resourceViewSources'
-import { useTabs } from '@renderer/hooks/tab'
+import { ALL_CONVERSATION_APP_IDS, useTabs } from '@renderer/hooks/tab'
 import {
   getSidebarApp,
   isMessageOnlyConversationUrl,
@@ -121,8 +121,10 @@ function useCommittedAgentSessionsSource(enabled: boolean): AgentSessionsSource 
 
 export function ResourceViewSourceProvider({ children }: { children: ReactNode }) {
   const { activeTabId, tabs } = useTabs()
+  // Agent sessions back the two fixed-agent modules (科普AI / 问诊AI) — load the
+  // shared sessions source whenever the active tab belongs to any conversation app.
   const agentSessionsEnabled = useMemo(
-    () => shouldLoadResourceViewSource(tabs, activeTabId, 'agents'),
+    () => ALL_CONVERSATION_APP_IDS.some((appId) => shouldLoadResourceViewSource(tabs, activeTabId, appId)),
     [activeTabId, tabs]
   )
   const agentSessionsSource = useCommittedAgentSessionsSource(agentSessionsEnabled)

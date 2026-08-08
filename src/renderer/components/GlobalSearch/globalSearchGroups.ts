@@ -9,6 +9,7 @@ import type {
   TopicMessageContentSearchItem
 } from '@shared/data/api/schemas/search'
 import type { GlobalSearchRecentEntry, Tab } from '@shared/data/cache/cacheValueTypes'
+import { PRESET_AGENT_ROUTE_PREFIX } from '@shared/data/presets/presetAgents'
 import dayjs from 'dayjs'
 
 export const GLOBAL_SEARCH_RECENT_ITEM_LIMIT = 20
@@ -98,7 +99,10 @@ const FILTER_TYPES: Record<GlobalSearchFilter, EntitySearchType[]> = {
 }
 
 const INTERNAL_ROUTE_PREFIXES = ['/app/', '/settings']
-const COARSE_ENTITY_ROUTE_PATHS = new Set(['/app/agents'])
+// Fixed-agent module entry routes (科普AI / 问诊AI) are coarse module shells —
+// they immediately redirect to a session, which is recorded separately as a
+// `session` recent entry, so the bare module route is not a meaningful recent item.
+const COARSE_ENTITY_ROUTE_PATHS = new Set<string>(Object.values(PRESET_AGENT_ROUTE_PREFIX))
 const LEGACY_ROUTE_PATHS = new Set(['/app/library'])
 
 export function getGlobalSearchTypes(filter: GlobalSearchFilter): EntitySearchType[] {
@@ -136,7 +140,7 @@ export function areGlobalSearchRecentEntriesEqual(a: GlobalSearchRecentEntry, b:
     case 'topic':
       return b.kind === 'topic' && a.topicId === b.topicId
     case 'session':
-      return b.kind === 'session' && a.sessionId === b.sessionId
+      return b.kind === 'session' && a.sessionId === b.sessionId && a.agentId === b.agentId
   }
 }
 
@@ -151,8 +155,20 @@ function isLegacyRouteRecentEntry(entry: GlobalSearchRecentEntry) {
 export function sanitizeGlobalSearchRecentEntries(
   entries: readonly GlobalSearchRecentEntry[]
 ): GlobalSearchRecentEntry[] {
-  const next = entries.filter((entry) => !isLegacyRouteRecentEntry(entry))
-  return next.length === entries.length ? (entries as GlobalSearchRecentEntry[]) : next
+  let changed = false
+  const next = entries.flatMap((entry): GlobalSearchRecentEntry[] => {
+    if (isLegacyRouteRecentEntry(entry)) {
+      changed = true
+      return []
+    }
+    // Legacy session entries persisted before the agentId field was added.
+    if (entry.kind === 'session' && entry.agentId === undefined) {
+      changed = true
+      return [{ ...entry, agentId: null }]
+    }
+    return [entry]
+  })
+  return changed ? next : (entries as GlobalSearchRecentEntry[])
 }
 
 export function upsertGlobalSearchRecentEntry(
@@ -241,13 +257,14 @@ export function createRecentTopicEntryFromTopic(
 }
 
 export function createRecentSessionEntryFromSession(
-  session: Pick<AgentSessionEntity, 'id' | 'name'>,
+  session: Pick<AgentSessionEntity, 'id' | 'name' | 'agentId'>,
   lastAccessTime = Date.now()
 ): GlobalSearchRecentEntry {
   return {
     kind: 'session',
     sessionId: session.id,
     title: session.name,
+    agentId: session.agentId ?? null,
     lastAccessTime
   }
 }

@@ -10,11 +10,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 const { languageState, getT } = vi.hoisted(() => {
   const labels: Record<string, Record<string, string>> = {
     'en-US': {
-      agents: 'Work',
+      'pop-science': 'Work',
+      clinic: 'Clinic',
       knowledge: 'Knowledge'
     },
     'zh-CN': {
-      agents: '工作',
+      'pop-science': '工作',
+      clinic: '问诊',
       knowledge: '知识库'
     }
   }
@@ -97,7 +99,7 @@ describe('Sidebar language refresh', () => {
     MockUseDataApiUtils.resetMocks()
     MockUseDataApiUtils.mockQueryData('/mini-apps', [])
     MockUsePreferenceUtils.setPreferenceValue('ui.sidebar.favorites', [
-      { type: 'app', id: 'agents' },
+      { type: 'app', id: 'pop-science' },
       { type: 'app', id: 'knowledge' }
     ])
     MockUseCacheUtils.setPersistCacheValue('ui.sidebar.width', 170)

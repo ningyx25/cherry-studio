@@ -45,14 +45,14 @@ describe('useTabSelfVisuals', () => {
       {
         id: 'tab-1',
         type: 'route',
-        url: '/app/agents?sessionId=s1',
+        url: '/app/pop-science?sessionId=s1',
         title: 'Old title'
       }
     ]
 
     render(
       <TabIdProvider tabId="tab-1">
-        <TabVisualsWriter title="Session title" emoji="spark" appId="agents" />
+        <TabVisualsWriter title="Session title" emoji="spark" appId="pop-science" />
       </TabIdProvider>
     )
 
@@ -76,7 +76,7 @@ describe('useTabSelfVisuals', () => {
 
     render(
       <TabIdProvider tabId="tab-1">
-        <TabVisualsWriter title="Topic title" emoji="spark" appId="agents" />
+        <TabVisualsWriter title="Topic title" emoji="spark" appId="pop-science" />
       </TabIdProvider>
     )
 
@@ -90,7 +90,7 @@ describe('useTabSelfVisuals', () => {
       {
         id: 'tab-1',
         type: 'route',
-        url: '/app/agents?sessionId=session-1',
+        url: '/app/pop-science?sessionId=session-1',
         title: 'Stored session title',
         icon: 'icon:stored'
       }
@@ -98,7 +98,7 @@ describe('useTabSelfVisuals', () => {
 
     render(
       <TabIdProvider tabId="tab-1">
-        <TabVisualsWriter title="Session" appId="agents" preserveVisuals />
+        <TabVisualsWriter title="Session" appId="pop-science" preserveVisuals />
       </TabIdProvider>
     )
 
@@ -112,7 +112,7 @@ describe('useTabSelfVisuals', () => {
       {
         id: 'tab-1',
         type: 'route',
-        url: '/app/agents?sessionId=session-1',
+        url: '/app/pop-science?sessionId=session-1',
         title: 'Session title',
         icon: 'icon:spark'
       }
@@ -120,7 +120,7 @@ describe('useTabSelfVisuals', () => {
 
     render(
       <TabIdProvider tabId="tab-1">
-        <TabVisualsWriter title="Session title" emoji="spark" appId="agents" />
+        <TabVisualsWriter title="Session title" emoji="spark" appId="pop-science" />
       </TabIdProvider>
     )
 

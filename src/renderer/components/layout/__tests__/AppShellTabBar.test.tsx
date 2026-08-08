@@ -91,7 +91,7 @@ vi.mock('../../WindowControls', () => ({
 vi.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: () => {} },
   useTranslation: () => ({
-    t: (key: string) => (key === 'title.work' ? 'Work' : key)
+    t: (key: string) => (key === 'title.pop_science' ? 'Work' : key)
   })
 }))
 
@@ -215,7 +215,7 @@ describe('AppShellTabBar', () => {
 
     await user.click(screen.getByRole('button', { name: 'Work' }))
 
-    expect(openTab).toHaveBeenCalledWith('/app/agents', { title: 'Work', forceNew: true })
+    expect(openTab).toHaveBeenCalledWith('/app/pop-science', { title: 'Work', forceNew: true })
   })
 
   it('shows the focused tab as a Back control with a visible detach action', async () => {
@@ -541,7 +541,7 @@ describe('AppShellTabBar', () => {
     const tabs = [
       createTab('files', { title: 'Files' }),
       createTab('chat', { url: '/app/chat?topicId=topic-1', title: 'Chat' }),
-      createTab('agents', { url: '/app/agents?sessionId=session-1', title: 'Agent' })
+      createTab('agents', { url: '/app/pop-science?sessionId=session-1', title: 'Agent' })
     ]
 
     renderTabBar({ tabs, activeTabId: 'files', setActiveTab })

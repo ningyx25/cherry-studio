@@ -5,7 +5,8 @@ vi.mock('@renderer/i18n/resolver', () => ({
   default: {
     t: vi.fn((key: string) => {
       const translations: Record<string, string> = {
-        'title.work': '工作',
+        'title.pop_science': '科普AI',
+        'title.clinic': '问诊AI',
         'title.knowledge': '知识库',
         'title.settings': '设置'
       }
@@ -30,7 +31,8 @@ describe('routeTitle', () => {
   describe('getDefaultRouteTitle', () => {
     describe('exact route matches', () => {
       it.each([
-        ['/app/agents', '工作'],
+        ['/app/pop-science', '科普AI'],
+        ['/app/clinic', '问诊AI'],
         ['/app/knowledge', '知识库'],
         ['/settings', '设置']
       ])('should return correct title for %s', (url, expectedTitle) => {
@@ -40,7 +42,8 @@ describe('routeTitle', () => {
 
     describe('nested route matches', () => {
       it('should match base path for nested routes', () => {
-        expect(getDefaultRouteTitle('/app/agents/session-123')).toBe('工作')
+        expect(getDefaultRouteTitle('/app/pop-science/session-123')).toBe('科普AI')
+        expect(getDefaultRouteTitle('/app/clinic/session-456')).toBe('问诊AI')
         expect(getDefaultRouteTitle('/settings/provider')).toBe('设置')
         expect(getDefaultRouteTitle('/settings/mcp/servers')).toBe('设置')
       })
@@ -48,7 +51,8 @@ describe('routeTitle', () => {
 
     describe('URL with query params and hash', () => {
       it('should handle URLs with query parameters', () => {
-        expect(getDefaultRouteTitle('/app/agents?sessionId=abc')).toBe('工作')
+        expect(getDefaultRouteTitle('/app/pop-science?sessionId=abc')).toBe('科普AI')
+        expect(getDefaultRouteTitle('/app/clinic?sessionId=def')).toBe('问诊AI')
         expect(getDefaultRouteTitle('/settings/provider?id=openai')).toBe('设置')
       })
 
@@ -57,7 +61,7 @@ describe('routeTitle', () => {
       })
 
       it('should handle URLs with both query and hash', () => {
-        expect(getDefaultRouteTitle('/app/agents?sessionId=abc#message-5')).toBe('工作')
+        expect(getDefaultRouteTitle('/app/pop-science?sessionId=abc#message-5')).toBe('科普AI')
       })
     })
 
@@ -75,7 +79,8 @@ describe('routeTitle', () => {
 
     describe('edge cases', () => {
       it('should handle trailing slashes', () => {
-        expect(getDefaultRouteTitle('/app/agents/')).toBe('工作')
+        expect(getDefaultRouteTitle('/app/pop-science/')).toBe('科普AI')
+        expect(getDefaultRouteTitle('/app/clinic/')).toBe('问诊AI')
         expect(getDefaultRouteTitle('/settings/')).toBe('设置')
       })
 
@@ -87,8 +92,8 @@ describe('routeTitle', () => {
 
       it('should handle relative-like paths', () => {
         // URL constructor with base will normalize these
-        expect(getDefaultRouteTitle('app/agents')).toBe('工作')
-        expect(getDefaultRouteTitle('./app/agents')).toBe('工作')
+        expect(getDefaultRouteTitle('app/pop-science')).toBe('科普AI')
+        expect(getDefaultRouteTitle('./app/pop-science')).toBe('科普AI')
       })
     })
   })
@@ -96,7 +101,8 @@ describe('routeTitle', () => {
   describe('getRouteTitleKey', () => {
     describe('exact matches', () => {
       it.each([
-        ['/app/agents', 'title.work'],
+        ['/app/pop-science', 'title.pop_science'],
+        ['/app/clinic', 'title.clinic'],
         ['/app/knowledge', 'title.knowledge'],
         ['/settings', 'title.settings']
       ])('should return i18n key for %s', (url, expectedKey) => {
@@ -106,7 +112,8 @@ describe('routeTitle', () => {
 
     describe('base path matches', () => {
       it('should return base path key for nested routes', () => {
-        expect(getRouteTitleKey('/app/agents/session-123')).toBe('title.work')
+        expect(getRouteTitleKey('/app/pop-science/session-123')).toBe('title.pop_science')
+        expect(getRouteTitleKey('/app/clinic/session-456')).toBe('title.clinic')
         expect(getRouteTitleKey('/settings/provider')).toBe('title.settings')
       })
     })
@@ -122,18 +129,20 @@ describe('routeTitle', () => {
 
   describe('isTopLevelRoute', () => {
     it('returns true only for bare top-level route tabs', () => {
-      expect(isTopLevelRoute('/app/agents')).toBe(true)
+      expect(isTopLevelRoute('/app/pop-science')).toBe(true)
+      expect(isTopLevelRoute('/app/clinic')).toBe(true)
       expect(isTopLevelRoute('/app/knowledge')).toBe(true)
-      expect(isTopLevelRoute('/app/agents?sessionId=abc&view=message')).toBe(false)
-      expect(isTopLevelRoute('/app/agents#session')).toBe(false)
-      expect(isTopLevelRoute('/app/agents/session-123')).toBe(false)
+      expect(isTopLevelRoute('/app/pop-science?sessionId=abc&view=message')).toBe(false)
+      expect(isTopLevelRoute('/app/pop-science#session')).toBe(false)
+      expect(isTopLevelRoute('/app/pop-science/session-123')).toBe(false)
     })
   })
 
   describe('isPageTitledRoute', () => {
-    it('treats agent routes as page-titled regardless of query/sub-path', () => {
-      expect(isPageTitledRoute('/app/agents')).toBe(true)
-      expect(isPageTitledRoute('/app/agents?sessionId=abc')).toBe(true)
+    it('treats fixed-agent module routes as page-titled regardless of query/sub-path', () => {
+      expect(isPageTitledRoute('/app/pop-science')).toBe(true)
+      expect(isPageTitledRoute('/app/pop-science?sessionId=abc')).toBe(true)
+      expect(isPageTitledRoute('/app/clinic?sessionId=abc')).toBe(true)
     })
 
     it('treats route-titled apps as not page-titled', () => {
@@ -145,7 +154,8 @@ describe('routeTitle', () => {
   describe('shouldAutoLocalizeRouteTitle', () => {
     it.each([
       // Top-level routes always re-localize.
-      ['/app/agents', true],
+      ['/app/pop-science', true],
+      ['/app/clinic', true],
       ['/app/knowledge', true],
       ['/settings', true],
       // Any /settings sub-route re-localizes.
@@ -153,7 +163,8 @@ describe('routeTitle', () => {
       // Unknown routes are not auto-localized.
       ['/unknown', false],
       // Non-top-level app sub-routes are not auto-localized.
-      ['/app/agents/session-123', false]
+      ['/app/pop-science/session-123', false],
+      ['/app/clinic/session-456', false]
     ])('should return %s -> %s', (url, expected) => {
       expect(shouldAutoLocalizeRouteTitle(url)).toBe(expected)
     })

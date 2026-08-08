@@ -305,13 +305,18 @@ export class AgentSessionService {
    * by `orderKey ASC` (creation/manual order, newest-created first), so a
    * recently-active session is not guaranteed to be on it. This
    * `updatedAt DESC LIMIT 1` proves global latest independent of the rail's ordering.
+   *
+   * With `agentId`, the most-recently-updated session scoped to that agent —
+   * used by the fixed agent modules (科普AI / 问诊AI) to resume per-module.
    */
-  getLatestUpdated(): AgentSessionEntity | null {
+  getLatestUpdated(agentId?: string): AgentSessionEntity | null {
     const db = application.get('DbService').getDb()
+    const agentFilter = agentId ? eq(sessionsTable.agentId, agentId) : undefined
     const [row] = db
       .select({ session: sessionsTable, workspace: agentWorkspaceTable })
       .from(sessionsTable)
       .innerJoin(agentWorkspaceTable, eq(sessionsTable.workspaceId, agentWorkspaceTable.id))
+      .where(agentFilter)
       .orderBy(desc(sessionsTable.updatedAt), asc(sessionsTable.id))
       .limit(1)
       .all()

@@ -78,6 +78,12 @@ export const ListAgentSessionsQuerySchema = z.strictObject({
 export type ListAgentSessionsQueryParams = z.input<typeof ListAgentSessionsQuerySchema>
 export type ListAgentSessionsQuery = z.output<typeof ListAgentSessionsQuerySchema>
 
+/** Query for `GET /agent-sessions/latest` — optional agent filter. */
+export const LatestAgentSessionQuerySchema = z.strictObject({
+  agentId: z.string().optional()
+})
+export type LatestAgentSessionQueryParams = z.input<typeof LatestAgentSessionQuerySchema>
+
 export interface DeleteAgentSessionsResult {
   deletedIds: string[]
 }
@@ -133,7 +139,8 @@ export type AgentSessionSchemas = {
   }
 
   /**
-   * Most-recently-updated session across all agents.
+   * Most-recently-updated session across all agents (or, with `agentId`, the
+   * most-recently-updated session of that agent).
    *
    * First-entry restore reads this to resume the last-touched session. Declared
    * before `/agent-sessions/:sessionId` and matched exactly by the server router,
@@ -143,6 +150,7 @@ export type AgentSessionSchemas = {
    */
   '/agent-sessions/latest': {
     GET: {
+      query?: LatestAgentSessionQueryParams
       response: LatestAgentSessionResponse
     }
   }

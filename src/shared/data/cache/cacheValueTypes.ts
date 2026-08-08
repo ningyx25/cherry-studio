@@ -97,6 +97,8 @@ export type GlobalSearchRecentEntry =
       kind: 'session'
       sessionId: string
       title: string
+      /** Owning agent id (null for legacy entries written before the field existed). */
+      agentId: string | null
       lastAccessTime: number
     }
 

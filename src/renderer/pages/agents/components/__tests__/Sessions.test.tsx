@@ -1,7 +1,9 @@
 import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as TabHooks from '@renderer/hooks/tab'
 import type * as ImageCaptureTargetsHook from '@renderer/hooks/useImageCaptureTargets'
 import { popup } from '@renderer/services/popup'
 import { toast } from '@renderer/services/toast'
+import { ALL_CONVERSATION_APP_IDS } from '@renderer/types/conversation'
 import type { TopicStreamStatus } from '@shared/ai/transport'
 import type { AgentSessionEntity } from '@shared/data/api/schemas/agentSessions'
 import { AGENT_WORKSPACE_TYPE, type AgentWorkspaceEntity } from '@shared/data/api/schemas/agentWorkspaces'
@@ -349,11 +351,15 @@ vi.mock('@renderer/hooks/agent/useAgent', () => ({
   useAgents: agentDataMocks.useAgents
 }))
 
-vi.mock('@renderer/hooks/tab', () => ({
-  useCloseConversationTabs: () => tabsContextMocks.closeConversationTabs,
-  useOptionalTabsContext: () => tabsContextMocks,
-  useCurrentTabId: () => null
-}))
+vi.mock('@renderer/hooks/tab', async (importOriginal) => {
+  const actual = await importOriginal<typeof TabHooks>()
+  return {
+    ...actual,
+    useCloseConversationTabs: () => tabsContextMocks.closeConversationTabs,
+    useOptionalTabsContext: () => tabsContextMocks,
+    useCurrentTabId: () => null
+  }
+})
 
 vi.mock('@renderer/hooks/useWindowFrame', () => ({
   useWindowFrame: () => ({ mode: windowFrameMocks.mode })
@@ -1874,7 +1880,7 @@ describe('Sessions', () => {
         callback(0)
       }
     })
-    expect(tabsContextMocks.openTab).toHaveBeenCalledWith('/app/agents?sessionId=session-b', {
+    expect(tabsContextMocks.openTab).toHaveBeenCalledWith('/app/pop-science?sessionId=session-b', {
       forceNew: true,
       title: 'Beta session'
     })
@@ -2914,7 +2920,7 @@ describe('Sessions', () => {
     ])
     expect(sessionDataMocks.deleteSession).not.toHaveBeenCalled()
     expect(callOrder).toEqual(['workspace'])
-    expect(tabsContextMocks.closeConversationTabs).toHaveBeenCalledWith('agents', ['session-a'])
+    expect(tabsContextMocks.closeConversationTabs).toHaveBeenCalledWith(ALL_CONVERSATION_APP_IDS, ['session-a'])
     expect(cacheMocks.setActiveSessionId).toHaveBeenCalledWith(
       'session-pinned',
       expect.objectContaining({ id: 'session-pinned' })
@@ -3091,7 +3097,7 @@ describe('Sessions', () => {
       '/agent-channels'
     ])
     expect(sessionDataMocks.deleteSession).not.toHaveBeenCalled()
-    expect(tabsContextMocks.closeConversationTabs).toHaveBeenCalledWith('agents', ['session-a'])
+    expect(tabsContextMocks.closeConversationTabs).toHaveBeenCalledWith(ALL_CONVERSATION_APP_IDS, ['session-a'])
     expect(onActiveAgentDeleted).toHaveBeenCalledWith('agent-a')
     await vi.waitFor(() => expect(dataApiMocks.refetchAgents).toHaveBeenCalled())
     await vi.waitFor(() => expect(sessionDataMocks.reload).toHaveBeenCalled())

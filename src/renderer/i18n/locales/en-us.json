@@ -8489,6 +8489,7 @@
   "title": {
     "apps": "Apps",
     "chat": "Chat",
+    "clinic": "Clinic AI",
     "code": "Code Mate",
     "files": "Files",
     "home": "Home",
@@ -8498,6 +8499,7 @@
     "notes": "Notes",
     "openclaw": "OpenClaw",
     "paintings": "Paintings",
+    "pop_science": "Pop-Science AI",
     "settings": "Settings",
     "translate": "Translate",
     "work": "Work"

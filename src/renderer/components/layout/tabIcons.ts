@@ -1,12 +1,13 @@
 import type { Tab } from '@renderer/hooks/tab'
-import { FileSearch, Globe, MessageCircle, MousePointerClick, Settings } from 'lucide-react'
+import { FileSearch, FlaskConical, Globe, MessageCircle, Settings, Stethoscope } from 'lucide-react'
 
 export type IconComponent = React.FC<{ size?: number; strokeWidth?: number; className?: string }>
 
 // ─── Route → Icon mapping ─────────────────────────────────────────────────────
 
 export const ROUTE_ICONS: Record<string, IconComponent> = {
-  '/app/agents': MousePointerClick,
+  '/app/pop-science': FlaskConical,
+  '/app/clinic': Stethoscope,
   '/app/knowledge': FileSearch,
   '/settings': Settings
 }

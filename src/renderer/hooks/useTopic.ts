@@ -24,7 +24,6 @@ import {
   useWriteCache
 } from '@data/hooks/useDataApi'
 import { loggerService } from '@logger'
-import { useCloseConversationTabs } from '@renderer/hooks/tab'
 import { useIpcOn } from '@renderer/ipc'
 import { EVENT_NAMES, EventEmitter } from '@renderer/services/EventService'
 import type { MessageExportView } from '@renderer/types/messageExport'
@@ -328,7 +327,6 @@ export function useLatestTopic(opts?: { enabled?: boolean }) {
 export function useTopicMutations() {
   const invalidate = useInvalidateCache()
   const writeCache = useWriteCache()
-  const closeConversationTabs = useCloseConversationTabs()
 
   const { trigger: createTrigger, isLoading: isCreating } = useMutation('POST', '/topics', {
     refresh: ['/topics']
@@ -371,30 +369,27 @@ export function useTopicMutations() {
   const deleteTopic = useCallback(
     async (topicId: string): Promise<void> => {
       await deleteTrigger({ params: { id: topicId } })
-      closeConversationTabs('agents', [topicId])
       logger.info('Deleted topic', { id: topicId })
     },
-    [closeConversationTabs, deleteTrigger]
+    [deleteTrigger]
   )
 
   const deleteTopics = useCallback(
     async (ids: string[]): Promise<DeleteTopicsResult> => {
       const result = await deleteManyTrigger({ query: { ids: ids.join(',') } })
-      closeConversationTabs('agents', result.deletedIds)
       logger.info('Deleted topics', { count: result.deletedCount })
       return result
     },
-    [closeConversationTabs, deleteManyTrigger]
+    [deleteManyTrigger]
   )
 
   const deleteTopicsByAssistantId = useCallback(
     async (assistantId: string): Promise<DeleteTopicsResult> => {
       const result = await deleteByAssistantTrigger({ params: { assistantId } })
-      closeConversationTabs('agents', result.deletedIds)
       logger.info('Deleted assistant topics', { assistantId, count: result.deletedCount })
       return result
     },
-    [closeConversationTabs, deleteByAssistantTrigger]
+    [deleteByAssistantTrigger]
   )
 
   /**

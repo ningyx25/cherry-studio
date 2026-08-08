@@ -324,15 +324,18 @@ vi.mock('@renderer/hooks/tab', () => ({
 }))
 
 // Conversation navigation goes through the conversation-nav boundary; route it to the same
-// openTab spy so assertions keep verifying the target URL.
+// openTab spy so assertions keep verifying the target URL. Agent sessions route to the
+// module owned by their agent (defaulting to 科普AI); chat topics route to 科普AI too.
+const AGENT_MODULE_ROUTE_PREFIX: Record<string, string> = {
+  'pop-science': '/app/pop-science',
+  clinic: '/app/clinic'
+}
 vi.mock('@renderer/hooks/useConversationNavigation', () => ({
-  useConversationNavigation: (appId: string) => {
+  useConversationNavigation: () => {
     return {
-      openConversationTab: (key: string, title?: string) => {
-        const url =
-          appId === 'agents'
-            ? `/app/agents?sessionId=${encodeURIComponent(key)}`
-            : `/app/chat?topicId=${encodeURIComponent(key)}`
+      openConversationTab: (agentId: string, key: string, title?: string) => {
+        const prefix = AGENT_MODULE_ROUTE_PREFIX[agentId] ?? '/app/pop-science'
+        const url = `${prefix}?sessionId=${encodeURIComponent(key)}`
         return mocks.openTab(url, {
           forceNew: true,
           ...(title ? { title } : {})
@@ -557,10 +560,10 @@ afterEach(() => {
 describe('GlobalSearchPanel', () => {
   beforeEach(() => {
     testOnlyClearRefreshHistory()
-    // Conversations open via agent sessions on `/app/agents?sessionId=…`, so match the
-    // route prefix rather than the bare path.
+    // Conversations open via agent sessions on `/app/pop-science|/app/clinic?sessionId=…`,
+    // so match the route prefix rather than the bare path.
     mocks.openTab.mockImplementation((route: string) => {
-      if (route.startsWith('/app/agents')) return 'opened-agent-tab'
+      if (route.startsWith('/app/pop-science') || route.startsWith('/app/clinic')) return 'opened-agent-tab'
       return 'opened-route-tab'
     })
     mocks.recentItems = [
@@ -987,7 +990,7 @@ describe('GlobalSearchPanel', () => {
     await user.type(screen.getByLabelText('Search conversations, tasks, assistants, agents, and knowledge...'), 'topic')
     await user.click(await screen.findByRole('option', { name: /Topic A/ }))
 
-    expect(mocks.openTab).toHaveBeenCalledWith('/app/agents?sessionId=topic-1', { forceNew: true })
+    expect(mocks.openTab).toHaveBeenCalledWith('/app/pop-science?sessionId=topic-1', { forceNew: true })
     expect(mocks.emitResourceListReveal).not.toHaveBeenCalled()
     expect(mocks.eventEmit).not.toHaveBeenCalledWith('GLOBAL_SEARCH_SELECT_TOPIC', expect.anything())
     expect(mocks.onClose).toHaveBeenCalledTimes(1)
@@ -1616,7 +1619,7 @@ describe('GlobalSearchPanel', () => {
         body: { nodeId: 'message-leaf' }
       })
       expect(mocks.invalidateCache).toHaveBeenCalledWith(['/topics/topic-1/messages', '/topics/topic-1/tree'])
-      expect(mocks.openTab).toHaveBeenCalledWith('/app/agents?sessionId=topic-1', { forceNew: true })
+      expect(mocks.openTab).toHaveBeenCalledWith('/app/pop-science?sessionId=topic-1', { forceNew: true })
     })
     await waitFor(() => {
       expect(mocks.eventEmit).toHaveBeenCalledWith(
@@ -1791,7 +1794,7 @@ describe('GlobalSearchPanel', () => {
         '/agent-sessions/session-1',
         '/agent-sessions/session-1/messages'
       ])
-      expect(mocks.openTab).toHaveBeenCalledWith('/app/agents?sessionId=session-1', { forceNew: true })
+      expect(mocks.openTab).toHaveBeenCalledWith('/app/pop-science?sessionId=session-1', { forceNew: true })
       expect(mocks.eventEmit).toHaveBeenCalledWith('GLOBAL_SEARCH_SELECT_AGENT_SESSION_MESSAGE', {
         sessionId: 'session-1',
         messageId: 'session-message-1',
@@ -1842,7 +1845,7 @@ describe('GlobalSearchPanel', () => {
         '/agent-sessions/session-1',
         '/agent-sessions/session-1/messages'
       ])
-      expect(mocks.openTab).toHaveBeenCalledWith('/app/agents?sessionId=session-1', { forceNew: true })
+      expect(mocks.openTab).toHaveBeenCalledWith('/app/pop-science?sessionId=session-1', { forceNew: true })
       expect(mocks.eventEmit).toHaveBeenCalledWith('GLOBAL_SEARCH_SELECT_AGENT_SESSION_MESSAGE', {
         sessionId: 'session-1',
         messageId: 'session-message-1',
@@ -1889,7 +1892,8 @@ describe('GlobalSearchPanel', () => {
       expect(mocks.loggerError).toHaveBeenCalledWith('Failed to open global search result', openError, {
         sourceType: 'session',
         sessionId: 'session-1',
-        messageId: 'session-message-1'
+        messageId: 'session-message-1',
+        agentId: 'agent-1'
       })
       expect(toast.error).toHaveBeenCalledWith('Failed to open search result')
     })
@@ -2224,6 +2228,7 @@ describe('GlobalSearchPanel', () => {
         kind: 'session',
         sessionId: 'session-1',
         title: 'Stale session snapshot',
+        agentId: 'pop-science',
         lastAccessTime: 20
       }
     ]
@@ -2240,6 +2245,7 @@ describe('GlobalSearchPanel', () => {
           kind: 'session',
           sessionId: 'session-1',
           title: 'Fresh session name from server',
+          agentId: 'pop-science',
           lastAccessTime: 20
         }
       ])
@@ -2252,6 +2258,7 @@ describe('GlobalSearchPanel', () => {
         kind: 'session',
         sessionId: 'session-1',
         title: 'Untitled Session',
+        agentId: 'pop-science',
         lastAccessTime: 20
       }
     ]
@@ -2267,6 +2274,7 @@ describe('GlobalSearchPanel', () => {
         kind: 'session',
         sessionId: 'session-1',
         title: 'Untitled Session',
+        agentId: 'pop-science',
         lastAccessTime: 20
       }
     ])
