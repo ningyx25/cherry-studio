@@ -596,7 +596,7 @@ describe('OnboardingPage', () => {
   it('uses an elevated welcome layout with clear text hierarchy and intentional spacing', () => {
     render(<OnboardingPage />)
 
-    const logo = screen.getByRole('img', { name: 'Cherry Studio' })
+    const logo = screen.getByRole('img', { name: 'HuaTuo Studio' })
     const welcomeContent = logo.parentElement
     const primaryAction = screen.getByRole('button', { name: 'onboarding.welcome.login_cherryin' })
     const secondaryAction = screen.getByRole('button', { name: 'onboarding.welcome.other_provider' })

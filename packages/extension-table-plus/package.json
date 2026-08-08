@@ -76,7 +76,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CherryHQ/cherry-studio",
+    "url": "https://github.com/ningyx25/cherry-studio",
     "directory": "packages/extension-table-plus"
   },
   "scripts": {

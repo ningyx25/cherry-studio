@@ -1,6 +1,6 @@
 # API Gateway Reference
 
-The **API Gateway** exposes Cherry Studio's AI capabilities over a local HTTP
+The **API Gateway** exposes HuaTuo Studio's AI capabilities over a local HTTP
 server that speaks the **OpenAI** and **Anthropic** wire protocols, plus a few
 Cherry-specific REST endpoints (models, knowledge bases). Any OpenAI- or
 Anthropic-compatible client (SDKs, Claude Code, `curl`, …) can point at

@@ -1,4 +1,4 @@
-# Cherry Studio Knowledge Base — Product Spec
+# HuaTuo Studio Knowledge Base — Product Spec
 
 ## 1. Positioning
 

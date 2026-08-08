@@ -187,7 +187,7 @@ class BackupManager {
     return {
       version: DIRECT_BACKUP_VERSION,
       timestamp: Date.now(),
-      appName: 'Cherry Studio',
+      appName: 'HuaTuo Studio',
       appVersion: app.getVersion(),
       platform: process.platform,
       arch: process.arch,
@@ -867,7 +867,7 @@ class BackupManager {
 
       if (!(await fs.pathExists(path.join(extractionDir, 'metadata.json')))) {
         throw new Error(
-          `Unsupported v1 backup. Cherry Studio v2 can only restore backup version ${DIRECT_BACKUP_VERSION}.`
+          `Unsupported v1 backup. HuaTuo Studio v2 can only restore backup version ${DIRECT_BACKUP_VERSION}.`
         )
       }
 
@@ -895,13 +895,13 @@ class BackupManager {
 
     const existingJournal = readRestoreJournal()
     if (existingJournal.kind === 'corrupt') {
-      throw new Error('A corrupt restore journal already exists. Restart Cherry Studio before trying again.')
+      throw new Error('A corrupt restore journal already exists. Restart HuaTuo Studio before trying again.')
     }
     if (
       existingJournal.kind === 'ok' &&
       (existingJournal.journal.state === 'staged' || existingJournal.journal.state === 'promoting')
     ) {
-      throw new Error('Another restore is already pending. Restart Cherry Studio before trying again.')
+      throw new Error('Another restore is already pending. Restart HuaTuo Studio before trying again.')
     }
 
     // No restore is pending: terminal journals have already released their
@@ -1080,12 +1080,16 @@ class BackupManager {
   private async readDirectBackupMetadata(extractionDir: string): Promise<DirectBackupMetadata> {
     const raw = (await fs.readJson(path.join(extractionDir, 'metadata.json'))) as Record<string, unknown>
 
-    if (!raw || typeof raw !== 'object' || raw.appName !== 'Cherry Studio') {
-      throw new Error('This backup file is not from Cherry Studio and cannot be restored')
+    // Accept both the current and the legacy product name so backups created
+    // before the rebrand remain restorable.
+    const isSupportedApp =
+      raw && typeof raw === 'object' && (raw.appName === 'HuaTuo Studio' || raw.appName === 'Cherry Studio')
+    if (!isSupportedApp) {
+      throw new Error('This backup file is not from HuaTuo Studio and cannot be restored')
     }
     if (raw.version !== DIRECT_BACKUP_VERSION) {
       throw new Error(
-        `Unsupported backup version ${String(raw.version)}. Cherry Studio v2 can only restore backup version ${DIRECT_BACKUP_VERSION}.`
+        `Unsupported backup version ${String(raw.version)}. HuaTuo Studio v2 can only restore backup version ${DIRECT_BACKUP_VERSION}.`
       )
     }
 

@@ -26,7 +26,13 @@ const isProd = process.env.NODE_ENV === 'production'
 // pruned from production packages, the packaged app would fail at runtime with
 // MODULE_NOT_FOUND (no test catches this). See docs/references/api-gateway/README.md.
 const mainExternalDependencies = Object.keys(pkg.dependencies)
-const mainExternalModules = ['bufferutil', 'utf-8-validate', 'electron', ...mainExternalDependencies]
+const mainExternalModules = [
+  'bufferutil',
+  'utf-8-validate',
+  'electron',
+  'electron-devtools-installer',
+  ...mainExternalDependencies
+]
 
 export const isMainExternalModule = (id: string) => {
   return mainExternalModules.some((moduleId) => id === moduleId || id.startsWith(`${moduleId}/`))

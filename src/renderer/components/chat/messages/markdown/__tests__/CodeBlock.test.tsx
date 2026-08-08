@@ -140,11 +140,11 @@ describe('CodeBlock', () => {
     })
 
     it('should render known app routes as navigation entries instead of file paths', () => {
-      render(<CodeBlock {...defaultProps} className={undefined} children="/app/chat" />)
+      render(<CodeBlock {...defaultProps} className={undefined} children="/app/knowledge" />)
 
       expect(screen.queryByTestId('clickable-file-path')).not.toBeInTheDocument()
       fireEvent.click(screen.getByRole('button'))
-      expect(mocks.navigateToRoute).toHaveBeenCalledWith({ path: '/app/chat', query: undefined })
+      expect(mocks.navigateToRoute).toHaveBeenCalledWith({ path: '/app/knowledge', query: undefined })
     })
 
     it('should keep unknown app-like paths as file paths', () => {
@@ -165,8 +165,8 @@ describe('CodeBlock', () => {
     )
 
     it.each([
-      '/app/mini-app/example',
-      '/app/paintings/example',
+      '/settings/mcp/settings/server-1',
+      '/settings/mcp/any-server',
       '/settings/mcp/example/details',
       '/settings/scheduled-tasks/task-1'
     ])('should render declared dynamic route %s as a navigation entry', (path) => {

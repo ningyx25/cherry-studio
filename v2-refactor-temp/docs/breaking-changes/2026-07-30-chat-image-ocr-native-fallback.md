@@ -8,7 +8,7 @@ date: 2026-07-30
 
 ## What changed
 
-When an image is attached in Home Chat and addressed to a model without declared image-recognition support, Cherry Studio still runs OCR first — but if OCR finds no text, is not configured, or fails, the image is now forwarded to the provider as a base64-backed native image instead of being replaced with a `[could not read this file]` note.
+When an image is attached in Home Chat and addressed to a model without declared image-recognition support, HuaTuo Studio still runs OCR first — but if OCR finds no text, is not configured, or fails, the image is now forwarded to the provider as a base64-backed native image instead of being replaced with a `[could not read this file]` note.
 
 ## Why this matters to the user
 

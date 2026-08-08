@@ -54,14 +54,14 @@ describe('Link', () => {
     expect(screen.getByText('Go to section')).toBeInTheDocument()
   })
 
-  it('renders a Cherry Studio route link as an in-app navigation entry', async () => {
+  it('renders a HuaTuo Studio route link as an in-app navigation entry', async () => {
     const user = userEvent.setup()
-    render(<Link href="/app/paintings?source=assistant">打开画图功能</Link>)
+    render(<Link href="/app/knowledge?source=assistant">打开画图功能</Link>)
 
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
     await user.click(screen.getByRole('button'))
     expect(mocks.navigateToRoute).toHaveBeenCalledWith({
-      path: '/app/paintings',
+      path: '/app/knowledge',
       query: { source: 'assistant' }
     })
   })

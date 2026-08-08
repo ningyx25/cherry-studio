@@ -16,7 +16,7 @@ Full backups preserve the supported application data and browser storage, except
 
 ## What the user should do
 
-Create a fresh backup after upgrading, and choose a full backup when browser storage and all supported `Data` contents must be preserved. Use a slim backup when only the SQLite database and cache are required. Cherry Studio v1 backup formats — version 6 direct ZIPs, metadata-less version 1-5 ZIPs, and `.bak` files — remain rejected.
+Create a fresh backup after upgrading, and choose a full backup when browser storage and all supported `Data` contents must be preserved. Use a slim backup when only the SQLite database and cache are required. HuaTuo Studio v1 backup formats — version 6 direct ZIPs, metadata-less version 1-5 ZIPs, and `.bak` files — remain rejected.
 
 ## Notes for release manager
 

@@ -194,7 +194,9 @@ const sidebarIconKeyMap = {
   knowledge: 'knowledge.title',
   files: 'files.title',
   code_tools: 'code.title',
-  notes: 'notes.title'
+  notes: 'notes.title',
+  'pop-science': 'title.pop_science',
+  clinic: 'title.clinic'
 } as const
 
 export const getSidebarIconLabelKey = (key: string): string => {

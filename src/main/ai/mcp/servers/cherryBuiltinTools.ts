@@ -1,5 +1,5 @@
 /**
- * In-process MCP server exposing Cherry Studio's builtin tools to Claude Code.
+ * In-process MCP server exposing HuaTuo Studio's builtin tools to Claude Code.
  *
  * Wraps the same `webLookup` core the AI-SDK builtin tools use, so Claude Code's
  * web search/fetch run identical logic against the user's configured

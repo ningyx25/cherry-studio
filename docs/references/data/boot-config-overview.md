@@ -177,7 +177,7 @@ Utility functions in `src/shared/data/preference/preferenceUtils.ts`:
 {
   "app.disable_hardware_acceleration": false,
   "app.user_data_path": {
-    "/Applications/Cherry Studio.app/Contents/MacOS/Cherry Studio": "/Volumes/External/CherryData"
+    "/Applications/HuaTuo Studio.app/Contents/MacOS/HuaTuo Studio": "/Volumes/External/CherryData"
   }
 }
 ```

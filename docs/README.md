@@ -1,4 +1,4 @@
-# Cherry Studio Documentation
+# HuaTuo Studio Documentation
 
 ## Guides
 

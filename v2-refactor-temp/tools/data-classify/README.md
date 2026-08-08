@@ -1,6 +1,6 @@
 # 数据分类与代码生成工具
 
-Cherry Studio 数据重构项目的自动化工具集，用于管理数据分类和生成 TypeScript 代码。
+HuaTuo Studio 数据重构项目的自动化工具集，用于管理数据分类和生成 TypeScript 代码。
 
 **版本**: 2.0.0
 **更新日期**: 2025-11-28
@@ -214,7 +214,7 @@ npm run validate:gen
 
 ## 数据分类标准
 
-根据 Cherry Studio 数据重构架构，所有数据需要分类到以下 6 个类别之一：
+根据 HuaTuo Studio 数据重构架构，所有数据需要分类到以下 6 个类别之一：
 
 ### 1. 偏好配置 (preferences)
 
@@ -583,7 +583,7 @@ Boot config 在整个启动链的最前端，为后续所有阶段提供基础�
 redux (最高) > dexieSettings > localStorage > electronStore (最低)
 ```
 
-**已知字段清单**（参考 [PR #10162 comment](https://github.com/CherryHQ/cherry-studio/pull/10162#issuecomment-4010796619)）:
+**已知字段清单**（参考 [PR #10162 comment](https://github.com/ningyx25/cherry-studio/pull/10162#issuecomment-4010796619)）:
 
 Dexie `settings` 表是一个通用 KV 存储（`{ id: string, value: any }`），所有 `image://` 键由 `ImageStorage` 服务管理。
 

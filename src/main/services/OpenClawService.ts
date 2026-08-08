@@ -1002,7 +1002,7 @@ export class OpenClawService extends BaseService {
   }
 
   /**
-   * Sync Cherry Studio Provider configuration to OpenClaw
+   * Sync HuaTuo Studio Provider configuration to OpenClaw
    */
   public async syncConfig(uniqueModelId: UniqueModelId, port?: number): Promise<OperationResult> {
     try {

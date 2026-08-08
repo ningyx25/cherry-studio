@@ -27,7 +27,21 @@ async function installReactDevtools() {
     // time, so a static import would run that side effect for anything importing
     // this module (e.g. MainWindowService) — even in production, where this dev-only
     // library is never needed. Importing it here keeps it off the production path.
-    const { default: installExtension, REACT_DEVELOPER_TOOLS } = await import('electron-devtools-installer')
+    //
+    // The package is CommonJS with `__esModule`. When Rollup inlines it (dev-mode
+    // default), the bundler normalizes `default` to the install function. When it is
+    // externalized (see electron.vite.config.ts), Node's native `import()` surfaces the
+    // raw CommonJS exports object as `default`, so the function lives at `default.default`.
+    // Normalize both shapes here so the module resolves regardless of bundling mode.
+    const mod = (await import('electron-devtools-installer')) as {
+      default?: { default?: unknown; REACT_DEVELOPER_TOOLS?: unknown }
+      REACT_DEVELOPER_TOOLS?: unknown
+    }
+    const installExtension = (mod.default?.default ?? mod.default) as (ext: unknown) => Promise<string>
+    const REACT_DEVELOPER_TOOLS = mod.default?.REACT_DEVELOPER_TOOLS ?? mod.REACT_DEVELOPER_TOOLS
+    if (typeof installExtension !== 'function') {
+      throw new Error('electron-devtools-installer did not expose an install function')
+    }
     const name = await installExtension(REACT_DEVELOPER_TOOLS)
     logger.info(`Added Extension: ${name}`)
   } catch (error) {

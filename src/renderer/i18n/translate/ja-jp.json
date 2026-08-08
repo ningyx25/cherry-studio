@@ -33,7 +33,7 @@
     },
     "builtin": {
       "cherry_assistant": {
-        "description": "内蔵のCherry Studioアドバイザー。問題の診断、操作ガイド、FAQの収集、バグ/機能リクエストの提出、およびスキルの検索/作成を行います。"
+        "description": "内蔵のHuaTuo Studioアドバイザー。問題の診断、操作ガイド、FAQの収集、バグ/機能リクエストの提出、およびスキルの検索/作成を行います。"
       }
     },
     "channels": {
@@ -1098,7 +1098,7 @@
     "authHeader": {
       "title": "認証ヘッダー"
     },
-    "description": "OpenAI 互換の HTTP API を通じて Cherry Studio の AI 機能を公開します",
+    "description": "OpenAI 互換の HTTP API を通じて HuaTuo Studio の AI 機能を公開します",
     "documentation": {
       "title": "API ドキュメント"
     },
@@ -2139,7 +2139,7 @@
     },
     "api_gateway": {
       "description": "あらゆるCLI、すべてのモデル",
-      "requires_running": "有効化後、Cherry Studio を実行し続けてください — 外部 CLI は、Cherry Studio がホストするゲートウェイに接続します。",
+      "requires_running": "有効化後、HuaTuo Studio を実行し続けてください — 外部 CLI は、HuaTuo Studio がホストするゲートウェイに接続します。",
       "title": "統合ゲートウェイ"
     },
     "apply_failed": "システムファイルへのCLI設定の書き込みに失敗しました",
@@ -4703,12 +4703,12 @@
       "select_other_provider": "他のプロバイダーを選択",
       "setup_hint": "ベストな体験のために、少なくとも1つのプロバイダーを設定してください",
       "subtitle": "プロバイダーに接続して、オールインワンAIワークステーションを始めましょう",
-      "title": "Cherry Studioへようこそ"
+      "title": "HuaTuo Studioへようこそ"
     }
   },
   "openclaw": {
     "checking_installation": "OpenClawのインストールを確認しています...",
-    "description": "Cherry Studio プロバイダーを OpenClaw Gateway と統合し、Claude Code、Qwen-Coder などの AI コーディングエージェントを有効にします。",
+    "description": "HuaTuo Studio プロバイダーを OpenClaw Gateway と統合し、Claude Code、Qwen-Coder などの AI コーディングエージェントを有効にします。",
     "error": {
       "select_provider_model": "プロバイダーとモデルをまず選択してください"
     },
@@ -4746,7 +4746,7 @@
       "title": "モデル設定"
     },
     "node_missing": {
-      "description": "OpenClawにはNode.js/npmが必要です。まずNode.jsをインストールしてから、Cherry Studioを再起動してください。",
+      "description": "OpenClawにはNode.js/npmが必要です。まずNode.jsをインストールしてから、HuaTuo Studioを再起動してください。",
       "download_button": "Node.jsをダウンロード",
       "hint": "macOS: brew install node | Windows: nodejs.org から LTS 版をダウンロード",
       "title": "Node.jsが必要"
@@ -5643,7 +5643,7 @@
           },
           "description": {
             "0": "テキスト選択ツールは、<strong>アクセシビリティー権限</strong>が必要です。",
-            "1": "「<strong>設定に移動</strong>」をクリックし、後で表示される権限要求ポップアップで「<strong>システム設定を開く</strong>」ボタンをクリックします。その後、表示されるアプリケーションリストで「<strong>Cherry Studio</strong>」を見つけ、権限スイッチをオンにしてください。",
+            "1": "「<strong>設定に移動</strong>」をクリックし、後で表示される権限要求ポップアップで「<strong>システム設定を開く</strong>」ボタンをクリックします。その後、表示されるアプリケーションリストで「<strong>HuaTuo Studio</strong>」を見つけ、権限スイッチをオンにしてください。",
             "2": "設定が完了したら、テキスト選択ツールを再起動してください。"
           },
           "title": "アクセシビリティー権限"
@@ -5655,7 +5655,7 @@
         "title": "アプリケーションフィルターリスト",
         "user_tips": {
           "mac": "アプリケーションのBundle IDを1行ずつ入力してください。大文字小文字は区別しません。例: com.google.Chrome, com.apple.mail, など。",
-          "windows": "アプリケーションの実行ファイル名を1行ずつ入力してください。大文字小文字は区別しません。例: chrome.exe, weixin.exe, CherryStudio.exe, など。"
+          "windows": "アプリケーションの実行ファイル名を1行ずつ入力してください。大文字小文字は区別しません。例: chrome.exe, weixin.exe, HuaTuoStudio.exe, など。"
         }
       },
       "linux": {
@@ -5667,7 +5667,7 @@
         "wayland_checklist_subtitle": "Wayland エクスペリエンスを最適化するために、次の条件が満たされていることを確認してください：",
         "wayland_description": "Waylandセッションで実行中です。システムの制約により、一部のデスクトップ環境ではツールバーが選択したテキストに追随せず、画面中央にのみ表示される場合があります。完全な体験のためにはX11セッションへの切り替えを推奨します。",
         "wayland_title": "Waylandセッション通知",
-        "xwayland_fail": "有効ではありません。`--ozone-platform=x11` フラグを付けて Cherry Studio を起動してください。",
+        "xwayland_fail": "有効ではありません。`--ozone-platform=x11` フラグを付けて HuaTuo Studio を起動してください。",
         "xwayland_label": "XWaylandモード:",
         "xwayland_pass": "有効"
       },
@@ -5864,12 +5864,12 @@
         "inspecting": "[to be translated]:Preparing the available information...",
         "limit": "[to be translated]:To keep the ZIP manageable, logs and detailed records are limited to {{size}}. Newer information is kept first.",
         "mail": {
-          "body": "[to be translated]:Please help investigate this Cherry Studio issue.\n\nDiagnostic bundle ID: {{bundleId}}\nVersion: {{version}}\nPlatform: {{platform}}\nTime range: {{range}}\nFile: {{fileName}}\n\nPlease attach the ZIP file to this email. The bundle was saved locally and was not uploaded automatically.",
-          "subject": "[to be translated]:Cherry Studio diagnostics {{bundleId}}"
+          "body": "[to be translated]:Please help investigate this HuaTuo Studio issue.\n\nDiagnostic bundle ID: {{bundleId}}\nVersion: {{version}}\nPlatform: {{platform}}\nTime range: {{range}}\nFile: {{fileName}}\n\nPlease attach the ZIP file to this email. The bundle was saved locally and was not uploaded automatically.",
+          "subject": "[to be translated]:HuaTuo Studio diagnostics {{bundleId}}"
         },
         "privacy": {
           "consent": "[to be translated]:I understand the information above and will share the ZIP only privately with support.",
-          "description": "[to be translated]:These records may contain things you entered, file locations, request and response content, and service connection information. Cherry Studio does not hide or upload them automatically. Share the ZIP only with support, and never post it on GitHub or other public sites.",
+          "description": "[to be translated]:These records may contain things you entered, file locations, request and response content, and service connection information. HuaTuo Studio does not hide or upload them automatically. Share the ZIP only with support, and never post it on GitHub or other public sites.",
           "title": "[to be translated]:Before you share"
         },
         "range_title": "[to be translated]:Time range",
@@ -5916,7 +5916,7 @@
         "agent_error": "フィードバック用のCherry Assistantを開けません。もう一度お試しください。",
         "button": "フィードバック",
         "dialog": {
-          "description": "フィードバックの共有方法を選択して、Cherry Studioの改善にご協力ください。",
+          "description": "フィードバックの共有方法を選択して、HuaTuo Studioの改善にご協力ください。",
           "title": "フィードバックチャンネルを選択してください"
         },
         "github": {
@@ -5998,7 +5998,7 @@
         "select": "ディレクトリを変更",
         "select_error": "データディレクトリの変更に失敗しました",
         "select_error_in_app_path": "新しいパスはアプリのインストールパスと同じです。別のパスを選択してください",
-        "select_error_protected_path": "選択されたパスは、オペレーティングシステムまたはCherry Studioによって保護されています。別のフォルダを選択してください。",
+        "select_error_protected_path": "選択されたパスは、オペレーティングシステムまたはHuaTuo Studioによって保護されています。別のフォルダを選択してください。",
         "select_error_root_path": "新しいパスはルートパスにできません",
         "select_error_same_path": "新しいパスは元のパスと同じです。別のパスを選択してください",
         "select_error_write_permission": "新しいパスに書き込み権限がありません",
@@ -6426,7 +6426,7 @@
           "title": "接続チェック"
         },
         "root_path": "ドキュメントルートパス",
-        "root_path_placeholder": "例：/CherryStudio",
+        "root_path_placeholder": "例：/HuaTuoStudio",
         "title": "思源ノート設定",
         "token": {
           "help": "思源ノート->設定->について で取得",
@@ -6653,7 +6653,7 @@
         "uv": "Python package manager for MCP services and dependency installation."
       },
       "uninstall": "アンインストール",
-      "uninstallConfirmMessage": "\"{{name}}\"をアンインストールしてもよろしいですか？Cherry Studioのバックエンドコピーが削除されます。",
+      "uninstallConfirmMessage": "\"{{name}}\"をアンインストールしてもよろしいですか？HuaTuo Studioのバックエンドコピーが削除されます。",
       "uninstallConfirmTitle": "アンインストールツール",
       "uninstallFailed": "ツールのアンインストールに失敗しました",
       "uninstallSuccess": "ツールをアンインストールしました",

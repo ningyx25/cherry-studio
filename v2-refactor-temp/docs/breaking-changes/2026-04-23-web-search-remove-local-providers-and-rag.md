@@ -34,4 +34,4 @@
 
 ## 关联 PR/提交
 
-- PR: <https://github.com/CherryHQ/cherry-studio/pull/14443>
+- PR: <https://github.com/ningyx25/cherry-studio/pull/14443>

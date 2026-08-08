@@ -44,8 +44,8 @@ export function configureChromiumFlags(): void {
   // Linux (X11 and Wayland): set the window class/name so window managers
   // identify the app correctly in alt-tab switchers, docks, etc.
   if (isLinux) {
-    app.commandLine.appendSwitch('class', 'CherryStudio')
-    app.commandLine.appendSwitch('name', 'CherryStudio')
+    app.commandLine.appendSwitch('class', 'HuaTuoStudio')
+    app.commandLine.appendSwitch('name', 'HuaTuoStudio')
   }
 
   // Unconditional Chromium feature flags:

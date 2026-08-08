@@ -1,5 +1,5 @@
 appId: com.kangfenmao.CherryStudio
-productName: Cherry Studio
+productName: HuaTuo Studio
 electronLanguages:
   - zh-CN
   - zh-TW
@@ -14,7 +14,7 @@ directories:
   buildResources: build
 
 protocols:
-  - name: Cherry Studio
+  - name: HuaTuo Studio
     schemes:
       - cherrystudio
 files:
@@ -136,8 +136,8 @@ linux:
   category: Utility
   desktop:
     entry:
-      Name: Cherry Studio
-      StartupWMClass: CherryStudio
+      Name: HuaTuo Studio
+      StartupWMClass: HuaTuoStudio
   mimeTypes:
     - x-scheme-handler/cherrystudio
 rpm:
@@ -156,7 +156,7 @@ artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
     <!--LANG:en-->
-    Cherry Studio 2.0.0 - A New AI Workspace, from Chat to Getting Work Done
+    HuaTuo Studio 2.0.0 - A New AI Workspace, from Chat to Getting Work Done
 
     ✨ New Interface, New Experience
     - Upgraded interactions and visual design make chats, roles, projects, and tasks clearer and easier to organize
@@ -177,7 +177,7 @@ releaseInfo:
     - Smoother scrolling in very long conversations, while large-folder imports no longer block the interface
 
     <!--LANG:zh-CN-->
-    Cherry Studio 2.0.0 - 全新 AI 工作台，从对话到完成任务
+    HuaTuo Studio 2.0.0 - 全新 AI 工作台，从对话到完成任务
 
     ✨ 全新界面，全新体验
     - 交互与视觉全面升级，更清晰简约，让聊天、角色、项目和任务更容易组织

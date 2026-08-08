@@ -9,7 +9,7 @@ on:
 
 jobs:
   auto-update-catalog:
-    if: github.repository == 'CherryHQ/cherry-studio'
+    if: github.repository == 'ningyx25/cherry-studio'
     runs-on: ubuntu-latest
     name: Auto Update Catalog
     permissions:

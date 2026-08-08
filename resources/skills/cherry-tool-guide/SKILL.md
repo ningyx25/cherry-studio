@@ -1,12 +1,12 @@
 ---
 name: cherry-tool-guide
-description: Cherry Studio first-party tool and bundled-shell routing for general agents. For straightforward local work in shell-capable sessions, run JS/TS with `bun <file>` and one-off JS tools with `bun x`; run Python with `uv run [--with <pkg>] python` and one-off Python CLIs with `uvx`; search with `rg`. Load this guide before changing project dependencies, deciding whether a tool should be ephemeral or reusable, or using Cherry-owned web/browser, knowledge, persistent memory, schedules/notifications, IM channels, image generation, artifact reporting, managed CLI, or skill capabilities—even if the user names no tool. Consult it before shell/file workarounds; live tool schemas are authoritative.
+description: HuaTuo Studio first-party tool and bundled-shell routing for general agents. For straightforward local work in shell-capable sessions, run JS/TS with `bun <file>` and one-off JS tools with `bun x`; run Python with `uv run [--with <pkg>] python` and one-off Python CLIs with `uvx`; search with `rg`. Load this guide before changing project dependencies, deciding whether a tool should be ephemeral or reusable, or using Cherry-owned web/browser, knowledge, persistent memory, schedules/notifications, IM channels, image generation, artifact reporting, managed CLI, or skill capabilities—even if the user names no tool. Consult it before shell/file workarounds; live tool schemas are authoritative.
 version: 1.1.0
 ---
 
 # Cherry Tool Guide
 
-Cherry Studio injects first-party tools into your session over three MCP servers
+HuaTuo Studio injects first-party tools into your session over three MCP servers
 (`mcp__cherry-tools__*`, `mcp__agent-memory__*`, `mcp__skills__*`) and gives
 shell-capable general agents bundled runtimes for local execution. The MCP tools act on
 the running app — the user's knowledge bases, IM channels, schedules, managed CLIs, and

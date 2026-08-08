@@ -1,6 +1,6 @@
 # Changesets
 
-This folder contains configuration and changeset files for managing package versioning and publishing in the Cherry Studio monorepo.
+This folder contains configuration and changeset files for managing package versioning and publishing in the HuaTuo Studio monorepo.
 
 ## What is Changesets?
 

@@ -33,7 +33,7 @@
     },
     "builtin": {
       "cherry_assistant": {
-        "description": "Consilier integrat Cherry Studio. Diagnostică probleme, ghidează operațiuni, colectează întrebări frecvente, trimite rapoarte de erori/cereri de funcționalități și caută/crează Abilități (Skills)"
+        "description": "Consilier integrat HuaTuo Studio. Diagnostică probleme, ghidează operațiuni, colectează întrebări frecvente, trimite rapoarte de erori/cereri de funcționalități și caută/crează Abilități (Skills)"
       }
     },
     "channels": {
@@ -1098,7 +1098,7 @@
     "authHeader": {
       "title": "Header de autorizare"
     },
-    "description": "Expune capacitățile AI ale Cherry Studio prin API-uri HTTP compatibile cu OpenAI",
+    "description": "Expune capacitățile AI ale HuaTuo Studio prin API-uri HTTP compatibile cu OpenAI",
     "documentation": {
       "title": "Documentație API"
     },
@@ -2139,7 +2139,7 @@
     },
     "api_gateway": {
       "description": "Orice CLI, fiecare model",
-      "requires_running": "Păstrează Cherry Studio rulând după activare — CLI-ul extern se conectează la gateway-ul pe care îl găzduiește.",
+      "requires_running": "Păstrează HuaTuo Studio rulând după activare — CLI-ul extern se conectează la gateway-ul pe care îl găzduiește.",
       "title": "Gateway Unificat"
     },
     "apply_failed": "Nu s-a reușit scrierea configurației CLI în fișierul de sistem",
@@ -4703,12 +4703,12 @@
       "select_other_provider": "Selectați alt furnizor",
       "setup_hint": "Vă rugăm să configurați cel puțin un furnizor pentru cea mai bună experiență",
       "subtitle": "Conectați un furnizor pentru a vă activa stația de lucru AI all-in-one",
-      "title": "Bun venit la Cherry Studio"
+      "title": "Bun venit la HuaTuo Studio"
     }
   },
   "openclaw": {
     "checking_installation": "Verificare instalare OpenClaw...",
-    "description": "Integrează furnizorii Cherry Studio cu Gateway-ul OpenClaw pentru a permite agenților de codificare AI precum Claude Code, Qwen-Coder și alții.",
+    "description": "Integrează furnizorii HuaTuo Studio cu Gateway-ul OpenClaw pentru a permite agenților de codificare AI precum Claude Code, Qwen-Coder și alții.",
     "error": {
       "select_provider_model": "Vă rugăm să selectați mai întâi un furnizor și un model"
     },
@@ -5643,7 +5643,7 @@
           },
           "description": {
             "0": "Asistentul de selecție necesită <strong>Permisiune de accesibilitate</strong> pentru a funcționa corect.",
-            "1": "Te rugăm să faci clic pe \"<strong>Mergi la Setări</strong>\" și să apeși butonul \"<strong>Deschide setările de sistem</strong>\" în fereastra pop-up de solicitare a permisiunii care apare ulterior. Apoi găsește \"<strong>Cherry Studio</strong>\" în lista de aplicații și activează comutatorul de permisiune.",
+            "1": "Te rugăm să faci clic pe \"<strong>Mergi la Setări</strong>\" și să apeși butonul \"<strong>Deschide setările de sistem</strong>\" în fereastra pop-up de solicitare a permisiunii care apare ulterior. Apoi găsește \"<strong>HuaTuo Studio</strong>\" în lista de aplicații și activează comutatorul de permisiune.",
             "2": "După finalizarea setărilor, te rugăm să redeschizi asistentul de selecție."
           },
           "title": "Permisiune de accesibilitate"
@@ -5655,7 +5655,7 @@
         "title": "Listă filtrare aplicații",
         "user_tips": {
           "mac": "Te rugăm să introduci Bundle ID-ul aplicației, unul pe linie, nu este sensibil la majuscule/minuscule, poate fi potrivit aproximativ. De exemplu: com.google.Chrome, com.apple.mail etc.",
-          "windows": "Te rugăm să introduci numele fișierului executabil al aplicației, unul pe linie, nu este sensibil la majuscule/minuscule, poate fi potrivit aproximativ. De exemplu: chrome.exe, weixin.exe, CherryStudio.exe etc."
+          "windows": "Te rugăm să introduci numele fișierului executabil al aplicației, unul pe linie, nu este sensibil la majuscule/minuscule, poate fi potrivit aproximativ. De exemplu: chrome.exe, weixin.exe, HuaTuoStudio.exe etc."
         }
       },
       "linux": {
@@ -5667,7 +5667,7 @@
         "wayland_checklist_subtitle": "Asigurați-vă că sunt îndeplinite următoarele condiții pentru a optimiza experiența Wayland:",
         "wayland_description": "Vă aflați într-o sesiune Wayland. Din cauza limitărilor sistemului, bara de instrumente poate apărea doar în centrul ecranului în loc să urmărească textul selectat pe unele medii desktop. Se recomandă să treceți la o sesiune X11 pentru o experiență completă.",
         "wayland_title": "Notificare sesiune Wayland",
-        "xwayland_fail": "Nu este activat, vă rugăm să lansați Cherry Studio cu steagul `--ozone-platform=x11`",
+        "xwayland_fail": "Nu este activat, vă rugăm să lansați HuaTuo Studio cu steagul `--ozone-platform=x11`",
         "xwayland_label": "Mod XWayland:",
         "xwayland_pass": "Activat"
       },
@@ -5864,12 +5864,12 @@
         "inspecting": "[to be translated]:Preparing the available information...",
         "limit": "[to be translated]:To keep the ZIP manageable, logs and detailed records are limited to {{size}}. Newer information is kept first.",
         "mail": {
-          "body": "[to be translated]:Please help investigate this Cherry Studio issue.\n\nDiagnostic bundle ID: {{bundleId}}\nVersion: {{version}}\nPlatform: {{platform}}\nTime range: {{range}}\nFile: {{fileName}}\n\nPlease attach the ZIP file to this email. The bundle was saved locally and was not uploaded automatically.",
-          "subject": "[to be translated]:Cherry Studio diagnostics {{bundleId}}"
+          "body": "[to be translated]:Please help investigate this HuaTuo Studio issue.\n\nDiagnostic bundle ID: {{bundleId}}\nVersion: {{version}}\nPlatform: {{platform}}\nTime range: {{range}}\nFile: {{fileName}}\n\nPlease attach the ZIP file to this email. The bundle was saved locally and was not uploaded automatically.",
+          "subject": "[to be translated]:HuaTuo Studio diagnostics {{bundleId}}"
         },
         "privacy": {
           "consent": "[to be translated]:I understand the information above and will share the ZIP only privately with support.",
-          "description": "[to be translated]:These records may contain things you entered, file locations, request and response content, and service connection information. Cherry Studio does not hide or upload them automatically. Share the ZIP only with support, and never post it on GitHub or other public sites.",
+          "description": "[to be translated]:These records may contain things you entered, file locations, request and response content, and service connection information. HuaTuo Studio does not hide or upload them automatically. Share the ZIP only with support, and never post it on GitHub or other public sites.",
           "title": "[to be translated]:Before you share"
         },
         "range_title": "[to be translated]:Time range",
@@ -5916,7 +5916,7 @@
         "agent_error": "Nu se poate deschide Cherry Assistant pentru feedback. Vă rugăm să încercați din nou.",
         "button": "Feedback",
         "dialog": {
-          "description": "Alege cum să partajezi feedback-ul și ajută-ne să facem Cherry Studio mai bun.",
+          "description": "Alege cum să partajezi feedback-ul și ajută-ne să facem HuaTuo Studio mai bun.",
           "title": "Alege un canal de feedback"
         },
         "github": {
@@ -5998,7 +5998,7 @@
         "select": "Modifică directorul",
         "select_error": "Schimbarea directorului de date a eșuat",
         "select_error_in_app_path": "Noua cale este aceeași cu calea de instalare a aplicației, te rugăm să selectezi o altă cale",
-        "select_error_protected_path": "Calea selectată este protejată de sistemul de operare sau de Cherry Studio. Vă rugăm să alegeți un alt folder.",
+        "select_error_protected_path": "Calea selectată este protejată de sistemul de operare sau de HuaTuo Studio. Vă rugăm să alegeți un alt folder.",
         "select_error_root_path": "Noua cale nu poate fi calea rădăcină",
         "select_error_same_path": "Noua cale este aceeași cu vechea cale, te rugăm să selectezi o altă cale",
         "select_error_write_permission": "Noua cale nu are permisiuni de scriere",
@@ -6426,7 +6426,7 @@
           "title": "Verificare conexiune"
         },
         "root_path": "Cale rădăcină SiYuan Note",
-        "root_path_placeholder": "de ex.: /CherryStudio",
+        "root_path_placeholder": "de ex.: /HuaTuoStudio",
         "title": "Configurare SiYuan Note",
         "token": {
           "help": "Obține token SiYuan Note",
@@ -6653,7 +6653,7 @@
         "uv": "Python package manager for MCP services and dependency installation."
       },
       "uninstall": "Dezinstalare",
-      "uninstallConfirmMessage": "Sigur doriți să dezinstalați \"{{name}}\"? Copia de backend a Cherry Studio va fi ștearsă.",
+      "uninstallConfirmMessage": "Sigur doriți să dezinstalați \"{{name}}\"? Copia de backend a HuaTuo Studio va fi ștearsă.",
       "uninstallConfirmTitle": "Instrument de dezinstalare",
       "uninstallFailed": "Nu s-a putut dezinstala instrumentul",
       "uninstallSuccess": "Instrument dezinstalat",

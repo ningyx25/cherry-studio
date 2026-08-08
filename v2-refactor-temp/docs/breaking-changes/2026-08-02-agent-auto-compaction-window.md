@@ -12,7 +12,7 @@ Work Agent now aligns Claude Code's automatic-compaction threshold with the sele
 
 ## Why this matters to the user
 
-Long-context models no longer compact at Claude Code's generic 200,000-token default when Cherry Studio has more accurate model metadata. Editing that metadata also rebuilds the Work Agent connection before the next turn so the new threshold takes effect.
+Long-context models no longer compact at Claude Code's generic 200,000-token default when HuaTuo Studio has more accurate model metadata. Editing that metadata also rebuilds the Work Agent connection before the next turn so the new threshold takes effect.
 
 ## What the user should do
 

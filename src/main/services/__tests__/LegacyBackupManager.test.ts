@@ -481,7 +481,7 @@ describe('BackupManager direct v2 data compatibility', () => {
       '/mock/temp/backup/create-operation-id/metadata.json',
       expect.objectContaining({
         version: 7,
-        appName: 'Cherry Studio',
+        appName: 'HuaTuo Studio',
         resources: {
           database: false,
           cache: true,
@@ -1163,7 +1163,7 @@ describe('BackupManager direct v2 data compatibility', () => {
     vi.mocked(fs.readJson).mockResolvedValue({ version: 6, appName: 'Cherry Studio' } as never)
 
     await expect((backupManager as any).restoreDirect('/extract')).rejects.toThrow(
-      'Unsupported backup version 6. Cherry Studio v2 can only restore backup version 7.'
+      'Unsupported backup version 6. HuaTuo Studio v2 can only restore backup version 7.'
     )
 
     expect(fs.copy).not.toHaveBeenCalled()

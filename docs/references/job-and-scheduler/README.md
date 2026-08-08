@@ -1,6 +1,6 @@
 # Job & Scheduler
 
-Cherry Studio unified background job + time-scheduling system.
+HuaTuo Studio unified background job + time-scheduling system.
 
 | Doc | What it covers | Audience |
 |---|---|---|

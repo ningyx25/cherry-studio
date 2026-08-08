@@ -16,7 +16,7 @@
     "generate": "tsx scripts/generate-catalog.ts --write && biome format --write data/models.json data/provider-models.json data/providers.json src/patterns/reasoning-families.gen.ts src/patterns/server-tool-models.gen.ts src/patterns/server-tool-constraints.gen.ts",
     "generate:check": "tsx scripts/generate-catalog.ts --report"
   },
-  "author": "Cherry Studio",
+  "author": "HuaTuo Studio",
   "license": "MIT",
   "files": [
     "dist/**/*",
@@ -24,12 +24,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CherryHQ/cherry-studio.git"
+    "url": "git+https://github.com/ningyx25/cherry-studio.git"
   },
   "bugs": {
-    "url": "https://github.com/CherryHQ/cherry-studio/issues"
+    "url": "https://github.com/ningyx25/cherry-studio/issues"
   },
-  "homepage": "https://github.com/CherryHQ/cherry-studio#readme",
+  "homepage": "https://github.com/ningyx25/cherry-studio#readme",
   "exports": {
     ".": {
       "import": {

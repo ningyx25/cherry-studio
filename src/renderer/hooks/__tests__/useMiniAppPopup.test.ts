@@ -565,14 +565,14 @@ describe('useMiniAppPopup', () => {
         result.current.openSmartMiniApp({
           appId: 'releases',
           name: 'Releases',
-          url: 'file:///Applications/Cherry%20Studio/resources/releases.html?theme=dark',
+          url: 'file:///Applications/HuaTuo%20Studio/resources/releases.html?theme=dark',
           logo: 'icon'
         })
       })
 
       expect(mocks.request).toHaveBeenCalledWith(
         'system.shell.open_path',
-        '/Applications/Cherry Studio/resources/releases.html'
+        '/Applications/HuaTuo Studio/resources/releases.html'
       )
       expect(mocks.request).not.toHaveBeenCalledWith('system.shell.open_website', expect.anything())
       expect(mockTabs.openTab).not.toHaveBeenCalled()
@@ -643,7 +643,7 @@ describe('useMiniAppPopup', () => {
       expect(mockClearWebviewState).toHaveBeenCalledWith('b')
     })
 
-    // Regression for https://github.com/CherryHQ/cherry-studio/pull/14049 —
+    // Regression for https://github.com/ningyx25/cherry-studio/pull/14049 —
     // before the fix, switching between miniapp tabs that the user had pinned
     // in the AppShell tab bar would still evict them from keep-alive (the
     // hook didn't know about pin status), so the side-bar mini-tab list

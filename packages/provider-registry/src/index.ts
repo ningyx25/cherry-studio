@@ -1,5 +1,5 @@
 /**
- * Cherry Studio Registry
+ * HuaTuo Studio Registry
  * Main entry point for the model and provider registry system
  */
 

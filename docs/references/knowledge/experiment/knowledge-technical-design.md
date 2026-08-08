@@ -1,4 +1,4 @@
-# Cherry Studio Knowledge Base — Technical Design
+# HuaTuo Studio Knowledge Base — Technical Design
 
 ## 1. Scope
 

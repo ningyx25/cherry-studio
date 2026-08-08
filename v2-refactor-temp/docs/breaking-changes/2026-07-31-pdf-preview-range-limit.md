@@ -19,7 +19,7 @@ the file itself is smaller than 50 MiB.
 
 ## What the user should do
 
-Use **Open with default app** when Cherry Studio reports that part of the PDF is too large to preview safely.
+Use **Open with default app** when HuaTuo Studio reports that part of the PDF is too large to preview safely.
 
 ## Notes for release manager
 
