@@ -61,6 +61,16 @@ const PINNED_CODE_TAB: Tab = {
   isPinned: true
 }
 
+const PINNED_AGENTS_TAB: Tab = {
+  id: 'agents',
+  type: 'route',
+  url: '/app/agents',
+  title: 'Agents',
+  lastAccessTime: 0,
+  isDormant: false,
+  isPinned: true
+}
+
 const HOME_TAB: Tab = {
   id: 'home',
   type: 'route',
@@ -115,8 +125,7 @@ vi.mock('@renderer/utils/routeTitle', async () => {
   const titles: Record<string, Record<string, string>> = {
     '/app/agents': { en: 'Agent', zh: '代理' },
     '/app/chat': { en: 'Chat', zh: '聊天' },
-    '/app/knowledge': { en: 'Knowledge', zh: '知识库' },
-    '/app/launchpad': { en: 'Launchpad', zh: '启动台' }
+    '/app/knowledge': { en: 'Knowledge', zh: '知识库' }
   }
   return {
     ...actual,
@@ -284,7 +293,7 @@ function ForceNewSameUrlOpener() {
   useEffect(() => {
     if (didOpenRef.current) return
     didOpenRef.current = true
-    openTab('/app/launchpad', { forceNew: true })
+    openTab('/app/agents', { forceNew: true })
   }, [openTab])
 
   return <TabSnapshot />
@@ -413,10 +422,10 @@ describe('TabsProvider', () => {
     await waitFor(() => expect(setPinnedTabsMock).toHaveBeenCalledWith([{ ...PINNED_FILES_TAB, isDormant: true }]))
   })
 
-  // Reviewer B7: OpenClaw's sidebar entry + /app/openclaw route were removed (folded into Code), so a
-  // persisted OpenClaw pin must be redirected to /app/code on restore instead of resurrecting a dead
-  // route — and the reconciled list written back to the cache.
-  it('redirects a persisted OpenClaw pinned tab to the Code page on restore', async () => {
+  // Reviewer B7: OpenClaw's sidebar entry + /app/openclaw route were removed, so a
+  // persisted OpenClaw pin must be redirected to the surviving work page on restore instead of
+  // resurrecting a dead route — and the reconciled list written back to the cache.
+  it('redirects a persisted OpenClaw pinned tab to the work page on restore', async () => {
     pinnedTabsValue = [PINNED_OPENCLAW_TAB, PINNED_FILES_TAB]
 
     render(
@@ -425,10 +434,10 @@ describe('TabsProvider', () => {
       </TabsProvider>
     )
 
-    expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/code,/app/files,/app/chat')
+    expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/agents,/app/files,/app/chat')
     await waitFor(() =>
       expect(setPinnedTabsMock).toHaveBeenCalledWith([
-        { ...PINNED_OPENCLAW_TAB, url: '/app/code', title: '/app/code', isDormant: true },
+        { ...PINNED_OPENCLAW_TAB, url: '/app/agents', title: 'Agent', isDormant: true },
         { ...PINNED_FILES_TAB, isDormant: true }
       ])
     )
@@ -585,19 +594,19 @@ describe('TabsProvider', () => {
     expect(next.find((tab) => tab.id === 'files')?.isDormant).toBe(false)
   })
 
-  it('opens launchpad when closing the only tab', async () => {
+  it('opens the work page when closing the only tab', async () => {
     render(
       <TabsProvider initialDefaultTab={HOME_TAB} includePinnedTabs={false}>
         <CloseTabOnMount tabId="home" />
       </TabsProvider>
     )
 
-    await waitFor(() => expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/launchpad'))
-    expect(screen.getByTestId('tab-titles')).toHaveTextContent('Launchpad')
+    await waitFor(() => expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/agents'))
+    expect(screen.getByTestId('tab-titles')).toHaveTextContent('Agent')
     expect(screen.getByTestId('active-tab-id')).not.toHaveTextContent('home')
   })
 
-  it('does not open launchpad when closing one tab while another remains', async () => {
+  it('does not open a fallback tab when closing one tab while another remains', async () => {
     render(
       <TabsProvider initialDefaultTab={HOME_TAB} includePinnedTabs={false}>
         <CloseHomeAfterSecondTabOpens />
@@ -606,7 +615,7 @@ describe('TabsProvider', () => {
 
     await waitFor(() => expect(screen.getByTestId('tab-ids')).toHaveTextContent('agents'))
     expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/agents')
-    expect(screen.getByTestId('tab-urls')).not.toHaveTextContent('/app/launchpad')
+    expect(screen.getByTestId('tab-urls')).not.toHaveTextContent('/app/agents,/app/agents')
     expect(screen.getByTestId('active-tab-id')).toHaveTextContent('agents')
   })
 
@@ -616,7 +625,7 @@ describe('TabsProvider', () => {
         initialDefaultTab={{
           id: 'home',
           type: 'route',
-          url: '/app/launchpad',
+          url: '/app/agents',
           title: '',
           lastAccessTime: 0,
           isDormant: false
@@ -626,7 +635,7 @@ describe('TabsProvider', () => {
       </TabsProvider>
     )
 
-    await waitFor(() => expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/launchpad,/app/launchpad'))
+    await waitFor(() => expect(screen.getByTestId('tab-urls')).toHaveTextContent('/app/agents,/app/agents'))
     const ids = (screen.getByTestId('tab-ids').textContent ?? '').split(',')
     expect(ids).toHaveLength(2)
     expect(new Set(ids).size).toBe(2)
@@ -745,21 +754,27 @@ describe('TabsProvider session restore', () => {
 })
 
 describe('migratePinnedTabs', () => {
-  it('redirects an OpenClaw pin to the Code page and flags the change', () => {
+  it('redirects an OpenClaw pin to the work page and flags the change', () => {
     const { tabs, changed } = migratePinnedTabs([PINNED_OPENCLAW_TAB, PINNED_FILES_TAB])
     expect(changed).toBe(true)
-    expect(tabs).toEqual([{ ...PINNED_OPENCLAW_TAB, url: '/app/code', title: '/app/code' }, PINNED_FILES_TAB])
+    expect(tabs).toEqual([{ ...PINNED_OPENCLAW_TAB, url: '/app/agents', title: 'Agent' }, PINNED_FILES_TAB])
   })
 
-  it('drops the OpenClaw pin instead of duplicating an existing Code pin', () => {
-    const { tabs, changed } = migratePinnedTabs([PINNED_CODE_TAB, PINNED_OPENCLAW_TAB])
+  it('drops the OpenClaw pin instead of duplicating an existing work pin', () => {
+    const { tabs, changed } = migratePinnedTabs([PINNED_AGENTS_TAB, PINNED_OPENCLAW_TAB])
     expect(changed).toBe(true)
-    expect(tabs).toEqual([PINNED_CODE_TAB])
+    expect(tabs).toEqual([PINNED_AGENTS_TAB])
   })
 
-  it('collapses two OpenClaw pins into a single Code pin', () => {
+  it('collapses two OpenClaw pins into a single work pin', () => {
     const { tabs } = migratePinnedTabs([PINNED_OPENCLAW_TAB, { ...PINNED_OPENCLAW_TAB, id: 'openclaw2' }])
-    expect(tabs).toEqual([{ ...PINNED_OPENCLAW_TAB, url: '/app/code', title: '/app/code' }])
+    expect(tabs).toEqual([{ ...PINNED_OPENCLAW_TAB, url: '/app/agents', title: 'Agent' }])
+  })
+
+  it('redirects a Code pin to the work page too', () => {
+    const { tabs, changed } = migratePinnedTabs([PINNED_CODE_TAB])
+    expect(changed).toBe(true)
+    expect(tabs).toEqual([{ ...PINNED_CODE_TAB, url: '/app/agents', title: 'Agent' }])
   })
 
   it('drops legacy library pins', () => {
@@ -769,7 +784,7 @@ describe('migratePinnedTabs', () => {
   })
 
   it('is a no-op when nothing needs migrating', () => {
-    const input = [PINNED_FILES_TAB, PINNED_CODE_TAB]
+    const input = [PINNED_FILES_TAB, PINNED_AGENTS_TAB]
     const { tabs, changed } = migratePinnedTabs(input)
     expect(changed).toBe(false)
     expect(tabs).toEqual(input)

@@ -98,7 +98,7 @@ const FILTER_TYPES: Record<GlobalSearchFilter, EntitySearchType[]> = {
 }
 
 const INTERNAL_ROUTE_PREFIXES = ['/app/', '/settings']
-const COARSE_ENTITY_ROUTE_PATHS = new Set(['/app/chat', '/app/agents'])
+const COARSE_ENTITY_ROUTE_PATHS = new Set(['/app/agents'])
 const LEGACY_ROUTE_PATHS = new Set(['/app/library'])
 
 export function getGlobalSearchTypes(filter: GlobalSearchFilter): EntitySearchType[] {

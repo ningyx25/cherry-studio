@@ -411,7 +411,7 @@ interface TabCapabilities {
 /**
  * Single source of truth for what a tab can do, derived from its zone and the
  * tab counts. Normal tabs can always be closed/pinned/detached; if the last tab
- * closes, TabsProvider opens Launchpad as the empty-state fallback. Pinned tabs
+ * closes, TabsProvider opens the work page as the empty-state fallback. Pinned tabs
  * can be closed via the context menu (no inline X), and the batch close actions
  * only ever clear the normal zone — pinned tabs are exempt as close *targets*,
  * matching browser convention. Reordering is per-zone. `normalIndex` is the
@@ -630,7 +630,7 @@ export const AppShellTabBar = ({
   // click-time closures: TabsProvider's closeTabs reads tabs/activeTabId
   // non-functionally, so a stale reference computes fallback/active decisions
   // against a world that no longer exists (e.g. two rapid closes skip the
-  // launchpad fallback and leave a dangling active id).
+  // empty-state fallback and leave a dangling active id).
   const closeTabRef = useRef(closeTab)
   closeTabRef.current = closeTab
   const setActiveTabRef = useRef(setActiveTab)
@@ -778,8 +778,8 @@ export const AppShellTabBar = ({
 
   // ─── Action handlers ────────────────────────────────────────────────────────
 
-  const handleOpenLaunchpad = () => {
-    openTab('/app/launchpad', { title: t('title.launchpad'), forceNew: true })
+  const handleOpenNewTab = () => {
+    openTab('/app/agents', { title: t('title.work'), forceNew: true })
   }
 
   // ─── Close-in-place freeze/thaw ─────────────────────────────────────────────
@@ -1117,14 +1117,14 @@ export const AppShellTabBar = ({
             )
           })}
 
-          {/* Launchpad button — sticky so it hugs the last tab but never scrolls away */}
+          {/* New-tab button — sticky so it hugs the last tab but never scrolls away */}
           {!isFocusedTab && (
-            <Tooltip placement="bottom" content={t('title.launchpad')} delay={800}>
+            <Tooltip placement="bottom" content={t('title.work')} delay={800}>
               <button
                 type="button"
                 data-launchpad-button
-                aria-label={t('title.launchpad')}
-                onClick={handleOpenLaunchpad}
+                aria-label={t('title.work')}
+                onClick={handleOpenNewTab}
                 className={cn(
                   'sticky right-0 ml-0.5 flex h-7 w-7 shrink-0 appearance-none items-center justify-center rounded-[10px] border-0 bg-transparent p-0 text-muted-foreground shadow-none transition-colors [-webkit-app-region:no-drag] hover:text-sidebar-foreground',
                   isMacTransparentWindow ? 'hover:bg-white/50 dark:hover:bg-white/8' : 'hover:bg-sidebar-accent'

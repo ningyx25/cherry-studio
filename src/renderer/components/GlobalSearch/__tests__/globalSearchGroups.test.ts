@@ -228,7 +228,7 @@ describe('globalSearchGroups', () => {
     ])
   })
 
-  it('creates entity-level recent entries and skips coarse chat routes', () => {
+  it('creates entity-level recent entries and skips coarse entity routes', () => {
     expect(
       createRecentRouteEntryFromTab({
         id: 'library',
@@ -241,10 +241,10 @@ describe('globalSearchGroups', () => {
 
     expect(
       createRecentRouteEntryFromTab({
-        id: 'chat',
+        id: 'agents',
         type: 'route',
-        url: '/app/chat',
-        title: 'Chat',
+        url: '/app/agents',
+        title: 'Agents',
         lastAccessTime: 10
       })
     ).toBeNull()

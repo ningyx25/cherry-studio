@@ -91,7 +91,7 @@ vi.mock('../../WindowControls', () => ({
 vi.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: () => {} },
   useTranslation: () => ({
-    t: (key: string) => (key === 'title.launchpad' ? 'Launchpad' : key)
+    t: (key: string) => (key === 'title.work' ? 'Work' : key)
   })
 }))
 
@@ -206,16 +206,16 @@ describe('AppShellTabBar', () => {
 
     return closeTab
   }
-  it('opens launchpad from the plus button', async () => {
+  it('opens the work page from the plus button', async () => {
     const user = userEvent.setup()
     const openTab = vi.fn()
     const tabs = [createTab('home')]
 
     renderTabBar({ tabs, activeTabId: 'home', openTab })
 
-    await user.click(screen.getByRole('button', { name: 'Launchpad' }))
+    await user.click(screen.getByRole('button', { name: 'Work' }))
 
-    expect(openTab).toHaveBeenCalledWith('/app/launchpad', { title: 'Launchpad', forceNew: true })
+    expect(openTab).toHaveBeenCalledWith('/app/agents', { title: 'Work', forceNew: true })
   })
 
   it('shows the focused tab as a Back control with a visible detach action', async () => {

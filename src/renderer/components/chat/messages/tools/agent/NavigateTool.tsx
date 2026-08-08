@@ -11,15 +11,7 @@ interface NavigateToolInput {
 
 const ROUTE_LABELS: Record<string, { icon: string; labelKey: string }> = {
   // Top-level pages
-  '/app/chat': { icon: '💬', labelKey: 'agent.session.group.conversation' },
-  '/app/paintings': { icon: '🎨', labelKey: 'title.paintings' },
-  '/app/translate': { icon: '🌐', labelKey: 'title.translate' },
-  '/app/files': { icon: '📁', labelKey: 'title.files' },
-  '/app/notes': { icon: '📝', labelKey: 'title.notes' },
   '/app/knowledge': { icon: '📚', labelKey: 'title.knowledge' },
-  '/app/mini-app': { icon: '📦', labelKey: 'title.apps' },
-  '/app/code': { icon: '💻', labelKey: 'title.code' },
-  '/app/launchpad': { icon: '🚀', labelKey: 'title.launchpad' },
   '/app/agents': { icon: '🤖', labelKey: 'agent.sidebar_title' },
 
   // Settings pages
@@ -32,15 +24,12 @@ const ROUTE_LABELS: Record<string, { icon: string; labelKey: string }> = {
   '/settings/data': { icon: '💾', labelKey: 'settings.data.title' },
   '/settings/mcp': { icon: '🔌', labelKey: 'agent.settings.toolsMcp.mcp.tab' },
   '/settings/websearch': { icon: '🔍', labelKey: 'settings.tool.websearch.title' },
-  '/settings/api-gateway': { icon: '🌐', labelKey: 'apiGateway.title' },
   '/settings/file-processing': {
     icon: '📄',
     labelKey: 'settings.tool.file_processing.features.document_to_markdown.title'
   },
   '/settings/ocr': { icon: '🔤', labelKey: 'settings.tool.file_processing.features.image_to_text.title' },
   '/settings/shortcut': { icon: '⌨️', labelKey: 'settings.shortcuts.title' },
-  '/settings/quick-assistant': { icon: '🪟', labelKey: 'settings.quickAssistant.title' },
-  '/settings/selection-assistant': { icon: '✂️', labelKey: 'selection.name' },
   '/settings/about': { icon: 'ℹ️', labelKey: 'settings.about.label' },
   '/settings/channels': { icon: '📡', labelKey: 'settings.channels.title' },
   '/settings/code-execution': { icon: '⚙️', labelKey: 'chat.settings.code_execution.title' },
@@ -62,8 +51,6 @@ const ROUTE_LABELS: Record<string, { icon: string; labelKey: string }> = {
 const SORTED_ROUTES = Object.entries(ROUTE_LABELS).sort((a, b) => b[0].length - a[0].length)
 const KNOWN_NAVIGATION_ROUTES = [
   ...Object.keys(ROUTE_LABELS),
-  '/app/mini-app/$appId',
-  '/app/paintings/$',
   '/settings/mcp/$',
   '/settings/mcp/settings/$serverId',
   '/settings/scheduled-tasks/$taskId'

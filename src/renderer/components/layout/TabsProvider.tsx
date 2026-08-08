@@ -15,29 +15,31 @@ const logger = loggerService.withContext('TabsProvider')
 const DEFAULT_TAB: Tab = {
   id: 'home',
   type: 'route',
-  url: '/app/chat',
+  url: '/app/agents',
   title: '',
   lastAccessTime: Date.now(),
   isDormant: false
 }
 
-function createLaunchpadFallbackTab(): Tab {
+function createFallbackTab(): Tab {
   return {
     id: uuid(),
     type: 'route',
-    url: '/app/launchpad',
-    title: getDefaultRouteTitle('/app/launchpad'),
+    url: '/app/agents',
+    title: getDefaultRouteTitle('/app/agents'),
     lastAccessTime: Date.now(),
     isDormant: false
   }
 }
 
-// Route no longer served — its orphaned pinned tabs are dropped on restore.
+// Routes no longer served — their orphaned pinned tabs are dropped or redirected on restore.
 const LEGACY_LIBRARY_ROUTE_PATH = '/app/library'
-// OpenClaw was folded into the Code page (its sidebar entry + `/app/openclaw` route were removed),
-// so an already-persisted OpenClaw pin is redirected here rather than restoring to a dead route.
+// OpenClaw and Code pages were removed during the slim-down, so already-persisted pins for
+// `/app/openclaw` and `/app/code` are redirected to the surviving work page rather than
+// restoring to a dead route.
 const LEGACY_OPENCLAW_ROUTE_PATH = '/app/openclaw'
-const CODE_ROUTE_PATH = '/app/code'
+const LEGACY_CODE_ROUTE_PATH = '/app/code'
+const AGENTS_ROUTE_PATH = '/app/agents'
 
 function routePathOfTab(tab: Tab): string | null {
   if (tab.type !== 'route') return null
@@ -50,12 +52,13 @@ function routePathOfTab(tab: Tab): string | null {
 
 /**
  * Reconcile persisted pinned tabs against routes that have since been removed or relocated: drop
- * `/app/library` pins outright, and redirect `/app/openclaw` pins to `/app/code` (deduping so the
- * redirect never produces a second Code pin). `changed` is true when anything was dropped or
- * rewritten, signalling the caller to write the reconciled list back to the persistent cache.
+ * `/app/library` pins outright, and redirect `/app/openclaw` and `/app/code` pins to
+ * `/app/agents` (deduping so the redirect never produces a second agents pin). `changed` is true
+ * when anything was dropped or rewritten, signalling the caller to write the reconciled list back
+ * to the persistent cache.
  */
 export function migratePinnedTabs(pinnedTabs: Tab[]): { tabs: Tab[]; changed: boolean } {
-  let hasCodePin = pinnedTabs.some((tab) => routePathOfTab(tab) === CODE_ROUTE_PATH)
+  let hasAgentsPin = pinnedTabs.some((tab) => routePathOfTab(tab) === AGENTS_ROUTE_PATH)
   const tabs: Tab[] = []
   let changed = false
   for (const tab of pinnedTabs) {
@@ -64,11 +67,11 @@ export function migratePinnedTabs(pinnedTabs: Tab[]): { tabs: Tab[]; changed: bo
       changed = true
       continue
     }
-    if (path === LEGACY_OPENCLAW_ROUTE_PATH) {
+    if (path === LEGACY_OPENCLAW_ROUTE_PATH || path === LEGACY_CODE_ROUTE_PATH) {
       changed = true
-      if (hasCodePin) continue // a Code pin already exists — drop rather than duplicate it
-      hasCodePin = true
-      tabs.push({ ...tab, url: CODE_ROUTE_PATH, title: getDefaultRouteTitle(CODE_ROUTE_PATH) })
+      if (hasAgentsPin) continue // an agents pin already exists — drop rather than duplicate it
+      hasAgentsPin = true
+      tabs.push({ ...tab, url: AGENTS_ROUTE_PATH, title: getDefaultRouteTitle(AGENTS_ROUTE_PATH) })
       continue
     }
     tabs.push(tab)
@@ -370,7 +373,7 @@ export function TabsProvider({
       if (closingTabs.length === 0) return
 
       const remainingTabs = tabs.filter((tab) => !closingIdSet.has(tab.id))
-      const fallbackTab = remainingTabs.length === 0 ? createLaunchpadFallbackTab() : null
+      const fallbackTab = remainingTabs.length === 0 ? createFallbackTab() : null
 
       let newActiveId = activeTabId
       if (fallbackTab) {
