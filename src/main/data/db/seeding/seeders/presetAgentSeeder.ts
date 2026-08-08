@@ -46,7 +46,7 @@ export class PresetAgentSeeder implements ISeeder {
       description,
       instructions,
       // The managed CherryAI model cannot run the agent runtime; model choice is
-      // user-owned and assigned via the agent settings UI (same as CherryAssistantSeeder).
+      // user-owned and assigned via the agent settings UI.
       model: null,
       configuration: {
         avatar: PRESET_AGENT_SEEDS.find((seed) => seed.id === id)?.emoji,
