@@ -62,7 +62,6 @@ import { useTranslation } from 'react-i18next'
 
 import AgentChat from './AgentChat'
 import AgentSidePanel from './AgentSidePanel'
-import { AgentCreateDialog } from './components/AgentCreateDialog'
 import type { AgentFileNavigationRequest } from './components/AgentRightPane'
 import Sessions from './components/Sessions'
 import {
@@ -267,7 +266,6 @@ const AgentPage = ({ moduleId }: { moduleId?: PresetAgentId }) => {
   const [selectingMissingAgent, setSelectingMissingAgent] = useState(false)
   const [replacingSessionWorkspace, setReplacingSessionWorkspace] = useState(false)
   const [missingAgentSelection, setMissingAgentSelection] = useState(false)
-  const [agentCreateOpen, setAgentCreateOpen] = useState(false)
   const { t } = useTranslation()
   const invalidateCache = useInvalidateCache()
   const closeConversationTabs = useCloseConversationTabs()
@@ -677,68 +675,6 @@ const AgentPage = ({ moduleId }: { moduleId?: PresetAgentId }) => {
     [createAndActivateEmptySession]
   )
 
-  const handleAgentConversationSelect = useCallback(
-    async (agentId: string) => {
-      if (isCreatingEmptySessionRef.current) return
-      isCreatingEmptySessionRef.current = true
-      // Close the dialog first so the session/state churn below doesn't refresh it while it's
-      // still visible (which reads as a black/white flash + the dialog reopening).
-      setAgentCreateOpen(false)
-      try {
-        // A newly created agent starts without a user workspace. Reuse only a matching system
-        // placeholder; otherwise create a fresh system-backed session below.
-        const reuseCandidates = getSessionReuseCandidates()
-        const reusableSessions = await findReusableEmptySessions(
-          reuseCandidates,
-          (candidate) => candidate.agentId === agentId && isSystemWorkspaceSession(candidate)
-        )
-        const reusableSession = reusableSessions[0]
-        const duplicateEmptySystemSessionIds =
-          reusableSession && isSystemWorkspaceSession(reusableSession)
-            ? reusableSessions
-                .slice(1)
-                .filter((session) => isSystemWorkspaceSession(session))
-                .map((session) => session.id)
-            : []
-
-        let session = reusableSession
-        if (!session) {
-          const workspaceSource = await resolveCreateWorkspaceSource({ agentId, workspaceMode: 'system' })
-          session = await dataApiService.post('/agent-sessions', {
-            body: {
-              agentId,
-              name: '',
-              workspace: workspaceSource
-            }
-          })
-        }
-
-        activateSession(session, agentId)
-        await deleteDuplicateEmptySystemSessions(duplicateEmptySystemSessionIds)
-        if (!reusableSession) {
-          void invalidateCache(['/agent-sessions', '/agent-workspaces', `/agent-sessions/${session.id}`]).catch(
-            (err) => {
-              logger.warn('Failed to refresh session metadata after agent picker session create', err as Error)
-            }
-          )
-        }
-      } catch (err) {
-        logger.error('Failed to create agent session after agent creation', err as Error, { agentId })
-        toast.error(formatErrorMessageWithPrefix(err, t('agent.session.create.error.failed')))
-      } finally {
-        isCreatingEmptySessionRef.current = false
-      }
-    },
-    [
-      activateSession,
-      deleteDuplicateEmptySystemSessions,
-      getSessionReuseCandidates,
-      invalidateCache,
-      resolveCreateWorkspaceSource,
-      t
-    ]
-  )
-
   const handleHistorySessionSelect = useCallback(
     (sessionId: string | null, messageId?: string) => {
       const transition = () => {
@@ -1064,9 +1000,6 @@ const AgentPage = ({ moduleId }: { moduleId?: PresetAgentId }) => {
         activeAgentId={activeResourceAgentId}
         dataEnabled={shellPaneOpen}
         agentSessionsSource={agentSessionsSource}
-        onAddAgent={() => {
-          setAgentCreateOpen(true)
-        }}
         historyRecordsActive={historyRecordsActive}
         onOpenHistoryRecords={isWindowFrame ? undefined : openHistoryRecords}
         onSelectSession={handleResourceSessionSelect}
@@ -1076,7 +1009,6 @@ const AgentPage = ({ moduleId }: { moduleId?: PresetAgentId }) => {
           setSessionPaneOpen(!sessionPaneOpen)
         }}
         onCreateSession={handleCreateSessionForAgent}
-        onShowMissingAgentSelection={showMissingAgentSelection}
         resourceMenuItems={resourceMenuItems}
         onActiveAgentDeleted={handleActiveAgentDeleted}
       />
@@ -1087,7 +1019,6 @@ const AgentPage = ({ moduleId }: { moduleId?: PresetAgentId }) => {
         agentSessionsSource={agentSessionsSource}
         fixedAgentId={moduleId}
         onActiveAgentDeleted={isModuleMode ? undefined : handleActiveAgentDeleted}
-        onAddAgent={isModuleMode ? undefined : () => setAgentCreateOpen(true)}
         historyRecordsActive={historyRecordsActive}
         revealRequest={sessionRevealRequest}
         onOpenHistoryRecords={isWindowFrame ? undefined : openHistoryRecords}
@@ -1207,13 +1138,6 @@ const AgentPage = ({ moduleId }: { moduleId?: PresetAgentId }) => {
           composerLaunchOptions={composerLaunchOptions}
         />
       </div>
-      {!isModuleMode && (
-        <AgentCreateDialog
-          open={agentCreateOpen}
-          onOpenChange={setAgentCreateOpen}
-          onCreated={handleAgentConversationSelect}
-        />
-      )}
     </Container>
   )
 }

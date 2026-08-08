@@ -8,7 +8,6 @@ import type * as ReactI18next from 'react-i18next'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const {
-  createAgentMock,
   refetchAgentsMock,
   refetchPinsMock,
   togglePinMock,
@@ -18,7 +17,6 @@ const {
   useProvidersMock,
   useQueryMock
 } = vi.hoisted(() => ({
-  createAgentMock: vi.fn(),
   refetchAgentsMock: vi.fn(),
   refetchPinsMock: vi.fn(),
   togglePinMock: vi.fn(),
@@ -61,12 +59,6 @@ vi.mock('@renderer/components/ModelSelector', async (importOriginal) => ({
   )
 }))
 
-// Stub the capability step: it pulls in MCP-runtime + skills hooks not mocked
-// here. The wizard's own test covers it; this test only needs to reach submit.
-vi.mock('@renderer/components/resourceCatalog/dialogs/create/steps/CapabilityStep', () => ({
-  CapabilityStep: () => <div data-testid="capability-step" />
-}))
-
 vi.mock('@cherrystudio/ui', async (importOriginal) => {
   const actual = await importOriginal<typeof CherryStudioUi>()
   return actual
@@ -78,7 +70,6 @@ vi.mock('@renderer/data/hooks/useDataApi', () => ({
 }))
 
 vi.mock('@renderer/hooks/resourceCatalog', () => ({
-  useAgentMutations: () => ({ createAgent: createAgentMock, isCreatingAgent: false }),
   useAgentMutationsById: () => ({ updateAgent: updateAgentMock })
 }))
 
@@ -183,8 +174,6 @@ vi.mock('react-i18next', async (importOriginal) => {
   }
 })
 
-import { toast } from '@renderer/services/toast'
-
 import { AgentSelector, type AgentSelectorItem } from '../AgentSelector'
 
 const ALPHA_AGENT_ID = '44444444-4444-4444-8444-444444444444'
@@ -278,18 +267,10 @@ beforeEach(() => {
       }
     }
     return {
-      trigger: createAgentMock,
+      trigger: vi.fn(),
       isLoading: false,
       error: undefined
     }
-  })
-  createAgentMock.mockResolvedValue({
-    id: 'created-agent',
-    type: 'claude-code',
-    name: 'Created Agent',
-    description: 'Created from selector',
-    accessiblePaths: [],
-    model: MODEL.id
   })
   updateAgentMock.mockResolvedValue({
     ...AGENTS_RESPONSE.items[0],
@@ -324,12 +305,6 @@ function openPopover() {
   fireEvent.click(screen.getByRole('button', { name: 'Open' }))
 }
 
-async function openCreateDialog() {
-  openPopover()
-  fireEvent.click(screen.getByRole('button', { name: 'Create agent' }))
-  await screen.findByRole('dialog')
-}
-
 describe('AgentSelector', () => {
   it('fetches agents from DataApi and renders returned rows', () => {
     renderSelector()
@@ -358,7 +333,7 @@ describe('AgentSelector', () => {
     openPopover()
 
     expect(screen.getByText('No agents yet. Create one first.')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Create agent' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Create agent' })).not.toBeInTheDocument()
   })
 
   it('falls back to the default agent avatar for blank stored avatars', () => {
@@ -439,110 +414,6 @@ describe('AgentSelector', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Unpin' }))
     expect(togglePinMock).toHaveBeenCalledWith(ALPHA_AGENT_ID)
-  })
-
-  it('opens the lightweight create dialog from the create action', async () => {
-    renderSelector()
-    await openCreateDialog()
-
-    expect(screen.getByRole('heading', { name: 'New Agent' })).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Name this resource')).toBeInTheDocument()
-    expect(screen.getByText('Model')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Describe this resource')).toBeInTheDocument()
-  })
-
-  it('calls the dialog-close autofocus callback when the create dialog closes', async () => {
-    const onDialogCloseAutoFocus = vi.fn()
-    render(
-      <AgentSelector
-        trigger={<button type="button">Open</button>}
-        value={null}
-        onChange={vi.fn()}
-        onDialogCloseAutoFocus={onDialogCloseAutoFocus}
-      />
-    )
-    await openCreateDialog()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
-
-    expect(onDialogCloseAutoFocus).toHaveBeenCalledTimes(1)
-  })
-
-  it('creates an agent, refreshes, reopens the selector, and does not auto-select by default', async () => {
-    const { onChange } = renderSelector()
-    await openCreateDialog()
-
-    fireEvent.change(screen.getByPlaceholderText('Name this resource'), { target: { value: 'Created Agent' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Pick model' }))
-    fireEvent.change(screen.getByPlaceholderText('Describe this resource'), {
-      target: { value: 'Created from selector' }
-    })
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-
-    await waitFor(() =>
-      expect(createAgentMock).toHaveBeenCalledWith({
-        type: 'claude-code',
-        name: 'Created Agent',
-        model: MODEL.id,
-        planModel: MODEL.id,
-        smallModel: MODEL.id,
-        description: 'Created from selector',
-        instructions: '',
-        knowledgeBaseIds: [],
-        skillIds: [],
-        configuration: {
-          avatar: '🤖',
-          permission_mode: 'default'
-        }
-      })
-    )
-    await waitFor(() => expect(refetchAgentsMock).toHaveBeenCalledTimes(1))
-    expect(onChange).not.toHaveBeenCalled()
-    await waitFor(() => expect(screen.getByPlaceholderText('Search agents')).toBeInTheDocument())
-  })
-
-  it('auto-selects the created agent when enabled', async () => {
-    const onChange = vi.fn()
-    render(
-      <AgentSelector
-        trigger={<button type="button">Open</button>}
-        value={null}
-        onChange={onChange}
-        autoSelectOnCreate
-      />
-    )
-    await openCreateDialog()
-
-    fireEvent.change(screen.getByPlaceholderText('Name this resource'), { target: { value: 'Created Agent' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Pick model' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-
-    await waitFor(() => expect(refetchAgentsMock).toHaveBeenCalledTimes(1))
-    expect(onChange).toHaveBeenCalledWith('created-agent')
-  })
-
-  it('notifies when created agent cannot be refreshed into the selector', async () => {
-    refetchAgentsMock.mockRejectedValueOnce(new Error('Refresh failed'))
-    renderSelector()
-    await openCreateDialog()
-
-    fireEvent.change(screen.getByPlaceholderText('Name this resource'), { target: { value: 'Created Agent' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Pick model' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-
-    await waitFor(() => expect(refetchAgentsMock).toHaveBeenCalledTimes(1))
-
-    expect(toast.error).toHaveBeenCalledWith('Created, but refresh failed')
-    await waitFor(() => expect(screen.getByPlaceholderText('Search agents')).toBeInTheDocument())
   })
 
   it('keeps the selector closed and the edit dialog open after auto-saving an agent', async () => {

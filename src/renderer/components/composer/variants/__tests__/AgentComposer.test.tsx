@@ -546,8 +546,8 @@ vi.mock('@renderer/components/ModelSelector', () => ({
 }))
 
 vi.mock('@renderer/components/resourceCatalog/selectors', () => ({
-  AgentSelector: ({ autoSelectOnCreate, onChange, trigger }: any) => (
-    <div data-testid="agent-selector" data-auto-select-on-create={String(Boolean(autoSelectOnCreate))}>
+  AgentSelector: ({ onChange, trigger }: any) => (
+    <div data-testid="agent-selector">
       {trigger}
       <button type="button" onClick={() => onChange('agent-2')}>
         select agent 2
@@ -4140,7 +4140,6 @@ describe('AgentComposer', () => {
 
     expect(screen.getByTestId('agent-selector')).toBeInTheDocument()
     expect(screen.getByText('select agent 2')).toBeInTheDocument()
-    expect(screen.getByTestId('agent-selector')).toHaveAttribute('data-auto-select-on-create', 'true')
 
     fireEvent.click(screen.getByText('select agent 2'))
 
@@ -4309,7 +4308,7 @@ describe('AgentComposer', () => {
 
     render(<MissingAgentHomeComposer onAgentChange={onAgentChange} />)
 
-    expect(screen.getByTestId('agent-selector')).toHaveAttribute('data-auto-select-on-create', 'true')
+    expect(screen.getByTestId('agent-selector')).toBeInTheDocument()
     const leftControls = screen.getByTestId('composer-left-controls')
     expect(leftControls).toHaveTextContent('chat.alerts.select_agent')
     // The model selector renders inline as a disabled placeholder until an agent is picked.

@@ -401,7 +401,6 @@ const AgentChat = ({
               selectAgentLabel={t('chat.alerts.select_agent')}
               selectModelLabel={t('button.select_model')}
               selectWorkspaceLabel={t('agent.session.workspace_selector.placeholder')}
-              shouldAutoSelectCreatedAgent
               agentTriggerMode={isEmptyConversation ? 'selector' : 'edit'}
               canChangeModel
               onAgentChange={handleSessionAgentChange}

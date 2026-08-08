@@ -19,7 +19,6 @@ interface AgentSidePanelProps {
   fixedAgentId?: PresetAgentId
   agentSessionsSource: AgentSessionsSource
   onActiveAgentDeleted?: (agentId: string) => void | Promise<void>
-  onAddAgent?: () => void | Promise<void>
   onOpenHistoryRecords?: () => void
   onSetPanePosition?: (position: TopicTabPosition) => void | Promise<void>
   onCreateSession?: (
@@ -39,7 +38,6 @@ const AgentSidePanel = ({
   fixedAgentId,
   agentSessionsSource,
   onActiveAgentDeleted,
-  onAddAgent,
   onOpenHistoryRecords,
   onSetPanePosition,
   onCreateSession,
@@ -59,7 +57,6 @@ const AgentSidePanel = ({
         historyRecordsActive={historyRecordsActive}
         setActiveSessionId={setActiveSessionId}
         onActiveAgentDeleted={onActiveAgentDeleted}
-        onAddAgent={onAddAgent}
         onOpenHistoryRecords={onOpenHistoryRecords}
         onSetPanePosition={onSetPanePosition}
         panePosition={panePosition}

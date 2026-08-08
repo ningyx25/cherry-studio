@@ -17,7 +17,7 @@ import { toast } from '@renderer/services/toast'
 import { formatErrorMessageWithPrefix } from '@renderer/utils/error'
 import type { AgentSessionEntity } from '@shared/data/api/schemas/agentSessions'
 import type { AssistantIconType } from '@shared/data/preference/preferenceTypes'
-import { Pin, PinOff, Plus, Smile, SquarePen, Trash2 } from 'lucide-react'
+import { Pin, PinOff, Smile, SquarePen, Trash2 } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -49,12 +49,10 @@ type AgentResourceListProps = {
   dataEnabled?: boolean
   historyRecordsActive?: boolean
   agentSessionsSource: AgentSessionsSource
-  onAddAgent?: () => void | Promise<void>
   onOpenHistoryRecords?: () => void
   onSelectSession: (sessionId: string, session: AgentSessionEntity) => void
   onSelectedAgentClick?: () => void | Promise<void>
   onCreateSession: (agentId: string) => void | Promise<unknown>
-  onShowMissingAgentSelection?: () => void | Promise<void>
   resourceMenuItems?: readonly ConversationResourceMenuItem[]
   /**
    * Called after the currently-active agent is deleted so the classic-layout page can
@@ -69,12 +67,10 @@ export function AgentResourceList({
   dataEnabled = true,
   historyRecordsActive = false,
   agentSessionsSource,
-  onAddAgent,
   onOpenHistoryRecords,
   onSelectSession,
   onSelectedAgentClick,
   onCreateSession,
-  onShowMissingAgentSelection,
   resourceMenuItems,
   onActiveAgentDeleted
 }: AgentResourceListProps) {
@@ -340,10 +336,7 @@ export function AgentResourceList({
         status={listStatus}
         ariaLabel={t('agent.sidebar_title')}
         defaultGroupLabel={t('agent.sidebar_title')}
-        addIcon={<Plus />}
-        addLabel={t('agent.add.title')}
         historyRecordsActive={historyRecordsActive}
-        onAdd={onAddAgent ?? (() => onShowMissingAgentSelection?.())}
         headerActions={
           <SessionListOptionsMenu
             historyRecordsActive={historyRecordsActive}

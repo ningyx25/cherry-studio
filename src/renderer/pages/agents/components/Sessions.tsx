@@ -102,7 +102,7 @@ import {
 } from '@shared/data/api/schemas/agentWorkspaces'
 import type { AssistantIconType, TopicTabPosition } from '@shared/data/preference/preferenceTypes'
 import type { PresetAgentId } from '@shared/data/presets/presetAgents'
-import { Folder, FolderOpen, MoreHorizontal, Plus } from 'lucide-react'
+import { Folder, FolderOpen, MoreHorizontal } from 'lucide-react'
 import { memo, type RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -132,7 +132,6 @@ type SessionsBaseProps = {
   fixedAgentId?: PresetAgentId
   historyRecordsActive?: boolean
   onActiveAgentDeleted?: (agentId: string) => void | Promise<void>
-  onAddAgent?: () => void | Promise<void>
   onOpenHistoryRecords?: () => void
   onSetPanePosition?: (position: TopicTabPosition) => void | Promise<void>
   onCreateSession?: (
@@ -348,7 +347,6 @@ const Sessions = ({
   fixedAgentId,
   historyRecordsActive,
   onActiveAgentDeleted,
-  onAddAgent,
   onOpenHistoryRecords,
   onSetPanePosition,
   onCreateSession,
@@ -1844,12 +1842,9 @@ const Sessions = ({
   const hasActiveResourceMenuItem = resourceMenuItems?.some((item) => item.active) ?? false
   const hasActiveCenterSurface = hasActiveResourceMenuItem || historyRecordsActive
   const manageAgentsMenuItem = resourceMenuItems?.find((item) => item.id === 'agent-resource-view')
-  const headerCreateLabel = displayMode === 'agent' ? t('agent.add.title') : t('agent.session.new')
-  const headerCreateDisabled =
-    displayMode === 'agent'
-      ? !onAddAgent
-      : creatingSession || (!headerCreateSessionSeed && !onShowMissingAgentSelection)
-  const handleHeaderCreate = displayMode === 'agent' ? () => void onAddAgent?.() : handleHeaderCreateSession
+  const headerCreateLabel = t('agent.session.new')
+  const headerCreateDisabled = creatingSession || (!headerCreateSessionSeed && !onShowMissingAgentSelection)
+  const handleHeaderCreate = handleHeaderCreateSession
   const canSetPanePosition = isModuleMode ? false : displayMode === 'agent' || isRightPanel
 
   return (
@@ -1902,10 +1897,10 @@ const Sessions = ({
           <>
             <ResourceList.HeaderItem
               type="button"
-              command={displayMode === 'agent' ? undefined : 'topic.create'}
+              command="topic.create"
               aria-label={headerCreateLabel}
               disabled={headerCreateDisabled}
-              icon={displayMode === 'agent' ? <Plus /> : <NewConversationIcon />}
+              icon={<NewConversationIcon />}
               label={headerCreateLabel}
               onClick={handleHeaderCreate}
               actions={

@@ -1068,20 +1068,6 @@ describe('Sessions', () => {
     expect(onCreateSession).not.toHaveBeenCalled()
   })
 
-  it('uses the top header action to add an agent in agent display mode', () => {
-    const onAddAgent = vi.fn()
-    const onCreateSession = vi.fn()
-    preferenceMocks.values.set('agent.session.display_mode', 'agent')
-    setupSessions()
-
-    render(<SessionsForTest onAddAgent={onAddAgent} onCreateSession={onCreateSession} />)
-
-    fireEvent.click(screen.getByRole('button', { name: 'Add Agent' }))
-
-    expect(onAddAgent).toHaveBeenCalledTimes(1)
-    expect(onCreateSession).not.toHaveBeenCalled()
-  })
-
   it('renders no-project sessions in a bottom no-project section', () => {
     const onCreateSession = vi.fn()
     const systemWorkspace = makeWorkspace('/Users/jd/Data/Agents/system/2026-05-25/120000-session', {

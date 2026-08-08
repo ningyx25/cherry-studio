@@ -91,7 +91,7 @@ function sortEntityRailItemsForGroupGrouping<T extends ResourceEntityRailItem>(i
 
 export type ResourceEntityRailProps<T extends ResourceEntityRailItem, TActionContext = unknown> = {
   addIcon?: ReactNode
-  addLabel: string
+  addLabel?: string
   ariaLabel: string
   /** Header for the non-pinned group ("助手" for assistants, "智能体" for agents). */
   defaultGroupLabel?: string
@@ -105,7 +105,8 @@ export type ResourceEntityRailProps<T extends ResourceEntityRailItem, TActionCon
   headerActions?: ReactNode
   historyRecordsActive?: boolean
   listRef?: RefObject<HTMLDivElement | null>
-  onAdd: () => void | Promise<void>
+  /** When provided, a create button renders in the header; absent → no create button. */
+  onAdd?: () => void | Promise<void>
   /** When provided, a history-records button sits next to the add button. */
   onOpenHistoryRecords?: () => void
   resourceMenuItems?: readonly ConversationResourceMenuItem[]
@@ -377,32 +378,34 @@ export function ResourceEntityRail<T extends ResourceEntityRailItem, TActionCont
       onReorder={hasReorderHandler ? handleReorder : undefined}>
       <ResourceList.Frame className="h-full min-h-0" data-testid={`${variant}-entity-rail`}>
         <ResourceList.Header className="gap-1">
-          <ResourceList.HeaderItem
-            type="button"
-            icon={addIcon}
-            label={addLabel}
-            aria-label={addLabel}
-            onClick={() => void onAdd()}
-            actions={
-              headerActions || onOpenHistoryRecords ? (
-                <>
-                  {headerActions}
-                  {onOpenHistoryRecords && (
-                    <Tooltip title={t('history.records.shortTitle')} delay={500}>
-                      <ResourceList.HeaderActionButton
-                        type="button"
-                        aria-label={t('history.records.shortTitle')}
-                        aria-current={historyRecordsActive ? 'page' : undefined}
-                        className={cn(historyRecordsActive && 'bg-muted text-foreground!')}
-                        onClick={() => onOpenHistoryRecords()}>
-                        <History className="block" />
-                      </ResourceList.HeaderActionButton>
-                    </Tooltip>
-                  )}
-                </>
-              ) : undefined
-            }
-          />
+          {onAdd && addLabel ? (
+            <ResourceList.HeaderItem
+              type="button"
+              icon={addIcon}
+              label={addLabel}
+              aria-label={addLabel}
+              onClick={() => void onAdd()}
+              actions={
+                headerActions || onOpenHistoryRecords ? (
+                  <>
+                    {headerActions}
+                    {onOpenHistoryRecords && (
+                      <Tooltip title={t('history.records.shortTitle')} delay={500}>
+                        <ResourceList.HeaderActionButton
+                          type="button"
+                          aria-label={t('history.records.shortTitle')}
+                          aria-current={historyRecordsActive ? 'page' : undefined}
+                          className={cn(historyRecordsActive && 'bg-muted text-foreground!')}
+                          onClick={() => onOpenHistoryRecords()}>
+                          <History className="block" />
+                        </ResourceList.HeaderActionButton>
+                      </Tooltip>
+                    )}
+                  </>
+                ) : undefined
+              }
+            />
+          ) : null}
           <ConversationResourceMenu items={resourceMenuItems} />
         </ResourceList.Header>
         <ResourceList.Body<T>

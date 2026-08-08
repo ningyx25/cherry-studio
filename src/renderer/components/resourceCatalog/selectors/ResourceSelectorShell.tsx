@@ -44,7 +44,8 @@ export type ResourceSelectorShellLabels = {
   pin: string
   unpin: string
   edit: string
-  createNew: string
+  /** Rendered only when `onCreateNew` is provided (assistant selector). */
+  createNew?: string
   emptyText: string
   /** Heading rendered above the pinned group in the list. */
   pinnedTitle: string

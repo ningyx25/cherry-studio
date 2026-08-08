@@ -40,7 +40,6 @@ export interface AgentConversationControlsProps {
   selectModelLabel: string
   selectWorkspaceLabel: string
   agentChanging?: boolean
-  shouldAutoSelectCreatedAgent: boolean
   side: 'top' | 'bottom'
   iconOnly?: boolean
   agentTriggerMode: 'selector' | 'edit'
@@ -56,7 +55,6 @@ function AgentControl({
   agent,
   selectAgentLabel,
   agentChanging,
-  shouldAutoSelectCreatedAgent,
   side,
   iconOnly = false,
   agentTriggerMode,
@@ -67,7 +65,6 @@ function AgentControl({
   | 'agent'
   | 'selectAgentLabel'
   | 'agentChanging'
-  | 'shouldAutoSelectCreatedAgent'
   | 'side'
   | 'iconOnly'
   | 'agentTriggerMode'
@@ -135,7 +132,6 @@ function AgentControl({
     <AgentSelector
       value={agent?.id ?? null}
       onChange={onAgentChange}
-      autoSelectOnCreate={shouldAutoSelectCreatedAgent}
       side={side}
       align="start"
       mountStrategy="lazy-keep"

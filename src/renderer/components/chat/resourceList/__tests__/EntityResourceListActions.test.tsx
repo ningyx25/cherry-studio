@@ -283,7 +283,6 @@ describe('classic layout entity resource list actions', () => {
         agentSessionsSource={createAgentSessionsSource({ isValidating: true })}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
@@ -302,7 +301,6 @@ describe('classic layout entity resource list actions', () => {
         agentSessionsSource={createAgentSessionsSource()}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
@@ -330,7 +328,6 @@ describe('classic layout entity resource list actions', () => {
         agentSessionsSource={createAgentSessionsSource()}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
@@ -343,7 +340,6 @@ describe('classic layout entity resource list actions', () => {
   })
 
   it('uses delete-agent actions for the classic layout agent context and more menus', async () => {
-    const onShowMissingAgentSelection = vi.fn()
     const onActiveAgentDeleted = vi.fn()
 
     render(
@@ -352,7 +348,6 @@ describe('classic layout entity resource list actions', () => {
         agentSessionsSource={createAgentSessionsSource()}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={onShowMissingAgentSelection}
         onActiveAgentDeleted={onActiveAgentDeleted}
       />
     )
@@ -375,7 +370,6 @@ describe('classic layout entity resource list actions', () => {
     )
     // Classic layout resets via the dedicated callback, never the draft compose.
     await waitFor(() => expect(onActiveAgentDeleted).toHaveBeenCalledWith('agent-1'))
-    expect(onShowMissingAgentSelection).not.toHaveBeenCalled()
   })
 
   it('deletes only tasks for the built-in Cherry Assistant in the classic layout', async () => {
@@ -398,7 +392,6 @@ describe('classic layout entity resource list actions', () => {
         agentSessionsSource={createAgentSessionsSource({ deleteSessions })}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
         onActiveAgentDeleted={onActiveAgentDeleted}
       />
     )
@@ -430,7 +423,6 @@ describe('classic layout entity resource list actions', () => {
         agentSessionsSource={createAgentSessionsSource()}
         onSelectSession={vi.fn()}
         onCreateSession={onCreateSession}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
@@ -446,7 +438,6 @@ describe('classic layout entity resource list actions', () => {
         agentSessionsSource={createAgentSessionsSource()}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
@@ -464,7 +455,6 @@ describe('classic layout entity resource list actions', () => {
         agentSessionsSource={createAgentSessionsSource()}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
@@ -496,7 +486,6 @@ describe('classic layout entity resource list actions', () => {
         ]}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
@@ -520,7 +509,6 @@ describe('classic layout entity resource list actions', () => {
         ]}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
@@ -537,7 +525,6 @@ describe('classic layout entity resource list actions', () => {
         onOpenHistoryRecords={onOpenHistoryRecords}
         onSelectSession={vi.fn()}
         onCreateSession={vi.fn()}
-        onShowMissingAgentSelection={vi.fn()}
       />
     )
 
