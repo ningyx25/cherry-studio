@@ -14,6 +14,17 @@ function getClientSecret(): string {
   return CLIENT_SECRET + '.' + CLIENT_SECRET_SUFFIX
 }
 
+/**
+ * Whether the CherryAI signing secret was injected at build time
+ * (`MAIN_VITE_CHERRYAI_CLIENT_SECRET`). Absent in local/dev builds, so the
+ * managed CherryAI default model cannot serve requests (every signature is
+ * rejected with 401 "Invalid signature"). Consumers use this to skip the
+ * managed default and fall back to a user-configured model instead.
+ */
+export function isCherryAiClientSecretConfigured(): boolean {
+  return Boolean(import.meta.env.MAIN_VITE_CHERRYAI_CLIENT_SECRET)
+}
+
 export interface SignatureOptions {
   method: string
   path: string

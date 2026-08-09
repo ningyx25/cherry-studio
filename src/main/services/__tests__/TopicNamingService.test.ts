@@ -5,7 +5,7 @@ import { WindowType } from '@main/core/window/types'
 import { CHERRYAI_DEFAULT_UNIQUE_MODEL_ID } from '@shared/data/presets/cherryai'
 import { MockMainPreferenceServiceUtils } from '@test-mocks/main/PreferenceService'
 import { mockMainLoggerService } from '@test-mocks/MainLoggerService'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mocks = vi.hoisted(() => ({
   generateText: vi.fn(),
@@ -112,10 +112,18 @@ describe('TopicNamingService', () => {
     MockMainPreferenceServiceUtils.resetMocks()
     mockMainLoggerService.warn.mockClear()
     mockMainLoggerService.debug.mockClear()
+    // Most tests assume a working build where the CherryAI signing secret was
+    // injected at build time. Tests exercising the missing-secret fallback gate
+    // stub the env to the absent state themselves.
+    vi.stubEnv('MAIN_VITE_CHERRYAI_CLIENT_SECRET', 'present')
     MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.enabled', true)
     mocks.getModelByKey.mockReturnValue({ id: 'openai::gpt-4o-mini' })
     mocks.getProviderByProviderId.mockReturnValue({ authMethods: ['api-key'] })
     mockRenameInputs()
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
   })
 
   it('uses topic.naming.model_id for normal chat summary naming', async () => {
@@ -600,6 +608,40 @@ describe('TopicNamingService', () => {
       'topic.naming.model_id is not usable (invalid, missing, or agent-only provider); falling back to quick assistant model',
       { configured: 'claude-code::haiku' }
     )
+  })
+
+  it('falls back to the quick-assistant model when the naming model is the CherryAI default and the signing secret is absent', async () => {
+    MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', CHERRYAI_DEFAULT_UNIQUE_MODEL_ID)
+    MockMainPreferenceServiceUtils.setPreferenceValue(
+      'feature.quick_assistant.model_id',
+      'adf11f2e-26bf-496f-b196-a118a1a9b40e::deepseek-v4-flash-0731'
+    )
+    vi.unstubAllEnvs() // secret absent
+
+    await createService().maybeRenameFromConversationSummary('topic-1', 'assistant-1', 'message-1', {
+      role: 'assistant',
+      parts: [{ type: 'text', text: 'Assistant response' }]
+    } as never)
+
+    expect(mocks.generateText).toHaveBeenCalledWith(
+      expect.objectContaining({
+        uniqueModelId: 'adf11f2e-26bf-496f-b196-a118a1a9b40e::deepseek-v4-flash-0731'
+      })
+    )
+  })
+
+  it('skips summary naming entirely when no usable model exists and the CherryAI secret is absent', async () => {
+    MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', CHERRYAI_DEFAULT_UNIQUE_MODEL_ID)
+    MockMainPreferenceServiceUtils.setPreferenceValue('feature.quick_assistant.model_id', null)
+    vi.unstubAllEnvs() // secret absent
+
+    await createService().maybeRenameFromConversationSummary('topic-1', 'assistant-1', 'message-1', {
+      role: 'assistant',
+      parts: [{ type: 'text', text: 'Assistant response' }]
+    } as never)
+
+    expect(mocks.generateText).not.toHaveBeenCalled()
+    expect(mocks.updateTopic).not.toHaveBeenCalled()
   })
 
   it('uses an oauth login-based provider (e.g. Codex/Grok) as a topic naming model', async () => {

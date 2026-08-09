@@ -5,9 +5,10 @@ import { providerService } from '@data/services/ProviderService'
 import { topicService } from '@data/services/TopicService'
 import { loggerService } from '@logger'
 import type { AiGenerateRequest } from '@main/ai/AiService'
+import { isCherryAiClientSecretConfigured } from '@main/ai/provider/cherryai'
 import { WindowType } from '@main/core/window/types'
 import { messageService } from '@main/data/services/MessageService'
-import { CHERRYAI_DEFAULT_UNIQUE_MODEL_ID } from '@shared/data/presets/cherryai'
+import { CHERRYAI_DEFAULT_UNIQUE_MODEL_ID, isManagedCherryAiDefaultModel } from '@shared/data/presets/cherryai'
 import type { Message, MessageData, UIMessage } from '@shared/data/types/message'
 import { parseUniqueModelId, type UniqueModelId, UniqueModelIdSchema } from '@shared/data/types/model'
 import type { Topic } from '@shared/data/types/topic'
@@ -208,6 +209,7 @@ export class TopicNamingService {
       ]
 
       const uniqueModelId = this.resolveNamingModelId()
+      if (!uniqueModelId) return
       const title = await this.generateSummaryTitle(
         assistantId,
         uniqueModelId,
@@ -306,6 +308,7 @@ export class TopicNamingService {
       if (session.isNameManuallyEdited) return
       if (!canAutoRenameAgentSessionName(session.name, userText)) return
       const uniqueModelId = this.resolveNamingModelId()
+      if (!uniqueModelId) return
 
       const structuredConversation: StructuredMessage[] = [
         { role: 'user', mainText: cleanMarkdownImages(userText) },
@@ -405,7 +408,7 @@ export class TopicNamingService {
     return (configuredPrompt || FALLBACK_PROMPT).replaceAll('{{language}}', language)
   }
 
-  private resolveNamingModelId(): UniqueModelId {
+  private resolveNamingModelId(): UniqueModelId | null {
     const preferenceService = application.get('PreferenceService')
 
     const configured = preferenceService.get('topic.naming.model_id')
@@ -423,7 +426,10 @@ export class TopicNamingService {
     const quickModelId = this.toUsableNamingModelId(preferenceService.get('feature.quick_assistant.model_id'))
     if (quickModelId) return quickModelId
 
-    return CHERRYAI_DEFAULT_UNIQUE_MODEL_ID
+    // Last resort. When the signing secret was never injected (local/dev builds),
+    // the managed default cannot serve a request either — return null and skip
+    // auto-naming rather than 401 on every exchange.
+    return isCherryAiClientSecretConfigured() ? CHERRYAI_DEFAULT_UNIQUE_MODEL_ID : null
   }
 
   /**
@@ -438,6 +444,12 @@ export class TopicNamingService {
     if (!parsed.success) return null
 
     const { providerId, modelId } = parseUniqueModelId(parsed.data)
+    // The managed CherryAI default only works when the signing secret was injected
+    // at build time; without it every request 401s. Treat it as unusable so naming
+    // falls back to a configured model instead of erroring.
+    if (isManagedCherryAiDefaultModel(providerId, modelId) && !isCherryAiClientSecretConfigured()) {
+      return null
+    }
     try {
       const provider = providerService.getByProviderId(providerId)
       if (isExternalCliProvider(provider)) return null
