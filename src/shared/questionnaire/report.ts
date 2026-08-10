@@ -1,4 +1,4 @@
-import { evaluateScore } from './scoring'
+import { evaluateScore, type QuestionAnswers } from './scoring'
 import type {
   QuestionAnswer,
   QuestionnaireAnswers,
@@ -8,11 +8,8 @@ import type {
   QuestionResult
 } from './types'
 
-/** 计算单份问卷的得分结果。 */
-export function scoreQuestionnaire(
-  def: QuestionnaireDefinition,
-  answers: QuestionnaireAnswers
-): QuestionnaireScoreResult {
+/** 计算单份问卷的得分结果。answers 为该问卷的扁平作答（questionId → value）。 */
+export function scoreQuestionnaire(def: QuestionnaireDefinition, answers: QuestionAnswers): QuestionnaireScoreResult {
   const expr = def.scoring.expression
   let totalScore: number | undefined
   let standardizedScore: number | undefined

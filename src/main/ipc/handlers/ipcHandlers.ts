@@ -24,6 +24,7 @@ import { openclawHandlers } from './openclaw'
 import { ovmsHandlers } from './ovms'
 import { profileHandlers } from './profile'
 import { providerHandlers } from './provider'
+import { questionnaireHandlers } from './questionnaire'
 import { skillHandlers } from './skill'
 import { systemHandlers } from './system'
 import { tabHandlers } from './tab'
@@ -64,6 +65,7 @@ export const ipcHandlers: IpcHandlersFor<IpcRequestSchemas> = {
   ...ovmsHandlers,
   ...profileHandlers,
   ...providerHandlers,
+  ...questionnaireHandlers,
   ...skillHandlers,
   ...systemHandlers,
   ...tabHandlers,

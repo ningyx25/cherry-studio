@@ -145,6 +145,7 @@ export function buildPathRegistry() {
     'feature.agents.data': path.join(appUserDataData, 'Agents'), // per-agent identity + memory data
     'feature.agents.system_workspaces': path.join(appUserDataData, 'Agents', 'system'), // app-owned session workspaces
     'feature.agents.builtin': path.join(appRootResources, 'builtin-agents'), // bundled agent templates (read-only)
+    'feature.questionnaire.definitions': path.join(appRootResources, 'questionnaire', 'definitions'), // bundled questionnaire definitions (read-only)
     'feature.agents.assistant.manifest.file': path.join(
       appRootResources,
       'builtin-agents',
@@ -246,6 +247,7 @@ const NO_ENSURE = [
   'feature.agents.builtin',
   'feature.agents.assistant.manifest.file',
   'feature.agents.skills.builtin',
+  'feature.questionnaire.definitions',
   // AgentSessionService stores this path through DataApi. The runtime creates
   // the concrete session directory later, keeping database writes filesystem-free.
   'feature.agents.system_workspaces'

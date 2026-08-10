@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { evaluateScore } from '../scoring'
-import type { QuestionnaireAnswers, QuestionnaireDefinition, ScoreExpr } from '../types'
+import { evaluateScore, type QuestionAnswers } from '../scoring'
+import type { QuestionnaireDefinition, ScoreExpr } from '../types'
 
 const mkDef = (questions: any[], expression: ScoreExpr, maxScore?: number): QuestionnaireDefinition => ({
   questionnaireId: 'T',
@@ -173,7 +173,7 @@ describe('evaluateScore', () => {
         { kind: 'score', question: 'Q13' }
       ]
     }
-    const answers: QuestionnaireAnswers = {
+    const answers: QuestionAnswers = {
       Q1: 'B',
       Q2: 'A',
       Q3: 'B',
@@ -249,7 +249,7 @@ describe('evaluateScore', () => {
         ]
       }
     )
-    const answers: QuestionnaireAnswers = { Q1: '22:00', Q3: '07:00', Q4: '6' }
+    const answers: QuestionAnswers = { Q1: '22:00', Q3: '07:00', Q4: '6' }
     // bedSpan = 540min = 9h; eff = 6/9*100 = 66.67 → 落在 65-74 → 2
     expect(evaluateScore(def, def.scoring.expression, answers)).toBe(2)
   })

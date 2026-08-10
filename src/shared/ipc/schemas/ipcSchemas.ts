@@ -22,6 +22,7 @@ import { openclawRequestSchemas } from './openclaw'
 import { ovmsRequestSchemas } from './ovms'
 import { profileRequestSchemas } from './profile'
 import { providerRequestSchemas } from './provider'
+import { questionnaireRequestSchemas } from './questionnaire'
 import { skillRequestSchemas } from './skill'
 import { type SystemEventSchemas, systemRequestSchemas } from './system'
 import { type TabEventSchemas, tabRequestSchemas } from './tab'
@@ -59,6 +60,7 @@ export const ipcRequestSchemas = {
   ...openclawRequestSchemas,
   ...ovmsRequestSchemas,
   ...profileRequestSchemas,
+  ...questionnaireRequestSchemas,
   ...providerRequestSchemas,
   ...skillRequestSchemas,
   ...systemRequestSchemas,

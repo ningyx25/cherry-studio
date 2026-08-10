@@ -1,4 +1,7 @@
-import type { QuestionAnswer, QuestionnaireAnswers, QuestionnaireDefinition, ScoreExpr } from './types'
+import type { QuestionAnswer, QuestionnaireDefinition, ScoreExpr } from './types'
+
+/** 单份问卷的作答：questionId → 答案（matrix 题为 Record<subId, value>）。 */
+export type QuestionAnswers = Record<string, QuestionAnswer>
 
 /** 取某题某选项的得分：优先 convertedScore，其次 score，缺省 0。 */
 function optionScore(def: QuestionnaireDefinition, questionId: string, value: QuestionAnswer | undefined): number {
@@ -29,10 +32,10 @@ function parseTime(value: QuestionAnswer | undefined): number | null {
 }
 
 /**
- * 求值一个计分表达式。纯函数，只依赖 def/answers。
+ * 求值一个计分表达式。纯函数，只依赖 def/answers（单份问卷的扁平作答）。
  * matrix 题按子题 id 取 answers[parentId][subId] 的得分。
  */
-export function evaluateScore(def: QuestionnaireDefinition, expr: ScoreExpr, answers: QuestionnaireAnswers): number {
+export function evaluateScore(def: QuestionnaireDefinition, expr: ScoreExpr, answers: QuestionAnswers): number {
   switch (expr.kind) {
     case 'score': {
       // matrix 子题引用：expr.question 是 Q5a，父题是 Q5（subQuestions 包含 Q5a）
