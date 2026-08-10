@@ -48,7 +48,7 @@ describe('buildQuestionnaireReport', () => {
     const tagged: QuestionnaireDefinition = {
       ...def,
       questionnaireId: 'LIFE',
-      scoring: { expression: { kind: 'score', question: 'q1' }, interpretations: { E: ['#电子设备'] } }
+      scoring: { expression: { kind: 'score', question: 'q1' }, interpretations: { 'q1:E': ['#电子设备'] } }
     }
     const report = buildQuestionnaireReport({
       flowQuestionnaireId: 'LIFE',

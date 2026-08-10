@@ -32,13 +32,13 @@ export function scoreQuestionnaire(
     (rule) => effectiveScore !== undefined && rule.minScore <= effectiveScore && effectiveScore <= rule.maxScore
   )
 
-  // 危险因素标签：interpretations 键按作答的选项值匹配
+  // 危险因素标签：interpretations 键按「题id:选项值」匹配
   const riskTags: string[] = []
   if (def.scoring.interpretations) {
     for (const q of def.questions) {
       const ans = answers[q.id]
       if (ans === undefined) continue
-      const tags = def.scoring.interpretations[String(ans)]
+      const tags = def.scoring.interpretations[`${q.id}:${String(ans)}`]
       if (tags) riskTags.push(...tags)
     }
   }

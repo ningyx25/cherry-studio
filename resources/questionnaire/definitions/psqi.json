@@ -1,0 +1,508 @@
+{
+  "questionnaireId": "PSQI",
+  "title": "匹兹堡睡眠质量指数问卷（PSQI）",
+  "description": "评估近1个月来被试者的睡眠质量，包含 19 个自评条目和 5 个同寝者观察条目，计分得出 7 个成分分数及总分。",
+  "questions": [
+    {
+      "id": "Q1",
+      "text": "通常入睡时间（几点上床）",
+      "type": "time"
+    },
+    {
+      "id": "Q2",
+      "text": "通常从上床到入睡所需分钟数",
+      "type": "numeric",
+      "unit": "分钟"
+    },
+    {
+      "id": "Q3",
+      "text": "通常早晨起床时间",
+      "type": "time"
+    },
+    {
+      "id": "Q4",
+      "text": "每夜实际睡眠小时数",
+      "type": "numeric",
+      "unit": "小时"
+    },
+    {
+      "id": "Q5",
+      "text": "近1个月来，因以下原因影响睡眠的频率",
+      "type": "matrix",
+      "subQuestions": [
+        {
+          "id": "Q5a",
+          "text": "入睡困难（30分钟内不能入睡）"
+        },
+        {
+          "id": "Q5b",
+          "text": "夜间易醒或早醒"
+        },
+        {
+          "id": "Q5c",
+          "text": "夜间起夜上厕所"
+        },
+        {
+          "id": "Q5d",
+          "text": "呼吸不畅/感觉憋气"
+        },
+        {
+          "id": "Q5e",
+          "text": "咳嗽或打鼾严重"
+        },
+        {
+          "id": "Q5f",
+          "text": "感觉冷"
+        },
+        {
+          "id": "Q5g",
+          "text": "感觉热"
+        },
+        {
+          "id": "Q5h",
+          "text": "做恶梦"
+        },
+        {
+          "id": "Q5i",
+          "text": "身体疼痛"
+        },
+        {
+          "id": "Q5j",
+          "text": "其他影响睡眠的原因"
+        }
+      ],
+      "options": [
+        {
+          "label": "无",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "＜1次/周",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "1-2次/周",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "≥3次/周",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "id": "Q6",
+      "text": "近1个月来，总体睡眠质量评估",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "很好",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "较好",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "较差",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "很差",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "id": "Q7",
+      "text": "近1个月来，使用催眠/安眠药物的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "无",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "＜1次/周",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "1-2次/周",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "≥3次/周",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "id": "Q8",
+      "text": "近1个月来，在开车、用餐、社交或从事活动时感到困倦/难以保持清醒的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "无",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "＜1次/周",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "1-2次/周",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "≥3次/周",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "id": "Q9",
+      "text": "近1个月来，做事情觉得精力不足、缺乏干劲",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "没有",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "偶尔有",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "有时有",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "经常有",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "expression": {
+      "kind": "sum",
+      "items": [
+        {
+          "kind": "score",
+          "question": "Q6"
+        },
+        {
+          "kind": "lookup",
+          "input": {
+            "kind": "sum",
+            "items": [
+              {
+                "kind": "lookup",
+                "input": {
+                  "kind": "score",
+                  "question": "Q2"
+                },
+                "table": [
+                  {
+                    "type": "range",
+                    "min": 0,
+                    "max": 15,
+                    "value": 0
+                  },
+                  {
+                    "type": "range",
+                    "min": 16,
+                    "max": 30,
+                    "value": 1
+                  },
+                  {
+                    "type": "range",
+                    "min": 31,
+                    "max": 60,
+                    "value": 2
+                  },
+                  {
+                    "type": "range",
+                    "min": 61,
+                    "max": 999,
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "kind": "score",
+                "question": "Q5a"
+              }
+            ]
+          },
+          "table": [
+            {
+              "type": "score-sum",
+              "min": 0,
+              "max": 0,
+              "value": 0
+            },
+            {
+              "type": "score-sum",
+              "min": 1,
+              "max": 2,
+              "value": 1
+            },
+            {
+              "type": "score-sum",
+              "min": 3,
+              "max": 4,
+              "value": 2
+            },
+            {
+              "type": "score-sum",
+              "min": 5,
+              "max": 6,
+              "value": 3
+            }
+          ]
+        },
+        {
+          "kind": "lookup",
+          "input": {
+            "kind": "score",
+            "question": "Q4"
+          },
+          "table": [
+            {
+              "type": "range",
+              "min": 7,
+              "max": 999,
+              "value": 0
+            },
+            {
+              "type": "range",
+              "min": 6,
+              "max": 7,
+              "value": 1
+            },
+            {
+              "type": "range",
+              "min": 5,
+              "max": 6,
+              "value": 2
+            },
+            {
+              "type": "range",
+              "min": 0,
+              "max": 5,
+              "value": 3
+            }
+          ]
+        },
+        {
+          "kind": "efficiency",
+          "bedTime": "Q1",
+          "wakeTime": "Q3",
+          "sleepHours": "Q4",
+          "table": [
+            {
+              "type": "range",
+              "min": 85,
+              "max": 999,
+              "value": 0
+            },
+            {
+              "type": "range",
+              "min": 75,
+              "max": 84,
+              "value": 1
+            },
+            {
+              "type": "range",
+              "min": 65,
+              "max": 74,
+              "value": 2
+            },
+            {
+              "type": "range",
+              "min": 0,
+              "max": 64,
+              "value": 3
+            }
+          ]
+        },
+        {
+          "kind": "lookup",
+          "input": {
+            "kind": "sum",
+            "items": [
+              {
+                "kind": "score",
+                "question": "Q5b"
+              },
+              {
+                "kind": "score",
+                "question": "Q5c"
+              },
+              {
+                "kind": "score",
+                "question": "Q5d"
+              },
+              {
+                "kind": "score",
+                "question": "Q5e"
+              },
+              {
+                "kind": "score",
+                "question": "Q5f"
+              },
+              {
+                "kind": "score",
+                "question": "Q5g"
+              },
+              {
+                "kind": "score",
+                "question": "Q5h"
+              },
+              {
+                "kind": "score",
+                "question": "Q5i"
+              },
+              {
+                "kind": "score",
+                "question": "Q5j"
+              }
+            ]
+          },
+          "table": [
+            {
+              "type": "score-sum",
+              "min": 0,
+              "max": 0,
+              "value": 0
+            },
+            {
+              "type": "score-sum",
+              "min": 1,
+              "max": 9,
+              "value": 1
+            },
+            {
+              "type": "score-sum",
+              "min": 10,
+              "max": 18,
+              "value": 2
+            },
+            {
+              "type": "score-sum",
+              "min": 19,
+              "max": 27,
+              "value": 3
+            }
+          ]
+        },
+        {
+          "kind": "score",
+          "question": "Q7"
+        },
+        {
+          "kind": "lookup",
+          "input": {
+            "kind": "sum",
+            "items": [
+              {
+                "kind": "score",
+                "question": "Q8"
+              },
+              {
+                "kind": "score",
+                "question": "Q9"
+              }
+            ]
+          },
+          "table": [
+            {
+              "type": "score-sum",
+              "min": 0,
+              "max": 0,
+              "value": 0
+            },
+            {
+              "type": "score-sum",
+              "min": 1,
+              "max": 2,
+              "value": 1
+            },
+            {
+              "type": "score-sum",
+              "min": 3,
+              "max": 4,
+              "value": 2
+            },
+            {
+              "type": "score-sum",
+              "min": 5,
+              "max": 6,
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    "maxScore": 21,
+    "evaluation": [
+      {
+        "minScore": 0,
+        "maxScore": 5,
+        "level": "睡眠质量很好",
+        "assessment": "睡眠健康，继续维持良好的作息习惯。",
+        "recommendations": [
+          "维持良好作息"
+        ]
+      },
+      {
+        "minScore": 6,
+        "maxScore": 10,
+        "level": "睡眠质量还行",
+        "assessment": "存在轻度睡眠波动，建议适当进行生活方式与睡眠卫生调整。",
+        "recommendations": [
+          "调整生活方式与睡眠卫生"
+        ]
+      },
+      {
+        "minScore": 11,
+        "maxScore": 15,
+        "level": "睡眠质量较差",
+        "assessment": "存在明显睡眠障碍，可能加重干眼症状，建议改善作息并咨询医生。",
+        "recommendations": [
+          "改善作息并咨询医生"
+        ]
+      },
+      {
+        "minScore": 16,
+        "maxScore": 21,
+        "level": "睡眠质量很差",
+        "assessment": "存在严重睡眠障碍，建议前往睡眠科/心理科门诊就诊。",
+        "recommendations": [
+          "前往睡眠科/心理科就诊"
+        ]
+      }
+    ]
+  }
+}

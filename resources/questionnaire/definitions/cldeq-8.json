@@ -1,0 +1,361 @@
+{
+  "questionnaireId": "CLDEQ8",
+  "title": "接触镜干眼问卷-8（CLDEQ-8）",
+  "description": "专用于评估隐形眼镜（角膜接触镜）佩戴人群相关干眼症状频率与程度的标准量表。",
+  "questions": [
+    {
+      "id": "Q1a",
+      "text": "在过去两周内，佩戴隐形眼镜时出现眼部不适的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "0 - 从不",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "1 - 很少",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "2 - 有时",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "3 - 频繁",
+          "value": 3,
+          "score": 3
+        },
+        {
+          "label": "4 - 持续",
+          "value": 4,
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q1b",
+      "text": "在戴隐形眼镜即将结束时（取下前），眼部不适的强度",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "0 - 从未有过",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "1 - 一点也不强烈",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "2 - 一般强烈",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "3 - 强烈",
+          "value": 3,
+          "score": 3
+        },
+        {
+          "label": "4 - 比较强烈",
+          "value": 4,
+          "score": 4
+        },
+        {
+          "label": "5 - 非常强烈",
+          "value": 5,
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "Q2a",
+      "text": "在过去两周内，佩戴隐形眼镜时觉得眼睛干涩的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "0 - 从不",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "1 - 很少",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "2 - 有时",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "3 - 频繁",
+          "value": 3,
+          "score": 3
+        },
+        {
+          "label": "4 - 持续",
+          "value": 4,
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q2b",
+      "text": "在戴隐形眼镜即将结束时（取下前），眼干的强度",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "0 - 从未有过",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "1 - 一点也不强烈",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "2 - 一般强烈",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "3 - 强烈",
+          "value": 3,
+          "score": 3
+        },
+        {
+          "label": "4 - 比较强烈",
+          "value": 4,
+          "score": 4
+        },
+        {
+          "label": "5 - 非常强烈",
+          "value": 5,
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "Q3a",
+      "text": "在过去两周内，佩戴隐形眼镜时视力模糊或看东西不清楚的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "0 - 从不",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "1 - 很少",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "2 - 有时",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "3 - 频繁",
+          "value": 3,
+          "score": 3
+        },
+        {
+          "label": "4 - 持续",
+          "value": 4,
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q3b",
+      "text": "在戴隐形眼镜即将结束时（取下前），视力模糊的明显程度",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "0 - 从未有过",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "1 - 一点也不明显",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "2 - 一般明显",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "3 - 明显",
+          "value": 3,
+          "score": 3
+        },
+        {
+          "label": "4 - 比较明显",
+          "value": 4,
+          "score": 4
+        },
+        {
+          "label": "5 - 非常明显",
+          "value": 5,
+          "score": 5
+        }
+      ]
+    },
+    {
+      "id": "Q4",
+      "text": "在过去两周内，因戴隐形眼镜眼部不适而想要闭眼的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "0 - 从不",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "1 - 很少",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "2 - 有时",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "3 - 频繁",
+          "value": 3,
+          "score": 3
+        },
+        {
+          "label": "4 - 持续",
+          "value": 4,
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q5",
+      "text": "因眼部不适或干涩，您想要提前取下隐形眼镜的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "1 - 从不",
+          "value": 1,
+          "convertedScore": 0
+        },
+        {
+          "label": "2 - 每周小于1次",
+          "value": 2,
+          "convertedScore": 0.8
+        },
+        {
+          "label": "3 - 每周1次",
+          "value": 3,
+          "convertedScore": 1.6
+        },
+        {
+          "label": "4 - 每周数次",
+          "value": 4,
+          "convertedScore": 2.4
+        },
+        {
+          "label": "5 - 每天1次",
+          "value": 5,
+          "convertedScore": 3.2
+        },
+        {
+          "label": "6 - 每天数次",
+          "value": 6,
+          "convertedScore": 4
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "expression": {
+      "kind": "sum",
+      "items": [
+        {
+          "kind": "score",
+          "question": "Q1a"
+        },
+        {
+          "kind": "mul",
+          "expr": {
+            "kind": "score",
+            "question": "Q1b"
+          },
+          "factor": 2
+        },
+        {
+          "kind": "score",
+          "question": "Q2a"
+        },
+        {
+          "kind": "mul",
+          "expr": {
+            "kind": "score",
+            "question": "Q2b"
+          },
+          "factor": 2
+        },
+        {
+          "kind": "score",
+          "question": "Q3a"
+        },
+        {
+          "kind": "mul",
+          "expr": {
+            "kind": "score",
+            "question": "Q3b"
+          },
+          "factor": 2
+        },
+        {
+          "kind": "score",
+          "question": "Q4"
+        },
+        {
+          "kind": "score",
+          "question": "Q5"
+        }
+      ]
+    },
+    "maxScore": 37.2,
+    "standardize": {
+      "divideBy": 37.2,
+      "multiplyBy": 100
+    },
+    "evaluation": [
+      {
+        "minScore": 14,
+        "maxScore": 100,
+        "level": "接触镜相关干眼",
+        "assessment": "得分 ≥ 14 分提示存在具有临床意义的接触镜相关干眼（Contact Lens-Related Dry Eye），需调整配戴方案或接受干眼干预。",
+        "recommendations": [
+          "调整配戴方案",
+          "接受干眼干预"
+        ]
+      },
+      {
+        "minScore": 0,
+        "maxScore": 13.99,
+        "level": "正常",
+        "assessment": "无临床意义的接触镜相关干眼",
+        "recommendations": [
+          "维持现有配戴习惯",
+          "注意眼部保湿"
+        ]
+      }
+    ]
+  }
+}
