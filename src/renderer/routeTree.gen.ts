@@ -31,6 +31,7 @@ import { Route as SettingsCodeExecutionRouteImport } from './routes/settings/cod
 import { Route as SettingsChannelsRouteImport } from './routes/settings/channels'
 import { Route as SettingsAppearanceRouteImport } from './routes/settings/appearance'
 import { Route as SettingsAboutRouteImport } from './routes/settings/about'
+import { Route as AppQuestionnaireRouteImport } from './routes/app/questionnaire'
 import { Route as AppPopScienceRouteImport } from './routes/app/pop-science'
 import { Route as AppKnowledgeRouteImport } from './routes/app/knowledge'
 import { Route as AppClinicRouteImport } from './routes/app/clinic'
@@ -155,6 +156,11 @@ const SettingsAboutRoute = SettingsAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => SettingsRoute,
 } as any)
+const AppQuestionnaireRoute = AppQuestionnaireRouteImport.update({
+  id: '/questionnaire',
+  path: '/questionnaire',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppPopScienceRoute = AppPopScienceRouteImport.update({
   id: '/pop-science',
   path: '/pop-science',
@@ -230,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/app/clinic': typeof AppClinicRoute
   '/app/knowledge': typeof AppKnowledgeRoute
   '/app/pop-science': typeof AppPopScienceRoute
+  '/app/questionnaire': typeof AppQuestionnaireRoute
   '/settings/about': typeof SettingsAboutRoute
   '/settings/appearance': typeof SettingsAppearanceRoute
   '/settings/channels': typeof SettingsChannelsRoute
@@ -266,6 +273,7 @@ export interface FileRoutesByTo {
   '/app/clinic': typeof AppClinicRoute
   '/app/knowledge': typeof AppKnowledgeRoute
   '/app/pop-science': typeof AppPopScienceRoute
+  '/app/questionnaire': typeof AppQuestionnaireRoute
   '/settings/about': typeof SettingsAboutRoute
   '/settings/appearance': typeof SettingsAppearanceRoute
   '/settings/channels': typeof SettingsChannelsRoute
@@ -302,6 +310,7 @@ export interface FileRoutesById {
   '/app/clinic': typeof AppClinicRoute
   '/app/knowledge': typeof AppKnowledgeRoute
   '/app/pop-science': typeof AppPopScienceRoute
+  '/app/questionnaire': typeof AppQuestionnaireRoute
   '/settings/about': typeof SettingsAboutRoute
   '/settings/appearance': typeof SettingsAppearanceRoute
   '/settings/channels': typeof SettingsChannelsRoute
@@ -341,6 +350,7 @@ export interface FileRouteTypes {
     | '/app/clinic'
     | '/app/knowledge'
     | '/app/pop-science'
+    | '/app/questionnaire'
     | '/settings/about'
     | '/settings/appearance'
     | '/settings/channels'
@@ -377,6 +387,7 @@ export interface FileRouteTypes {
     | '/app/clinic'
     | '/app/knowledge'
     | '/app/pop-science'
+    | '/app/questionnaire'
     | '/settings/about'
     | '/settings/appearance'
     | '/settings/channels'
@@ -412,6 +423,7 @@ export interface FileRouteTypes {
     | '/app/clinic'
     | '/app/knowledge'
     | '/app/pop-science'
+    | '/app/questionnaire'
     | '/settings/about'
     | '/settings/appearance'
     | '/settings/channels'
@@ -605,6 +617,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsAboutRouteImport
       parentRoute: typeof SettingsRoute
     }
+    '/app/questionnaire': {
+      id: '/app/questionnaire'
+      path: '/questionnaire'
+      fullPath: '/app/questionnaire'
+      preLoaderRoute: typeof AppQuestionnaireRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/pop-science': {
       id: '/app/pop-science'
       path: '/pop-science'
@@ -703,12 +722,14 @@ interface AppRouteChildren {
   AppClinicRoute: typeof AppClinicRoute
   AppKnowledgeRoute: typeof AppKnowledgeRoute
   AppPopScienceRoute: typeof AppPopScienceRoute
+  AppQuestionnaireRoute: typeof AppQuestionnaireRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppClinicRoute: AppClinicRoute,
   AppKnowledgeRoute: AppKnowledgeRoute,
   AppPopScienceRoute: AppPopScienceRoute,
+  AppQuestionnaireRoute: AppQuestionnaireRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

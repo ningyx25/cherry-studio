@@ -1,5 +1,5 @@
 import type { Tab } from '@renderer/hooks/tab'
-import { FileSearch, FlaskConical, Globe, MessageCircle, Settings, Stethoscope } from 'lucide-react'
+import { ClipboardList, FileSearch, FlaskConical, Globe, MessageCircle, Settings, Stethoscope } from 'lucide-react'
 
 export type IconComponent = React.FC<{ size?: number; strokeWidth?: number; className?: string }>
 
@@ -9,6 +9,7 @@ export const ROUTE_ICONS: Record<string, IconComponent> = {
   '/app/pop-science': FlaskConical,
   '/app/clinic': Stethoscope,
   '/app/knowledge': FileSearch,
+  '/app/questionnaire': ClipboardList,
   '/settings': Settings
 }
 

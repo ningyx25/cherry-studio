@@ -14,7 +14,7 @@ const questionnaireSummarySchema = z.object({
 
 export const questionnaireRequestSchemas = {
   'questionnaire.list_definitions': defineRoute({
-    input: z.strictObject({}),
+    input: z.void(),
     output: z.array(questionnaireSummarySchema)
   }),
   'questionnaire.get_definition': defineRoute({

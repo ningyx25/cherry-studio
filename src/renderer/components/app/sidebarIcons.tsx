@@ -1,6 +1,6 @@
 import type { SidebarAppId } from '@renderer/utils/sidebar'
 import type { LucideIcon } from 'lucide-react'
-import { FileSearch, FlaskConical, Stethoscope } from 'lucide-react'
+import { ClipboardList, FileSearch, FlaskConical, Stethoscope } from 'lucide-react'
 
 /**
  * Icon component for each built-in sidebar app. Keyed by the `SidebarAppId` union so the
@@ -11,5 +11,6 @@ import { FileSearch, FlaskConical, Stethoscope } from 'lucide-react'
 export const SIDEBAR_ICON_COMPONENTS: Record<SidebarAppId, LucideIcon> = {
   'pop-science': FlaskConical,
   clinic: Stethoscope,
-  knowledge: FileSearch
+  knowledge: FileSearch,
+  questionnaire: ClipboardList
 }

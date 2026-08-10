@@ -98,6 +98,7 @@ export const SIDEBAR_FAVORITES = [
   'translate',
   'mini_app',
   'knowledge',
+  'questionnaire',
   'files',
   'code_tools',
   'notes',

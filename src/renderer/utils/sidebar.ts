@@ -84,6 +84,10 @@ const SIDEBAR_APP_DEFINITIONS = [
   {
     id: 'knowledge',
     routePrefix: '/app/knowledge'
+  },
+  {
+    id: 'questionnaire',
+    routePrefix: '/app/questionnaire'
   }
 ] as const satisfies readonly SidebarAppDefinition[]
 

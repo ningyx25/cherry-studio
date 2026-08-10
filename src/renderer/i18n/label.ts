@@ -166,6 +166,7 @@ const titleKeyMap = {
   'mcp-servers': 'title.mcp-servers',
   notes: 'title.notes',
   paintings: 'title.paintings',
+  questionnaire: 'title.questionnaire',
   settings: 'title.settings',
   translate: 'title.translate',
   agents: 'agent.sidebar_title'
@@ -196,7 +197,8 @@ const sidebarIconKeyMap = {
   code_tools: 'code.title',
   notes: 'notes.title',
   'pop-science': 'title.pop_science',
-  clinic: 'title.clinic'
+  clinic: 'title.clinic',
+  questionnaire: 'title.questionnaire'
 } as const
 
 export const getSidebarIconLabelKey = (key: string): string => {

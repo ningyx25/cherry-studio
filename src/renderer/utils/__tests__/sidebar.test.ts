@@ -23,7 +23,7 @@ const miniAppFavorite = (id: string): SidebarFavoriteItem => ({ type: 'mini_app'
 
 describe('sidebar config helpers', () => {
   it('keeps the fixed sidebar app order available', () => {
-    expect(SIDEBAR_FAVORITE_ORDER).toEqual(['pop-science', 'clinic', 'knowledge'])
+    expect(SIDEBAR_FAVORITE_ORDER).toEqual(['pop-science', 'clinic', 'knowledge', 'questionnaire'])
   })
 
   it('preserves the preference order when reading ordered visible sidebar favorites', () => {
