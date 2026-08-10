@@ -44,6 +44,7 @@ describe('endpoint classification', () => {
       | '/pins'
       | '/prompts'
       | '/providers'
+      | '/questionnaire-sessions'
       | '/providers/:providerId/models:resolve'
       | '/skills'
       | '/tags'

@@ -33,6 +33,7 @@ import { paintingHandlers } from './paintings'
 import { pinHandlers } from './pins'
 import { promptHandlers } from './prompts'
 import { providerHandlers } from './providers'
+import { questionnaireSessionHandlers } from './questionnaires'
 import { searchHandlers } from './search'
 import { skillHandlers } from './skills'
 import { tagHandlers } from './tags'
@@ -69,6 +70,7 @@ export const apiHandlers: ApiImplementation = {
   ...groupHandlers,
   ...pinHandlers,
   ...promptHandlers,
+  ...questionnaireSessionHandlers,
   ...agentWorkspaceHandlers,
   ...jobHandlers,
   ...searchHandlers,
