@@ -177,7 +177,10 @@ describe('applyMigrations over a populated database', () => {
   })
 
   it('moves legacy sticky session pointers into the constrained relation', () => {
-    applyMigrations(db, baselineMigrationsFolder(join(tempDir, 'baseline')))
+    // This test exercises migration 0005's backfill specifically, so it must
+    // pin the baseline to 0005 regardless of whether newer migrations exist
+    // (otherwise the default tip baseline would move as new migrations land).
+    applyMigrations(db, baselineMigrationsFolder(join(tempDir, 'baseline'), '0005_slow_obadiah_stane'))
     const now = Date.now()
     sqlite
       .prepare(

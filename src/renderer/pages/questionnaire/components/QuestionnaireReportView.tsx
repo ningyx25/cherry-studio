@@ -13,7 +13,7 @@ export function QuestionnaireReportView({
   return (
     <div className="flex h-full flex-col overflow-auto p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">问卷报告</h2>
+        <h2 className="font-semibold text-lg">问卷报告</h2>
         <div className="flex gap-2">
           <Button variant="outline" onClick={onBack}>
             返回
@@ -28,7 +28,7 @@ export function QuestionnaireReportView({
             <div className="font-medium">{qr.title}</div>
             {qr.scored && qr.totalScore !== undefined && <div className="text-sm opacity-70">得分 {qr.totalScore}</div>}
           </div>
-          {qr.level && <div className="mt-1 text-sm text-primary">{qr.level}</div>}
+          {qr.level && <div className="mt-1 text-primary text-sm">{qr.level}</div>}
           {qr.assessment && <div className="mt-1 text-sm opacity-70">{qr.assessment}</div>}
           {qr.recommendations.length > 0 && (
             <ul className="mt-2 list-disc pl-5 text-sm">
@@ -40,7 +40,7 @@ export function QuestionnaireReportView({
           {qr.riskTags.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1.5">
               {qr.riskTags.map((tag) => (
-                <span key={tag} className="rounded bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                <span key={tag} className="rounded bg-primary/10 px-2 py-0.5 text-primary text-xs">
                   {tag}
                 </span>
               ))}
@@ -54,7 +54,7 @@ export function QuestionnaireReportView({
           <div className="mb-2 font-medium">危险因素</div>
           <div className="flex flex-wrap gap-1.5">
             {report.riskTags.map((tag) => (
-              <span key={tag} className="rounded bg-primary/10 px-2 py-0.5 text-xs text-primary">
+              <span key={tag} className="rounded bg-primary/10 px-2 py-0.5 text-primary text-xs">
                 {tag}
               </span>
             ))}

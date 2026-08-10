@@ -80,7 +80,7 @@ export function QuestionnaireForm({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-base font-medium">{question.text}</div>
+      <div className="font-medium text-base">{question.text}</div>
       {'patientExplanation' in question && question.patientExplanation && (
         <div className="text-sm opacity-60">{question.patientExplanation}</div>
       )}

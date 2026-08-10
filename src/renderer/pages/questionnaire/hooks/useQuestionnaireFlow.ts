@@ -47,7 +47,7 @@ export function useQuestionnaireFlow(startQuestionnaireId: string) {
           if (r.condition === 'not_equal') return ans !== undefined && ans !== r.value
           if (r.condition === 'contains_any') {
             if (!Array.isArray(ans)) return false
-            return (r.value as string[]).some((v) => (ans as string[]).includes(v))
+            return (r.value as string[]).some((v) => ans.includes(v))
           }
           return false
         })

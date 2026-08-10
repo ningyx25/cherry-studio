@@ -978,7 +978,6 @@ describe('AgentPage', () => {
     expect(agentPageMocks.agentSidePanelSessionsSource).toBe(agentPageMocks.createdAgentSessionsSource)
   })
 
-
   it('switches to agent grouping when changing session position from the left sidebar', async () => {
     agentPageMocks.sessionDisplayMode = 'workdir'
     agentPageMocks.sessionPanePosition = 'left'
@@ -1062,9 +1061,6 @@ describe('AgentPage', () => {
     expect(screen.getByTestId('resource-catalog-agent')).toBeInTheDocument()
     expect(screen.getByTestId('agent-chat')).toBeInTheDocument()
   })
-
-
-
 
   it('keeps a sidebar toggle beside agent resource search so a collapsed pane can be reopened', async () => {
     agentPageMocks.showSidebar = true
@@ -1222,11 +1218,6 @@ describe('AgentPage', () => {
       })
     )
   })
-
-
-
-
-
 
   it('reuses the current agent empty session from the classic-layout composer button', async () => {
     agentPageMocks.sessionDisplayMode = 'agent'
@@ -1621,7 +1612,6 @@ describe('AgentPage', () => {
     )
     expect(agentPageMocks.setLastUsedWorkspaceId).toHaveBeenCalledWith('workspace-next')
   })
-
 
   it('updates the controlled session selection when the active session changes inside the tab', async () => {
     render(<AgentPage />)

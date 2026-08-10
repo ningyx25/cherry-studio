@@ -150,7 +150,7 @@ export default function QuestionnairePage() {
     return (
       <div data-ui="questionnaire.form" className="flex h-full flex-col overflow-auto p-6">
         <div className="mb-4">
-          <div className="text-lg font-semibold">{currentDefinition.title}</div>
+          <div className="font-semibold text-lg">{currentDefinition.title}</div>
           <div className="mt-1 text-sm opacity-60">{currentDefinition.description}</div>
         </div>
         {currentQuestion ? (
@@ -196,7 +196,7 @@ export default function QuestionnairePage() {
   // 首页：问卷卡片 + 历史会话
   return (
     <div data-ui="questionnaire.view" className="flex h-full flex-col overflow-auto p-6">
-      <h1 className="mb-4 text-lg font-semibold">问卷</h1>
+      <h1 className="mb-4 font-semibold text-lg">问卷</h1>
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {definitions.map((d) => (
           <div key={d.questionnaireId} className="flex flex-col justify-between rounded-lg border p-4">
@@ -216,12 +216,12 @@ export default function QuestionnairePage() {
         ))}
       </div>
 
-      <h2 className="mb-3 text-base font-semibold">历史记录</h2>
+      <h2 className="mb-3 font-semibold text-base">历史记录</h2>
       <div className="flex flex-col gap-2">
         {(sessions ?? []).map((s) => (
           <div key={s.id} className="flex items-center justify-between rounded-lg border px-4 py-3">
             <div>
-              <div className="text-sm font-medium">{s.flowQuestionnaireId}</div>
+              <div className="font-medium text-sm">{s.flowQuestionnaireId}</div>
               <div className="text-xs opacity-60">
                 {s.status === 'completed' ? '已完成' : '进行中'} · {new Date(s.updatedAt).toLocaleString()}
               </div>
