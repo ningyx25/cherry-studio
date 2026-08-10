@@ -704,6 +704,19 @@ async function buildEnvironment(provider: Provider, agent: AgentEntity): Promise
   const apiModelId = resolveApiModelId(providerId, rawModelId)
   const sonnetApiModelId = resolveApiModelId(sonnetProviderId, sonnetModelId)
   const haikuApiModelId = resolveApiModelId(haikuProviderId, haikuModelId)
+  // Claude Code's CLI caps `max_tokens` at the model's `max_output_tokens` default
+  // (32000 for its bundled Claude models). The user-edited model row's `maxOutputTokens`
+  // is the canonical per-model cap the app surfaces in the UI, so propagate it to the CLI —
+  // a smaller window (e.g. a local vLLM serving at 32768) must not get a request that blows
+  // past its input+output budget. `0`/absent (v1 "use model default" sentinel) is skipped so
+  // we never ask the CLI for a zero-token budget; `undefined` leaves the CLI default.
+  let maxOutputTokens: number | undefined
+  try {
+    const declared = modelService.getByKey(providerId, rawModelId).maxOutputTokens
+    maxOutputTokens = declared !== undefined && declared > 0 ? declared : undefined
+  } catch {
+    maxOutputTokens = undefined
+  }
 
   const env: Record<string, string | undefined> = {
     ...loginShellEnv,
@@ -727,7 +740,9 @@ async function buildEnvironment(provider: Provider, agent: AgentEntity): Promise
     CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT: '1',
     CHERRY_STUDIO_BUN_PATH: bunPath,
     CHERRY_STUDIO_SKILLS_DIR: application.getPath('feature.agents.skills'),
-    ...(customGitBashPath ? { CLAUDE_CODE_GIT_BASH_PATH: customGitBashPath } : {})
+    ...(customGitBashPath ? { CLAUDE_CODE_GIT_BASH_PATH: customGitBashPath } : {}),
+    // Model-row output cap → CLI max_tokens (only when the model declares one).
+    ...(maxOutputTokens !== undefined ? { CLAUDE_CODE_MAX_OUTPUT_TOKENS: String(maxOutputTokens) } : {})
   }
 
   // Merge user-defined env vars with blocked list

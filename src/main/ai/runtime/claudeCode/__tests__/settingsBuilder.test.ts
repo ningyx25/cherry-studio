@@ -538,6 +538,64 @@ describe('buildClaudeCodeSessionSettings', () => {
     })
   })
 
+  it('propagates the model row maxOutputTokens to CLAUDE_CODE_MAX_OUTPUT_TOKENS', async () => {
+    mocks.modelGetByKey.mockReturnValue({ apiModelId: 'claude-api', maxOutputTokens: 2048 })
+
+    const settings = await buildClaudeCodeSessionSettings(
+      {
+        id: 'session-1',
+        agentId: 'agent-1',
+        workspace: { type: 'user', path: '/workspace/project' }
+      } as never,
+      {} as never
+    )
+
+    expect(settings.env).toMatchObject({ CLAUDE_CODE_MAX_OUTPUT_TOKENS: '2048' })
+  })
+
+  it('omits CLAUDE_CODE_MAX_OUTPUT_TOKENS when the model row has no positive output cap', async () => {
+    for (const declared of [undefined, 0, -1] as const) {
+      mocks.modelGetByKey.mockReturnValue({ apiModelId: 'claude-api', maxOutputTokens: declared })
+
+      const settings = await buildClaudeCodeSessionSettings(
+        {
+          id: 'session-1',
+          agentId: 'agent-1',
+          workspace: { type: 'user', path: '/workspace/project' }
+        } as never,
+        {} as never
+      )
+
+      expect(settings.env).not.toHaveProperty('CLAUDE_CODE_MAX_OUTPUT_TOKENS')
+    }
+  })
+
+  it('preserves a user-configured CLAUDE_CODE_MAX_OUTPUT_TOKENS override', async () => {
+    mocks.modelGetByKey.mockReturnValue({ apiModelId: 'claude-api', maxOutputTokens: 2048 })
+    mocks.getAgent.mockReturnValue({
+      id: 'agent-1',
+      type: 'claude-code',
+      instructions: 'Follow instructions.',
+      model: 'anthropic::claude-sonnet',
+      planModel: 'anthropic::claude-sonnet',
+      smallModel: 'anthropic::claude-haiku',
+      mcps: [],
+      allowedTools: [],
+      configuration: { env_vars: { CLAUDE_CODE_MAX_OUTPUT_TOKENS: '8192' } }
+    })
+
+    const settings = await buildClaudeCodeSessionSettings(
+      {
+        id: 'session-1',
+        agentId: 'agent-1',
+        workspace: { type: 'user', path: '/workspace/project' }
+      } as never,
+      {} as never
+    )
+
+    expect(settings.env).toMatchObject({ CLAUDE_CODE_MAX_OUTPUT_TOKENS: '8192' })
+  })
+
   it('falls back each model env key to its own raw id when that model is absent from the table', async () => {
     // Only the small (haiku) model is missing — the others must NOT be forced to fall back, and the
     // haiku key must fall back to its OWN raw id (not the main model's).
