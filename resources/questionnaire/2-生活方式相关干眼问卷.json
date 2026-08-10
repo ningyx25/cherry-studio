@@ -1,0 +1,388 @@
+{
+  "questionnaire_id": "LIFESTYLE_DRY_EYE_QUESTIONNAIRE_V1",
+  "title": "生活方式相关干眼问卷",
+  "description": "用于评估患者日常生活习惯、环境变量及饮食结构中对干眼症的影响因子。",
+  "sections": [
+    {
+      "section_id": "SEC_VDT",
+      "section_name": "一、视频显示终端（VDT）使用",
+      "questions": [
+        {
+          "id": "VDT_Q1",
+          "text": "每天手机、电脑等视频终端使用时长",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. < 8小时",
+              "value": "A"
+            },
+            {
+              "label": "B. > 8小时",
+              "value": "B"
+            }
+          ]
+        },
+        {
+          "id": "VDT_Q2",
+          "text": "使用视频终端时是否觉得眼睛干涩不适",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 是",
+              "value": "A"
+            },
+            {
+              "label": "B. 否",
+              "value": "B"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "SEC_SLEEP",
+      "section_name": "二、睡眠状况",
+      "questions": [
+        {
+          "id": "SLEEP_Q1",
+          "text": "平均每日睡眠时间",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. < 5小时",
+              "value": "A"
+            },
+            {
+              "label": "B. 5~7小时",
+              "value": "B"
+            },
+            {
+              "label": "C. > 7小时",
+              "value": "C"
+            }
+          ]
+        },
+        {
+          "id": "SLEEP_Q2",
+          "text": "主观睡眠质量",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 差",
+              "value": "A"
+            },
+            {
+              "label": "B. 一般",
+              "value": "B"
+            },
+            {
+              "label": "C. 好",
+              "value": "C"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "SEC_CONTACT_LENS",
+      "section_name": "三、角膜接触镜（隐形眼镜）佩戴",
+      "questions": [
+        {
+          "id": "CL_Q1",
+          "text": "佩戴隐形眼镜年限",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 从不佩戴",
+              "value": "A"
+            },
+            {
+              "label": "B. 1~2年",
+              "value": "B"
+            },
+            {
+              "label": "C. 超过2年",
+              "value": "C"
+            }
+          ]
+        },
+        {
+          "id": "CL_Q2",
+          "text": "佩戴后眼部干涩不适强度",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 无不适",
+              "value": "A"
+            },
+            {
+              "label": "B. 轻微不适",
+              "value": "B"
+            },
+            {
+              "label": "C. 明显不适",
+              "value": "C"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "SEC_MAKEUP",
+      "section_name": "四、眼部化妆",
+      "questions": [
+        {
+          "id": "MAKEUP_Q1",
+          "text": "是否纹眼线",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 是",
+              "value": "A"
+            },
+            {
+              "label": "B. 否",
+              "value": "B"
+            }
+          ]
+        },
+        {
+          "id": "MAKEUP_Q2",
+          "text": "每周化眼妆频率",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 从不化",
+              "value": "A"
+            },
+            {
+              "label": "B. 1~3次",
+              "value": "B"
+            },
+            {
+              "label": "C. 超过3次",
+              "value": "C"
+            }
+          ]
+        },
+        {
+          "id": "MAKEUP_Q3",
+          "text": "是否使用眼部专用卸妆产品清洁",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 从不使用",
+              "value": "A"
+            },
+            {
+              "label": "B. 偶尔使用",
+              "value": "B"
+            },
+            {
+              "label": "C. 每次都用",
+              "value": "C"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "SEC_SMOKING",
+      "section_name": "五、吸烟情况",
+      "questions": [
+        {
+          "id": "SMOKE_Q1",
+          "text": "主动吸烟烟龄",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 不吸烟",
+              "value": "A"
+            },
+            {
+              "label": "B. 1~2年",
+              "value": "B"
+            },
+            {
+              "label": "C. 超过2年",
+              "value": "C"
+            }
+          ]
+        },
+        {
+          "id": "SMOKE_Q2",
+          "text": "被动吸烟（二手烟）频率",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 从不",
+              "value": "A"
+            },
+            {
+              "label": "B. 偶尔",
+              "value": "B"
+            },
+            {
+              "label": "C. 经常",
+              "value": "C"
+            }
+          ]
+        },
+        {
+          "id": "SMOKE_Q3",
+          "text": "处于烟雾环境中是否诱发或加重眼干",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 是",
+              "value": "A"
+            },
+            {
+              "label": "B. 否",
+              "value": "B"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "SEC_OUTDOOR",
+      "section_name": "六、户外防护",
+      "questions": [
+        {
+          "id": "OUTDOOR_Q1",
+          "text": "户外活动时佩戴墨镜/防护镜习惯",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 从不戴",
+              "value": "A"
+            },
+            {
+              "label": "B. 偶尔戴",
+              "value": "B"
+            },
+            {
+              "label": "C. 常年戴",
+              "value": "C"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "SEC_INDOOR_ENV",
+      "section_name": "七、室内环境",
+      "questions": [
+        {
+          "id": "ENV_Q1",
+          "text": "是否经常处于暖气或空调冷气房间",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 是",
+              "value": "A"
+            },
+            {
+              "label": "B. 否",
+              "value": "B"
+            }
+          ]
+        },
+        {
+          "id": "ENV_Q2",
+          "text": "在空调/暖气环境中是否觉得眼干不适",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 是",
+              "value": "A"
+            },
+            {
+              "label": "B. 否",
+              "value": "B"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "SEC_DIET_ALCOHOL",
+      "section_name": "八、饮食与饮酒",
+      "questions": [
+        {
+          "id": "DIET_Q1",
+          "text": "日常饮食包含推荐健康食物（蔬菜水果、深海鱼、五谷杂粮、豆类、橄榄油）的种类数量",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 全部包含（5种）",
+              "value": "A"
+            },
+            {
+              "label": "B. 包含 3~4 种",
+              "value": "B"
+            },
+            {
+              "label": "C. 少于 3 种",
+              "value": "C"
+            }
+          ]
+        },
+        {
+          "id": "DIET_Q2",
+          "text": "是否经常食用高脂/高热量食物（坚果、肥肉、内脏、奶油、巧克力、冰淇淋等）",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 几乎不吃",
+              "value": "A"
+            },
+            {
+              "label": "B. 经常食用 1~3 种",
+              "value": "B"
+            },
+            {
+              "label": "C. 经常食用 超过3 种",
+              "value": "C"
+            }
+          ]
+        },
+        {
+          "id": "ALCOHOL_Q1",
+          "text": "每周饮酒频率",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 从不饮酒",
+              "value": "A"
+            },
+            {
+              "label": "B. 1~3次",
+              "value": "B"
+            },
+            {
+              "label": "C. 超过 3次",
+              "value": "C"
+            }
+          ]
+        },
+        {
+          "id": "ALCOHOL_Q2",
+          "text": "饮酒后是否觉得眼睛干涩不适",
+          "type": "single_choice",
+          "options": [
+            {
+              "label": "A. 是",
+              "value": "A"
+            },
+            {
+              "label": "B. 否",
+              "value": "B"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,467 @@
+{
+  "questionnaire_id": "PSQI_QUESTIONNAIRE_V1",
+  "title": "匹兹堡睡眠质量指数问卷（PSQI）",
+  "description": "评估近1个月来被试者的睡眠质量，包含 19 个自评条目和 5 个同寝者观察条目，计分得出 7 个成分分数及总分。",
+  "self_report_items": [
+    {
+      "id": "Q1",
+      "text": "通常入睡时间（几点上床）",
+      "type": "time_input"
+    },
+    {
+      "id": "Q2",
+      "text": "通常从上床到入睡所需分钟数",
+      "type": "numeric_input",
+      "unit": "分钟"
+    },
+    {
+      "id": "Q3",
+      "text": "通常早晨起床时间",
+      "type": "time_input"
+    },
+    {
+      "id": "Q4",
+      "text": "每夜实际睡眠小时数",
+      "type": "numeric_input",
+      "unit": "小时"
+    },
+    {
+      "id": "Q5",
+      "text": "近1个月来，因以下原因影响睡眠的频率",
+      "sub_questions": [
+        {
+          "id": "Q5a",
+          "text": "入睡困难（30分钟内不能入睡）"
+        },
+        {
+          "id": "Q5b",
+          "text": "夜间易醒或早醒"
+        },
+        {
+          "id": "Q5c",
+          "text": "夜间起夜上厕所"
+        },
+        {
+          "id": "Q5d",
+          "text": "呼吸不畅/感觉憋气"
+        },
+        {
+          "id": "Q5e",
+          "text": "咳嗽或打鼾严重"
+        },
+        {
+          "id": "Q5f",
+          "text": "感觉冷"
+        },
+        {
+          "id": "Q5g",
+          "text": "感觉热"
+        },
+        {
+          "id": "Q5h",
+          "text": "做恶梦"
+        },
+        {
+          "id": "Q5i",
+          "text": "身体疼痛"
+        },
+        {
+          "id": "Q5j",
+          "text": "其他影响睡眠的原因"
+        }
+      ],
+      "options": [
+        {
+          "label": "无",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "＜1次/周",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "1-2次/周",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "≥3次/周",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "id": "Q6",
+      "text": "近1个月来，总体睡眠质量评估",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "很好",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "较好",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "较差",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "很差",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "id": "Q7",
+      "text": "近1个月来，使用催眠/安眠药物的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "无",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "＜1次/周",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "1-2次/周",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "≥3次/周",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "id": "Q8",
+      "text": "近1个月来，在开车、用餐、社交或从事活动时感到困倦/难以保持清醒的频率",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "无",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "＜1次/周",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "1-2次/周",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "≥3次/周",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "id": "Q9",
+      "text": "近1个月来，做事情觉得精力不足、缺乏干劲",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "没有",
+          "value": 0,
+          "score": 0
+        },
+        {
+          "label": "偶尔有",
+          "value": 1,
+          "score": 1
+        },
+        {
+          "label": "有时有",
+          "value": 2,
+          "score": 2
+        },
+        {
+          "label": "经常有",
+          "value": 3,
+          "score": 3
+        }
+      ]
+    }
+  ],
+  "roommate_observation_items": [
+    {
+      "id": "Q10",
+      "text": "同寝室者或床伴观察到的睡眠情况（不计入PSQI总分，供临床参考）",
+      "sub_questions": [
+        {
+          "id": "Q10a",
+          "text": "严重打鼾"
+        },
+        {
+          "id": "Q10b",
+          "text": "睡眠中呼吸暂停"
+        },
+        {
+          "id": "Q10c",
+          "text": "睡眠中腿部抽动/跳动"
+        },
+        {
+          "id": "Q10d",
+          "text": "睡眠中意识模糊或发作"
+        },
+        {
+          "id": "Q10e",
+          "text": "其他不安表现"
+        }
+      ],
+      "options": [
+        {
+          "label": "无",
+          "value": 0
+        },
+        {
+          "label": "＜1次/周",
+          "value": 1
+        },
+        {
+          "label": "1-2次/周",
+          "value": 2
+        },
+        {
+          "label": "≥3次/周",
+          "value": 3
+        }
+      ]
+    }
+  ],
+  "component_scoring_rules": {
+    "Component_A": {
+      "name": "主观睡眠质量",
+      "formula": "Component_A = Score(Q6)"
+    },
+    "Component_B": {
+      "name": "睡眠潜伏期",
+      "formula": "Q2得分 + Q5a得分 转换映射",
+      "q2_mapping": [
+        {
+          "range": [
+            0,
+            15
+          ],
+          "score": 0
+        },
+        {
+          "range": [
+            16,
+            30
+          ],
+          "score": 1
+        },
+        {
+          "range": [
+            31,
+            60
+          ],
+          "score": 2
+        },
+        {
+          "range": [
+            61,
+            999
+          ],
+          "score": 3
+        }
+      ],
+      "sum_mapping": [
+        {
+          "sum_range": [
+            0,
+            0
+          ],
+          "component_score": 0
+        },
+        {
+          "sum_range": [
+            1,
+            2
+          ],
+          "component_score": 1
+        },
+        {
+          "sum_range": [
+            3,
+            4
+          ],
+          "component_score": 2
+        },
+        {
+          "sum_range": [
+            5,
+            6
+          ],
+          "component_score": 3
+        }
+      ]
+    },
+    "Component_C": {
+      "name": "睡眠时间",
+      "formula": "Q4实际睡眠小时数 转换映射",
+      "mapping": [
+        {
+          "condition": "> 7h",
+          "score": 0
+        },
+        {
+          "condition": "6-7h",
+          "score": 1
+        },
+        {
+          "condition": "5-6h",
+          "score": 2
+        },
+        {
+          "condition": "< 5h",
+          "score": 3
+        }
+      ]
+    },
+    "Component_D": {
+      "name": "习惯性睡眠效率",
+      "formula": "Bed_Time = Q3 - Q1; Efficiency = (Q4 / Bed_Time) * 100%",
+      "mapping": [
+        {
+          "efficiency": "> 85%",
+          "score": 0
+        },
+        {
+          "efficiency": "75%-84%",
+          "score": 1
+        },
+        {
+          "efficiency": "65%-74%",
+          "score": 2
+        },
+        {
+          "efficiency": "< 65%",
+          "score": 3
+        }
+      ]
+    },
+    "Component_E": {
+      "name": "睡眠紊乱/障碍",
+      "formula": "Sum(Q5b .. Q5j) 累加和 转换映射",
+      "mapping": [
+        {
+          "sum_range": [
+            0,
+            0
+          ],
+          "score": 0
+        },
+        {
+          "sum_range": [
+            1,
+            9
+          ],
+          "score": 1
+        },
+        {
+          "sum_range": [
+            10,
+            18
+          ],
+          "score": 2
+        },
+        {
+          "sum_range": [
+            19,
+            27
+          ],
+          "score": 3
+        }
+      ]
+    },
+    "Component_F": {
+      "name": "催眠药物使用",
+      "formula": "Component_F = Score(Q7)"
+    },
+    "Component_G": {
+      "name": "日间功能障碍",
+      "formula": "Q8得分 + Q9得分 转换映射",
+      "mapping": [
+        {
+          "sum_range": [
+            0,
+            0
+          ],
+          "score": 0
+        },
+        {
+          "sum_range": [
+            1,
+            2
+          ],
+          "score": 1
+        },
+        {
+          "sum_range": [
+            3,
+            4
+          ],
+          "score": 2
+        },
+        {
+          "sum_range": [
+            5,
+            6
+          ],
+          "score": 3
+        }
+      ]
+    }
+  },
+  "total_score_and_evaluation": {
+    "psqi_total_score_formula": "PSQI_Total = Component_A + Component_B + Component_C + Component_D + Component_E + Component_F + Component_G",
+    "score_range": "0 ~ 21 分",
+    "grading": [
+      {
+        "min_score": 0,
+        "max_score": 5,
+        "level": "睡眠质量很好",
+        "recommendation": "睡眠健康，继续维持良好的作息习惯。"
+      },
+      {
+        "min_score": 6,
+        "max_score": 10,
+        "level": "睡眠质量还行",
+        "recommendation": "存在轻度睡眠波动，建议适当进行生活方式与睡眠卫生调整。"
+      },
+      {
+        "min_score": 11,
+        "max_score": 15,
+        "level": "睡眠质量较差",
+        "recommendation": "存在明显睡眠障碍，可能加重干眼症状，建议改善作息并咨询医生。"
+      },
+      {
+        "min_score": 16,
+        "max_score": 21,
+        "level": "睡眠质量很差",
+        "recommendation": "存在严重睡眠障碍，建议前往睡眠科/心理科门诊就诊。"
+      }
+    ]
+  }
+}

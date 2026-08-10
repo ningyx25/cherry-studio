@@ -1,0 +1,554 @@
+{
+  "questionnaire_id": "CHINA_DRY_EYE_QUESTIONNAIRE_V1",
+  "title": "中国干眼调查问卷（附问题解释）",
+  "description": "中国干眼流行病学调查与临床诊断基础问卷，测定干眼症状及相关危险因素得分。",
+  "basic_info_fields": [
+    {
+      "id": "name",
+      "label": "姓名",
+      "type": "string"
+    },
+    {
+      "id": "gender",
+      "label": "性别",
+      "type": "enum",
+      "options": [
+        "男",
+        "女"
+      ]
+    },
+    {
+      "id": "birth_date",
+      "label": "出生年月",
+      "type": "date"
+    },
+    {
+      "id": "age",
+      "label": "年龄",
+      "type": "integer"
+    },
+    {
+      "id": "occupation",
+      "label": "职业",
+      "type": "string"
+    },
+    {
+      "id": "phone",
+      "label": "电话",
+      "type": "string"
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q1",
+      "text": "戴隐形眼镜时间",
+      "type": "single_choice",
+      "mutually_exclusive_with": "Q2",
+      "mutually_exclusive_rule": "Q1与Q2选最高得分",
+      "options": [
+        {
+          "label": "A. 无",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 1年以内",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 2年以内",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 5年以内",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 5年以上",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q2",
+      "text": "角膜屈光手术时间",
+      "type": "single_choice",
+      "mutually_exclusive_with": "Q1",
+      "mutually_exclusive_rule": "Q1与Q2选最高得分",
+      "options": [
+        {
+          "label": "A. 无",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 半年",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 1年",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 2年",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 2年以上",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q3",
+      "text": "用眼药次数及时间",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "A. 无",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. ≤4次/日 3个月以下",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. ≤4次/日 3个月及以上",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. ＞4次/日 3个月以下",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. ＞4次/日 3个月及以上",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q4",
+      "text": "晚上睡眠质量",
+      "type": "single_choice",
+      "options": [
+        {
+          "label": "A. 睡眠很好",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 偶尔失眠或熬夜",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 经常失眠或熬夜",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 大部分时间睡眠质量差",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 每天睡眠质量都很差",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q5",
+      "text": "除眼睛外，身体其他部位是否有干燥感",
+      "type": "multi_choice",
+      "sub_items": [
+        "鼻子",
+        "嘴巴",
+        "喉咙",
+        "皮肤",
+        "生殖器",
+        "无"
+      ],
+      "scoring_logic": "根据选择有干燥感的身体部位种类数量计分",
+      "options": [
+        {
+          "label": "A. 无",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 1种",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 2种",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 3种",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. ≥4种",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q6",
+      "text": "对以下哪些环境比较敏感",
+      "type": "multi_choice",
+      "sub_items": [
+        "有人抽烟的环境",
+        "厨房油烟",
+        "户外空气污染/雾霾",
+        "粉尘/灰尘",
+        "空调房间",
+        "暖气房间",
+        "无"
+      ],
+      "scoring_logic": "根据敏感环境种类数量计分",
+      "options": [
+        {
+          "label": "A. 无",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 1种",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 2种",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 3种",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. ≥4种",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q7",
+      "text": "是否长期服用以下药品",
+      "type": "multi_choice",
+      "sub_items": [
+        "抗过敏药",
+        "利尿药",
+        "降压药",
+        "安眠药",
+        "精神病类药物",
+        "口服避孕药",
+        "更年期替代用药",
+        "无"
+      ],
+      "scoring_logic": "根据长期服用药品种类数量计分",
+      "options": [
+        {
+          "label": "A. 无",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 1种",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 2种",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 3种",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. ≥4种",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q8",
+      "text": "干燥感",
+      "type": "single_choice",
+      "patient_explanation": "【干燥感解释】您是否觉得眼睛干涩、缺乏水分或眼发干？",
+      "options": [
+        {
+          "label": "A. 没有",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 偶尔",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 一半时间",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 大部分时间",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 全部时间",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q9",
+      "text": "异物感",
+      "type": "single_choice",
+      "patient_explanation": "【异物感解释】您是否觉得眼睛里像进沙子、小虫，或者有磨砂感、沙粒感？",
+      "options": [
+        {
+          "label": "A. 没有",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 偶尔",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 一半时间",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 大部分时间",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 全部时间",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "text": "眼睛痛",
+      "type": "single_choice",
+      "patient_explanation": "【眼睛痛解释】您是否觉得眼球或眼周有酸痛、隐痛、刺痛或烧灼痛感？",
+      "options": [
+        {
+          "label": "A. 没有",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 偶尔",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 一半时间",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 大部分时间",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 全部时间",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q11",
+      "text": "畏光",
+      "type": "single_choice",
+      "patient_explanation": "【畏光解释】在正常日光或灯光下，您是否觉得刺眼、睁不开眼或需要眯眼？",
+      "options": [
+        {
+          "label": "A. 没有",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 偶尔",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 一半时间",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 大部分时间",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 全部时间",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q12",
+      "text": "晨起分泌物与睁眼困难",
+      "type": "single_choice",
+      "patient_explanation": "【晨起分泌物与睁眼困难解释】早晨起床时，眼角是否有眼屎/眼分泌物卡住，或者觉得眼皮沉重难以睁开？",
+      "options": [
+        {
+          "label": "A. 没有",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 偶尔",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 一半时间",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 大部分时间",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 全部时间",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "id": "Q13",
+      "text": "视力波动",
+      "type": "single_choice",
+      "patient_explanation": "【视力波动解释】您是否觉得看东西一会儿清楚一会儿模糊，眨眼后视力有所改善？",
+      "options": [
+        {
+          "label": "A. 没有",
+          "value": "A",
+          "score": 0
+        },
+        {
+          "label": "B. 偶尔",
+          "value": "B",
+          "score": 1
+        },
+        {
+          "label": "C. 一半时间",
+          "value": "C",
+          "score": 2
+        },
+        {
+          "label": "D. 大部分时间",
+          "value": "D",
+          "score": 3
+        },
+        {
+          "label": "E. 全部时间",
+          "value": "E",
+          "score": 4
+        }
+      ]
+    }
+  ],
+  "branching_rules": [
+    {
+      "rule_id": "RULE_CLDEQ8",
+      "trigger_question": "Q1",
+      "condition": "not_equal",
+      "value": "A",
+      "target_questionnaire_id": "CLDEQ8",
+      "prompt_message": "注意到您有接触镜佩戴相关病史，请问是否继续作答《接触镜干眼问卷-8（CLDEQ-8）》？"
+    },
+    {
+      "rule_id": "RULE_PSQI",
+      "trigger_question": "Q4",
+      "condition": "not_equal",
+      "value": "A",
+      "target_questionnaire_id": "PSQI",
+      "prompt_message": "注意到您可能有睡眠质量问题，请问是否继续作答《匹兹堡睡眠质量指数问卷》？"
+    },
+    {
+      "rule_id": "RULE_IMMUNE",
+      "trigger_question": "Q5",
+      "condition": "not_equal",
+      "value": "A",
+      "target_questionnaire_id": "IMMUNE_DRY_EYE",
+      "prompt_message": "注意到您可能有潜在的风湿免疫类疾病，请问是否继续作答《免疫相关干眼问卷》？"
+    },
+    {
+      "rule_id": "RULE_EMOTION",
+      "trigger_question": "Q7",
+      "condition": "contains_any",
+      "value": [
+        "精神病类药物",
+        "更年期替代用药",
+        "E",
+        "G"
+      ],
+      "target_questionnaire_id": "EMOTION_DRY_EYE",
+      "prompt_message": "注意到您可能有情绪调节相关的问题，请问是否继续作答《情绪调节相关干眼问卷》？"
+    }
+  ],
+  "scoring_rules": {
+    "calculation_method": "Score = max(Q1_score, Q2_score) + sum(Q3_score .. Q13_score)",
+    "max_possible_score": 48,
+    "diagnosis_thresholds": [
+      {
+        "min_score": 0,
+        "max_score": 6.99,
+        "assessment": "无干眼相关疾病（或临床前/轻度干眼风险）"
+      },
+      {
+        "min_score": 7,
+        "max_score": 48,
+        "assessment": "干眼相关疾病（判定为干眼阳性，需进一步进行分型与严重度评估）"
+      }
+    ]
+  }
+}
