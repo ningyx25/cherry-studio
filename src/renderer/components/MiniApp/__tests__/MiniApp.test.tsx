@@ -152,6 +152,7 @@ describe('MiniApp launchpad pin menu', () => {
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
       { type: 'app', id: 'clinic' },
+      { type: 'app', id: 'questionnaire' },
       { type: 'app', id: 'pop-science' },
       { type: 'mini_app', id: 'calculator' }
     ])
@@ -183,6 +184,7 @@ describe('MiniApp launchpad pin menu', () => {
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
       { type: 'app', id: 'clinic' },
+      { type: 'app', id: 'questionnaire' },
       { type: 'app', id: 'pop-science' },
       { type: 'mini_app', id: 'weather' }
     ])

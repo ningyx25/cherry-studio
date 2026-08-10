@@ -376,6 +376,7 @@ describe('useMiniApps', () => {
       expect(trigger).toHaveBeenCalledWith({ params: { appId: 'custom-app' } })
       expect(MockUsePreferenceUtils.getPreferenceValue('ui.sidebar.favorites')).toEqual([
         { type: 'app', id: 'clinic' },
+        { type: 'app', id: 'questionnaire' },
         { type: 'app', id: 'pop-science' },
         { type: 'mini_app', id: 'other-app' }
       ])

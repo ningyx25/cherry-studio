@@ -94,7 +94,8 @@ vi.mock('@renderer/i18n/label', () => ({
     ({
       'pop-science': 'Work',
       clinic: 'Clinic',
-      knowledge: 'Knowledge'
+      knowledge: 'Knowledge',
+      questionnaire: 'Questionnaire'
     })[icon] ?? icon
 }))
 
@@ -374,8 +375,8 @@ describe('app Sidebar', () => {
     const labels = Array.from(screen.getByTestId('sidebar-items').querySelectorAll('span')).map(
       (element) => element.textContent
     )
-    // Required apps (科普AI / 问诊AI) are forced to the front of the visible list.
-    expect(labels).toEqual(['Clinic', 'Knowledge', 'Work'])
+    // Required apps (科普AI / 问诊AI / 问卷) are forced to the front of the visible list.
+    expect(labels).toEqual(['Clinic', 'Questionnaire', 'Knowledge', 'Work'])
   })
 
   it('removes a sidebar app favorite from the context menu', () => {
@@ -389,7 +390,11 @@ describe('app Sidebar', () => {
 
     fireEvent.click(screen.getByTestId('sidebar-menu-sidebar.remove-app.knowledge'))
 
-    expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([appFavorite('pop-science'), appFavorite('clinic')])
+    expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
+      appFavorite('pop-science'),
+      appFavorite('clinic'),
+      appFavorite('questionnaire')
+    ])
   })
 
   it('keeps required sidebar favorites protected in the context menu', () => {
@@ -436,6 +441,7 @@ describe('app Sidebar', () => {
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
       appFavorite('pop-science'),
       appFavorite('clinic'),
+      appFavorite('questionnaire'),
       miniAppFavorite('weather')
     ])
   })
@@ -446,13 +452,14 @@ describe('app Sidebar', () => {
     mocks.allApps = [calculatorMiniApp]
 
     render(<Sidebar />)
-    // Mixed list is [pop-science, clinic, knowledge, calculator]; drag knowledge to front.
-    act(() => mocks.onEntriesReorder?.({ oldIndex: 2, newIndex: 0 }))
+    // Mixed list is [pop-science, clinic, questionnaire, knowledge, calculator]; drag knowledge to front.
+    act(() => mocks.onEntriesReorder?.({ oldIndex: 3, newIndex: 0 }))
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
       appFavorite('knowledge'),
       appFavorite('pop-science'),
       appFavorite('clinic'),
+      appFavorite('questionnaire'),
       miniAppFavorite('calculator')
     ])
   })
@@ -461,12 +468,13 @@ describe('app Sidebar', () => {
     configureMiniApps(['calculator', 'weather'], [calculatorMiniApp, weatherMiniApp])
 
     render(<Sidebar />)
-    // Mixed list is [pop-science, clinic, calculator, weather]; drag weather above calculator.
-    act(() => mocks.onEntriesReorder?.({ oldIndex: 3, newIndex: 2 }))
+    // Mixed list is [pop-science, clinic, questionnaire, calculator, weather]; drag weather above calculator.
+    act(() => mocks.onEntriesReorder?.({ oldIndex: 4, newIndex: 3 }))
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
       appFavorite('pop-science'),
       appFavorite('clinic'),
+      appFavorite('questionnaire'),
       miniAppFavorite('weather'),
       miniAppFavorite('calculator')
     ])
@@ -479,13 +487,14 @@ describe('app Sidebar', () => {
     configureMiniApps(['calculator'])
 
     render(<Sidebar />)
-    // Mixed list is [pop-science, clinic, calculator]; drag calculator to the very top.
-    act(() => mocks.onEntriesReorder?.({ oldIndex: 2, newIndex: 0 }))
+    // Mixed list is [pop-science, clinic, questionnaire, calculator]; drag calculator to the very top.
+    act(() => mocks.onEntriesReorder?.({ oldIndex: 3, newIndex: 0 }))
 
     expect(mocks.setSidebarFavorites).toHaveBeenCalledWith([
       miniAppFavorite('calculator'),
       appFavorite('pop-science'),
-      appFavorite('clinic')
+      appFavorite('clinic'),
+      appFavorite('questionnaire')
     ])
   })
 

@@ -128,7 +128,7 @@ export const SIDEBAR_FAVORITE_ORDER: SidebarAppId[] = SIDEBAR_APPS.map((app) => 
  * 这些收藏项必须始终在侧边栏中可见
  * 抽取为参数方便未来扩展
  */
-export const REQUIRED_SIDEBAR_FAVORITES: SidebarAppId[] = ['pop-science', 'clinic']
+export const REQUIRED_SIDEBAR_FAVORITES: SidebarAppId[] = ['pop-science', 'clinic', 'questionnaire']
 
 const sidebarFavoriteSet = new Set<SidebarAppId>(SIDEBAR_FAVORITE_ORDER)
 
