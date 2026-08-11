@@ -140,7 +140,7 @@ describe('PromptEditorField', () => {
     parent.remove()
   })
 
-  it('keeps Markdown markers visually secondary', () => {
+  it('keeps Markdown markers visually secondary', async () => {
     function Harness() {
       const [value, setValue] = useState('')
       return <PromptEditorField label={<span>Prompt</span>} value={value} onChange={setValue} />
@@ -158,6 +158,26 @@ describe('PromptEditorField', () => {
       extensions: [loadLanguage('markdown')!, theme],
       parent
     })
+
+    // CodeMirror renders the editor DOM through its measure/scroll pipeline, so the
+    // tokens for later lines may not be present on the very first synchronous read
+    // (notably under parallel test load). Wait until every token we assert on has
+    // actually rendered before reading computed styles, instead of failing on a
+    // transiently incomplete first frame.
+    const requiredTokens = ['#', ' Heading', '**', 'strong', 'link', '[']
+    await waitFor(
+      () => {
+        const rendered = Array.from(view.dom.querySelectorAll<HTMLElement>('.cm-content span'))
+        for (const text of requiredTokens) {
+          if (!rendered.some((token) => token.textContent === text)) {
+            throw new Error(
+              `Missing token ${text}; rendered tokens: ${rendered.map((token) => token.textContent).join('|')}`
+            )
+          }
+        }
+      },
+      { timeout: 2000 }
+    )
 
     const tokenStyle = (text: string, occurrence = 0) => {
       const allTokens = Array.from(view.dom.querySelectorAll<HTMLElement>('.cm-content span'))
