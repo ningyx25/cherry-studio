@@ -15,6 +15,8 @@ import {
 import { dataApiService } from '@renderer/data/DataApiService'
 import { useQuery } from '@renderer/data/hooks/useDataApi'
 import { ipcApi } from '@renderer/ipc'
+import { toast } from '@renderer/services/toast'
+import type { QuestionnaireSession } from '@shared/data/api/schemas/questionnaires'
 import { BASIC_INFO_QUESTIONNAIRE_ID } from '@shared/questionnaire/constants'
 import { buildQuestionnaireReport } from '@shared/questionnaire/report'
 import type { QuestionAnswer, QuestionnaireAnswers, QuestionnaireDefinition } from '@shared/questionnaire/types'
@@ -22,6 +24,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { QuestionnaireForm } from './components/QuestionnaireForm'
+import { QuestionnaireHistoryList } from './components/QuestionnaireHistoryList'
 import { QuestionnaireReportView } from './components/QuestionnaireReportView'
 import { useQuestionnaireFlow } from './hooks/useQuestionnaireFlow'
 
@@ -32,6 +35,7 @@ export default function QuestionnairePage() {
   const [view, setView] = useState<View>('home')
   const [startQuestionnaireId, setStartQuestionnaireId] = useState<string | null>(null)
   const [report, setReport] = useState<ReturnType<typeof buildQuestionnaireReport> | null>(null)
+  const [reAnswerSeed, setReAnswerSeed] = useState<QuestionnaireAnswers | undefined>(undefined)
   const { data: sessions, mutate: refreshSessions } = useQuery('/questionnaire-sessions')
   const navigate = useNavigate()
 
@@ -48,7 +52,8 @@ export default function QuestionnairePage() {
   }, [])
 
   const flow = useQuestionnaireFlow(startQuestionnaireId ?? '', {
-    prependQuestionnaireId: startQuestionnaireId ? BASIC_INFO_QUESTIONNAIRE_ID : undefined
+    prependQuestionnaireId: startQuestionnaireId ? BASIC_INFO_QUESTIONNAIRE_ID : undefined,
+    initialAnswers: reAnswerSeed
   })
 
   const currentDefinition = useMemo(
@@ -121,7 +126,8 @@ export default function QuestionnairePage() {
 
     try {
       const answers: QuestionnaireAnswers = flow.state.answers
-      const existing = (sessions ?? []).find((s) => s.status === 'in_progress')
+      // 重新作答始终新建会话；仅普通流程才复用现有 in_progress 会话。
+      const existing = reAnswerSeed === undefined ? (sessions ?? []).find((s) => s.status === 'in_progress') : undefined
       if (existing) {
         await dataApiService.patch(`/questionnaire-sessions/${existing.id}`, {
           body: { answers, report: built, status: 'completed' }
@@ -144,6 +150,7 @@ export default function QuestionnairePage() {
     refreshSessions,
     sessions,
     startQuestionnaireId,
+    reAnswerSeed,
     definitions
   ])
 
@@ -174,6 +181,43 @@ export default function QuestionnairePage() {
       // 发送失败不阻断；用户可手动复制摘要
     }
   }, [navigate, report])
+
+  /** 删除单条历史记录。 */
+  const handleDeleteSession = useCallback(
+    async (id: string) => {
+      try {
+        await dataApiService.delete(`/questionnaire-sessions/${id}`)
+        void refreshSessions()
+      } catch {
+        toast.error('删除历史记录失败')
+      }
+    },
+    [refreshSessions]
+  )
+
+  /** 清空全部历史记录。 */
+  const handleClearAll = useCallback(async () => {
+    const ids = (sessions ?? []).map((s) => s.id)
+    if (ids.length === 0) return
+    const results = await Promise.allSettled(ids.map((id) => dataApiService.delete(`/questionnaire-sessions/${id}`)))
+    const failed = results.filter((r) => r.status === 'rejected').length
+    if (failed > 0) toast.error(`部分历史记录删除失败（${failed} 条）`)
+    void refreshSessions()
+  }, [refreshSessions, sessions])
+
+  /** 从历史记录重新作答：复用已填答案作为起点，新建会话。 */
+  const handleReAnswer = useCallback((answers: QuestionnaireAnswers, flowQuestionnaireId: string) => {
+    setReAnswerSeed(answers)
+    setStartQuestionnaireId(flowQuestionnaireId)
+    setView('form')
+  }, [])
+
+  const handleViewReport = useCallback((session: QuestionnaireSession) => {
+    if (session.report) {
+      setReport(session.report)
+      setView('report')
+    }
+  }, [])
 
   if (view === 'report' && report) {
     return (
@@ -287,33 +331,14 @@ export default function QuestionnairePage() {
           ))}
       </div>
 
-      <h2 className="mb-3 font-semibold text-base">历史记录</h2>
-      <div className="flex flex-col gap-2">
-        {(sessions ?? []).map((s) => (
-          <div
-            key={s.id}
-            className="flex items-center justify-between rounded-lg border border-border bg-card px-4 py-3">
-            <div>
-              <div className="font-medium text-sm">{s.flowQuestionnaireId}</div>
-              <div className="mt-0.5 text-muted-foreground text-xs">
-                {s.status === 'completed' ? '已完成' : '进行中'} · {new Date(s.updatedAt).toLocaleString()}
-              </div>
-            </div>
-            {s.report && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setReport(s.report)
-                  setView('report')
-                }}>
-                查看报告
-              </Button>
-            )}
-          </div>
-        ))}
-        {sessions?.length === 0 && <div className="text-muted-foreground text-sm">暂无历史记录</div>}
-      </div>
+      <QuestionnaireHistoryList
+        sessions={sessions ?? []}
+        definitions={definitions}
+        onDeleteSession={handleDeleteSession}
+        onClearAll={handleClearAll}
+        onViewReport={handleViewReport}
+        onReAnswer={handleReAnswer}
+      />
     </div>
   )
 }

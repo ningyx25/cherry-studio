@@ -25,6 +25,8 @@ export interface QuestionnaireFlowState {
 export interface QuestionnaireFlowOptions {
   /** 前置问卷 id：作为流程固定第一步，完成后进入 startQuestionnaireId。 */
   prependQuestionnaireId?: string
+  /** 预填答案：重新作答时复用旧答案作为起点。仅当 startQuestionnaireId 变化时应用。 */
+  initialAnswers?: QuestionnaireAnswers
 }
 
 /**
@@ -36,13 +38,17 @@ export function useQuestionnaireFlow(startQuestionnaireId: string, options?: Que
   const flowQueue = options?.prependQuestionnaireId
     ? [options.prependQuestionnaireId, startQuestionnaireId]
     : [startQuestionnaireId]
+  const initialAnswersRef = useRef(options?.initialAnswers)
+  // 同步最新 seed 到 ref；startQuestionnaireId 仍是唯一重置触发点，seed 变化不重触发。
+  initialAnswersRef.current = options?.initialAnswers
+  const initialAnswers = initialAnswersRef.current ?? {}
   const [state, setState] = useState<QuestionnaireFlowState>({
     currentQuestionnaireId: flowQueue[0],
     questionIndex: 0,
     completedQuestionnaireIds: [],
     pendingBranch: null,
     skippedBranchTargets: [],
-    answers: {},
+    answers: initialAnswers,
     flowQueue
   })
   // useState 只在首次渲染取初始值。`startQuestionnaireId` 是外部驱动的"开始作答"
@@ -60,7 +66,7 @@ export function useQuestionnaireFlow(startQuestionnaireId: string, options?: Que
       completedQuestionnaireIds: [],
       pendingBranch: null,
       skippedBranchTargets: [],
-      answers: {},
+      answers: initialAnswersRef.current ?? {},
       flowQueue: nextQueue
     })
   }, [startQuestionnaireId, options])

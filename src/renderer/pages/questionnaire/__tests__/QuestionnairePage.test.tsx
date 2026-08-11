@@ -1,14 +1,23 @@
 import '@testing-library/jest-dom/vitest'
 
 import type { QuestionnaireDefinition } from '@shared/questionnaire/types'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import QuestionnairePage from '../QuestionnairePage'
 
 const mocks = vi.hoisted(() => ({
   listDefinitions: vi.fn(),
-  getDefinition: vi.fn()
+  getDefinition: vi.fn(),
+  sessions: [] as Array<{
+    id: string
+    flowQuestionnaireId: string
+    status: string
+    updatedAt: string
+    answers: Record<string, unknown>
+    report?: unknown
+  }>,
+  deleteSession: vi.fn()
 }))
 
 vi.mock('@renderer/ipc', () => ({
@@ -22,12 +31,21 @@ vi.mock('@renderer/ipc', () => ({
   useIpcOn: vi.fn()
 }))
 
+vi.mock('@data/DataApiService', () => ({
+  dataApiService: {
+    get: vi.fn(),
+    post: vi.fn().mockResolvedValue({ id: 'new-session' }),
+    patch: vi.fn().mockResolvedValue({}),
+    delete: mocks.deleteSession
+  }
+}))
+
 vi.mock('@renderer/data/hooks/useDataApi', async (importOriginal) => {
   const actual = await importOriginal<any>()
   return {
     ...actual,
     useQuery: () => ({
-      data: [],
+      data: mocks.sessions,
       isLoading: false,
       isRefreshing: false,
       error: undefined,
@@ -103,6 +121,8 @@ const basicInfoDef: QuestionnaireDefinition = {
 
 describe('QuestionnairePage', () => {
   beforeEach(() => {
+    mocks.sessions = []
+    mocks.deleteSession.mockReset().mockResolvedValue({})
     mocks.listDefinitions.mockReset().mockResolvedValue([
       { questionnaireId: 'BASIC_INFO', title: '患者基本信息', description: '基础信息采集' },
       { questionnaireId: 'CHINA_DRY_EYE', title: '中国干眼', description: '评估干眼' }
@@ -185,5 +205,89 @@ describe('QuestionnairePage', () => {
     fireEvent.click(screen.getByRole('button', { name: '上一题' }))
     expect(await screen.findByText('隐形眼镜')).toBeInTheDocument()
     expect(screen.getByText('第 1/2 题')).toBeInTheDocument()
+  })
+
+  it('shows patient info and questionnaire title in the history list', async () => {
+    mocks.sessions = [
+      {
+        id: 's1',
+        flowQuestionnaireId: 'CHINA_DRY_EYE',
+        status: 'completed',
+        updatedAt: '2026-08-10T10:00:00Z',
+        answers: {},
+        report: {
+          patientInfo: [
+            { label: '姓名', value: '张三' },
+            { label: '年龄', value: '45岁' }
+          ]
+        }
+      }
+    ]
+    render(<QuestionnairePage />)
+    // 首页卡片 + 历史列表都显示"中国干眼"
+    await waitFor(() => expect(screen.getAllByText('中国干眼').length).toBeGreaterThan(0))
+    expect(screen.getByText('张三 · 45岁')).toBeInTheDocument()
+  })
+
+  it('disables 清空全部历史 when there are no records', async () => {
+    render(<QuestionnairePage />)
+    expect(await screen.findByText('暂无历史记录')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '清空全部历史' })).toBeDisabled()
+  })
+
+  it('deletes a single history record after confirmation', async () => {
+    mocks.sessions = [
+      { id: 's1', flowQuestionnaireId: 'CHINA_DRY_EYE', status: 'completed', updatedAt: 'x', answers: {}, report: null }
+    ]
+    render(<QuestionnairePage />)
+    // 行内删除图标按钮（aria-label="删除"）
+    fireEvent.click(await screen.findByLabelText('删除'))
+    // ConfirmDialog 的确认按钮：行内图标 + 对话框按钮都叫"删除"，取最后一个（对话框内）
+    await waitFor(() => {
+      const btns = screen.getAllByRole('button', { name: '删除' })
+      expect(btns.length).toBeGreaterThan(1)
+      return btns
+    })
+    const btns = screen.getAllByRole('button', { name: '删除' })
+    fireEvent.click(btns[btns.length - 1])
+    expect(mocks.deleteSession).toHaveBeenCalledWith('/questionnaire-sessions/s1')
+  })
+
+  it('clears all history after confirmation', async () => {
+    mocks.sessions = [
+      {
+        id: 's1',
+        flowQuestionnaireId: 'CHINA_DRY_EYE',
+        status: 'completed',
+        updatedAt: 'x',
+        answers: {},
+        report: null
+      },
+      { id: 's2', flowQuestionnaireId: 'CHINA_DRY_EYE', status: 'completed', updatedAt: 'y', answers: {}, report: null }
+    ]
+    render(<QuestionnairePage />)
+    fireEvent.click(await screen.findByRole('button', { name: '清空全部历史' }))
+    fireEvent.click(screen.getByRole('button', { name: '清空' }))
+    expect(mocks.deleteSession).toHaveBeenCalledTimes(2)
+    expect(mocks.deleteSession).toHaveBeenCalledWith('/questionnaire-sessions/s1')
+    expect(mocks.deleteSession).toHaveBeenCalledWith('/questionnaire-sessions/s2')
+  })
+
+  it('re-answers a questionnaire seeded with the old answers', async () => {
+    mocks.sessions = [
+      {
+        id: 's1',
+        flowQuestionnaireId: 'CHINA_DRY_EYE',
+        status: 'completed',
+        updatedAt: 'x',
+        answers: { BASIC_INFO: { name: '张三' }, CHINA_DRY_EYE: { Q1: 'A' } },
+        report: null
+      }
+    ]
+    render(<QuestionnairePage />)
+    fireEvent.click(await screen.findByRole('button', { name: '重新作答' }))
+    // 进入表单，从患者基本信息开始，预填姓名
+    expect(await screen.findByText('姓名')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('请输入')).toHaveValue('张三')
   })
 })

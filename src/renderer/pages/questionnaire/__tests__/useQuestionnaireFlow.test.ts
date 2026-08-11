@@ -1,4 +1,4 @@
-import type { QuestionnaireDefinition } from '@shared/questionnaire/types'
+import type { QuestionnaireAnswers, QuestionnaireDefinition } from '@shared/questionnaire/types'
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 
@@ -238,5 +238,29 @@ describe('useQuestionnaireFlow', () => {
       result.current.completeQuestionnaire(defs)
     })
     expect(result.current.state.currentQuestionnaireId).toBe('CHINA_DRY_EYE')
+  })
+
+  it('seeds answers from initialAnswers on start', () => {
+    const { result } = renderHook(() =>
+      useQuestionnaireFlow('CHINA_DRY_EYE', {
+        prependQuestionnaireId: 'BASIC_INFO',
+        initialAnswers: { BASIC_INFO: { name: '张三' }, CHINA_DRY_EYE: { Q1: 'A' } }
+      })
+    )
+    expect(result.current.state.answers['BASIC_INFO']?.name).toBe('张三')
+    expect(result.current.state.answers['CHINA_DRY_EYE']?.Q1).toBe('A')
+  })
+
+  it('keeps the seed answers when startQuestionnaireId changes (reset)', () => {
+    const { result, rerender } = renderHook(
+      ({ id, seed }: { id: string; seed?: QuestionnaireAnswers }) =>
+        useQuestionnaireFlow(id, { prependQuestionnaireId: 'BASIC_INFO', initialAnswers: seed }),
+      { initialProps: { id: 'CHINA_DRY_EYE', seed: { BASIC_INFO: { name: '张三' } } } }
+    )
+    expect(result.current.state.answers['BASIC_INFO']?.name).toBe('张三')
+    // 切换起点问卷 → 重置流程但保留 seed
+    act(() => rerender({ id: 'CLDEQ8', seed: { BASIC_INFO: { name: '李四' } } }))
+    expect(result.current.state.currentQuestionnaireId).toBe('BASIC_INFO')
+    expect(result.current.state.answers['BASIC_INFO']?.name).toBe('李四')
   })
 })
