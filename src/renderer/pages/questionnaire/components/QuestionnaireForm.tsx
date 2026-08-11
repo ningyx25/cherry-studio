@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button, Checkbox, Input, RadioGroup, RadioGroupItem } from '@cherrystudio/ui'
 import type { QuestionnaireQuestion } from '@shared/questionnaire/types'
 
 export function QuestionnaireForm({
@@ -13,53 +13,69 @@ export function QuestionnaireForm({
   const renderOptions = (options: QuestionnaireQuestion & { type: 'single_choice' | 'multi_choice' | 'matrix' }) => {
     if (options.type === 'single_choice') {
       return (
-        <div className="flex flex-col gap-1.5">
-          {options.options.map((opt) => (
-            <Button
-              key={String(opt.value)}
-              variant={value === opt.value ? 'default' : 'outline'}
-              className="justify-start"
-              onClick={() => onAnswer(options.id, opt.value)}>
-              {opt.label}
-            </Button>
-          ))}
-        </div>
+        <RadioGroup
+          value={typeof value === 'string' || typeof value === 'number' ? String(value) : undefined}
+          onValueChange={(next) => {
+            const numeric = options.options.find((opt) => String(opt.value) === next)
+            onAnswer(options.id, numeric?.value ?? next)
+          }}>
+          {options.options.map((opt) => {
+            const selected = String(opt.value) === String(value)
+            return (
+              <div
+                key={String(opt.value)}
+                role="radio"
+                aria-checked={selected}
+                data-state={selected ? 'checked' : 'unchecked'}
+                onClick={() => onAnswer(options.id, opt.value)}
+                className={`flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border px-4 py-3 text-left transition-colors focus-visible:border-primary ${
+                  selected ? 'border-primary bg-primary/5' : 'border-border bg-background hover:bg-accent'
+                }`}>
+                <span className="text-sm">{opt.label}</span>
+                <RadioGroupItem value={String(opt.value)} className="pointer-events-none" />
+              </div>
+            )
+          })}
+        </RadioGroup>
       )
     }
     if (options.type === 'multi_choice') {
+      const current = Array.isArray(value) ? (value as Array<string | number>) : []
       return (
         <div className="flex flex-col gap-1.5">
           {options.options.map((opt) => {
-            const selected = Array.isArray(value) && value.includes(opt.value)
+            const selected = current.includes(opt.value)
             return (
-              <Button
+              <div
                 key={String(opt.value)}
-                variant={selected ? 'default' : 'outline'}
-                className="justify-start"
+                role="checkbox"
+                aria-checked={selected}
+                data-state={selected ? 'checked' : 'unchecked'}
                 onClick={() => {
-                  const current = Array.isArray(value) ? (value as Array<string | number>) : []
                   const next = selected ? current.filter((v) => v !== opt.value) : [...current, opt.value]
                   onAnswer(options.id, next)
-                }}>
-                {opt.label}
-              </Button>
+                }}
+                className={`flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border px-4 py-3 text-left transition-colors focus-visible:border-primary ${
+                  selected ? 'border-primary bg-primary/5' : 'border-border bg-background hover:bg-accent'
+                }`}>
+                <span className="text-sm">{opt.label}</span>
+                <Checkbox checked={selected} className="pointer-events-none" />
+              </div>
             )
           })}
         </div>
       )
     }
     // matrix: 逐子题选择同一组选项
+    const record =
+      value && typeof value === 'object' && !Array.isArray(value) ? (value as Record<string, string | number>) : {}
     return (
       <div className="flex flex-col gap-3">
         {options.subQuestions.map((sub) => (
-          <div key={sub.id} className="flex flex-col gap-1">
-            <div className="text-sm">{sub.text}</div>
+          <div key={sub.id} className="flex flex-col gap-1.5">
+            <div className="font-medium text-sm">{sub.text}</div>
             <div className="flex flex-wrap gap-1.5">
               {options.options.map((opt) => {
-                const record =
-                  value && typeof value === 'object' && !Array.isArray(value)
-                    ? (value as Record<string, string | number>)
-                    : {}
                 const selected = record[sub.id] === opt.value
                 return (
                   <Button
@@ -79,26 +95,26 @@ export function QuestionnaireForm({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <div className="font-medium text-base">{question.text}</div>
       {'patientExplanation' in question && question.patientExplanation && (
-        <div className="text-sm opacity-60">{question.patientExplanation}</div>
+        <div className="text-muted-foreground text-sm">{question.patientExplanation}</div>
       )}
       {question.type === 'numeric' ? (
         <div className="flex items-center gap-2">
-          <input
+          <Input
             type="number"
-            className="w-32 rounded border bg-transparent px-2 py-1"
+            className="w-32"
             value={typeof value === 'string' ? value : ''}
             onChange={(e) => onAnswer(question.id, e.target.value)}
             placeholder={question.unit ? `单位：${question.unit}` : '请输入'}
           />
-          {question.unit && <span className="text-sm opacity-60">{question.unit}</span>}
+          {question.unit && <span className="text-muted-foreground text-sm">{question.unit}</span>}
         </div>
       ) : question.type === 'time' ? (
-        <input
+        <Input
           type="time"
-          className="w-32 rounded border bg-transparent px-2 py-1"
+          className="w-32"
           value={typeof value === 'string' ? value : ''}
           onChange={(e) => onAnswer(question.id, e.target.value)}
         />

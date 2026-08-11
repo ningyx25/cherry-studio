@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Dialog,
   DialogContent,
@@ -52,19 +53,31 @@ export default function QuestionnairePage() {
     [definitions, flow.state.currentQuestionnaireId]
   )
 
-  /** 当前未答的第一题；全答完为 null。 */
-  const currentQuestion = useMemo(() => {
-    if (!currentDefinition) return null
-    const completed = flow.state.answers[currentDefinition.questionnaireId] ?? {}
-    return currentDefinition.questions.find((q) => completed[q.id] === undefined) ?? null
-  }, [currentDefinition, flow.state.answers])
+  /** 当前问卷的题目列表与索引驱动的当前题。 */
+  const currentQuestions = currentDefinition?.questions ?? []
+  const questionIndex = Math.min(flow.state.questionIndex, Math.max(0, currentQuestions.length - 1))
+  const currentQuestion = currentQuestions[questionIndex] ?? null
+  const isLastQuestion = questionIndex === currentQuestions.length - 1
+  const isCurrentAnswered =
+    !!currentQuestion &&
+    flow.state.answers[currentDefinition?.questionnaireId ?? '']?.[currentQuestion.id] !== undefined
 
+  // 答完当前题自动前进到下一题（分支命中时不前进，交给分支对话框）。
+  // 只在用户作答时触发，避免"上一题"回到已答题后又被自动推走。
   const handleAnswer = useCallback(
     (questionId: string, value: unknown) => {
       if (!currentDefinition) return
-      flow.answerQuestion(definitions, currentDefinition.questionnaireId, questionId, value as QuestionAnswer)
+      const triggeredBranch = flow.answerQuestion(
+        definitions,
+        currentDefinition.questionnaireId,
+        questionId,
+        value as QuestionAnswer
+      )
+      if (!triggeredBranch && !isLastQuestion) {
+        flow.goToNext(definitions)
+      }
     },
-    [currentDefinition, definitions, flow]
+    [currentDefinition, definitions, flow, isLastQuestion]
   )
 
   /** 完成流程：构建报告 → 保存会话（completed）→ 进入报告视图。 */
@@ -147,11 +160,20 @@ export default function QuestionnairePage() {
   }
 
   if (view === 'form' && currentDefinition) {
+    const progressPercent = currentQuestions.length > 0 ? ((questionIndex + 1) / currentQuestions.length) * 100 : 0
     return (
       <div data-ui="questionnaire.form" className="flex h-full flex-col overflow-auto p-6">
         <div className="mb-4">
-          <div className="font-semibold text-lg">{currentDefinition.title}</div>
-          <div className="mt-1 text-sm opacity-60">{currentDefinition.description}</div>
+          <div className="flex items-center gap-2">
+            <h1 className="font-semibold text-lg">{currentDefinition.title}</h1>
+            <Badge variant="secondary">
+              第 {questionIndex + 1}/{currentQuestions.length} 题
+            </Badge>
+          </div>
+          <div className="mt-1 text-muted-foreground text-sm">{currentDefinition.description}</div>
+          <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-muted">
+            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${progressPercent}%` }} />
+          </div>
         </div>
         {currentQuestion ? (
           <>
@@ -160,16 +182,29 @@ export default function QuestionnairePage() {
               value={flow.state.answers[currentDefinition.questionnaireId]?.[currentQuestion.id]}
               onAnswer={handleAnswer}
             />
-            <div className="mt-6 flex gap-2">
+            <div className="mt-6 flex items-center justify-between gap-2">
               <Button variant="outline" onClick={() => setView('home')}>
                 返回
               </Button>
-              <Button onClick={() => void handleComplete()}>完成并生成报告</Button>
+              <div className="flex gap-2">
+                <Button variant="outline" disabled={questionIndex === 0} onClick={flow.goToPrev}>
+                  上一题
+                </Button>
+                {isLastQuestion ? (
+                  <Button disabled={!isCurrentAnswered} onClick={() => void handleComplete()}>
+                    完成并生成报告
+                  </Button>
+                ) : (
+                  <Button disabled={!isCurrentAnswered} onClick={() => flow.goToNext(definitions)}>
+                    下一题
+                  </Button>
+                )}
+              </div>
             </div>
           </>
         ) : (
-          <div className="flex flex-col gap-4">
-            <div className="text-sm opacity-70">本问卷已完成。</div>
+          <div className="flex flex-col items-start gap-4">
+            <div className="text-muted-foreground text-sm">本问卷已完成。</div>
             <Button onClick={() => void handleComplete()}>完成并生成报告</Button>
           </div>
         )}
@@ -199,13 +234,16 @@ export default function QuestionnairePage() {
       <h1 className="mb-4 font-semibold text-lg">问卷</h1>
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {definitions.map((d) => (
-          <div key={d.questionnaireId} className="flex flex-col justify-between rounded-lg border p-4">
+          <div
+            key={d.questionnaireId}
+            className="flex flex-col justify-between rounded-lg border border-border bg-card p-4 transition-colors hover:border-border-strong">
             <div>
               <div className="font-medium">{d.title}</div>
-              <div className="mt-1 line-clamp-2 text-sm opacity-60">{d.description}</div>
+              <div className="mt-1 line-clamp-2 text-muted-foreground text-sm">{d.description}</div>
             </div>
             <Button
-              className="mt-3 justify-start"
+              variant="outline"
+              className="mt-4 justify-start"
               onClick={() => {
                 setStartQuestionnaireId(d.questionnaireId)
                 setView('form')
@@ -219,10 +257,12 @@ export default function QuestionnairePage() {
       <h2 className="mb-3 font-semibold text-base">历史记录</h2>
       <div className="flex flex-col gap-2">
         {(sessions ?? []).map((s) => (
-          <div key={s.id} className="flex items-center justify-between rounded-lg border px-4 py-3">
+          <div
+            key={s.id}
+            className="flex items-center justify-between rounded-lg border border-border bg-card px-4 py-3">
             <div>
               <div className="font-medium text-sm">{s.flowQuestionnaireId}</div>
-              <div className="text-xs opacity-60">
+              <div className="mt-0.5 text-muted-foreground text-xs">
                 {s.status === 'completed' ? '已完成' : '进行中'} · {new Date(s.updatedAt).toLocaleString()}
               </div>
             </div>
@@ -239,7 +279,7 @@ export default function QuestionnairePage() {
             )}
           </div>
         ))}
-        {sessions?.length === 0 && <div className="text-sm opacity-50">暂无历史记录</div>}
+        {sessions?.length === 0 && <div className="text-muted-foreground text-sm">暂无历史记录</div>}
       </div>
     </div>
   )

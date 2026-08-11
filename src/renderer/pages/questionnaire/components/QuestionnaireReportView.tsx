@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Badge, Button } from '@cherrystudio/ui'
 import type { QuestionnaireReport } from '@shared/questionnaire/types'
 
 export function QuestionnaireReportView({
@@ -23,13 +23,19 @@ export function QuestionnaireReportView({
       </div>
 
       {report.answeredQuestionnaires.map((qr) => (
-        <div key={qr.questionnaireId} className="mb-4 rounded-lg border p-4">
+        <div key={qr.questionnaireId} className="mb-4 rounded-lg border border-border bg-card p-4">
           <div className="flex items-center justify-between">
             <div className="font-medium">{qr.title}</div>
-            {qr.scored && qr.totalScore !== undefined && <div className="text-sm opacity-70">得分 {qr.totalScore}</div>}
+            {qr.scored && qr.totalScore !== undefined && (
+              <div className="text-muted-foreground text-sm">得分 {qr.totalScore}</div>
+            )}
           </div>
-          {qr.level && <div className="mt-1 text-primary text-sm">{qr.level}</div>}
-          {qr.assessment && <div className="mt-1 text-sm opacity-70">{qr.assessment}</div>}
+          {qr.level && (
+            <div className="mt-2">
+              <Badge variant="secondary">{qr.level}</Badge>
+            </div>
+          )}
+          {qr.assessment && <div className="mt-1 text-muted-foreground text-sm">{qr.assessment}</div>}
           {qr.recommendations.length > 0 && (
             <ul className="mt-2 list-disc pl-5 text-sm">
               {qr.recommendations.map((r) => (
@@ -40,7 +46,9 @@ export function QuestionnaireReportView({
           {qr.riskTags.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1.5">
               {qr.riskTags.map((tag) => (
-                <span key={tag} className="rounded bg-primary/10 px-2 py-0.5 text-primary text-xs">
+                <span
+                  key={tag}
+                  className="rounded-full border border-border-subtle bg-background-subtle px-2 py-0.5 text-muted-foreground text-xs">
                   {tag}
                 </span>
               ))}
@@ -50,11 +58,13 @@ export function QuestionnaireReportView({
       ))}
 
       {report.riskTags.length > 0 && (
-        <div className="mb-4 rounded-lg border p-4">
+        <div className="mb-4 rounded-lg border border-border bg-card p-4">
           <div className="mb-2 font-medium">危险因素</div>
           <div className="flex flex-wrap gap-1.5">
             {report.riskTags.map((tag) => (
-              <span key={tag} className="rounded bg-primary/10 px-2 py-0.5 text-primary text-xs">
+              <span
+                key={tag}
+                className="rounded-full border border-border-subtle bg-background-subtle px-2 py-0.5 text-muted-foreground text-xs">
                 {tag}
               </span>
             ))}
@@ -62,9 +72,9 @@ export function QuestionnaireReportView({
         </div>
       )}
 
-      <div className="rounded-lg border p-4">
+      <div className="rounded-lg border border-border bg-card p-4">
         <div className="mb-2 font-medium">综合摘要（发送给问诊AI）</div>
-        <pre className="whitespace-pre-wrap font-sans text-sm">{report.summary}</pre>
+        <pre className="whitespace-pre-wrap font-sans text-muted-foreground text-sm">{report.summary}</pre>
       </div>
     </div>
   )
