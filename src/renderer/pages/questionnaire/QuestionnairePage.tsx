@@ -15,6 +15,7 @@ import {
 import { dataApiService } from '@renderer/data/DataApiService'
 import { useQuery } from '@renderer/data/hooks/useDataApi'
 import { ipcApi } from '@renderer/ipc'
+import { BASIC_INFO_QUESTIONNAIRE_ID } from '@shared/questionnaire/constants'
 import { buildQuestionnaireReport } from '@shared/questionnaire/report'
 import type { QuestionAnswer, QuestionnaireAnswers, QuestionnaireDefinition } from '@shared/questionnaire/types'
 import { useNavigate } from '@tanstack/react-router'
@@ -46,7 +47,9 @@ export default function QuestionnairePage() {
       .catch(() => setDefinitions([]))
   }, [])
 
-  const flow = useQuestionnaireFlow(startQuestionnaireId ?? '')
+  const flow = useQuestionnaireFlow(startQuestionnaireId ?? '', {
+    prependQuestionnaireId: startQuestionnaireId ? BASIC_INFO_QUESTIONNAIRE_ID : undefined
+  })
 
   const currentDefinition = useMemo(
     () => definitions.find((d) => d.questionnaireId === flow.state.currentQuestionnaireId),
@@ -61,38 +64,57 @@ export default function QuestionnairePage() {
   const isCurrentAnswered =
     !!currentQuestion &&
     flow.state.answers[currentDefinition?.questionnaireId ?? '']?.[currentQuestion.id] !== undefined
+  // 流程队列中当前问卷之后还有未完成问卷（如患者基本信息后还有实际问卷）→ 末题前进时应切换到下一问卷。
+  const hasNextQuestionnaire =
+    !!flow.state.currentQuestionnaireId &&
+    !!flow.state.flowQueue.find(
+      (id) => id !== flow.state.currentQuestionnaireId && !flow.state.completedQuestionnaireIds.includes(id)
+    )
 
-  // 答完当前题自动前进到下一题（分支命中时不前进，交给分支对话框）。
-  // 只在用户作答时触发，避免"上一题"回到已答题后又被自动推走。
+  // 答完当前题自动前进：同问卷内前进到下一题；问卷末题且流程还有下一问卷 → 完成本问卷进入下一问卷。
+  // 分支命中时不前进（交给分支对话框）；text/numeric/time 自由输入不中断，改由按钮前进。
   const handleAnswer = useCallback(
     (questionId: string, value: unknown) => {
       if (!currentDefinition) return
+      const isFreeInput =
+        currentQuestion?.type === 'text' || currentQuestion?.type === 'numeric' || currentQuestion?.type === 'time'
       const triggeredBranch = flow.answerQuestion(
         definitions,
         currentDefinition.questionnaireId,
         questionId,
         value as QuestionAnswer
       )
-      if (!triggeredBranch && !isLastQuestion) {
-        flow.goToNext(definitions)
+      if (triggeredBranch) return
+      if (isFreeInput) return
+      if (isLastQuestion) {
+        if (hasNextQuestionnaire) flow.completeQuestionnaire(definitions)
+        return
       }
+      flow.goToNext(definitions)
     },
-    [currentDefinition, definitions, flow, isLastQuestion]
+    [currentDefinition, definitions, flow, isLastQuestion, currentQuestion, hasNextQuestionnaire]
   )
 
   /** 完成流程：构建报告 → 保存会话（completed）→ 进入报告视图。 */
   const handleComplete = useCallback(async () => {
     if (!startQuestionnaireId) return
-    // 所有已参与问卷（起点 + 接受的分支 + 完成列表）
-    const involved = definitions.filter(
-      (d) =>
-        d.questionnaireId === startQuestionnaireId || flow.state.completedQuestionnaireIds.includes(d.questionnaireId)
-    )
+    // 参与问卷按流程顺序：患者基本信息在前，再是起点问卷 + 已作答的分支。
+    const basicInfoDef = definitions.find((d) => d.questionnaireId === BASIC_INFO_QUESTIONNAIRE_ID)
+    const involved = [
+      ...(basicInfoDef ? [basicInfoDef] : []),
+      ...definitions.filter(
+        (d) =>
+          d.questionnaireId !== BASIC_INFO_QUESTIONNAIRE_ID &&
+          (d.questionnaireId === startQuestionnaireId ||
+            flow.state.completedQuestionnaireIds.includes(d.questionnaireId))
+      )
+    ]
     const built = buildQuestionnaireReport({
       flowQuestionnaireId: startQuestionnaireId,
       completedAt: new Date().toISOString(),
       definitions: involved,
-      answers: flow.state.answers
+      answers: flow.state.answers,
+      patientInfoQuestionnaireId: BASIC_INFO_QUESTIONNAIRE_ID
     })
     setReport(built)
     setView('report')
@@ -190,7 +212,11 @@ export default function QuestionnairePage() {
                 <Button variant="outline" disabled={questionIndex === 0} onClick={flow.goToPrev}>
                   上一题
                 </Button>
-                {isLastQuestion ? (
+                {isLastQuestion && hasNextQuestionnaire ? (
+                  <Button disabled={!isCurrentAnswered} onClick={() => flow.completeQuestionnaire(definitions)}>
+                    下一题
+                  </Button>
+                ) : isLastQuestion ? (
                   <Button disabled={!isCurrentAnswered} onClick={() => void handleComplete()}>
                     完成并生成报告
                   </Button>
@@ -202,6 +228,11 @@ export default function QuestionnairePage() {
               </div>
             </div>
           </>
+        ) : hasNextQuestionnaire ? (
+          <div className="flex flex-col items-start gap-4">
+            <div className="text-muted-foreground text-sm">本问卷已完成。</div>
+            <Button onClick={() => flow.completeQuestionnaire(definitions)}>进入下一部分</Button>
+          </div>
         ) : (
           <div className="flex flex-col items-start gap-4">
             <div className="text-muted-foreground text-sm">本问卷已完成。</div>
@@ -233,25 +264,27 @@ export default function QuestionnairePage() {
     <div data-ui="questionnaire.view" className="flex h-full flex-col overflow-auto p-6">
       <h1 className="mb-4 font-semibold text-lg">问卷</h1>
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {definitions.map((d) => (
-          <div
-            key={d.questionnaireId}
-            className="flex flex-col justify-between rounded-lg border border-border bg-card p-4 transition-colors hover:border-border-strong">
-            <div>
-              <div className="font-medium">{d.title}</div>
-              <div className="mt-1 line-clamp-2 text-muted-foreground text-sm">{d.description}</div>
+        {definitions
+          .filter((d) => d.questionnaireId !== BASIC_INFO_QUESTIONNAIRE_ID)
+          .map((d) => (
+            <div
+              key={d.questionnaireId}
+              className="flex flex-col justify-between rounded-lg border border-border bg-card p-4 transition-colors hover:border-border-strong">
+              <div>
+                <div className="font-medium">{d.title}</div>
+                <div className="mt-1 line-clamp-2 text-muted-foreground text-sm">{d.description}</div>
+              </div>
+              <Button
+                variant="outline"
+                className="mt-4 justify-start"
+                onClick={() => {
+                  setStartQuestionnaireId(d.questionnaireId)
+                  setView('form')
+                }}>
+                开始作答
+              </Button>
             </div>
-            <Button
-              variant="outline"
-              className="mt-4 justify-start"
-              onClick={() => {
-                setStartQuestionnaireId(d.questionnaireId)
-                setView('form')
-              }}>
-              开始作答
-            </Button>
-          </div>
-        ))}
+          ))}
       </div>
 
       <h2 className="mb-3 font-semibold text-base">历史记录</h2>

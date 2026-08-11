@@ -48,6 +48,7 @@ export type QuestionnaireQuestion =
     }
   | { id: string; text: string; type: 'numeric'; unit?: string }
   | { id: string; text: string; type: 'time' }
+  | { id: string; text: string; type: 'text' }
 
 export interface QuestionnaireSection {
   sectionId: string
@@ -112,6 +113,12 @@ export interface QuestionResult {
   answer: QuestionAnswer | undefined
   optionLabel?: string
   score?: number
+  /** 题干，供报告视图渲染完整 Q&A */
+  questionText?: string
+  /** numeric 题单位 */
+  unit?: string
+  /** matrix 题逐子题答案 */
+  subAnswers?: Array<{ subId: string; text: string; label: string; value: string | number }>
 }
 
 export interface QuestionnaireScoreResult {
@@ -134,4 +141,6 @@ export interface QuestionnaireReport {
   questions: Record<string, QuestionResult[]>
   riskTags: string[]
   summary: string // 结构化摘要，发送给问诊AI
+  /** 患者基本信息（可选，向后兼容旧报告） */
+  patientInfo?: Array<{ label: string; value: string }>
 }

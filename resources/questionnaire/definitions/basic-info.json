@@ -1,0 +1,40 @@
+{
+  "questionnaireId": "BASIC_INFO",
+  "title": "患者基本信息",
+  "description": "问诊前的基础信息采集（每个问卷流程的固定第一步）",
+  "questions": [
+    {
+      "id": "name",
+      "text": "姓名",
+      "type": "text"
+    },
+    {
+      "id": "age",
+      "text": "年龄",
+      "type": "numeric",
+      "unit": "岁"
+    },
+    {
+      "id": "sex",
+      "text": "性别",
+      "type": "single_choice",
+      "options": [
+        { "label": "男", "value": "男" },
+        { "label": "女", "value": "女" }
+      ]
+    },
+    {
+      "id": "occupation",
+      "text": "职业",
+      "type": "text"
+    },
+    {
+      "id": "history",
+      "text": "既往病史/过敏史",
+      "type": "text"
+    }
+  ],
+  "scoring": {
+    "expression": { "kind": "sum", "items": [] }
+  }
+}

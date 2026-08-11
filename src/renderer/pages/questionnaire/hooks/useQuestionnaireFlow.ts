@@ -18,6 +18,13 @@ export interface QuestionnaireFlowState {
   /** 自动跳过且不存在的分支目标 */
   skippedBranchTargets: string[]
   answers: QuestionnaireAnswers
+  /** 流程队列：主问卷作答顺序（含可选的前置问卷，如患者基本信息） */
+  flowQueue: string[]
+}
+
+export interface QuestionnaireFlowOptions {
+  /** 前置问卷 id：作为流程固定第一步，完成后进入 startQuestionnaireId。 */
+  prependQuestionnaireId?: string
 }
 
 /**
@@ -25,14 +32,18 @@ export interface QuestionnaireFlowState {
  * - 命中规则且目标定义存在 → 弹确认（pendingBranch）
  * - 目标定义不存在 → 自动跳过并记录
  */
-export function useQuestionnaireFlow(startQuestionnaireId: string) {
+export function useQuestionnaireFlow(startQuestionnaireId: string, options?: QuestionnaireFlowOptions) {
+  const flowQueue = options?.prependQuestionnaireId
+    ? [options.prependQuestionnaireId, startQuestionnaireId]
+    : [startQuestionnaireId]
   const [state, setState] = useState<QuestionnaireFlowState>({
-    currentQuestionnaireId: startQuestionnaireId,
+    currentQuestionnaireId: flowQueue[0],
     questionIndex: 0,
     completedQuestionnaireIds: [],
     pendingBranch: null,
     skippedBranchTargets: [],
-    answers: {}
+    answers: {},
+    flowQueue
   })
   // useState 只在首次渲染取初始值。`startQuestionnaireId` 是外部驱动的"开始作答"
   // 目标：每当它变化（通常是用户点击开始作答）就重置为一份全新流程。
@@ -40,15 +51,19 @@ export function useQuestionnaireFlow(startQuestionnaireId: string) {
   useEffect(() => {
     if (startQuestionnaireIdRef.current === startQuestionnaireId) return
     startQuestionnaireIdRef.current = startQuestionnaireId
+    const nextQueue = options?.prependQuestionnaireId
+      ? [options.prependQuestionnaireId, startQuestionnaireId]
+      : [startQuestionnaireId]
     setState({
-      currentQuestionnaireId: startQuestionnaireId,
+      currentQuestionnaireId: nextQueue[0],
       questionIndex: 0,
       completedQuestionnaireIds: [],
       pendingBranch: null,
       skippedBranchTargets: [],
-      answers: {}
+      answers: {},
+      flowQueue: nextQueue
     })
-  }, [startQuestionnaireId])
+  }, [startQuestionnaireId, options])
 
   /** 用户答完一题后：评估分支规则，决定是否插入子问卷。返回是否命中了分支（调用方据此决定是否前进）。 */
   const answerQuestion = useCallback(
@@ -120,12 +135,15 @@ export function useQuestionnaireFlow(startQuestionnaireId: string) {
   const completeQuestionnaire = useCallback((definitions: QuestionnaireDefinition[]) => {
     setState((prev) => {
       const done = [...prev.completedQuestionnaireIds, prev.currentQuestionnaireId]
-      const next = definitions.find((d) => !done.includes(d.questionnaireId))
+      // 沿流程队列前进；队列外（分支目标如 CLDEQ8/PSQI）回退到 definitions 顺序扫描。
+      const next =
+        prev.flowQueue.find((id) => !done.includes(id)) ??
+        definitions.find((d) => !done.includes(d.questionnaireId))?.questionnaireId
       return {
         ...prev,
         completedQuestionnaireIds: done,
         questionIndex: 0,
-        currentQuestionnaireId: next?.questionnaireId ?? prev.currentQuestionnaireId
+        currentQuestionnaireId: next ?? prev.currentQuestionnaireId
       }
     })
   }, [])

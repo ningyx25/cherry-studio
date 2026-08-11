@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { parseQuestionnaireDefinition } from '../schemas'
 
 const DEFINITIONS_DIR = path.resolve(__dirname, '../../../../resources/questionnaire/definitions')
-const FILES = ['china-dry-eye.json', 'lifestyle-dry-eye.json', 'cldeq-8.json', 'psqi.json']
+const FILES = ['china-dry-eye.json', 'lifestyle-dry-eye.json', 'cldeq-8.json', 'psqi.json', 'basic-info.json']
 
 describe('built-in questionnaire definitions', () => {
   for (const file of FILES) {

@@ -17,6 +17,15 @@ describe('questionnaireDefinitionSchema', () => {
     expect(parsed.scoring.maxScore).toBe(1)
   })
 
+  it('parses a text-type question (free input)', () => {
+    const withText = {
+      ...validDefinition,
+      questions: [{ id: 'name', text: '姓名', type: 'text' }]
+    }
+    const parsed = parseQuestionnaireDefinition(withText)
+    expect(parsed.questions[0].type).toBe('text')
+  })
+
   it('rejects a definition with an unknown question type', () => {
     const bad = { ...validDefinition, questions: [{ id: 'Q1', text: 'q', type: 'bad_type' }] }
     expect(() => parseQuestionnaireDefinition(bad)).toThrow()

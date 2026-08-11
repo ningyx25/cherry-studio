@@ -55,7 +55,8 @@ const questionSchema = z.discriminatedUnion('type', [
     options: z.array(questionnaireOptionSchema)
   }),
   z.object({ id: z.string(), text: z.string(), type: z.literal('numeric'), unit: z.string().optional() }),
-  z.object({ id: z.string(), text: z.string(), type: z.literal('time') })
+  z.object({ id: z.string(), text: z.string(), type: z.literal('time') }),
+  z.object({ id: z.string(), text: z.string(), type: z.literal('text') })
 ])
 
 export const questionnaireDefinitionSchema: z.ZodType<QuestionnaireDefinition> = z.object({

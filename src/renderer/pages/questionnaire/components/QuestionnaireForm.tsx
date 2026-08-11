@@ -118,6 +118,14 @@ export function QuestionnaireForm({
           value={typeof value === 'string' ? value : ''}
           onChange={(e) => onAnswer(question.id, e.target.value)}
         />
+      ) : question.type === 'text' ? (
+        <Input
+          type="text"
+          className="w-64"
+          value={typeof value === 'string' ? value : ''}
+          onChange={(e) => onAnswer(question.id, e.target.value)}
+          placeholder="请输入"
+        />
       ) : (
         renderOptions(question as QuestionnaireQuestion & { type: 'single_choice' | 'multi_choice' | 'matrix' })
       )}

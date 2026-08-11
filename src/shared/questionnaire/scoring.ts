@@ -10,13 +10,13 @@ function optionScore(def: QuestionnaireDefinition, questionId: string, value: Qu
   const parent = def.questions.find((x) => x.type === 'matrix' && x.subQuestions.some((s) => s.id === questionId))
   const q = parent ?? def.questions.find((x) => x.id === questionId)
   if (!q) return 0
-  if (q.type === 'numeric' || q.type === 'time') return Number(value) || 0
+  if (q.type === 'numeric' || q.type === 'time' || q.type === 'text') return Number(value) || 0
   if (q.type === 'matrix') {
     if (typeof value !== 'string' && typeof value !== 'number') return 0
     const opt = q.options.find((o) => o.value === value)
     return opt?.convertedScore ?? opt?.score ?? 0
   }
-  const opt = q.options.find((o) => o.value === value)
+  const opt = q.options?.find((o) => o.value === value)
   return opt?.convertedScore ?? opt?.score ?? 0
 }
 
