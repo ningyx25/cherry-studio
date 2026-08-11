@@ -9,5 +9,6 @@ export const ComposerPanelSymbol = {
   KnowledgeBase: '#',
   QuickPhrases: 'quick-phrases',
   McpStatus: 'mcp-status',
-  Notes: 'notes'
+  Notes: 'notes',
+  QuestionnaireReport: 'questionnaire-report'
 } as const

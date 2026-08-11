@@ -81,4 +81,26 @@ describe('composer tool visibility', () => {
 
     expect(tools.map((tool) => tool.key)).toContain('knowledge_base')
   })
+
+  it('scopes the questionnaire report tool to the clinic agent in Session scope', () => {
+    const model = { id: 'agent-model', providerId: 'provider-1', name: 'Agent model' } as any
+
+    // clinic agent → 工具可见
+    const clinicTools = getToolsForScope(TopicType.Session, {
+      model,
+      session: { agentId: 'clinic' }
+    })
+    expect(clinicTools.map((tool) => tool.key)).toContain('questionnaire_report')
+
+    // 其它 agent（如 pop-science）→ 工具不可见
+    const otherTools = getToolsForScope(TopicType.Session, {
+      model,
+      session: { agentId: 'pop-science' }
+    })
+    expect(otherTools.map((tool) => tool.key)).not.toContain('questionnaire_report')
+
+    // Chat scope（非 Session）→ 不可见
+    const chatTools = getToolsForScope(TopicType.Chat, { model })
+    expect(chatTools.map((tool) => tool.key)).not.toContain('questionnaire_report')
+  })
 })

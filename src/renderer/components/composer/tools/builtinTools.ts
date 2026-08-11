@@ -3,6 +3,7 @@ import knowledgeBaseTool from './definitions/knowledgeBaseTool'
 import mcpStatusTool from './definitions/mcpStatusTool'
 import noteReferenceTool from './definitions/noteReferenceTool'
 import permissionModeTool from './definitions/permissionModeTool'
+import questionnaireReportTool from './definitions/questionnaireReportTool'
 import quickPhrasesTool from './definitions/quickPhrasesTool'
 import slashCommandsTool from './definitions/slashCommandsTool'
 import webSearchTool from './definitions/webSearchTool'
@@ -19,6 +20,7 @@ export const BUILTIN_COMPOSER_TOOLS: ToolDefinition<any, any>[] = [
   quickPhrasesTool,
   webSearchTool,
   knowledgeBaseTool,
+  questionnaireReportTool,
   slashCommandsTool,
   permissionModeTool,
   mcpStatusTool,
