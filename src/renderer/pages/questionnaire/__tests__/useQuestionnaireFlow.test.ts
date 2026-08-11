@@ -96,4 +96,21 @@ describe('useQuestionnaireFlow', () => {
     expect(result.current.state.completedQuestionnaireIds).toContain('CLDEQ8')
     expect(result.current.state.pendingBranch).toBeNull()
   })
+
+  it('resets the flow and switches questionnaire when startQuestionnaireId changes', () => {
+    const { result, rerender } = renderHook(({ id }: { id: string }) => useQuestionnaireFlow(id), {
+      initialProps: { id: 'CHINA_DRY_EYE' }
+    })
+    // 答了一题，制造进行中的状态
+    act(() => result.current.answerQuestion(defs, 'CHINA_DRY_EYE', 'Q1', 'B'))
+    expect(result.current.state.answers['CHINA_DRY_EYE']?.Q1).toBe('B')
+
+    // 点击另一份问卷的"开始作答"→ startQuestionnaireId 变化
+    act(() => rerender({ id: 'CLDEQ8' }))
+
+    expect(result.current.state.currentQuestionnaireId).toBe('CLDEQ8')
+    expect(result.current.state.answers).toEqual({})
+    expect(result.current.state.pendingBranch).toBeNull()
+    expect(result.current.state.completedQuestionnaireIds).toEqual([])
+  })
 })

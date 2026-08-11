@@ -4,7 +4,7 @@ import type {
   QuestionnaireAnswers,
   QuestionnaireDefinition
 } from '@shared/questionnaire/types'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export interface QuestionnaireFlowState {
   /** 当前正在作答的问卷 id */
@@ -31,6 +31,20 @@ export function useQuestionnaireFlow(startQuestionnaireId: string) {
     skippedBranchTargets: [],
     answers: {}
   })
+  // useState 只在首次渲染取初始值。`startQuestionnaireId` 是外部驱动的"开始作答"
+  // 目标：每当它变化（通常是用户点击开始作答）就重置为一份全新流程。
+  const startQuestionnaireIdRef = useRef(startQuestionnaireId)
+  useEffect(() => {
+    if (startQuestionnaireIdRef.current === startQuestionnaireId) return
+    startQuestionnaireIdRef.current = startQuestionnaireId
+    setState({
+      currentQuestionnaireId: startQuestionnaireId,
+      completedQuestionnaireIds: [],
+      pendingBranch: null,
+      skippedBranchTargets: [],
+      answers: {}
+    })
+  }, [startQuestionnaireId])
 
   /** 用户答完一题后：评估分支规则，决定是否插入子问卷。 */
   const answerQuestion = useCallback(
