@@ -14,7 +14,10 @@ import type { DbType, ISeeder } from '../../types'
  * (`pop-science` / `clinic`) rather than `builtin_role`: they carry no reserved
  * assistant capability — just their own system prompt and identity.
  *
- * `run-on-change` keeps the seed re-applicable if the preset definition evolves.
+ * `run-on-change` keeps the seed re-applicable if the preset definition evolves:
+ * existing active rows get preset-owned identity fields (name/description/
+ * instructions) synced on re-run; user-owned fields (model) and soft-deleted
+ * rows are never touched.
  * A seeded empty session makes the agent visible in the sidebar without a user
  * having to create one first. `model` is null — the user owns model selection.
  */
@@ -22,7 +25,7 @@ export class PresetAgentSeeder implements ISeeder {
   readonly name = 'presetAgents'
   readonly description = 'Insert the two fixed module agents (科普AI / 问诊AI)'
   readonly executionPolicy = 'run-on-change' as const
-  readonly version = '1'
+  readonly version = '4'
 
   run(db: DbType): void {
     db.transaction((tx) => {
@@ -36,7 +39,17 @@ export class PresetAgentSeeder implements ISeeder {
     // Find an existing row by fixed id, including deleted ones so a prior user
     // deletion stays durable (matching the builtin-agent seed policy).
     const existing = tx.select().from(agentTable).where(eq(agentTable.id, id)).limit(1).all()[0]
-    if (existing) return
+    if (existing) {
+      // Prompt design is seed-owned (module-mode hides agent editing); sync the
+      // preset-owned identity fields on re-run. Skip soft-deleted rows and never
+      // touch user-owned fields.
+      const presetFieldsDiffer =
+        existing.name !== name || existing.description !== description || existing.instructions !== instructions
+      if (existing.deletedAt === null && presetFieldsDiffer) {
+        agentService.updateAgentTx(tx, id, { name, description, instructions })
+      }
+      return
+    }
 
     const agentId = id
     const row = agentService.createAgentTx(tx, agentId, {

@@ -1,9 +1,12 @@
 import { agentTable } from '@data/db/schemas/agent'
 import { agentSessionTable } from '@data/db/schemas/agentSession'
 import { agentWorkspaceTable } from '@data/db/schemas/agentWorkspace'
+import { userModelTable } from '@data/db/schemas/userModel'
+import { userProviderTable } from '@data/db/schemas/userProvider'
 import { PresetAgentSeeder } from '@data/db/seeding/seeders/presetAgentSeeder'
+import { generateOrderKeyBetween } from '@data/services/utils/orderKey'
 import { AGENT_WORKSPACE_TYPE } from '@shared/data/api/schemas/agentWorkspaces'
-import { PRESET_AGENT_IDS } from '@shared/data/presets/presetAgents'
+import { PRESET_AGENT_IDS, PRESET_AGENT_SEEDS } from '@shared/data/presets/presetAgents'
 import { setupTestDatabase } from '@test-helpers/db'
 import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
@@ -40,26 +43,54 @@ describe('PresetAgentSeeder', () => {
     }
   })
 
-  it('does not re-create or overwrite an agent that already exists', () => {
+  it('re-running syncs preset-owned instructions but preserves user-owned fields and soft-deletion', async () => {
     new PresetAgentSeeder().run(dbh.db)
-    const [existing] = dbh.db.select().from(agentTable).where(eq(agentTable.id, 'pop-science')).all()
-    const sessionCountBefore = dbh.db
-      .select()
-      .from(agentSessionTable)
-      .where(eq(agentSessionTable.agentId, 'pop-science'))
-      .all()
+
+    // Simulate an evolved preset: give one active row stale instructions plus a
+    // user-owned model, and soft-delete the other preset agent.
+    const modelId = 'user-model-1'
+    await dbh.db
+      .insert(userProviderTable)
+      .values({ providerId: 'anthropic', name: 'anthropic', orderKey: generateOrderKeyBetween(null, null) })
+      .onConflictDoNothing()
+    await dbh.db
+      .insert(userModelTable)
+      .values({
+        id: modelId,
+        providerId: 'anthropic',
+        modelId: 'claude-3-5-sonnet',
+        name: 'claude-3-5-sonnet',
+        capabilities: [],
+        supportsStreaming: true,
+        orderKey: generateOrderKeyBetween(null, null)
+      })
+      .onConflictDoNothing()
+    dbh.db
+      .update(agentTable)
+      .set({ instructions: 'stale instructions', model: modelId })
+      .where(eq(agentTable.id, 'pop-science'))
+      .run()
+    dbh.db.update(agentTable).set({ deletedAt: Date.now() }).where(eq(agentTable.id, 'clinic')).run()
 
     new PresetAgentSeeder().run(dbh.db)
 
+    const [synced] = dbh.db.select().from(agentTable).where(eq(agentTable.id, 'pop-science')).all()
+    const popScienceSeed = PRESET_AGENT_SEEDS.find((s) => s.id === 'pop-science')
+    expect(synced.instructions).toBe(popScienceSeed?.instructions)
+    expect(synced.name).toBe(popScienceSeed?.name)
+    expect(synced.model).toBe(modelId) // user-owned, untouched
+
+    const [softDeleted] = dbh.db.select().from(agentTable).where(eq(agentTable.id, 'clinic')).all()
+    expect(softDeleted.deletedAt).not.toBeNull() // deletion stays durable
+
+    // No duplicate rows or sessions created on re-run.
     const rows = dbh.db.select().from(agentTable).all()
     expect(rows).toHaveLength(PRESET_AGENT_IDS.length)
-    const [stillExisting] = dbh.db.select().from(agentTable).where(eq(agentTable.id, 'pop-science')).all()
-    expect(stillExisting.id).toBe(existing.id)
     const sessionCountAfter = dbh.db
       .select()
       .from(agentSessionTable)
       .where(eq(agentSessionTable.agentId, 'pop-science'))
       .all()
-    expect(sessionCountAfter).toHaveLength(sessionCountBefore.length)
+    expect(sessionCountAfter).toHaveLength(1)
   })
 })
