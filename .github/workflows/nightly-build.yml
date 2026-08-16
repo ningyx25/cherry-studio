@@ -104,8 +104,11 @@ jobs:
           RENDERER_VITE_AIHUBMIX_SECRET: ${{ secrets.RENDERER_VITE_AIHUBMIX_SECRET }}
           RENDERER_VITE_PPIO_APP_SECRET: ${{ secrets.RENDERER_VITE_PPIO_APP_SECRET }}
 
-      - name: Build Mac
-        if: matrix.os == 'macos-latest'
+      - name: Build Mac (signed)
+        # 仅在配置了 Apple 签名 secrets 时签名；未配置时走下面的无签名构建。
+        # 注意：空字符串 CSC_LINK 会被 electron-builder 当作"证书路径"解析到项目根目录，
+        # 报 "not a file" 导致 macOS 构建失败，所以未配置 secrets 时绝不能传入该变量。
+        if: matrix.os == 'macos-latest' && secrets.CSC_LINK != ''
         run: |
           pnpm build:mac
         env:
@@ -114,6 +117,18 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_OPTIONS: --max-old-space-size=8192
+          MAIN_VITE_CHERRYAI_CLIENT_SECRET: ${{ secrets.MAIN_VITE_CHERRYAI_CLIENT_SECRET }}
+          MAIN_VITE_MINERU_API_KEY: ${{ secrets.MAIN_VITE_MINERU_API_KEY }}
+          RENDERER_VITE_AIHUBMIX_SECRET: ${{ secrets.RENDERER_VITE_AIHUBMIX_SECRET }}
+          RENDERER_VITE_PPIO_APP_SECRET: ${{ secrets.RENDERER_VITE_PPIO_APP_SECRET }}
+
+      - name: Build Mac (unsigned)
+        if: matrix.os == 'macos-latest' && secrets.CSC_LINK == ''
+        run: |
+          pnpm build:mac
+        env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_OPTIONS: --max-old-space-size=8192
           MAIN_VITE_CHERRYAI_CLIENT_SECRET: ${{ secrets.MAIN_VITE_CHERRYAI_CLIENT_SECRET }}
