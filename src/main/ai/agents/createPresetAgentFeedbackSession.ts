@@ -13,7 +13,7 @@ const FEEDBACK_AGENT_ID = 'pop-science'
  * The feedback conversation runs on the fixed 科普AI preset agent. Its row is
  * seeded by PresetAgentSeeder (run-on-change) and cannot be deleted from the
  * slim module UI, so no restore step is needed here — unlike the former
- * Cherry Assistant flow, which recreated a builtin_role='assistant' agent on
+ * HuaTuo Assistant flow, which recreated a builtin_role='assistant' agent on
  * demand. Renderer callers receive only the standard session they need to open.
  */
 export function createPresetAgentFeedbackSession(): AgentSessionEntity {

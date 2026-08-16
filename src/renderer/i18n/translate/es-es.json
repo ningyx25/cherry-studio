@@ -5910,10 +5910,10 @@
       },
       "feedback": {
         "agent": {
-          "description": "Chatea con Cherry Assistant para compartir tus comentarios.",
+          "description": "Chatea con HuaTuo Assistant para compartir tus comentarios.",
           "title": "Usar Agente"
         },
-        "agent_error": "No se puede abrir Cherry Assistant para enviar comentarios. Inténtalo de nuevo.",
+        "agent_error": "No se puede abrir HuaTuo Assistant para enviar comentarios. Inténtalo de nuevo.",
         "button": "Enviar feedback",
         "dialog": {
           "description": "Elige cómo compartir comentarios y ayúdanos a mejorar HuaTuo Studio.",
@@ -6621,7 +6621,7 @@
       "remove": "Remove tool",
       "removeConfirmMessage": "Are you sure you want to remove \"{{name}}\"? The binary will be deleted.",
       "removeConfirmTitle": "Remove Tool",
-      "removeDefinitionOnlyConfirmMessage": "Cherry no pudo limpiar de forma segura \"{{name}}\". Eliminar solo su definición ocultará la tarjeta pero dejará sus archivos de backend instalados. ¿Continuar?",
+      "removeDefinitionOnlyConfirmMessage": "HuaTuo no pudo limpiar de forma segura \"{{name}}\". Eliminar solo su definición ocultará la tarjeta pero dejará sus archivos de backend instalados. ¿Continuar?",
       "removeDefinitionOnlyConfirmTitle": "¿Eliminar solo definición?",
       "removeDefinitionOnlyDependents": "Las herramientas instaladas dependen de ello: {{dependents}}.",
       "removeError": "Error al eliminar la herramienta",

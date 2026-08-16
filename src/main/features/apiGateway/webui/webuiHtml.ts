@@ -1,7 +1,7 @@
 /**
- * WebUI Single Page Application for HuaTuo Studio / Cherry Studio.
+ * WebUI Single Page Application for HuaTuo Studio.
  * Features:
- * 1. Deep UI/UX alignment with Cherry Studio / HuaTuo desktop application
+ * 1. Deep UI/UX alignment with HuaTuo desktop application
  * 2. Complete data sharing with desktop SQLite database (Chat sessions, Questionnaires, Knowledge bases, Models)
  */
 

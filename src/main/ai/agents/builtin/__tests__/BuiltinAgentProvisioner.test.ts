@@ -106,7 +106,7 @@ describe('BuiltinAgentProvisioner', () => {
       JSON.stringify({ name: 'Cherry Assistant', configuration: { max_turns: 'invalid' } })
     )
 
-    expect(() => loadBuiltinAssistantDefaults()).toThrow('Cherry Assistant package configuration is invalid')
+    expect(() => loadBuiltinAssistantDefaults()).toThrow('HuaTuo Assistant package configuration is invalid')
   })
 
   it('copies persona and memory templates into agent data without copying product files', async () => {

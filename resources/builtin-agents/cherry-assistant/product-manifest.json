@@ -9,56 +9,30 @@
   "routes": {
     "primary": [
       {
-        "id": "assistants",
-        "path": "/app/chat"
+        "id": "pop-science",
+        "path": "/app/pop-science"
       },
       {
-        "id": "agents",
-        "path": "/app/agents"
-      },
-      {
-        "id": "paintings",
-        "path": "/app/paintings"
-      },
-      {
-        "id": "translate",
-        "path": "/app/translate"
-      },
-      {
-        "id": "mini_app",
-        "path": "/app/mini-app"
+        "id": "clinic",
+        "path": "/app/clinic"
       },
       {
         "id": "knowledge",
         "path": "/app/knowledge"
       },
       {
-        "id": "files",
-        "path": "/app/files"
-      },
-      {
-        "id": "code_tools",
-        "path": "/app/code"
-      },
-      {
-        "id": "notes",
-        "path": "/app/notes"
+        "id": "questionnaire",
+        "path": "/app/questionnaire"
       }
     ],
     "all": [
       "/app",
       "/settings",
-      "/app/agents",
-      "/app/chat",
-      "/app/code",
-      "/app/file-preview",
-      "/app/files",
+      "/app/clinic",
       "/app/knowledge",
-      "/app/launchpad",
-      "/app/notes",
-      "/app/translate",
+      "/app/pop-science",
+      "/app/questionnaire",
       "/settings/about",
-      "/settings/api-gateway",
       "/settings/appearance",
       "/settings/channels",
       "/settings/code-execution",
@@ -71,16 +45,12 @@
       "/settings/notifications",
       "/settings/ocr",
       "/settings/provider",
-      "/settings/quick-assistant",
       "/settings/scheduled-tasks",
-      "/settings/selection-assistant",
       "/settings/shortcut",
       "/settings/skills",
       "/settings/system",
       "/settings/usage",
       "/settings/websearch",
-      "/app/mini-app/$appId",
-      "/app/paintings/$",
       "/settings/mcp/$",
       "/settings/mcp/builtin",
       "/settings/mcp/marketplaces",
@@ -88,8 +58,6 @@
       "/settings/mcp/npx-search",
       "/settings/mcp/servers",
       "/settings/scheduled-tasks/$taskId",
-      "/app/mini-app",
-      "/app/paintings",
       "/settings/mcp/settings/$serverId"
     ]
   },
@@ -277,55 +245,6 @@
           "CommandOrControl",
           "Shift",
           "M"
-        ]
-      }
-    },
-    {
-      "id": "quick_assistant.toggle",
-      "titleKey": "settings.shortcuts.quick_assistant",
-      "categoryKey": "settings.shortcuts.feature.quick_assistant",
-      "scope": "main",
-      "enablement": "feature.quick_assistant.enabled",
-      "keybinding": {
-        "defaultBinding": [
-          "CommandOrControl",
-          "E"
-        ],
-        "global": true,
-        "when": "feature.quick_assistant.enabled"
-      }
-    },
-    {
-      "id": "selection.capture_text",
-      "titleKey": "settings.shortcuts.selection_assistant_select_text",
-      "categoryKey": "settings.shortcuts.feature.selection",
-      "scope": "main",
-      "enablement": "feature.selection.enabled",
-      "keybinding": {
-        "defaultBinding": [],
-        "global": true,
-        "when": "feature.selection.enabled",
-        "supportedPlatforms": [
-          "darwin",
-          "win32",
-          "linux"
-        ]
-      }
-    },
-    {
-      "id": "selection.toggle",
-      "titleKey": "settings.shortcuts.selection_assistant_toggle",
-      "categoryKey": "settings.shortcuts.feature.selection",
-      "scope": "main",
-      "enablement": "feature.selection.enabled",
-      "keybinding": {
-        "defaultBinding": [],
-        "global": true,
-        "when": "feature.selection.enabled",
-        "supportedPlatforms": [
-          "darwin",
-          "win32",
-          "linux"
         ]
       }
     },
@@ -697,7 +616,6 @@
       "once"
     ],
     "codeCli": {
-      "route": "/app/code",
       "tools": [
         "claude-code",
         "openai-codex",

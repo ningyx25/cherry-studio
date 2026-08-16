@@ -5910,10 +5910,10 @@
       },
       "feedback": {
         "agent": {
-          "description": "Converse com o Assistente Cherry para compartilhar comentários.",
+          "description": "Converse com o Assistente HuaTuo para compartilhar comentários.",
           "title": "Use Agent"
         },
-        "agent_error": "Não foi possível abrir o Cherry Assistant para feedback. Por favor, tente novamente.",
+        "agent_error": "Não foi possível abrir o HuaTuo Assistant para feedback. Por favor, tente novamente.",
         "button": "Feedback",
         "dialog": {
           "description": "Escolha como compartilhar feedback e ajude-nos a melhorar o HuaTuo Studio.",

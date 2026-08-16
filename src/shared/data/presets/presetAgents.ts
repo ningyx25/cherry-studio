@@ -6,7 +6,7 @@
  * to one sidebar entry and one fixed agent row seeded into the database. The renderer
  * keys the sidebar/routes off `id`; the main process seeder writes the row with the
  * same `id`. `model` is left to the user (seeded as null) because model choice is
- * user-owned — same approach as the Cherry Assistant seeder.
+ * user-owned — same approach as the HuaTuo Assistant seeder.
  */
 
 export const PRESET_AGENT_IDS = ['pop-science', 'clinic'] as const

@@ -5910,10 +5910,10 @@
       },
       "feedback": {
         "agent": {
-          "description": "Συνομιλήστε με την Βοηθό Cherry για να μοιραστείτε τα σχόλιά σας.",
+          "description": "Συνομιλήστε με την Βοηθό HuaTuo για να μοιραστείτε τα σχόλιά σας.",
           "title": "Χρησιμοποίησε Πράκτορα"
         },
-        "agent_error": "Αδυναμία ανοίγματος του Cherry Assistant για σχόλια. Παρακαλώ προσπαθήστε ξανά.",
+        "agent_error": "Αδυναμία ανοίγματος του HuaTuo Assistant για σχόλια. Παρακαλώ προσπαθήστε ξανά.",
         "button": "Σχόλια και Παρατηρήσεις",
         "dialog": {
           "description": "Επιλέξτε πώς θέλετε να μοιραστείτε τα σχόλιά σας και να μας βοηθήσετε να κάνουμε το HuaTuo Studio καλύτερο.",
@@ -6621,7 +6621,7 @@
       "remove": "Remove tool",
       "removeConfirmMessage": "Are you sure you want to remove \"{{name}}\"? The binary will be deleted.",
       "removeConfirmTitle": "Remove Tool",
-      "removeDefinitionOnlyConfirmMessage": "Το Cherry δεν μπορούσε να καθαρίσει με ασφάλεια το \"{{name}}\". Η κατάργηση μόνο του ορισμού του θα κρύψει την κάρτα αλλά θα αφήσει τα αρχεία του backend της εγκατεστημένα. Να συνεχίσετε;",
+      "removeDefinitionOnlyConfirmMessage": "Το HuaTuo δεν μπορούσε να καθαρίσει με ασφάλεια το \"{{name}}\". Η κατάργηση μόνο του ορισμού του θα κρύψει την κάρτα αλλά θα αφήσει τα αρχεία του backend της εγκατεστημένα. Να συνεχίσετε;",
       "removeDefinitionOnlyConfirmTitle": "Να αφαιρεθεί μόνο ο ορισμός;",
       "removeDefinitionOnlyDependents": "Τα εγκατεστημένα εργαλεία εξαρτώνται από αυτό: {{dependents}}.",
       "removeError": "Αποτυχία αφαίρεσης εργαλείου",

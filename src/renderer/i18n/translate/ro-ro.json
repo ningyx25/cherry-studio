@@ -5910,10 +5910,10 @@
       },
       "feedback": {
         "agent": {
-          "description": "Discută cu Asistentul Cherry pentru a împărtăși feedback-ul tău.",
+          "description": "Discută cu Asistentul HuaTuo pentru a împărtăși feedback-ul tău.",
           "title": "Utilizați Agentul"
         },
-        "agent_error": "Nu se poate deschide Cherry Assistant pentru feedback. Vă rugăm să încercați din nou.",
+        "agent_error": "Nu se poate deschide HuaTuo Assistant pentru feedback. Vă rugăm să încercați din nou.",
         "button": "Feedback",
         "dialog": {
           "description": "Alege cum să partajezi feedback-ul și ajută-ne să facem HuaTuo Studio mai bun.",
@@ -6621,7 +6621,7 @@
       "remove": "Remove tool",
       "removeConfirmMessage": "Are you sure you want to remove \"{{name}}\"? The binary will be deleted.",
       "removeConfirmTitle": "Remove Tool",
-      "removeDefinitionOnlyConfirmMessage": "Cherry nu a putut curăța în siguranță \"{{name}}\". Eliminarea doar a definiției va ascunde cardul, dar va lăsa fișierele sale de backend instalate. Continuați?",
+      "removeDefinitionOnlyConfirmMessage": "HuaTuo nu a putut curăța în siguranță \"{{name}}\". Eliminarea doar a definiției va ascunde cardul, dar va lăsa fișierele sale de backend instalate. Continuați?",
       "removeDefinitionOnlyConfirmTitle": "Elimină doar definiția?",
       "removeDefinitionOnlyDependents": "Instrumentele instalate depind de el: {{dependents}}.",
       "removeError": "Nu s-a putut elimina instrumentul",
