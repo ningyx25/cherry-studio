@@ -5,7 +5,7 @@
  * 2. Complete data sharing with desktop SQLite database (Chat sessions, Questionnaires, Knowledge bases, Models)
  */
 
-export function renderWebUiHtml(): string {
+export function renderWebUiHtml(injectedApiKey: string = ''): string {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -1086,13 +1086,14 @@ export function renderWebUiHtml(): string {
   </div>
 
   <script>
+    window.__INJECTED_API_KEY__ = ${JSON.stringify(injectedApiKey)};
     // State Store
     const state = {
       theme: localStorage.getItem('huatuo_theme') || 'light',
       currentView: 'clinic',
       qTab: 'form',
       baseUrl: localStorage.getItem('huatuo_base_url') || window.location.origin,
-      apiKey: localStorage.getItem('huatuo_api_key') || '',
+      apiKey: localStorage.getItem('huatuo_api_key') || window.__INJECTED_API_KEY__ || '',
       clinicModel: localStorage.getItem('huatuo_clinic_model') || 'clinic',
       scienceModel: localStorage.getItem('huatuo_science_model') || 'pop-science',
       activeSessionId: null,
@@ -1700,6 +1701,12 @@ export function renderWebUiHtml(): string {
         });
 
         if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('未授权 (HTTP 401)：缺少 API Key。请前往「设置」页面填写 API Key（可在桌面端「设置」➔「API 网关」中查看您的 API Key）。');
+          }
+          if (response.status === 403) {
+            throw new Error('鉴权失败 (HTTP 403)：API Key 无效或未启用。请在桌面端「设置」➔「API 网关」中核对 API Key。');
+          }
           throw new Error(\`HTTP \${response.status}: \${await response.text()}\`);
         }
 
@@ -1735,7 +1742,14 @@ export function renderWebUiHtml(): string {
           }
         }
       } catch (err) {
-        assistantBubble.innerHTML = \`<span style="color:var(--danger)">⚠️ 请求出错: \${err.message}</span>\`;
+        assistantBubble.innerHTML = \`
+          <div style="color:var(--danger); line-height:1.6">
+            ⚠️ <strong>请求出错：</strong>\${escapeHtml(err.message)}
+            <div style="margin-top:8px">
+              <button class="composer-btn-mini" onclick="document.querySelector('[data-view=settings]').click()">⚙️ 前往「设置」页面配置 API Key</button>
+            </div>
+          </div>
+        \`;
       } finally {
         btn.disabled = false;
       }
@@ -1897,6 +1911,10 @@ export function renderWebUiHtml(): string {
     }
 
     function initSettings() {
+      if (!state.apiKey && window.__INJECTED_API_KEY__) {
+        state.apiKey = window.__INJECTED_API_KEY__;
+        localStorage.setItem('huatuo_api_key', state.apiKey);
+      }
       document.getElementById('cfg-base-url').value = state.baseUrl;
       document.getElementById('cfg-api-key').value = state.apiKey;
       document.getElementById('cfg-clinic-model').value = state.clinicModel;
