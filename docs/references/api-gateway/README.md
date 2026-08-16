@@ -67,6 +67,7 @@ and its latency logged on completion.
 |---|---|
 | `GET /` | API information (name, version, endpoint map) |
 | `GET /health` | Health check (`{ status, timestamp, version }`) |
+| `GET /web` | WebUI Single-Page Application (AI consultation, science Q&A, questionnaire) |
 | `GET /openapi` | Scalar API docs UI (front-end assets load from a CDN — see note) |
 | `GET /openapi/json` | OpenAPI JSON spec (fully local) |
 

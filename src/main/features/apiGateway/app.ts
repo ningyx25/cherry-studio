@@ -22,6 +22,7 @@ import { knowledgeRoutes } from './routes/knowledge'
 import { messagesRoutes } from './routes/messages'
 import { modelsRoutes } from './routes/models'
 import { responsesRoutes } from './routes/responses'
+import { webuiRoutes } from './webui'
 
 const logger = loggerService.withContext('ApiGateway')
 
@@ -140,6 +141,7 @@ export function buildApp({ host = '127.0.0.1', port = 23333 }: BuildAppOptions =
         version: '1.0.0',
         endpoints: {
           health: 'GET /health',
+          webui: 'GET /web',
           docs: `GET ${OPENAPI_PATH}`,
           docs_json: `GET ${OPENAPI_PATH}/json`,
           chat_completions: 'POST /v1/chat/completions',
@@ -151,6 +153,7 @@ export function buildApp({ host = '127.0.0.1', port = 23333 }: BuildAppOptions =
       }),
       { detail: { tags: [DOC_TAGS.cherry], summary: 'API Info', description: DOC_DESCRIPTIONS.info } }
     )
+    .use(webuiRoutes)
     // Gemini routes carry their own self-contained (`local`) auth guard and are
     // mounted BEFORE `v1Routes` on purpose: `v1Routes`' `scoped` guard exports to
     // the app scope and would otherwise intercept `/v1beta` requests (its guard
