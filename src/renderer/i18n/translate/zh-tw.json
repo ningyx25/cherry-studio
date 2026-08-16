@@ -1446,8 +1446,8 @@
     },
     "deeply_thought": "已深度思考（用時 {{seconds}} 秒）",
     "default": {
-      "description": "你好，我是 Cherry 助手。你可以立即開始與我聊天",
-      "name": "Cherry 助手",
+      "description": "你好，我是 HuaTuo 助手。你可以立即開始與我聊天",
+      "name": "HuaTuo 助手",
       "topic": {
         "name": "預設對話"
       }
@@ -5910,10 +5910,10 @@
       },
       "feedback": {
         "agent": {
-          "description": "與 Cherry Assistant 聊天以分享回饋。",
+          "description": "與 HuaTuo Assistant 聊天以分享回饋。",
           "title": "使用代理"
         },
-        "agent_error": "無法開啟 Cherry Assistant 以提供意見回饋。請再試一次。",
+        "agent_error": "無法開啟 HuaTuo Assistant 以提供意見回饋。請再試一次。",
         "button": "回饋",
         "dialog": {
           "description": "選擇分享回饋的方式，幫助我們讓 HuaTuo Studio 變得更好。",
@@ -6621,7 +6621,7 @@
       "remove": "移除工具",
       "removeConfirmMessage": "確定要移除「{{name}}」嗎？二進位檔案將會被刪除。",
       "removeConfirmTitle": "移除工具",
-      "removeDefinitionOnlyConfirmMessage": "Cherry 無法安全地清理「{{name}}」。僅移除其定義將會隱藏卡片，但保留其後端檔案已安裝。是否繼續？",
+      "removeDefinitionOnlyConfirmMessage": "HuaTuo 無法安全地清理「{{name}}」。僅移除其定義將會隱藏卡片，但保留其後端檔案已安裝。是否繼續？",
       "removeDefinitionOnlyConfirmTitle": "僅移除定義？",
       "removeDefinitionOnlyDependents": "安裝的工具依賴於它：{{dependents}}。",
       "removeError": "移除工具失敗",

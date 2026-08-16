@@ -69,7 +69,7 @@ describe('buildPathRegistry', () => {
     expect(registry['sys.desktop']).toBe('/mock/desktop')
   })
 
-  it('registers the Cherry Assistant product manifest inside bundled resources', () => {
+  it('registers the HuaTuo Assistant product manifest inside bundled resources', () => {
     const registry = buildPathRegistry()
 
     expect(registry['feature.agents.assistant.manifest.file']).toBe(
@@ -232,7 +232,7 @@ describe('pathRegistry.shouldAutoEnsure', () => {
       expect(shouldAutoEnsure('app.database.migrations')).toBe(false)
     })
 
-    it('returns false for the bundled Cherry Assistant product manifest', () => {
+    it('returns false for the bundled HuaTuo Assistant product manifest', () => {
       expect(shouldAutoEnsure('feature.agents.assistant.manifest.file')).toBe(false)
     })
   })

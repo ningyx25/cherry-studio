@@ -1446,8 +1446,8 @@
     },
     "deeply_thought": "Deeply thought ({{seconds}} seconds)",
     "default": {
-      "description": "Hello, I'm Cherry Assistant. You can start chatting with me right away",
-      "name": "Cherry Assistant",
+      "description": "Hello, I'm HuaTuo Assistant. You can start chatting with me right away",
+      "name": "HuaTuo Assistant",
       "topic": {
         "name": "Default Conversation"
       }
@@ -5910,10 +5910,10 @@
       },
       "feedback": {
         "agent": {
-          "description": "Chat with Cherry Assistant to share feedback.",
+          "description": "Chat with HuaTuo Assistant to share feedback.",
           "title": "Use Agent"
         },
-        "agent_error": "Unable to open Cherry Assistant for feedback. Please try again.",
+        "agent_error": "Unable to open HuaTuo Assistant for feedback. Please try again.",
         "button": "Feedback",
         "dialog": {
           "description": "Choose how to share feedback and help us make HuaTuo Studio better.",
@@ -6619,14 +6619,14 @@
       "notInstalled": "Not installed",
       "openBinariesDir": "Open binaries directory",
       "remove": "Remove tool",
-      "removeConfirmMessage": "Remove \"{{name}}\" from HuaTuo Studio? Its portable definition will be deleted. Cherry will also clean up an exact mise-managed copy when present. System and bundled executables are never changed.",
+      "removeConfirmMessage": "Remove \"{{name}}\" from HuaTuo Studio? Its portable definition will be deleted. HuaTuo will also clean up an exact mise-managed copy when present. System and bundled executables are never changed.",
       "removeConfirmTitle": "Remove Tool",
-      "removeDefinitionOnlyConfirmMessage": "Cherry could not safely clean up \"{{name}}\": {{details}} Removing only its definition will hide the card but leave its backend files installed. Continue?",
+      "removeDefinitionOnlyConfirmMessage": "HuaTuo could not safely clean up \"{{name}}\": {{details}} Removing only its definition will hide the card but leave its backend files installed. Continue?",
       "removeDefinitionOnlyConfirmTitle": "Remove Definition Only?",
       "removeDefinitionOnlyDependents": "Installed tools depend on it: {{dependents}}.",
       "removeError": "Failed to remove tool",
       "removeErrorHint": "The cleanup command failed. Copy the log below to troubleshoot or share it for help.",
-      "removeRuntimeConfirmMessage": "Remove \"{{name}}\" from HuaTuo Studio? Cherry will clean up only an exact mise-managed copy. System and bundled runtimes are never changed. Installed npm or pip tools may block removal if they depend on this runtime.",
+      "removeRuntimeConfirmMessage": "Remove \"{{name}}\" from HuaTuo Studio? HuaTuo will clean up only an exact mise-managed copy. System and bundled runtimes are never changed. Installed npm or pip tools may block removal if they depend on this runtime.",
       "runtimeDependency": "Runtime",
       "runtimeDependencyHint": "Runtime for npm/pip tools",
       "searchFailed": "Search failed, check logs",
@@ -6747,7 +6747,7 @@
       "common": {
         "menu": {
           "presentation_mode": {
-            "cherry": "Cherry",
+            "cherry": "HuaTuo",
             "native": "Native",
             "restart": {
               "content": "Changing the menu style requires restarting the app to take effect. Do you want to restart now?",

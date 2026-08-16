@@ -5910,10 +5910,10 @@
       },
       "feedback": {
         "agent": {
-          "description": "Общайтесь с помощником Cherry, чтобы поделиться отзывом.",
+          "description": "Общайтесь с помощником HuaTuo, чтобы поделиться отзывом.",
           "title": "Использовать агента"
         },
-        "agent_error": "Не удалось открыть Cherry Assistant для обратной связи. Пожалуйста, попробуйте снова.",
+        "agent_error": "Не удалось открыть HuaTuo Assistant для обратной связи. Пожалуйста, попробуйте снова.",
         "button": "Обратная связь",
         "dialog": {
           "description": "Выберите способ поделиться отзывом и помочь нам улучшить HuaTuo Studio.",
@@ -6621,7 +6621,7 @@
       "remove": "Remove tool",
       "removeConfirmMessage": "Are you sure you want to remove \"{{name}}\"? The binary will be deleted.",
       "removeConfirmTitle": "Remove Tool",
-      "removeDefinitionOnlyConfirmMessage": "Cherry не смогла безопасно удалить \"{{name}}\". Удаление только её определения скроет карту, но оставит установленными её файлы бэкенда. Продолжить?",
+      "removeDefinitionOnlyConfirmMessage": "HuaTuo не смогла безопасно удалить \"{{name}}\". Удаление только её определения скроет карту, но оставит установленными её файлы бэкенда. Продолжить?",
       "removeDefinitionOnlyConfirmTitle": "Удалить только определение?",
       "removeDefinitionOnlyDependents": "Установленные инструменты зависят от него: {{dependents}}.",
       "removeError": "Не удалось удалить инструмент",
