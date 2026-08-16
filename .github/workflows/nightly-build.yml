@@ -53,7 +53,9 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v6
         with:
-          ref: main
+          # 手动触发时构建所选分支（例如 feat/slim-agents-knowledge，含 HuaTuo Studio 品牌与最新界面）；
+          # 定时触发时构建默认分支 main
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || 'main' }}
 
       - name: Install Node.js
         uses: actions/setup-node@v6
