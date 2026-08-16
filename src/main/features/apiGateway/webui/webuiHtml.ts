@@ -1885,19 +1885,10 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
         });
         if (res.ok) {
           const data = await res.json();
-          if (data && data.data) {
+          if (data && data.data && data.data.length > 0) {
+            state.models = data.data;
             const dropdown = document.getElementById('model-select-el');
             dropdown.innerHTML = '';
-
-            const popOpt = document.createElement('option');
-            popOpt.value = 'pop-science';
-            popOpt.textContent = '🔬 科普AI (专科内置)';
-            dropdown.appendChild(popOpt);
-
-            const clinicOpt = document.createElement('option');
-            clinicOpt.value = 'clinic';
-            clinicOpt.textContent = '🩺 问诊AI (专科内置)';
-            dropdown.appendChild(clinicOpt);
 
             data.data.forEach(m => {
               const opt = document.createElement('option');
@@ -1905,9 +1896,20 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
               opt.textContent = \`🤖 \${m.id}\`;
               dropdown.appendChild(opt);
             });
+
+            if (!state.currentModel || !data.data.some(m => m.id === state.currentModel)) {
+              state.currentModel = data.data[0].id;
+              localStorage.setItem('huatuo_current_model', state.currentModel);
+            }
+            dropdown.value = state.currentModel;
+          } else {
+            const dropdown = document.getElementById('model-select-el');
+            dropdown.innerHTML = '<option value="">⚠️ 未检测到已启用的模型</option>';
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn('Failed to fetch models', e);
+      }
     }
 
     function initSettings() {
