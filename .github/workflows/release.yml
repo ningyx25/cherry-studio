@@ -119,11 +119,22 @@ jobs:
           RENDERER_VITE_AIHUBMIX_SECRET: ${{ secrets.RENDERER_VITE_AIHUBMIX_SECRET }}
           RENDERER_VITE_PPIO_APP_SECRET: ${{ secrets.RENDERER_VITE_PPIO_APP_SECRET }}
 
+      - name: Check Apple signing certificate
+        id: cert
+        if: matrix.os == 'macos-latest'
+        # secrets 上下文不能直接在 if: 条件里引用（会报 Unrecognized named-value），
+        # 所以先把 CSC_LINK 是否已配置探测成输出，再用 steps.cert.outputs 分流。
+        # 未配置 secrets 时绝不能把空的 CSC_LINK 传给构建：electron-builder 会把它当作
+        # 证书路径解析到项目根目录，报 "not a file" 导致 macOS 构建失败。
+        run: |
+          if [ -n "${{ secrets.CSC_LINK }}" ]; then
+            echo "has_cert=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_cert=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build Mac (signed)
-        # 仅在配置了 Apple 签名 secrets 时签名；未配置时走下面的无签名构建。
-        # 注意：空字符串 CSC_LINK 会被 electron-builder 当作"证书路径"解析到项目根目录，
-        # 报 "not a file" 导致 macOS 构建失败，所以未配置 secrets 时绝不能传入该变量。
-        if: matrix.os == 'macos-latest' && secrets.CSC_LINK != ''
+        if: matrix.os == 'macos-latest' && steps.cert.outputs.has_cert == 'true'
         run: |
           sudo -H pip install setuptools
           pnpm build:mac
@@ -142,7 +153,7 @@ jobs:
           RENDERER_VITE_PPIO_APP_SECRET: ${{ secrets.RENDERER_VITE_PPIO_APP_SECRET }}
 
       - name: Build Mac (unsigned)
-        if: matrix.os == 'macos-latest' && secrets.CSC_LINK == ''
+        if: matrix.os == 'macos-latest' && steps.cert.outputs.has_cert == 'false'
         run: |
           sudo -H pip install setuptools
           pnpm build:mac
