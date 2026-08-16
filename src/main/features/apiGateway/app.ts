@@ -16,11 +16,13 @@ import {
   renderDocsPage,
   resolveDocsLanguage
 } from './openapiDocs'
+import { agentSessionRoutes } from './routes/agentSessions'
 import { chatRoutes } from './routes/chat'
 import { geminiRoutes } from './routes/gemini'
 import { knowledgeRoutes } from './routes/knowledge'
 import { messagesRoutes } from './routes/messages'
 import { modelsRoutes } from './routes/models'
+import { questionnaireRoutes } from './routes/questionnaire'
 import { responsesRoutes } from './routes/responses'
 import { webuiRoutes } from './webui'
 
@@ -49,6 +51,8 @@ const v1Routes = new Elysia({ prefix: '/v1' })
   .use(responsesRoutes)
   .use(modelsRoutes)
   .use(knowledgeRoutes)
+  .use(questionnaireRoutes)
+  .use(agentSessionRoutes)
 
 /** Where the gateway listens; used to render an absolute OpenAPI server URL. */
 interface BuildAppOptions {
