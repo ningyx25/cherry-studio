@@ -7,6 +7,7 @@
  * with `session.agentId`.
  */
 
+import { cacheService } from '@data/CacheService'
 import {
   useInfiniteFlatItems,
   useInfiniteQuery,
@@ -310,6 +311,11 @@ export const useSessions = (
     async (id: string): Promise<boolean> => {
       try {
         await deleteTrigger({ params: { sessionId: id } })
+        // A deleted session must never be the entry-restore target; clear the
+        // remembered id so a stale value is not re-read on the next bare entry.
+        if (cacheService.getPersist('ui.agent.last_used_session_id') === id) {
+          cacheService.setPersist('ui.agent.last_used_session_id', null)
+        }
         closeConversationTabs(ALL_CONVERSATION_APP_IDS, [id])
         return true
       } catch (error) {
@@ -324,6 +330,12 @@ export const useSessions = (
     async (ids: string[]): Promise<DeleteAgentSessionsResult | null> => {
       try {
         const result = await deleteManyTrigger({ query: { ids: ids.join(',') } })
+        // Mirror deleteSession: a batch delete must not leave the entry-restore
+        // target pointing at a now-deleted row.
+        const lastUsedSessionId = cacheService.getPersist('ui.agent.last_used_session_id')
+        if (lastUsedSessionId && result.deletedIds.includes(lastUsedSessionId)) {
+          cacheService.setPersist('ui.agent.last_used_session_id', null)
+        }
         closeConversationTabs(ALL_CONVERSATION_APP_IDS, result.deletedIds)
         return result
       } catch (error) {

@@ -1,8 +1,10 @@
+import { cacheService } from '@data/CacheService'
 import type * as TabHooks from '@renderer/hooks/tab'
 import { toast } from '@renderer/services/toast'
 import { ALL_CONVERSATION_APP_IDS } from '@renderer/types/conversation'
 import { DataApiErrorFactory } from '@shared/data/api/errors'
 import type { AgentSessionEntity } from '@shared/data/api/schemas/agentSessions'
+import { MockCacheUtils } from '@test-mocks/renderer/CacheService'
 import { MockUseCacheUtils } from '@test-mocks/renderer/useCache'
 import {
   MockUseDataApiUtils,
@@ -278,6 +280,7 @@ describe('useActiveSession', () => {
 describe('useSessions', () => {
   beforeEach(() => {
     MockUseDataApiUtils.resetMocks()
+    MockCacheUtils.resetMocks()
     vi.clearAllMocks()
   })
 
@@ -665,6 +668,51 @@ describe('useSessions', () => {
     expect(deleteTrigger).toHaveBeenCalledWith({ query: { ids: 'session-a,session-b' } })
     expect(mockCloseConversationTabs).toHaveBeenCalledWith(ALL_CONVERSATION_APP_IDS, response.deletedIds)
     expect(deleted).toBe(response)
+  })
+
+  it('clears the remembered session id when the deleted session is the entry-restore target', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.agent.last_used_session_id', 'session-a']] })
+    const deleteTrigger = vi.fn().mockResolvedValue(undefined)
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/agent-sessions/:sessionId', deleteTrigger)
+
+    const { result } = renderHook(() => useSessions('agent-1'))
+    const deleted = await act(async () => result.current.deleteSession('session-a'))
+
+    expect(deleted).toBe(true)
+    expect(cacheService.getPersist('ui.agent.last_used_session_id')).toBeNull()
+  })
+
+  it('keeps the remembered session id when deleting an unrelated session', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.agent.last_used_session_id', 'session-a']] })
+    const deleteTrigger = vi.fn().mockResolvedValue(undefined)
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/agent-sessions/:sessionId', deleteTrigger)
+
+    const { result } = renderHook(() => useSessions('agent-1'))
+    await act(async () => result.current.deleteSession('session-other'))
+
+    expect(cacheService.getPersist('ui.agent.last_used_session_id')).toBe('session-a')
+  })
+
+  it('clears the remembered session id when a batch delete removes the entry-restore target', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.agent.last_used_session_id', 'session-b']] })
+    const deleteTrigger = vi.fn().mockResolvedValue({ deletedIds: ['session-a', 'session-b'], deletedCount: 2 })
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/agent-sessions', deleteTrigger)
+
+    const { result } = renderHook(() => useSessions('agent-1'))
+    await act(async () => result.current.deleteSessions(['session-a', 'session-b']))
+
+    expect(cacheService.getPersist('ui.agent.last_used_session_id')).toBeNull()
+  })
+
+  it('keeps the remembered session id when a batch delete misses the entry-restore target', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.agent.last_used_session_id', 'session-c']] })
+    const deleteTrigger = vi.fn().mockResolvedValue({ deletedIds: ['session-a', 'session-b'], deletedCount: 2 })
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/agent-sessions', deleteTrigger)
+
+    const { result } = renderHook(() => useSessions('agent-1'))
+    await act(async () => result.current.deleteSessions(['session-a', 'session-b']))
+
+    expect(cacheService.getPersist('ui.agent.last_used_session_id')).toBe('session-c')
   })
 
   it('returns the created session when refreshing the session list fails', async () => {

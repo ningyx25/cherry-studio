@@ -3,11 +3,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 const mocks = vi.hoisted(() => ({
   getPersist: vi.fn(),
+  setPersist: vi.fn(),
   get: vi.fn()
 }))
 
 vi.mock('@data/CacheService', () => ({
-  cacheService: { getPersist: mocks.getPersist }
+  cacheService: { getPersist: mocks.getPersist, setPersist: mocks.setPersist }
 }))
 
 vi.mock('@data/DataApiService', () => ({
@@ -39,6 +40,7 @@ describe('resolveChatEntryTopicId', () => {
 
     await expect(resolveChatEntryTopicId()).resolves.toBe('topic-latest')
     expect(mocks.get).toHaveBeenNthCalledWith(2, '/topics/latest')
+    expect(mocks.setPersist).toHaveBeenCalledWith('ui.chat.last_used_topic_id', null)
   })
 
   it('asks for the latest topic when nothing is remembered', async () => {
@@ -106,6 +108,7 @@ describe('resolvePresetAgentEntrySessionId', () => {
 
     await expect(resolvePresetAgentEntrySessionId('pop-science')).resolves.toBe('session-latest')
     expect(mocks.get).toHaveBeenNthCalledWith(2, '/agent-sessions/latest', { query: { agentId: 'pop-science' } })
+    expect(mocks.setPersist).toHaveBeenCalledWith('ui.agent.last_used_session_id', null)
   })
 
   it('returns null when the module has no sessions', async () => {

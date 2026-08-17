@@ -19,6 +19,9 @@ export interface ApiModel {
   object: 'model'
   created: number
   owned_by: string
+  name: string
+  provider_id?: string
+  provider_name?: string
 }
 
 export interface ApiModelsResponse {
@@ -76,11 +79,15 @@ async function listAllAvailableModels(providers?: Provider[]): Promise<Model[]> 
  */
 function transformModelToOpenAi(model: Model, provider?: Provider): ApiModel {
   const apiModelId = model.apiModelId ?? parseUniqueModelId(model.id).modelId
+  const providerName = provider?.name || model.ownedBy || model.providerId
   return {
     id: formatGatewayModelId(model.providerId, apiModelId),
     object: 'model',
     created: Math.floor(Date.now() / 1000),
-    owned_by: model.ownedBy || provider?.name || model.providerId
+    owned_by: providerName,
+    name: model.name || apiModelId,
+    provider_id: model.providerId,
+    provider_name: providerName
   }
 }
 

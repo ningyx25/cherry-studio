@@ -369,6 +369,11 @@ export function useTopicMutations() {
   const deleteTopic = useCallback(
     async (topicId: string): Promise<void> => {
       await deleteTrigger({ params: { id: topicId } })
+      // A deleted topic must never be the entry-restore target; clear the
+      // remembered id so a stale value is not re-read on the next bare entry.
+      if (cacheService.getPersist('ui.chat.last_used_topic_id') === topicId) {
+        cacheService.setPersist('ui.chat.last_used_topic_id', null)
+      }
       logger.info('Deleted topic', { id: topicId })
     },
     [deleteTrigger]
@@ -377,6 +382,12 @@ export function useTopicMutations() {
   const deleteTopics = useCallback(
     async (ids: string[]): Promise<DeleteTopicsResult> => {
       const result = await deleteManyTrigger({ query: { ids: ids.join(',') } })
+      // Mirror deleteTopic: a batch delete must not leave the entry-restore
+      // target pointing at a now-deleted row.
+      const lastUsedTopicId = cacheService.getPersist('ui.chat.last_used_topic_id')
+      if (lastUsedTopicId && result.deletedIds.includes(lastUsedTopicId)) {
+        cacheService.setPersist('ui.chat.last_used_topic_id', null)
+      }
       logger.info('Deleted topics', { count: result.deletedCount })
       return result
     },
@@ -386,6 +397,11 @@ export function useTopicMutations() {
   const deleteTopicsByAssistantId = useCallback(
     async (assistantId: string): Promise<DeleteTopicsResult> => {
       const result = await deleteByAssistantTrigger({ params: { assistantId } })
+      // Deleting every topic of an assistant invalidates any remembered topic id.
+      const lastUsedTopicId = cacheService.getPersist('ui.chat.last_used_topic_id')
+      if (lastUsedTopicId && result.deletedIds.includes(lastUsedTopicId)) {
+        cacheService.setPersist('ui.chat.last_used_topic_id', null)
+      }
       logger.info('Deleted assistant topics', { assistantId, count: result.deletedCount })
       return result
     },

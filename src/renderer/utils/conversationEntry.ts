@@ -28,6 +28,9 @@ export async function resolveChatEntryTopicId(): Promise<string | null> {
       return lastUsedTopicId
     } catch (error) {
       if (!isDataApiNotFoundError(error)) throw error
+      // Stale cached id points at a deleted row — clear it so the next entry
+      // does not re-attempt the same missing topic.
+      cacheService.setPersist('ui.chat.last_used_topic_id', null)
     }
   }
 
@@ -49,6 +52,9 @@ export async function resolvePresetAgentEntrySessionId(agentId: PresetAgentId): 
       if (session.agentId === agentId) return lastUsedSessionId
     } catch (error) {
       if (!isDataApiNotFoundError(error)) throw error
+      // Stale cached id points at a deleted session — clear it so the next entry
+      // does not re-attempt the same missing session.
+      cacheService.setPersist('ui.agent.last_used_session_id', null)
     }
   }
 

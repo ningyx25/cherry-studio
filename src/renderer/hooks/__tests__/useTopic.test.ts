@@ -1,5 +1,7 @@
+import { cacheService } from '@data/CacheService'
 import { dataApiService } from '@data/DataApiService'
 import type { Topic } from '@renderer/types/topic'
+import { MockCacheUtils } from '@test-mocks/renderer/CacheService'
 import { MockDataApiUtils } from '@test-mocks/renderer/DataApiService'
 import {
   MockUseDataApiUtils,
@@ -176,6 +178,7 @@ describe('useTopicMutations', () => {
   beforeEach(() => {
     MockDataApiUtils.resetMocks()
     MockUseDataApiUtils.resetMocks()
+    MockCacheUtils.resetMocks()
     vi.clearAllMocks()
   })
 
@@ -211,6 +214,61 @@ describe('useTopicMutations', () => {
 
     expect(deleteTrigger).toHaveBeenCalledWith({ params: { assistantId: 'assistant-a' } })
     expect(deleted).toBe(response)
+  })
+
+  it('clears the remembered topic id when the deleted topic is the entry-restore target', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.chat.last_used_topic_id', 'topic-a']] })
+    const deleteTrigger = vi.fn().mockResolvedValue(undefined)
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/topics/:id', deleteTrigger)
+
+    const { result } = renderHook(() => useTopicMutations())
+    await act(async () => result.current.deleteTopic('topic-a'))
+
+    expect(cacheService.getPersist('ui.chat.last_used_topic_id')).toBeNull()
+  })
+
+  it('keeps the remembered topic id when deleting an unrelated topic', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.chat.last_used_topic_id', 'topic-a']] })
+    const deleteTrigger = vi.fn().mockResolvedValue(undefined)
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/topics/:id', deleteTrigger)
+
+    const { result } = renderHook(() => useTopicMutations())
+    await act(async () => result.current.deleteTopic('topic-other'))
+
+    expect(cacheService.getPersist('ui.chat.last_used_topic_id')).toBe('topic-a')
+  })
+
+  it('clears the remembered topic id when a batch delete removes the entry-restore target', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.chat.last_used_topic_id', 'topic-b']] })
+    const deleteTrigger = vi.fn().mockResolvedValue({ deletedIds: ['topic-a', 'topic-b'], deletedCount: 2 })
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/topics', deleteTrigger)
+
+    const { result } = renderHook(() => useTopicMutations())
+    await act(async () => result.current.deleteTopics(['topic-a', 'topic-b']))
+
+    expect(cacheService.getPersist('ui.chat.last_used_topic_id')).toBeNull()
+  })
+
+  it('clears the remembered topic id when deleting an assistant wipes the entry-restore target', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.chat.last_used_topic_id', 'topic-b']] })
+    const deleteTrigger = vi.fn().mockResolvedValue({ deletedIds: ['topic-a', 'topic-b'], deletedCount: 2 })
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/assistants/:assistantId/topics', deleteTrigger)
+
+    const { result } = renderHook(() => useTopicMutations())
+    await act(async () => result.current.deleteTopicsByAssistantId('assistant-a'))
+
+    expect(cacheService.getPersist('ui.chat.last_used_topic_id')).toBeNull()
+  })
+
+  it('keeps the remembered topic id when an assistant delete misses the entry-restore target', async () => {
+    MockCacheUtils.setInitialState({ persist: [['ui.chat.last_used_topic_id', 'topic-c']] })
+    const deleteTrigger = vi.fn().mockResolvedValue({ deletedIds: ['topic-a', 'topic-b'], deletedCount: 2 })
+    MockUseDataApiUtils.mockMutationWithTrigger('DELETE', '/assistants/:assistantId/topics', deleteTrigger)
+
+    const { result } = renderHook(() => useTopicMutations())
+    await act(async () => result.current.deleteTopicsByAssistantId('assistant-a'))
+
+    expect(cacheService.getPersist('ui.chat.last_used_topic_id')).toBe('topic-c')
   })
 
   it('exposes selected-topic delete loading through isDeleting', () => {
