@@ -61,6 +61,14 @@ describe('composer tool visibility', () => {
     expect(tools.map((tool) => tool.key)).toEqual(expect.arrayContaining(['knowledge_base']))
   })
 
+  it('offers voice input in both chat and agent session scopes', () => {
+    const model = { id: 'text-only', providerId: 'provider-1', name: 'Text only' } as any
+
+    expect(getToolsForScope(TopicType.Chat, { model }).map((tool) => tool.key)).toContain('voice_input')
+    expect(getToolsForScope(TopicType.Session, { model }).map((tool) => tool.key)).toContain('voice_input')
+    expect(getToolsForScope('quick-assistant', { model }).map((tool) => tool.key)).not.toContain('voice_input')
+  })
+
   it('shows MCP status in chat and agent session scopes only', () => {
     const model = {
       id: 'text-only',

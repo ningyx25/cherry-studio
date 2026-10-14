@@ -76,7 +76,7 @@ export const VOICE_INPUT_TOOLBAR_MANIFEST: ComposerToolbarManifestDefinition = {
     icon: <Mic />
   },
   label: (t) => t('chat.input.voice_input.label'),
-  visibleInScopes: [TopicType.Chat]
+  visibleInScopes: [TopicType.Chat, TopicType.Session]
 }
 
 const COMPOSER_TOOLBAR_MANIFESTS: ComposerToolbarManifestDefinition[] = [
