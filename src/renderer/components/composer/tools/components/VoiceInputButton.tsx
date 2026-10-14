@@ -6,6 +6,7 @@ import type { QuickPanelInputAdapter } from '@renderer/components/QuickPanel'
 import { useVoiceInput } from '@renderer/hooks/useVoiceInput'
 import { toast } from '@renderer/services/toast'
 import { parseUniqueModelId, type UniqueModelId } from '@shared/data/types/model'
+import { useNavigate } from '@tanstack/react-router'
 import type { Dispatch, FC, SetStateAction } from 'react'
 import { memo, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,6 +18,7 @@ interface Props {
 
 const useVoiceInputToolController = ({ launcher, onTextChange }: Props) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [modelIdPref] = usePreference('feature.voice_input.model_id')
   const { providerId, modelId } = (() => {
     if (!modelIdPref) return { providerId: '', modelId: '' }
@@ -60,19 +62,22 @@ const useVoiceInputToolController = ({ launcher, onTextChange }: Props) => {
   })
 
   const noModel = !providerId || !modelId
-  const disabled = noModel || !voice.supported
-  const disabledReason = noModel
-    ? t('chat.input.voice_input.no_model')
-    : !voice.supported
-      ? t('chat.input.voice_input.not_supported')
-      : undefined
+  // Recording without a microphone is a hard stop; a missing transcription model is
+  // recoverable, so the button stays clickable and routes to the settings selector.
+  const disabled = !voice.supported
+  const disabledReason = !voice.supported ? t('chat.input.voice_input.not_supported') : undefined
 
   const onClick = useCallback(
     (inputAdapter?: QuickPanelInputAdapter) => {
+      if (noModel) {
+        toast.warning(t('chat.input.voice_input.no_model'))
+        void navigate({ to: '/settings/model' })
+        return
+      }
       if (inputAdapter) inputAdapterRef.current = inputAdapter
       voice.toggle()
     },
-    [voice]
+    [navigate, noModel, t, voice]
   )
 
   const label = voice.isRecording
@@ -80,7 +85,7 @@ const useVoiceInputToolController = ({ launcher, onTextChange }: Props) => {
     : voice.isTranscribing
       ? t('chat.input.voice_input.transcribing')
       : t('chat.input.voice_input.label')
-  const tooltip = disabledReason ?? label
+  const tooltip = disabledReason ?? (noModel ? t('chat.input.voice_input.no_model') : label)
 
   useEffect(() => {
     return launcher.registerLaunchers([
@@ -92,6 +97,9 @@ const useVoiceInputToolController = ({ launcher, onTextChange }: Props) => {
         searchAliases: getQuickPanelSearchAliases(t, 'chat.input.voice_input.label', ['voice', 'mic']),
         tooltip,
         active: voice.isRecording,
+        // Voice input is served by its own transcription model, not the composer's
+        // chat model, so it stays usable before a chat model is selected.
+        availableWithoutModel: true,
         disabled,
         disabledReason,
         action: ({ inputAdapter }) => onClick(inputAdapter ?? undefined)

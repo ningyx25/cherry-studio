@@ -45,6 +45,8 @@ export interface ComposerToolLauncher {
   active?: boolean
   showInActiveControls?: boolean
   disabled?: boolean
+  /** Allows model-independent launchers (e.g. voice input's own transcription model) to stay usable before a chat model is configured. */
+  availableWithoutModel?: boolean
   hidden?: boolean
   /**
    * QuickPanel symbol of the panel this launcher's `action` opens, when it differs

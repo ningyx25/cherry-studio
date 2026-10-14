@@ -187,6 +187,7 @@ export const ComposerToolbarShortcuts = ({
         tooltip: launcher.tooltip,
         haspopup: opensPanel ? 'menu' : kind === 'dialog' ? 'dialog' : undefined,
         toggle: kind === 'command',
+        availableWithoutModel: launcher.availableWithoutModel,
         resolved: true,
         select: opensPanel
           ? () =>

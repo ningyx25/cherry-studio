@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/vitest'
 
 import type { ToolLauncherApi } from '@renderer/components/composer/tools/types'
 import type { UseVoiceInputOptions, UseVoiceInputResult } from '@renderer/hooks/useVoiceInput'
+import { toast } from '@renderer/services/toast'
 import { MockUsePreferenceUtils } from '@test-mocks/renderer/usePreference'
 import { render, waitFor } from '@testing-library/react'
 import type * as ReactI18next from 'react-i18next'
@@ -18,7 +19,8 @@ const mocks = vi.hoisted(() => ({
     stop: vi.fn(),
     toggle: vi.fn()
   } as UseVoiceInputResult,
-  lastOptions: undefined as UseVoiceInputOptions | undefined
+  lastOptions: undefined as UseVoiceInputOptions | undefined,
+  navigate: vi.fn()
 }))
 
 const launcherApi: ToolLauncherApi = { registerLaunchers: vi.fn(() => vi.fn()) }
@@ -28,6 +30,8 @@ vi.mock('react-i18next', async (importOriginal) => {
   return { ...actual, useTranslation: () => ({ t: (key: string) => key }) }
 })
 
+vi.mock('@tanstack/react-router', () => ({ useNavigate: () => mocks.navigate }))
+
 vi.mock('@renderer/hooks/useVoiceInput', () => ({
   useVoiceInput: (options: UseVoiceInputOptions) => {
     mocks.lastOptions = options
@@ -35,7 +39,7 @@ vi.mock('@renderer/hooks/useVoiceInput', () => ({
   }
 }))
 
-vi.mock('@renderer/services/toast', () => ({ toast: { error: vi.fn() } }))
+vi.mock('@renderer/services/toast', () => ({ toast: { error: vi.fn(), warning: vi.fn() } }))
 
 const renderRuntime = (onTextChange = vi.fn()) => {
   const utils = render(<VoiceInputToolRuntime launcher={launcherApi} onTextChange={onTextChange} />)
@@ -62,18 +66,30 @@ describe('VoiceInputToolRuntime', () => {
     MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', null)
   })
 
-  it('disables the launcher with a reason when no model is configured', async () => {
+  it('stays usable without a chat model and hints the missing transcription model', async () => {
     renderRuntime()
     await waitFor(() => expect(launcherApi.registerLaunchers).toHaveBeenCalled())
     expect(lastLauncher()).toMatchObject({
       id: 'voice-input',
       sources: ['popover'],
-      disabled: true,
-      disabledReason: 'chat.input.voice_input.no_model'
+      availableWithoutModel: true,
+      disabled: false,
+      tooltip: 'chat.input.voice_input.no_model'
     })
   })
 
-  it('enables the launcher once a model is configured', async () => {
+  it('routes to the model settings when clicked with no transcription model configured', async () => {
+    renderRuntime()
+    await waitFor(() => expect(launcherApi.registerLaunchers).toHaveBeenCalled())
+
+    lastLauncher().action?.({ inputAdapter: undefined, quickPanel: {} as never, source: 'popover' })
+
+    expect(toast.warning).toHaveBeenCalledWith('chat.input.voice_input.no_model')
+    expect(mocks.navigate).toHaveBeenCalledWith({ to: '/settings/model' })
+    expect(mocks.voiceInput.toggle).not.toHaveBeenCalled()
+  })
+
+  it('enables recording once a model is configured', async () => {
     MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
     renderRuntime()
     await waitFor(() => expect(launcherApi.registerLaunchers).toHaveBeenCalled())
