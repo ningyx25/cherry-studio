@@ -1,5 +1,6 @@
 import { Badge, Button } from '@cherrystudio/ui'
 import type { QuestionnaireReport, QuestionResult } from '@shared/questionnaire/types'
+import { useTranslation } from 'react-i18next'
 
 export function QuestionnaireReportView({
   report,
@@ -10,23 +11,23 @@ export function QuestionnaireReportView({
   onSendToClinic: () => void
   onBack: () => void
 }) {
-  const patientRef = report.patientInfo?.length ? `患者：${report.patientInfo.map((p) => p.value).join('，')}` : ''
+  const { t } = useTranslation()
 
   return (
     <div className="flex h-full flex-col overflow-auto p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-semibold text-lg">问卷报告</h2>
+        <h2 className="font-semibold text-lg">{t('questionnaire.report.title')}</h2>
         <div className="flex gap-2">
           <Button variant="outline" onClick={onBack}>
-            返回
+            {t('common.back')}
           </Button>
-          <Button onClick={onSendToClinic}>发送到问诊AI</Button>
+          <Button onClick={onSendToClinic}>{t('questionnaire.report.send_to_clinic')}</Button>
         </div>
       </div>
 
       {report.patientInfo && report.patientInfo.length > 0 && (
         <div className="mb-4 rounded-lg border border-border bg-card p-4">
-          <div className="mb-2 font-medium">患者基本信息</div>
+          <div className="mb-2 font-medium">{t('questionnaire.report.patient_info')}</div>
           <div className="flex flex-wrap gap-x-6 gap-y-1">
             {report.patientInfo.map((p) => (
               <div key={p.label} className="text-sm">
@@ -43,10 +44,11 @@ export function QuestionnaireReportView({
           <div className="flex items-center justify-between">
             <div className="font-medium">{qr.title}</div>
             {qr.scored && qr.totalScore !== undefined && (
-              <div className="text-muted-foreground text-sm">得分 {qr.totalScore}</div>
+              <div className="text-muted-foreground text-sm">
+                {t('questionnaire.report.score', { score: qr.totalScore })}
+              </div>
             )}
           </div>
-          {patientRef && <div className="mt-0.5 text-muted-foreground text-xs">{patientRef}</div>}
           {qr.level && (
             <div className="mt-2">
               <Badge variant="secondary">{qr.level}</Badge>
@@ -73,7 +75,7 @@ export function QuestionnaireReportView({
           )}
 
           <div className="mt-3 border-border border-t pt-3">
-            <div className="mb-2 font-medium text-sm">详细作答</div>
+            <div className="mb-2 font-medium text-sm">{t('questionnaire.report.detail')}</div>
             <div className="flex flex-col gap-1.5">
               {(report.questions[qr.questionnaireId] ?? []).map((q) => (
                 <QuestionAnswerRow key={q.questionId} q={q} />
@@ -85,7 +87,7 @@ export function QuestionnaireReportView({
 
       {report.riskTags.length > 0 && (
         <div className="mb-4 rounded-lg border border-border bg-card p-4">
-          <div className="mb-2 font-medium">危险因素</div>
+          <div className="mb-2 font-medium">{t('questionnaire.report.risk_factors')}</div>
           <div className="flex flex-wrap gap-1.5">
             {report.riskTags.map((tag) => (
               <span
@@ -99,7 +101,7 @@ export function QuestionnaireReportView({
       )}
 
       <div className="rounded-lg border border-border bg-card p-4">
-        <div className="mb-2 font-medium">综合摘要（发送给问诊AI）</div>
+        <div className="mb-2 font-medium">{t('questionnaire.report.summary_title')}</div>
         <pre className="whitespace-pre-wrap font-sans text-muted-foreground text-sm">{report.summary}</pre>
       </div>
     </div>
@@ -108,6 +110,7 @@ export function QuestionnaireReportView({
 
 /** 单题作答展示：matrix 用 subAnswers 逐行，其它用 optionLabel/answer + unit。 */
 function QuestionAnswerRow({ q }: { q: QuestionResult }) {
+  const { t } = useTranslation()
   if (q.subAnswers?.length) {
     return (
       <div className="text-sm">
@@ -126,12 +129,12 @@ function QuestionAnswerRow({ q }: { q: QuestionResult }) {
     q.optionLabel !== undefined
       ? q.optionLabel
       : q.answer === undefined || q.answer === null || q.answer === ''
-        ? '（未填写）'
+        ? t('questionnaire.report.unanswered')
         : `${String(q.answer)}${q.unit ?? ''}`
   return (
     <div className="flex items-baseline gap-2 text-sm">
       <span className="font-medium">{q.questionText}</span>
-      <span className="text-muted-foreground">回答：</span>
+      <span className="text-muted-foreground">{t('questionnaire.report.answer_prefix')}</span>
       <span>{answerText}</span>
     </div>
   )

@@ -5301,6 +5301,53 @@
     "zhinao": "360 智脑",
     "zhipu": "智谱开放平台"
   },
+  "questionnaire": {
+    "branch_continue": "继续",
+    "branch_skip": "跳过",
+    "branch_title": "继续作答子问卷？",
+    "complete": "完成并生成报告",
+    "history": {
+      "clear_all": "清空全部历史",
+      "clear_confirm": "清空",
+      "clear_partial_failed": "部分历史记录删除失败（{{count}} 条）",
+      "confirm_clear_desc": "将删除全部 {{count}} 条历史记录，此操作不可恢复。",
+      "confirm_delete_desc": "将删除该条历史记录，此操作不可恢复。",
+      "confirm_delete_title": "确认删除",
+      "delete_failed": "删除历史记录失败",
+      "empty": "暂无历史记录",
+      "re_answer": "重新作答",
+      "status_completed": "已完成",
+      "status_in_progress": "进行中",
+      "title": "历史记录",
+      "unfilled": "未填写",
+      "view_report": "查看报告"
+    },
+    "input_placeholder": "请输入",
+    "next_question": "下一题",
+    "next_section": "进入下一部分",
+    "prev_question": "上一题",
+    "progress": "第 {{current}}/{{total}} 题",
+    "report": {
+      "answer_prefix": "回答：",
+      "detail": "详细作答",
+      "patient_info": "患者基本信息",
+      "risk_factors": "危险因素",
+      "score": "得分 {{score}}",
+      "send_to_clinic": "发送到问诊AI",
+      "summary_title": "综合摘要（发送给问诊AI）",
+      "title": "问卷报告",
+      "unanswered": "（未填写）"
+    },
+    "report_tool": {
+      "add": "添加问卷报告",
+      "description": "从历史记录选择一份问卷报告",
+      "empty": "暂无问卷报告",
+      "filter_keywords": "问卷 报告"
+    },
+    "section_done": "本问卷已完成。",
+    "start": "开始作答",
+    "unit_placeholder": "单位：{{unit}}"
+  },
   "quickAssistant": {
     "alert": {
       "google_login": "提示：如遇到Google登录提示\"不受信任的浏览器\"，请先在小程序列表中的Google小程序中完成账号登录，再在其它小程序使用Google登录"

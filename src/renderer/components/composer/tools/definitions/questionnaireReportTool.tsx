@@ -7,7 +7,7 @@ import { defineTool, TopicType } from '@renderer/components/composer/tools/types
  */
 const questionnaireReportTool = defineTool({
   key: 'questionnaire_report',
-  label: '添加问卷报告',
+  label: (t) => t('questionnaire.report_tool.add'),
   visibleInScopes: [TopicType.Session],
   condition: (ctx) => ctx.session?.agentId === 'clinic',
   composer: {

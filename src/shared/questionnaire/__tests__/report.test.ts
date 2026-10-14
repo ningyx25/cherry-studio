@@ -144,4 +144,32 @@ describe('buildQuestionnaireReport', () => {
     ])
     expect(report.summary).toContain('入睡困难：1-2次')
   })
+
+  it('renders multi_choice selected subItems (excluding noneSubItem) in results and summary', () => {
+    const multiDef: QuestionnaireDefinition = {
+      questionnaireId: 'MC',
+      title: '多选问卷',
+      description: 'd',
+      questions: [
+        {
+          id: 'Q5',
+          text: '干燥部位',
+          type: 'multi_choice',
+          subItems: ['鼻子', '嘴巴', '无'],
+          noneSubItem: '无'
+        }
+      ],
+      scoring: {
+        expression: { kind: 'count', question: 'Q5' }
+      }
+    }
+    const report = buildQuestionnaireReport({
+      flowQuestionnaireId: 'MC',
+      completedAt: '2026-08-10T00:00:00Z',
+      definitions: [multiDef],
+      answers: { MC: { Q5: ['鼻子', '嘴巴'] } }
+    })
+    expect(report.questions['MC'][0].answer).toEqual(['鼻子', '嘴巴'])
+    expect(report.summary).toContain('干燥部位：回答 鼻子、嘴巴')
+  })
 })

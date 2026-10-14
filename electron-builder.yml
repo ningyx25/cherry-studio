@@ -72,9 +72,13 @@ files:
   - "!**/*.{h,iobj,ipdb,tlog,recipe,vcxproj,vcxproj.filters,Makefile,*.Makefile}" # filter .node build files
   - "resources/**/*" # include all files in resources, and unpack them from asar for runtime access
   - "!resources/devtools/**" # dev-only extensions are loaded from source in development
+  - "!resources/questionnaire/*.json" # v1 source material kept for reference; runtime only reads resources/questionnaire/definitions
+  - "!resources/questionnaire/*.md"
 asarUnpack:
   - resources/**
   - "!resources/devtools/**"
+  - "!resources/questionnaire/*.json"
+  - "!resources/questionnaire/*.md"
   - "**/*.{metal,exp,lib}"
   - "node_modules/@img/sharp-*/**"
   - "node_modules/@anthropic-ai/claude-agent-sdk-*/**" # native CLI binary must live on disk to be spawned

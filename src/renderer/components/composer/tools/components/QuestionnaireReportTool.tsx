@@ -6,6 +6,7 @@ import type { ToolRenderContext } from '@renderer/components/composer/tools/type
 import type { QuickPanelListItem } from '@renderer/components/QuickPanel'
 import { useQuickPanel } from '@renderer/components/QuickPanel'
 import { toast } from '@renderer/services/toast'
+import { patientLabel } from '@renderer/utils/questionnaire'
 import type { QuestionnaireSession } from '@shared/data/api/schemas/questionnaires'
 import { ClipboardList } from 'lucide-react'
 import { useCallback, useEffect, useMemo } from 'react'
@@ -13,16 +14,6 @@ import { useCallback, useEffect, useMemo } from 'react'
 export const QUESTIONNAIRE_REPORT_LAUNCHER_ID = 'questionnaire-report'
 
 type QuestionnaireReportToolContext = ToolRenderContext<readonly [], readonly []>
-
-/** 患者信息行：优先 report.patientInfo，回退 answers（与历史列表一致）。 */
-export function patientLabel(s: QuestionnaireSession): string {
-  const info = s.report?.patientInfo
-  if (info?.length) {
-    const get = (label: string) => info.find((p) => p.label === label)?.value
-    return [get('姓名'), get('年龄'), get('性别')].filter(Boolean).join(' · ') || ''
-  }
-  return ''
-}
 
 /** 报告标题：优先已答问卷标题，回退 flowQuestionnaireId。 */
 export function reportTitle(s: QuestionnaireSession): string {
@@ -50,7 +41,7 @@ export function QuestionnaireReportToolRuntime({ context }: { context: Questionn
       return [
         {
           id: 'questionnaire-report:empty',
-          label: '暂无问卷报告',
+          label: t('questionnaire.report_tool.empty'),
           icon: <ClipboardList />,
           disabled: true
         }
@@ -66,8 +57,8 @@ export function QuestionnaireReportToolRuntime({ context }: { context: Questionn
         description: patient
           ? `${patient} · ${new Date(s.updatedAt).toLocaleString()}`
           : new Date(s.updatedAt).toLocaleString(),
-        filterText: `${title} ${patient} 问卷 报告`,
-        searchAliases: ['问卷', '报告', 'questionnaire', 'report'],
+        filterText: `${title} ${patient} ${t('questionnaire.report_tool.filter_keywords')}`,
+        searchAliases: t('questionnaire.report_tool.filter_keywords').split(' ').concat(['questionnaire', 'report']),
         icon: <ClipboardList />,
         action: ({ inputAdapter }) => {
           if (!inputAdapter) return
@@ -109,7 +100,7 @@ export function QuestionnaireReportToolRuntime({ context }: { context: Questionn
   const openQuestionnaireReportPanel = useCallback<NonNullable<ComposerToolLauncher['action']>>(
     ({ parentPanel, queryAnchor, quickPanel, triggerInfo }) => {
       quickPanel.open({
-        title: '添加问卷报告',
+        title: t('questionnaire.report_tool.add'),
         list: panelItems,
         symbol: ComposerPanelSymbol.QuestionnaireReport,
         parentPanel,
@@ -117,7 +108,7 @@ export function QuestionnaireReportToolRuntime({ context }: { context: Questionn
         triggerInfo: triggerInfo ?? { type: 'button' }
       })
     },
-    [panelItems]
+    [panelItems, t]
   )
 
   useEffect(() => {
@@ -127,14 +118,14 @@ export function QuestionnaireReportToolRuntime({ context }: { context: Questionn
         kind: 'panel',
         sources: ['root-panel', 'popover'],
         order: 75,
-        label: '添加问卷报告',
-        description: '从历史记录选择一份问卷报告',
+        label: t('questionnaire.report_tool.add'),
+        description: t('questionnaire.report_tool.description'),
         icon: <ClipboardList />,
         panelSymbol: ComposerPanelSymbol.QuestionnaireReport,
         action: openQuestionnaireReportPanel
       }
     ])
-  }, [launcher, openQuestionnaireReportPanel])
+  }, [launcher, openQuestionnaireReportPanel, t])
 
   return null
 }

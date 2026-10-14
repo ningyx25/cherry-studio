@@ -5301,6 +5301,53 @@
     "zhinao": "360 Zhinao",
     "zhipu": "Zhipu AI"
   },
+  "questionnaire": {
+    "branch_continue": "[to be translated]:Continue",
+    "branch_skip": "[to be translated]:Skip",
+    "branch_title": "[to be translated]:Continue with the follow-up questionnaire?",
+    "complete": "[to be translated]:Finish & Generate Report",
+    "history": {
+      "clear_all": "[to be translated]:Clear all history",
+      "clear_confirm": "[to be translated]:Clear",
+      "clear_partial_failed": "[to be translated]:Failed to delete {{count}} records",
+      "confirm_clear_desc": "[to be translated]:All {{count}} records will be deleted. This action cannot be undone.",
+      "confirm_delete_desc": "[to be translated]:This record will be deleted. This action cannot be undone.",
+      "confirm_delete_title": "[to be translated]:Confirm deletion",
+      "delete_failed": "[to be translated]:Failed to delete the record",
+      "empty": "[to be translated]:No records yet",
+      "re_answer": "[to be translated]:Re-answer",
+      "status_completed": "[to be translated]:Completed",
+      "status_in_progress": "[to be translated]:In progress",
+      "title": "[to be translated]:History",
+      "unfilled": "[to be translated]:Not filled",
+      "view_report": "[to be translated]:View report"
+    },
+    "input_placeholder": "[to be translated]:Enter your answer",
+    "next_question": "[to be translated]:Next",
+    "next_section": "[to be translated]:Continue to Next Section",
+    "prev_question": "[to be translated]:Previous",
+    "progress": "[to be translated]:Question {{current}} of {{total}}",
+    "report": {
+      "answer_prefix": "[to be translated]:Answer: ",
+      "detail": "[to be translated]:Detailed Answers",
+      "patient_info": "[to be translated]:Patient Information",
+      "risk_factors": "[to be translated]:Risk Factors",
+      "score": "[to be translated]:Score {{score}}",
+      "send_to_clinic": "[to be translated]:Send to Clinic AI",
+      "summary_title": "[to be translated]:Summary (sent to Clinic AI)",
+      "title": "[to be translated]:Questionnaire Report",
+      "unanswered": "[to be translated]:(not answered)"
+    },
+    "report_tool": {
+      "add": "[to be translated]:Add questionnaire report",
+      "description": "[to be translated]:Select a questionnaire report from history",
+      "empty": "[to be translated]:No questionnaire reports",
+      "filter_keywords": "[to be translated]:questionnaire report"
+    },
+    "section_done": "[to be translated]:This questionnaire is complete.",
+    "start": "[to be translated]:Start",
+    "unit_placeholder": "[to be translated]:Unit: {{unit}}"
+  },
   "quickAssistant": {
     "alert": {
       "google_login": "Hinweis: Falls Sie beim Google-Login die Meldung \"Nicht vertrauenswürdiger Browser\" erhalten, melden Sie sich bitte zuerst in der Google Mini-App in der Mini-App-Liste an, bevor Sie Google-Login in anderen Mini-Apps verwenden"
@@ -8500,6 +8547,7 @@
     "openclaw": "OpenClaw",
     "paintings": "Zeichnen",
     "pop_science": "[to be translated]:Pop-Science AI",
+    "questionnaire": "[to be translated]:Questionnaire",
     "settings": "Einstellungen",
     "translate": "Übersetzen",
     "work": "Arbeit"

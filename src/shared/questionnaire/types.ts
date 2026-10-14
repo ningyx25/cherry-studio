@@ -6,6 +6,7 @@
 /** 计分表达式：声明式，无字符串公式，避免解释器。 */
 export type ScoreExpr =
   | { kind: 'score'; question: string } // 取该题所选选项的 score / convertedScore
+  | { kind: 'count'; question: string } // multi_choice：选中 subItem 数量（noneSubItem 不计入）
   | { kind: 'sum'; items: ScoreExpr[] }
   | { kind: 'max'; items: ScoreExpr[] }
   | { kind: 'mul'; expr: ScoreExpr; factor: number }
@@ -38,7 +39,14 @@ export type QuestionnaireQuestion =
       patientExplanation?: string
       mutuallyExclusiveWith?: string
     }
-  | { id: string; text: string; type: 'multi_choice'; subItems: string[]; options: QuestionnaireOption[] }
+  | {
+      id: string
+      text: string
+      type: 'multi_choice'
+      subItems: string[]
+      /** 代表「均无」的 subItem：单独选中时计 0 项，且与其余项互斥 */
+      noneSubItem?: string
+    }
   | {
       id: string
       text: string
@@ -103,7 +111,7 @@ export interface QuestionnaireDefinition {
 
 // ── 答案与报告类型 ──
 
-/** 单题答案：single → value；multi → value；matrix → Record<subId, value>；numeric/time → string */
+/** 单题答案：single → value；multi → 选中 subItem 数组；matrix → Record<subId, value>；numeric/time → string */
 export type QuestionAnswer = string | string[] | number | Record<string, string | number>
 
 export type QuestionnaireAnswers = Record<string, Record<string, QuestionAnswer>>

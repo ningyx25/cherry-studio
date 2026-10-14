@@ -3,7 +3,7 @@ import type { QuestionAnswer, QuestionnaireDefinition, ScoreExpr } from './types
 /** 单份问卷的作答：questionId → 答案（matrix 题为 Record<subId, value>）。 */
 export type QuestionAnswers = Record<string, QuestionAnswer>
 
-/** 取某题某选项的得分：优先 convertedScore，其次 score，缺省 0。 */
+/** 取某题某选项的得分：优先 convertedScore，其次 score，缺省 0。multi_choice 无选项分，走 count 表达式。 */
 function optionScore(def: QuestionnaireDefinition, questionId: string, value: QuestionAnswer | undefined): number {
   if (value === undefined || value === null) return 0
   // 子题 id（如 Q5a）的选项挂在父 matrix 题上
@@ -11,12 +11,13 @@ function optionScore(def: QuestionnaireDefinition, questionId: string, value: Qu
   const q = parent ?? def.questions.find((x) => x.id === questionId)
   if (!q) return 0
   if (q.type === 'numeric' || q.type === 'time' || q.type === 'text') return Number(value) || 0
+  if (q.type === 'multi_choice') return 0
   if (q.type === 'matrix') {
     if (typeof value !== 'string' && typeof value !== 'number') return 0
     const opt = q.options.find((o) => o.value === value)
     return opt?.convertedScore ?? opt?.score ?? 0
   }
-  const opt = q.options?.find((o) => o.value === value)
+  const opt = q.options.find((o) => o.value === value)
   return opt?.convertedScore ?? opt?.score ?? 0
 }
 
@@ -51,6 +52,12 @@ export function evaluateScore(def: QuestionnaireDefinition, expr: ScoreExpr, ans
         return 0
       }
       return optionScore(def, expr.question, answers[expr.question])
+    }
+    case 'count': {
+      const q = def.questions.find((x) => x.id === expr.question)
+      const ans = answers[expr.question]
+      if (q?.type !== 'multi_choice' || !Array.isArray(ans)) return 0
+      return ans.filter((item) => item !== q.noneSubItem).length
     }
     case 'sum':
       return expr.items.reduce((acc, item) => acc + evaluateScore(def, item, answers), 0)

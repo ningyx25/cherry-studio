@@ -5301,6 +5301,53 @@
     "zhinao": "360AI",
     "zhipu": "BigModel"
   },
+  "questionnaire": {
+    "branch_continue": "Continue",
+    "branch_skip": "Skip",
+    "branch_title": "Continue with the follow-up questionnaire?",
+    "complete": "Finish & Generate Report",
+    "history": {
+      "clear_all": "Clear all history",
+      "clear_confirm": "Clear",
+      "clear_partial_failed": "Failed to delete {{count}} records",
+      "confirm_clear_desc": "All {{count}} records will be deleted. This action cannot be undone.",
+      "confirm_delete_desc": "This record will be deleted. This action cannot be undone.",
+      "confirm_delete_title": "Confirm deletion",
+      "delete_failed": "Failed to delete the record",
+      "empty": "No records yet",
+      "re_answer": "Re-answer",
+      "status_completed": "Completed",
+      "status_in_progress": "In progress",
+      "title": "History",
+      "unfilled": "Not filled",
+      "view_report": "View report"
+    },
+    "input_placeholder": "Enter your answer",
+    "next_question": "Next",
+    "next_section": "Continue to Next Section",
+    "prev_question": "Previous",
+    "progress": "Question {{current}} of {{total}}",
+    "report": {
+      "answer_prefix": "Answer: ",
+      "detail": "Detailed Answers",
+      "patient_info": "Patient Information",
+      "risk_factors": "Risk Factors",
+      "score": "Score {{score}}",
+      "send_to_clinic": "Send to Clinic AI",
+      "summary_title": "Summary (sent to Clinic AI)",
+      "title": "Questionnaire Report",
+      "unanswered": "(not answered)"
+    },
+    "report_tool": {
+      "add": "Add questionnaire report",
+      "description": "Select a questionnaire report from history",
+      "empty": "No questionnaire reports",
+      "filter_keywords": "questionnaire report"
+    },
+    "section_done": "This questionnaire is complete.",
+    "start": "Start",
+    "unit_placeholder": "Unit: {{unit}}"
+  },
   "quickAssistant": {
     "alert": {
       "google_login": "Tip: If you see a 'browser not trusted' message when logging into Google, please first login through the Google mini app in the mini app list, then use Google login in other mini apps"

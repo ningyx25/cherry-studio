@@ -101,7 +101,6 @@ export function buildQuestionnaireReport(params: {
   }
 
   const riskTags = Array.from(new Set(answeredQuestionnaires.flatMap((r) => r.riskTags)))
-  const patientRef = patientInfo.length ? `（患者：${patientInfo.map((p) => p.value).join('，')}）` : ''
 
   // 结构化摘要：供发送给问诊AI——完整 Q&A + 患者信息
   const summaryLines: string[] = []
@@ -115,7 +114,7 @@ export function buildQuestionnaireReport(params: {
     ...answeredQuestionnaires.map((r) => {
       const scoreLine = r.scored && r.totalScore !== undefined ? `得分 ${r.totalScore}` : '未计分'
       const levelLine = r.level ? `，分级：${r.level}` : ''
-      return `- ${r.title}：${scoreLine}${levelLine}${patientRef}`
+      return `- ${r.title}：${scoreLine}${levelLine}`
     })
   )
   summaryLines.push('')
@@ -142,21 +141,24 @@ export function buildQuestionnaireReport(params: {
   }
 }
 
-/** 把单个题答案格式化为可读文本（供报告/summary 展示）。 */
+/** 把单个题答案格式化为可读文本（供报告/summary 展示）。multi_choice 为选中的 subItem 列表。 */
 function formatResultAnswer(q: QuestionResult): string {
   if (q.subAnswers?.length) {
     return q.subAnswers.map((s) => `- ${s.text}：${s.label}`).join('；')
   }
   if (q.optionLabel !== undefined) return q.optionLabel
+  if (Array.isArray(q.answer)) return q.answer.join('、') || '（未填写）'
   if (q.answer === undefined || q.answer === null || q.answer === '') return '（未填写）'
   return `${String(q.answer)}${q.unit ?? ''}`
 }
 
 /** 把原始答案值格式化为可读文本（患者信息等）。 */
 function formatAnswerValue(q: QuestionnaireDefinition['questions'][number], value: QuestionAnswer): string {
-  if (q.type === 'single_choice' || q.type === 'multi_choice') {
-    const label = q.options.find((o) => o.value === value)?.label
-    return label ?? String(value)
+  if (q.type === 'single_choice') {
+    return q.options.find((o) => o.value === value)?.label ?? String(value)
+  }
+  if (q.type === 'multi_choice') {
+    return Array.isArray(value) ? value.filter((v) => v !== q.noneSubItem).join('、') : String(value)
   }
   if (q.type === 'matrix' && typeof value === 'object' && !Array.isArray(value)) {
     return q.subQuestions
@@ -174,20 +176,17 @@ function getOptionLabel(
   q: QuestionnaireDefinition['questions'][number],
   value: QuestionAnswer | undefined
 ): string | undefined {
-  if (q.type === 'single_choice' || q.type === 'multi_choice') {
+  if (q.type === 'single_choice') {
     return q.options.find((o) => o.value === value)?.label
   }
-  if (q.type === 'matrix' && value && typeof value === 'object' && !Array.isArray(value)) {
-    return undefined // matrix 逐子题展示，这里不聚合
-  }
-  return undefined
+  return undefined // multi_choice 展示选中项列表，matrix 逐子题展示
 }
 
 function getOptionScore(
   q: QuestionnaireDefinition['questions'][number],
   value: QuestionAnswer | undefined
 ): number | undefined {
-  if (q.type === 'single_choice' || q.type === 'multi_choice') {
+  if (q.type === 'single_choice') {
     return q.options.find((o) => o.value === value)?.score
   }
   return undefined

@@ -276,4 +276,33 @@ describe('evaluateScore', () => {
     )
     expect(evaluateScore(def, { kind: 'score', question: 'Q5a' }, { Q5: { Q5a: 1, Q5b: 3 } })).toBe(1)
   })
+
+  it('count + lookup: multi_choice 按选中 subItem 数量计分（noneSubItem 计 0 项）', () => {
+    const countBands = [
+      { type: 'range' as const, min: 0, max: 0, value: 0 },
+      { type: 'range' as const, min: 1, max: 1, value: 1 },
+      { type: 'range' as const, min: 2, max: 2, value: 2 },
+      { type: 'range' as const, min: 3, max: 3, value: 3 },
+      { type: 'range' as const, min: 4, max: 99, value: 4 }
+    ]
+    const def = mkDef(
+      [
+        {
+          id: 'Q5',
+          text: '',
+          type: 'multi_choice',
+          subItems: ['鼻子', '嘴巴', '喉咙', '皮肤', '无'],
+          noneSubItem: '无'
+        }
+      ],
+      { kind: 'lookup', input: { kind: 'count', question: 'Q5' }, table: countBands }
+    )
+    expect(evaluateScore(def, def.scoring.expression, { Q5: ['鼻子', '嘴巴'] })).toBe(2)
+    // ≥4 项封顶为 4 分
+    expect(evaluateScore(def, def.scoring.expression, { Q5: ['鼻子', '嘴巴', '喉咙', '皮肤'] })).toBe(4)
+    // 只选「无」计 0 项
+    expect(evaluateScore(def, def.scoring.expression, { Q5: ['无'] })).toBe(0)
+    // 未作答计 0
+    expect(evaluateScore(def, def.scoring.expression, {})).toBe(0)
+  })
 })

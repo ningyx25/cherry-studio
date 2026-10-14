@@ -22,6 +22,7 @@ import { buildQuestionnaireReport } from '@shared/questionnaire/report'
 import type { QuestionAnswer, QuestionnaireAnswers, QuestionnaireDefinition } from '@shared/questionnaire/types'
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { QuestionnaireForm } from './components/QuestionnaireForm'
 import { QuestionnaireHistoryList } from './components/QuestionnaireHistoryList'
@@ -31,6 +32,7 @@ import { useQuestionnaireFlow } from './hooks/useQuestionnaireFlow'
 type View = 'home' | 'form' | 'report'
 
 export default function QuestionnairePage() {
+  const { t } = useTranslation()
   const [definitions, setDefinitions] = useState<QuestionnaireDefinition[]>([])
   const [view, setView] = useState<View>('home')
   const [startQuestionnaireId, setStartQuestionnaireId] = useState<string | null>(null)
@@ -77,12 +79,15 @@ export default function QuestionnairePage() {
     )
 
   // 答完当前题自动前进：同问卷内前进到下一题；问卷末题且流程还有下一问卷 → 完成本问卷进入下一问卷。
-  // 分支命中时不前进（交给分支对话框）；text/numeric/time 自由输入不中断，改由按钮前进。
+  // 分支命中时不前进（交给分支对话框）；text/numeric/time 自由输入与 multi_choice 多选不中断，改由按钮前进。
   const handleAnswer = useCallback(
     (questionId: string, value: unknown) => {
       if (!currentDefinition) return
-      const isFreeInput =
-        currentQuestion?.type === 'text' || currentQuestion?.type === 'numeric' || currentQuestion?.type === 'time'
+      const requiresManualAdvance =
+        currentQuestion?.type === 'text' ||
+        currentQuestion?.type === 'numeric' ||
+        currentQuestion?.type === 'time' ||
+        currentQuestion?.type === 'multi_choice'
       const triggeredBranch = flow.answerQuestion(
         definitions,
         currentDefinition.questionnaireId,
@@ -90,7 +95,7 @@ export default function QuestionnairePage() {
         value as QuestionAnswer
       )
       if (triggeredBranch) return
-      if (isFreeInput) return
+      if (requiresManualAdvance) return
       if (isLastQuestion) {
         if (hasNextQuestionnaire) flow.completeQuestionnaire(definitions)
         return
@@ -126,8 +131,11 @@ export default function QuestionnairePage() {
 
     try {
       const answers: QuestionnaireAnswers = flow.state.answers
-      // 重新作答始终新建会话；仅普通流程才复用现有 in_progress 会话。
-      const existing = reAnswerSeed === undefined ? (sessions ?? []).find((s) => s.status === 'in_progress') : undefined
+      // 重新作答始终新建会话；仅普通流程才复用同一起点问卷的 in_progress 会话。
+      const existing =
+        reAnswerSeed === undefined
+          ? (sessions ?? []).find((s) => s.status === 'in_progress' && s.flowQuestionnaireId === startQuestionnaireId)
+          : undefined
       if (existing) {
         await dataApiService.patch(`/questionnaire-sessions/${existing.id}`, {
           body: { answers, report: built, status: 'completed' }
@@ -189,10 +197,10 @@ export default function QuestionnairePage() {
         await dataApiService.delete(`/questionnaire-sessions/${id}`)
         void refreshSessions()
       } catch {
-        toast.error('删除历史记录失败')
+        toast.error(t('questionnaire.history.delete_failed'))
       }
     },
-    [refreshSessions]
+    [refreshSessions, t]
   )
 
   /** 清空全部历史记录。 */
@@ -201,9 +209,9 @@ export default function QuestionnairePage() {
     if (ids.length === 0) return
     const results = await Promise.allSettled(ids.map((id) => dataApiService.delete(`/questionnaire-sessions/${id}`)))
     const failed = results.filter((r) => r.status === 'rejected').length
-    if (failed > 0) toast.error(`部分历史记录删除失败（${failed} 条）`)
+    if (failed > 0) toast.error(t('questionnaire.history.clear_partial_failed', { count: failed }))
     void refreshSessions()
-  }, [refreshSessions, sessions])
+  }, [refreshSessions, sessions, t])
 
   /** 从历史记录重新作答：复用已填答案作为起点，新建会话。 */
   const handleReAnswer = useCallback((answers: QuestionnaireAnswers, flowQuestionnaireId: string) => {
@@ -233,7 +241,7 @@ export default function QuestionnairePage() {
           <div className="flex items-center gap-2">
             <h1 className="font-semibold text-lg">{currentDefinition.title}</h1>
             <Badge variant="secondary">
-              第 {questionIndex + 1}/{currentQuestions.length} 题
+              {t('questionnaire.progress', { current: questionIndex + 1, total: currentQuestions.length })}
             </Badge>
           </div>
           <div className="mt-1 text-muted-foreground text-sm">{currentDefinition.description}</div>
@@ -250,23 +258,23 @@ export default function QuestionnairePage() {
             />
             <div className="mt-6 flex items-center justify-between gap-2">
               <Button variant="outline" onClick={() => setView('home')}>
-                返回
+                {t('common.back')}
               </Button>
               <div className="flex gap-2">
                 <Button variant="outline" disabled={questionIndex === 0} onClick={flow.goToPrev}>
-                  上一题
+                  {t('questionnaire.prev_question')}
                 </Button>
                 {isLastQuestion && hasNextQuestionnaire ? (
                   <Button disabled={!isCurrentAnswered} onClick={() => flow.completeQuestionnaire(definitions)}>
-                    下一题
+                    {t('questionnaire.next_question')}
                   </Button>
                 ) : isLastQuestion ? (
                   <Button disabled={!isCurrentAnswered} onClick={() => void handleComplete()}>
-                    完成并生成报告
+                    {t('questionnaire.complete')}
                   </Button>
                 ) : (
                   <Button disabled={!isCurrentAnswered} onClick={() => flow.goToNext(definitions)}>
-                    下一题
+                    {t('questionnaire.next_question')}
                   </Button>
                 )}
               </div>
@@ -274,13 +282,13 @@ export default function QuestionnairePage() {
           </>
         ) : hasNextQuestionnaire ? (
           <div className="flex flex-col items-start gap-4">
-            <div className="text-muted-foreground text-sm">本问卷已完成。</div>
-            <Button onClick={() => flow.completeQuestionnaire(definitions)}>进入下一部分</Button>
+            <div className="text-muted-foreground text-sm">{t('questionnaire.section_done')}</div>
+            <Button onClick={() => flow.completeQuestionnaire(definitions)}>{t('questionnaire.next_section')}</Button>
           </div>
         ) : (
           <div className="flex flex-col items-start gap-4">
-            <div className="text-muted-foreground text-sm">本问卷已完成。</div>
-            <Button onClick={() => void handleComplete()}>完成并生成报告</Button>
+            <div className="text-muted-foreground text-sm">{t('questionnaire.section_done')}</div>
+            <Button onClick={() => void handleComplete()}>{t('questionnaire.complete')}</Button>
           </div>
         )}
 
@@ -288,14 +296,14 @@ export default function QuestionnairePage() {
         <Dialog open={flow.state.pendingBranch !== null} onOpenChange={() => {}}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>继续作答子问卷？</DialogTitle>
+              <DialogTitle>{t('questionnaire.branch_title')}</DialogTitle>
               <DialogDescription>{flow.state.pendingBranch?.promptMessage}</DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <Button variant="outline" onClick={flow.rejectBranch}>
-                跳过
+                {t('questionnaire.branch_skip')}
               </Button>
-              <Button onClick={flow.acceptBranch}>继续</Button>
+              <Button onClick={flow.acceptBranch}>{t('questionnaire.branch_continue')}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -306,7 +314,7 @@ export default function QuestionnairePage() {
   // 首页：问卷卡片 + 历史会话
   return (
     <div data-ui="questionnaire.view" className="flex h-full flex-col overflow-auto p-6">
-      <h1 className="mb-4 font-semibold text-lg">问卷</h1>
+      <h1 className="mb-4 font-semibold text-lg">{t('title.questionnaire')}</h1>
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {definitions
           .filter((d) => d.questionnaireId !== BASIC_INFO_QUESTIONNAIRE_ID)
@@ -325,7 +333,7 @@ export default function QuestionnairePage() {
                   setStartQuestionnaireId(d.questionnaireId)
                   setView('form')
                 }}>
-                开始作答
+                {t('questionnaire.start')}
               </Button>
             </div>
           ))}

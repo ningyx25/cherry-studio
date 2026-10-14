@@ -187,33 +187,7 @@
         "生殖器",
         "无"
       ],
-      "options": [
-        {
-          "label": "A. 无",
-          "value": "A",
-          "score": 0
-        },
-        {
-          "label": "B. 1种",
-          "value": "B",
-          "score": 1
-        },
-        {
-          "label": "C. 2种",
-          "value": "C",
-          "score": 2
-        },
-        {
-          "label": "D. 3种",
-          "value": "D",
-          "score": 3
-        },
-        {
-          "label": "E. ≥4种",
-          "value": "E",
-          "score": 4
-        }
-      ]
+      "noneSubItem": "无"
     },
     {
       "id": "Q6",
@@ -228,33 +202,7 @@
         "暖气房间",
         "无"
       ],
-      "options": [
-        {
-          "label": "A. 无",
-          "value": "A",
-          "score": 0
-        },
-        {
-          "label": "B. 1种",
-          "value": "B",
-          "score": 1
-        },
-        {
-          "label": "C. 2种",
-          "value": "C",
-          "score": 2
-        },
-        {
-          "label": "D. 3种",
-          "value": "D",
-          "score": 3
-        },
-        {
-          "label": "E. ≥4种",
-          "value": "E",
-          "score": 4
-        }
-      ]
+      "noneSubItem": "无"
     },
     {
       "id": "Q7",
@@ -270,33 +218,7 @@
         "更年期替代用药",
         "无"
       ],
-      "options": [
-        {
-          "label": "A. 无",
-          "value": "A",
-          "score": 0
-        },
-        {
-          "label": "B. 1种",
-          "value": "B",
-          "score": 1
-        },
-        {
-          "label": "C. 2种",
-          "value": "C",
-          "score": 2
-        },
-        {
-          "label": "D. 3种",
-          "value": "D",
-          "score": 3
-        },
-        {
-          "label": "E. ≥4种",
-          "value": "E",
-          "score": 4
-        }
-      ]
+      "noneSubItem": "无"
     },
     {
       "id": "Q8",
@@ -541,16 +463,121 @@
           "question": "Q4"
         },
         {
-          "kind": "score",
-          "question": "Q5"
+          "kind": "lookup",
+          "input": {
+            "kind": "count",
+            "question": "Q5"
+          },
+          "table": [
+            {
+              "type": "range",
+              "min": 0,
+              "max": 0,
+              "value": 0
+            },
+            {
+              "type": "range",
+              "min": 1,
+              "max": 1,
+              "value": 1
+            },
+            {
+              "type": "range",
+              "min": 2,
+              "max": 2,
+              "value": 2
+            },
+            {
+              "type": "range",
+              "min": 3,
+              "max": 3,
+              "value": 3
+            },
+            {
+              "type": "range",
+              "min": 4,
+              "max": 99,
+              "value": 4
+            }
+          ]
         },
         {
-          "kind": "score",
-          "question": "Q6"
+          "kind": "lookup",
+          "input": {
+            "kind": "count",
+            "question": "Q6"
+          },
+          "table": [
+            {
+              "type": "range",
+              "min": 0,
+              "max": 0,
+              "value": 0
+            },
+            {
+              "type": "range",
+              "min": 1,
+              "max": 1,
+              "value": 1
+            },
+            {
+              "type": "range",
+              "min": 2,
+              "max": 2,
+              "value": 2
+            },
+            {
+              "type": "range",
+              "min": 3,
+              "max": 3,
+              "value": 3
+            },
+            {
+              "type": "range",
+              "min": 4,
+              "max": 99,
+              "value": 4
+            }
+          ]
         },
         {
-          "kind": "score",
-          "question": "Q7"
+          "kind": "lookup",
+          "input": {
+            "kind": "count",
+            "question": "Q7"
+          },
+          "table": [
+            {
+              "type": "range",
+              "min": 0,
+              "max": 0,
+              "value": 0
+            },
+            {
+              "type": "range",
+              "min": 1,
+              "max": 1,
+              "value": 1
+            },
+            {
+              "type": "range",
+              "min": 2,
+              "max": 2,
+              "value": 2
+            },
+            {
+              "type": "range",
+              "min": 3,
+              "max": 3,
+              "value": 3
+            },
+            {
+              "type": "range",
+              "min": 4,
+              "max": 99,
+              "value": 4
+            }
+          ]
         },
         {
           "kind": "score",

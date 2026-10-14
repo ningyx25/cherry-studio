@@ -10,6 +10,7 @@ const lookupRowSchema: z.ZodType<LookupRow> = z.discriminatedUnion('type', [
 const scoreExprSchema: z.ZodType<ScoreExpr> = z.lazy(() =>
   z.discriminatedUnion('kind', [
     z.object({ kind: z.literal('score'), question: z.string() }),
+    z.object({ kind: z.literal('count'), question: z.string() }),
     z.object({ kind: z.literal('sum'), items: z.array(scoreExprSchema) }),
     z.object({ kind: z.literal('max'), items: z.array(scoreExprSchema) }),
     z.object({ kind: z.literal('mul'), expr: scoreExprSchema, factor: z.number() }),
@@ -45,7 +46,7 @@ const questionSchema = z.discriminatedUnion('type', [
     text: z.string(),
     type: z.literal('multi_choice'),
     subItems: z.array(z.string()),
-    options: z.array(questionnaireOptionSchema)
+    noneSubItem: z.string().optional()
   }),
   z.object({
     id: z.string(),

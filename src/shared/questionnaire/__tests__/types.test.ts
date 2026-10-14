@@ -3,9 +3,10 @@ import { describe, expect, it } from 'vitest'
 import type { QuestionnaireDefinition, ScoreExpr } from '../types'
 
 describe('questionnaire types', () => {
-  it('ScoreExpr union supports all six node kinds', () => {
+  it('ScoreExpr union supports all seven node kinds', () => {
     const exprs: ScoreExpr[] = [
       { kind: 'score', question: 'Q1' },
+      { kind: 'count', question: 'Q5' },
       { kind: 'sum', items: [{ kind: 'score', question: 'Q1' }] },
       { kind: 'max', items: [{ kind: 'score', question: 'Q1' }] },
       { kind: 'mul', expr: { kind: 'score', question: 'Q1b' }, factor: 2 },
@@ -18,7 +19,7 @@ describe('questionnaire types', () => {
         table: [{ type: 'range', min: 0, max: 85, value: 0 }]
       }
     ]
-    expect(exprs).toHaveLength(6)
+    expect(exprs).toHaveLength(7)
   })
 
   it('QuestionnaireDefinition composes sections referencing flat questions', () => {

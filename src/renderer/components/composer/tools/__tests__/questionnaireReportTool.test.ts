@@ -1,7 +1,8 @@
+import { patientLabel } from '@renderer/utils/questionnaire'
 import type { QuestionnaireSession } from '@shared/data/api/schemas/questionnaires'
 import { describe, expect, it } from 'vitest'
 
-import { filterReportSessions, patientLabel, reportSummary, reportTitle } from '../components/QuestionnaireReportTool'
+import { filterReportSessions, reportSummary, reportTitle } from '../components/QuestionnaireReportTool'
 
 const completedSession = (overrides: Partial<QuestionnaireSession> = {}): QuestionnaireSession =>
   ({

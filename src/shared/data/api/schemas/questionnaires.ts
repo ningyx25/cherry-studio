@@ -30,7 +30,6 @@ export interface QuestionnaireSession {
 export type QuestionnaireSessionSchemas = {
   '/questionnaire-sessions': {
     GET: {
-      query?: { search?: string }
       response: QuestionnaireSession[]
     }
     POST: {

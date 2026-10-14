@@ -31,6 +31,21 @@ vi.mock('@renderer/ipc', () => ({
   useIpcOn: vi.fn()
 }))
 
+// t 直接查 zh-cn.json（含 {{}} 插值），断言可继续使用真实中文文案
+vi.mock('react-i18next', async () => {
+  const { readFileSync } = await import('node:fs')
+  const resources = JSON.parse(readFileSync('src/renderer/i18n/locales/zh-cn.json', 'utf8'))
+  const lookup = (key: string): string => key.split('.').reduce<any>((o, k) => o?.[k], resources) ?? key
+  const t = (key: string, opts?: Record<string, unknown>): string => {
+    let text = lookup(key)
+    if (opts) for (const [name, val] of Object.entries(opts)) text = text.replaceAll(`{{${name}}}`, String(val))
+    return text
+  }
+  return {
+    useTranslation: () => ({ t, i18n: { language: 'zh-cn', resolvedLanguage: 'zh-cn' } })
+  }
+})
+
 vi.mock('@data/DataApiService', () => ({
   dataApiService: {
     get: vi.fn(),
@@ -289,5 +304,52 @@ describe('QuestionnairePage', () => {
     // 进入表单，从患者基本信息开始，预填姓名
     expect(await screen.findByText('姓名')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('请输入')).toHaveValue('张三')
+  })
+
+  it('renders multi_choice subItems with none-item exclusivity and no auto-advance', async () => {
+    const mcDef: QuestionnaireDefinition = {
+      questionnaireId: 'MC',
+      title: '多选问卷',
+      description: 'd',
+      questions: [
+        { id: 'Q1', text: '干燥部位', type: 'multi_choice', subItems: ['鼻子', '嘴巴', '无'], noneSubItem: '无' },
+        {
+          id: 'Q2',
+          text: '结束题',
+          type: 'single_choice',
+          options: [{ label: 'A. 无', value: 'A', score: 0 }]
+        }
+      ],
+      scoring: { expression: { kind: 'count', question: 'Q1' } }
+    }
+    mocks.getDefinition.mockImplementation((input: { questionnaireId: string }) =>
+      input.questionnaireId === 'BASIC_INFO' ? basicInfoDef : mcDef
+    )
+    render(<QuestionnairePage />)
+    fireEvent.click(await screen.findByRole('button', { name: '开始作答' }))
+    // 走完患者基本信息进入多选问卷
+    await screen.findByText('姓名')
+    fireEvent.change(screen.getByPlaceholderText('请输入'), { target: { value: '张三' } })
+    fireEvent.click(screen.getByRole('button', { name: '下一题' }))
+    await screen.findByText('性别')
+    fireEvent.click(screen.getByText('男'))
+    expect(await screen.findByText('干燥部位')).toBeInTheDocument()
+
+    // 勾选两项：不自动前进，仍停留在本题，下一题按钮可用
+    fireEvent.click(screen.getByRole('checkbox', { name: '鼻子' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: '嘴巴' }))
+    expect(screen.getByText('干燥部位')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '下一题' })).toBeEnabled()
+
+    // 勾「无」清空其余项；再勾具体项则清除「无」
+    fireEvent.click(screen.getByRole('checkbox', { name: '无' }))
+    expect(screen.getByRole('checkbox', { name: '鼻子' })).toHaveAttribute('aria-checked', 'false')
+    expect(screen.getByRole('checkbox', { name: '无' })).toHaveAttribute('aria-checked', 'true')
+    fireEvent.click(screen.getByRole('checkbox', { name: '鼻子' }))
+    expect(screen.getByRole('checkbox', { name: '无' })).toHaveAttribute('aria-checked', 'false')
+
+    // 按钮前进到下一题
+    fireEvent.click(screen.getByRole('button', { name: '下一题' }))
+    expect(await screen.findByText('结束题')).toBeInTheDocument()
   })
 })
