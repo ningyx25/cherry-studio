@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next'
-import { FileSearch, Globe, Mic, Paperclip, Pointer, Zap } from 'lucide-react'
+import { FileSearch, Globe, Paperclip, Pointer, Zap } from 'lucide-react'
 
 import { type ComposerToolScope, type ToolComposerToolbarContribution, TopicType } from './types'
 
@@ -68,21 +68,9 @@ export const PERMISSION_MODE_TOOLBAR_MANIFEST: ComposerToolbarManifestDefinition
   visibleInScopes: [TopicType.Session]
 }
 
-export const VOICE_INPUT_TOOLBAR_MANIFEST: ComposerToolbarManifestDefinition = {
-  toolbar: {
-    id: 'voice-input',
-    kind: 'command',
-    order: 35,
-    icon: <Mic />
-  },
-  label: (t) => t('chat.input.voice_input.label'),
-  visibleInScopes: [TopicType.Chat, TopicType.Session]
-}
-
 const COMPOSER_TOOLBAR_MANIFESTS: ComposerToolbarManifestDefinition[] = [
   ATTACHMENT_TOOLBAR_MANIFEST,
   WEB_SEARCH_TOOLBAR_MANIFEST,
-  VOICE_INPUT_TOOLBAR_MANIFEST,
   KNOWLEDGE_BASE_TOOLBAR_MANIFEST,
   QUICK_PHRASES_TOOLBAR_MANIFEST,
   PERMISSION_MODE_TOOLBAR_MANIFEST

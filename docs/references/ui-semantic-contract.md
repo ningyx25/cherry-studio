@@ -147,7 +147,8 @@ The maintained chat surface currently includes:
 
 - `chat.view`, `chat.topic-list`, `chat.message-list`, `chat.message`, and
   `chat.message.group`;
-- `chat.composer`, `chat.composer.action.send`, and `chat.composer.action.pause`;
+- `chat.composer`, `chat.composer.action.send`, `chat.composer.action.pause`, and
+  `chat.composer.action.voice-input`;
 - `part:conversation-navigation`, `part:conversation-main`, and `part:conversation-inspector`;
 - `part:message-content`, `part:message-actions`, `part:message-reasoning`, and `part:code-block`;
 - `part:composer-input` and `part:composer-actions`.

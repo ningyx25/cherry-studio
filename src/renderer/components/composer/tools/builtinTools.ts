@@ -6,7 +6,6 @@ import permissionModeTool from './definitions/permissionModeTool'
 import questionnaireReportTool from './definitions/questionnaireReportTool'
 import quickPhrasesTool from './definitions/quickPhrasesTool'
 import slashCommandsTool from './definitions/slashCommandsTool'
-import voiceInputTool from './definitions/voiceInputTool'
 import webSearchTool from './definitions/webSearchTool'
 import type { ComposerToolScope, ToolContext, ToolDefinition } from './types'
 
@@ -20,7 +19,6 @@ export const BUILTIN_COMPOSER_TOOLS: ToolDefinition<any, any>[] = [
   attachmentTool,
   quickPhrasesTool,
   webSearchTool,
-  voiceInputTool,
   knowledgeBaseTool,
   questionnaireReportTool,
   slashCommandsTool,

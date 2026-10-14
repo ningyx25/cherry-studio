@@ -44,6 +44,7 @@ import {
 import { createComposerEditorPreset } from './composerPreset'
 import { COMPOSER_TOKEN_NODE_NAME, type ComposerTokenRenderer } from './ComposerTokenNode'
 import { ComposerToolMenu, useComposerPinnedTools } from './ComposerToolRuntime'
+import { ComposerVoiceInputButton } from './ComposerVoiceInputButton'
 import { type InputHistoryDirection, shouldHandleInputHistoryNavigation } from './inputHistoryNavigation'
 import pasteHandling from './paste/pasteHandling'
 import { useFileDragDrop } from './paste/useFileDragDrop'
@@ -2224,6 +2225,7 @@ export default function ComposerSurface({
           <div data-ui="part:composer-actions" className="flex shrink-0 flex-row items-center gap-1.5">
             {compactControls}
             {sendAccessoryElement}
+            <ComposerVoiceInputButton inputAdapter={inputAdapter} />
             {sendAction}
           </div>
         ) : null}
@@ -2237,6 +2239,7 @@ export default function ComposerSurface({
           <div className="flex min-w-0 flex-1 items-center overflow-hidden">{leftControls}</div>
           <div className="flex flex-row items-center gap-1.5">
             {sendAccessoryElement}
+            <ComposerVoiceInputButton inputAdapter={inputAdapter} />
             {sendAction}
           </div>
         </div>

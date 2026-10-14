@@ -48,14 +48,13 @@ describe('useComposerToolbarPinnedTools', () => {
     act(() => {
       result.current.resetPinnedIds()
     })
-    expect(setPreference).toHaveBeenCalledWith(['composer:new-conversation', 'web-search', 'voice-input'])
+    expect(setPreference).toHaveBeenCalledWith(['composer:new-conversation', 'web-search'])
   })
 
   it('reports isDefault when the pinned list equals the default', () => {
     MockUsePreferenceUtils.mockPreferenceReturn('chat.input.toolbar.pinned_tools', [
       'composer:new-conversation',
-      'web-search',
-      'voice-input'
+      'web-search'
     ])
 
     const { result } = renderHook(() => useComposerToolbarPinnedTools('chat.input.toolbar.pinned_tools'))
