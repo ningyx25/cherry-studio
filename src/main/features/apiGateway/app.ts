@@ -17,6 +17,7 @@ import {
   resolveDocsLanguage
 } from './openapiDocs'
 import { agentSessionRoutes } from './routes/agentSessions'
+import { audioRoutes } from './routes/audio'
 import { chatRoutes } from './routes/chat'
 import { geminiRoutes } from './routes/gemini'
 import { knowledgeRoutes } from './routes/knowledge'
@@ -50,6 +51,7 @@ const v1Routes = new Elysia({ prefix: '/v1' })
   .use(chatRoutes)
   .use(responsesRoutes)
   .use(modelsRoutes)
+  .use(audioRoutes)
   .use(knowledgeRoutes)
   .use(questionnaireRoutes)
   .use(agentSessionRoutes)

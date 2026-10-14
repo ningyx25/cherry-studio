@@ -28,7 +28,8 @@
         "list_models": "Liste les modèles disponibles via cette passerelle, au format models d'OpenAI.",
         "messages": "Crée un message. Les corps de requête et de réponse suivent le format Anthropic Messages ; avec `stream: true`, la sortie est incrémentale.",
         "responses": "Crée une réponse. Les corps de requête et de réponse suivent le format OpenAI Responses.",
-        "search_knowledge_bases": "Recherche dans une ou plusieurs bases de connaissances et renvoie les fragments de documents correspondants."
+        "search_knowledge_bases": "Recherche dans une ou plusieurs bases de connaissances et renvoie les fragments de documents correspondants.",
+        "transcriptions": "[to be translated]:Transcribe uploaded audio to text. Request and response bodies follow the OpenAI audio transcriptions format; the app's configured voice-input model is used when no model is specified."
       },
       "tags": {
         "anthropic": "Endpoints compatibles Anthropic. Pointez l'URL de base d'un SDK Anthropic vers cette passerelle pour les utiliser.",

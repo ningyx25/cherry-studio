@@ -28,7 +28,8 @@
         "list_models": "Παραθέτει τα διαθέσιμα μοντέλα αυτής της πύλης, σε μορφή OpenAI models.",
         "messages": "Δημιουργεί ένα μήνυμα. Το σώμα αιτήματος και απόκρισης ακολουθεί τη μορφή Anthropic Messages· με `stream: true` η έξοδος γίνεται σταδιακά.",
         "responses": "Δημιουργεί μια απόκριση. Το σώμα αιτήματος και απόκρισης ακολουθεί τη μορφή OpenAI Responses.",
-        "search_knowledge_bases": "Αναζητά σε μία ή περισσότερες βάσεις γνώσης και επιστρέφει τα σχετικά τμήματα εγγράφων."
+        "search_knowledge_bases": "Αναζητά σε μία ή περισσότερες βάσεις γνώσης και επιστρέφει τα σχετικά τμήματα εγγράφων.",
+        "transcriptions": "[to be translated]:Transcribe uploaded audio to text. Request and response bodies follow the OpenAI audio transcriptions format; the app's configured voice-input model is used when no model is specified."
       },
       "tags": {
         "anthropic": "Endpoints συμβατά με Anthropic. Στρέψτε το base URL ενός Anthropic SDK σε αυτή την πύλη για να τα χρησιμοποιήσετε.",

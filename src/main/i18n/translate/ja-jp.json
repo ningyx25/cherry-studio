@@ -28,7 +28,8 @@
         "list_models": "このゲートウェイで利用できるモデルを OpenAI の models 形式で一覧表示します。",
         "messages": "メッセージを作成します。リクエストとレスポンスの形式は Anthropic Messages と同じで、`stream: true` を指定すると逐次出力になります。",
         "responses": "レスポンスを作成します。リクエストとレスポンスの形式は OpenAI Responses と同じです。",
-        "search_knowledge_bases": "1 つ以上のナレッジベースを検索し、該当するドキュメントの断片を返します。"
+        "search_knowledge_bases": "1 つ以上のナレッジベースを検索し、該当するドキュメントの断片を返します。",
+        "transcriptions": "[to be translated]:Transcribe uploaded audio to text. Request and response bodies follow the OpenAI audio transcriptions format; the app's configured voice-input model is used when no model is specified."
       },
       "tags": {
         "anthropic": "Anthropic 互換のエンドポイントです。Anthropic SDK のベース URL をこのゲートウェイに向けると利用できます。",

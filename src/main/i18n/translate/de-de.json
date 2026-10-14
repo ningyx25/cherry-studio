@@ -28,7 +28,8 @@
         "list_models": "Listet die über dieses Gateway verfügbaren Modelle im OpenAI-Models-Format auf.",
         "messages": "Erstellt eine Nachricht. Anfrage- und Antwortformat entsprechen Anthropic Messages; mit `stream: true` erfolgt die Ausgabe schrittweise.",
         "responses": "Erstellt eine Response. Anfrage- und Antwortformat entsprechen der OpenAI Responses API.",
-        "search_knowledge_bases": "Durchsucht eine oder mehrere Wissensdatenbanken und gibt die passenden Dokumentabschnitte zurück."
+        "search_knowledge_bases": "Durchsucht eine oder mehrere Wissensdatenbanken und gibt die passenden Dokumentabschnitte zurück.",
+        "transcriptions": "[to be translated]:Transcribe uploaded audio to text. Request and response bodies follow the OpenAI audio transcriptions format; the app's configured voice-input model is used when no model is specified."
       },
       "tags": {
         "anthropic": "Anthropic-kompatible Endpunkte. Richte die Basis-URL eines Anthropic-SDK auf dieses Gateway, um sie zu nutzen.",

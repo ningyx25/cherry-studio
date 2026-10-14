@@ -1627,6 +1627,16 @@
         "image_or_document": "Tải lên tệp hình ảnh hoặc tài liệu",
         "upload_from_local": "Tải tệp tin cục bộ..."
       },
+      "voice_input": {
+        "label": "[to be translated]:Voice Input",
+        "no_model": "[to be translated]:No speech-to-text model configured",
+        "not_supported": "[to be translated]:Audio recording is not supported in this environment",
+        "permission_denied": "[to be translated]:Microphone permission denied",
+        "recording_failed": "[to be translated]:Recording failed",
+        "stop": "[to be translated]:Stop recording",
+        "transcribing": "[to be translated]:Transcribing…",
+        "transcription_failed": "[to be translated]:Transcription failed"
+      },
       "web_search": {
         "builtin": {
           "disabled_content": "Mô hình hiện tại không hỗ trợ tìm kiếm web",
@@ -7514,7 +7524,11 @@
       "translate_model_prompt_message": "Vui lòng nhập lời nhắc mô hình dịch",
       "translate_model_prompt_title": "Dịch Mô hình Nhắc",
       "use_assistant": "Sử dụng Trợ lý",
-      "use_model": "Mô hình Mặc định"
+      "use_model": "Mô hình Mặc định",
+      "voice_input": {
+        "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
+        "label": "[to be translated]:Voice Input Model"
+      }
     },
     "moresetting": {
       "check": {

@@ -28,7 +28,8 @@
         "list_models": "Lista los modelos disponibles en esta pasarela, en formato de modelos de OpenAI.",
         "messages": "Crea un mensaje. El cuerpo de la petición y de la respuesta sigue el formato de Anthropic Messages; con `stream: true` la salida es incremental.",
         "responses": "Crea una respuesta. El cuerpo de la petición y de la respuesta sigue el formato de OpenAI Responses.",
-        "search_knowledge_bases": "Busca en una o varias bases de conocimiento y devuelve los fragmentos de documento coincidentes."
+        "search_knowledge_bases": "Busca en una o varias bases de conocimiento y devuelve los fragmentos de documento coincidentes.",
+        "transcriptions": "[to be translated]:Transcribe uploaded audio to text. Request and response bodies follow the OpenAI audio transcriptions format; the app's configured voice-input model is used when no model is specified."
       },
       "tags": {
         "anthropic": "Endpoints compatibles con Anthropic. Apunta la URL base de un SDK de Anthropic a esta pasarela para usarlos.",

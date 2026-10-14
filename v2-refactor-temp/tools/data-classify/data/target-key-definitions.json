@@ -248,6 +248,13 @@
       "description": "Translate model UniqueModelId (provider::modelId, from complex mapping llm_model_ids_to_unique)"
     },
     {
+      "targetKey": "feature.voice_input.model_id",
+      "type": "string",
+      "defaultValue": null,
+      "status": "classified",
+      "description": "Voice input transcription model UniqueModelId (provider::modelId)"
+    },
+    {
       "targetKey": "feature.paintings.default_model_id",
       "type": "string",
       "defaultValue": null,

@@ -62,7 +62,8 @@ vi.mock('@renderer/hooks/useModel', () => ({
     quickModel: harness.quickModel,
     setDefaultModel: harness.setDefaultModel,
     setQuickModel: harness.setQuickModel
-  })
+  }),
+  useModelById: () => ({ model: undefined })
 }))
 
 vi.mock('@renderer/hooks/useProvider', () => ({

@@ -1627,6 +1627,16 @@
         "image_or_document": "上傳圖片或檔案",
         "upload_from_local": "上傳本機檔案..."
       },
+      "voice_input": {
+        "label": "[to be translated]:Voice Input",
+        "no_model": "[to be translated]:No speech-to-text model configured",
+        "not_supported": "[to be translated]:Audio recording is not supported in this environment",
+        "permission_denied": "[to be translated]:Microphone permission denied",
+        "recording_failed": "[to be translated]:Recording failed",
+        "stop": "[to be translated]:Stop recording",
+        "transcribing": "[to be translated]:Transcribing…",
+        "transcription_failed": "[to be translated]:Transcription failed"
+      },
       "web_search": {
         "builtin": {
           "disabled_content": "目前模型不支援網路搜尋功能",
@@ -7514,7 +7524,11 @@
       "translate_model_prompt_message": "請輸入翻譯模型提示詞",
       "translate_model_prompt_title": "翻譯模型提示詞",
       "use_assistant": "使用助手",
-      "use_model": "預設模型"
+      "use_model": "預設模型",
+      "voice_input": {
+        "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
+        "label": "[to be translated]:Voice Input Model"
+      }
     },
     "moresetting": {
       "check": {

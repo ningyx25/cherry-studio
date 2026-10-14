@@ -96,7 +96,7 @@ vi.mock('electron', () => ({
   BrowserWindow: { fromWebContents: vi.fn() },
   nativeImage: { createFromPath: vi.fn(() => ({})) },
   nativeTheme: { shouldUseDarkColors: false },
-  session: { fromPartition: vi.fn(() => previewSessionMock) },
+  session: { fromPartition: vi.fn(() => previewSessionMock), defaultSession: previewSessionMock },
   shell: { openExternal: vi.fn(), openPath: vi.fn() }
 }))
 

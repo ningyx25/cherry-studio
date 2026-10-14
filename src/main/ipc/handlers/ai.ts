@@ -6,6 +6,7 @@ import { loggerService } from '@logger'
 import { createAgent } from '@main/ai/agents/createAgent'
 import { createPresetAgentFeedbackSession } from '@main/ai/agents/createPresetAgentFeedbackSession'
 import { extractAgentSessionId, isAgentSessionTopic } from '@main/ai/agentSession/topic'
+import { transcribeAudio } from '@main/ai/audio/transcription'
 import { inflateEntities, isToolOutputBlobEntry, reconstructOutput } from '@main/ai/contextBuild/toolOutputStore'
 import { WebContentsListener } from '@main/ai/streamManager'
 import { serializeError } from '@main/ai/utils/serializeError'
@@ -153,6 +154,7 @@ export const aiHandlers: IpcHandlersFor<typeof aiRequestSchemas> = {
     exposeAiError('ai.provider.model.list', () => application.get('AiService').listModels(request)),
   'ai.provider.model.check': (request) =>
     exposeAiError('ai.provider.model.check', () => application.get('AiService').checkModel(request)),
+  'ai.audio.transcribe': (request) => exposeAiError('ai.audio.transcribe', () => transcribeAudio(request)),
 
   // ── Streaming chat — delegate to AiStreamManager, which owns the stream registry. ──
   'ai.stream.open': async (request, { senderId }) => {

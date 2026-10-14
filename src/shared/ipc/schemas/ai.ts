@@ -142,6 +142,20 @@ export const aiRequestSchemas = {
     output: z.object({ latency: z.number() })
   }),
 
+  // ── Speech-to-text transcription (voice input) ──
+  // Renderer-recorded audio bytes in, transcript text out. Provider/model come from
+  // the `feature.voice_input.model_id` preference (UniqueModelId) resolved renderer-side.
+  'ai.audio.transcribe': defineRoute({
+    input: z.strictObject({
+      providerId: z.string().min(1),
+      modelId: z.string().min(1),
+      audio: z.instanceof(Uint8Array),
+      filename: z.string().optional(),
+      language: z.string().optional()
+    }),
+    output: z.object({ text: z.string() })
+  }),
+
   // ── Streaming chat (AiStreamManager) ──
   // Requests are R→M; the produced chunk/done/error events ride the AiEventSchemas block below.
   'ai.stream.open': defineRoute({

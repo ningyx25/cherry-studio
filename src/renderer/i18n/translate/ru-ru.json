@@ -1627,6 +1627,16 @@
         "image_or_document": "Загрузить изображение или документ",
         "upload_from_local": "Загрузить локальный файл..."
       },
+      "voice_input": {
+        "label": "[to be translated]:Voice Input",
+        "no_model": "[to be translated]:No speech-to-text model configured",
+        "not_supported": "[to be translated]:Audio recording is not supported in this environment",
+        "permission_denied": "[to be translated]:Microphone permission denied",
+        "recording_failed": "[to be translated]:Recording failed",
+        "stop": "[to be translated]:Stop recording",
+        "transcribing": "[to be translated]:Transcribing…",
+        "transcription_failed": "[to be translated]:Transcription failed"
+      },
       "web_search": {
         "builtin": {
           "disabled_content": "Текущая модель не поддерживает веб-поиск",
@@ -7514,7 +7524,11 @@
       "translate_model_prompt_message": "Введите модель перевода",
       "translate_model_prompt_title": "Модель перевода",
       "use_assistant": "Использование ассистентов",
-      "use_model": "модель по умолчанию"
+      "use_model": "модель по умолчанию",
+      "voice_input": {
+        "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
+        "label": "[to be translated]:Voice Input Model"
+      }
     },
     "moresetting": {
       "check": {

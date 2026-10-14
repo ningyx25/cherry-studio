@@ -69,7 +69,8 @@ export const DOC_DESCRIPTIONS = {
   list_models: 'apiGateway.docs.operations.list_models',
   messages: 'apiGateway.docs.operations.messages',
   responses: 'apiGateway.docs.operations.responses',
-  search_knowledge_bases: 'apiGateway.docs.operations.search_knowledge_bases'
+  search_knowledge_bases: 'apiGateway.docs.operations.search_knowledge_bases',
+  transcriptions: 'apiGateway.docs.operations.transcriptions'
 } as const
 
 type DocDescriptionSlot = keyof typeof DOC_DESCRIPTIONS
@@ -92,7 +93,8 @@ function docDescriptions(lang: LanguageVarious): Record<DocDescriptionSlot, stri
     list_models: t('apiGateway.docs.operations.list_models', undefined, lang),
     messages: t('apiGateway.docs.operations.messages', undefined, lang),
     responses: t('apiGateway.docs.operations.responses', undefined, lang),
-    search_knowledge_bases: t('apiGateway.docs.operations.search_knowledge_bases', undefined, lang)
+    search_knowledge_bases: t('apiGateway.docs.operations.search_knowledge_bases', undefined, lang),
+    transcriptions: t('apiGateway.docs.operations.transcriptions', undefined, lang)
   }
 }
 

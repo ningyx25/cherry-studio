@@ -28,7 +28,8 @@
         "list_models": "以 OpenAI models 格式列出此閘道可用的模型。",
         "messages": "建立一則訊息。請求與回應格式與 Anthropic Messages 一致；設定 `stream: true` 可串流輸出。",
         "responses": "建立一次回應。請求與回應格式與 OpenAI Responses 一致。",
-        "search_knowledge_bases": "在一個或多個知識庫中檢索，回傳相符的文件片段。"
+        "search_knowledge_bases": "在一個或多個知識庫中檢索，回傳相符的文件片段。",
+        "transcriptions": "[to be translated]:Transcribe uploaded audio to text. Request and response bodies follow the OpenAI audio transcriptions format; the app's configured voice-input model is used when no model is specified."
       },
       "tags": {
         "anthropic": "相容 Anthropic 的介面。將 Anthropic SDK 的 base URL 指向本閘道即可使用。",

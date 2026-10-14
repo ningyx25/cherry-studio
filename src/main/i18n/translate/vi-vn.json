@@ -28,7 +28,8 @@
         "list_models": "Liệt kê các mô hình khả dụng qua gateway này, theo định dạng models của OpenAI.",
         "messages": "Tạo một tin nhắn. Định dạng yêu cầu và phản hồi giống Anthropic Messages; đặt `stream: true` để nhận kết quả theo luồng.",
         "responses": "Tạo một response. Định dạng yêu cầu và phản hồi giống OpenAI Responses.",
-        "search_knowledge_bases": "Tìm kiếm trong một hoặc nhiều cơ sở tri thức và trả về các đoạn tài liệu phù hợp."
+        "search_knowledge_bases": "Tìm kiếm trong một hoặc nhiều cơ sở tri thức và trả về các đoạn tài liệu phù hợp.",
+        "transcriptions": "[to be translated]:Transcribe uploaded audio to text. Request and response bodies follow the OpenAI audio transcriptions format; the app's configured voice-input model is used when no model is specified."
       },
       "tags": {
         "anthropic": "Các endpoint tương thích Anthropic. Trỏ base URL của Anthropic SDK tới gateway này để sử dụng.",

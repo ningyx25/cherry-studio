@@ -1627,6 +1627,16 @@
         "image_or_document": "Subir imagen o documento",
         "upload_from_local": "Subir archivo local..."
       },
+      "voice_input": {
+        "label": "[to be translated]:Voice Input",
+        "no_model": "[to be translated]:No speech-to-text model configured",
+        "not_supported": "[to be translated]:Audio recording is not supported in this environment",
+        "permission_denied": "[to be translated]:Microphone permission denied",
+        "recording_failed": "[to be translated]:Recording failed",
+        "stop": "[to be translated]:Stop recording",
+        "transcribing": "[to be translated]:Transcribing…",
+        "transcription_failed": "[to be translated]:Transcription failed"
+      },
       "web_search": {
         "builtin": {
           "disabled_content": "La búsqueda web no es compatible con este modelo actualmente",
@@ -7514,7 +7524,11 @@
       "translate_model_prompt_message": "Ingrese las sugerencias del modelo de traducción",
       "translate_model_prompt_title": "Sugerencias del modelo de traducción",
       "use_assistant": "Usar asistente",
-      "use_model": "Modelo predeterminado"
+      "use_model": "Modelo predeterminado",
+      "voice_input": {
+        "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
+        "label": "[to be translated]:Voice Input Model"
+      }
     },
     "moresetting": {
       "check": {

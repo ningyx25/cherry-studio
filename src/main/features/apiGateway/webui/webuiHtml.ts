@@ -979,6 +979,22 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
       color: var(--text-main);
     }
 
+    .composer-btn-mini:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .voice-input-btn.recording {
+      border-color: var(--danger);
+      color: var(--danger);
+      animation: voice-pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes voice-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
     .btn-send-main {
       background-color: var(--primary);
       color: white;
@@ -1399,6 +1415,10 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
                     导入自测问卷报告
                   </button>
+                  <button class="composer-btn-mini voice-input-btn" id="clinic-voice-btn" data-target="clinic-text-input" title="语音输入" onclick="toggleVoiceInput('clinic-text-input', this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                    语音输入
+                  </button>
                 </div>
                 <button class="btn-send-main" id="clinic-send-button" onclick="sendChatMessage('clinic')">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
@@ -1437,7 +1457,12 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
             <div class="composer-shell">
               <textarea class="composer-textarea" id="science-text-input" placeholder="输入科普疑问或眼科医学常识... (Enter 发送)"></textarea>
               <div class="composer-toolbar">
-                <div class="composer-tool-group"></div>
+                <div class="composer-tool-group">
+                  <button class="composer-btn-mini voice-input-btn" id="science-voice-btn" data-target="science-text-input" title="语音输入" onclick="toggleVoiceInput('science-text-input', this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                    语音输入
+                  </button>
+                </div>
                 <button class="btn-send-main" id="science-send-button" onclick="sendChatMessage('science')">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
                   发送
@@ -2280,6 +2305,126 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
       const inp = document.getElementById('science-text-input');
       inp.value = p;
       inp.focus();
+    }
+
+    // Voice input: record via MediaRecorder, POST to the gateway's OpenAI-compatible
+    // /v1/audio/transcriptions (falls back to the desktop-configured voice-input model),
+    // and paste the transcript at the textarea cursor. getUserMedia only works in a
+    // secure context (https or localhost) — on a plain-http LAN address the buttons
+    // are disabled with a hint.
+    const voiceState = { recorder: null, chunks: [], targetId: null, button: null, timer: null };
+
+    function setVoiceButtonsEnabled() {
+      const secure = window.isSecureContext && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+      document.querySelectorAll('.voice-input-btn').forEach((btn) => {
+        if (!btn.dataset.labelHtml) btn.dataset.labelHtml = btn.innerHTML;
+        if (!secure) {
+          btn.disabled = true;
+          btn.title = '语音输入需要 https 或 localhost 环境（当前为不安全上下文）';
+        }
+      });
+      return secure;
+    }
+
+    function pickVoiceMime() {
+      const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'];
+      for (const mime of candidates) {
+        if (window.MediaRecorder && MediaRecorder.isTypeSupported(mime)) return mime;
+      }
+      return '';
+    }
+
+    function resetVoiceButton() {
+      if (voiceState.button) {
+        voiceState.button.classList.remove('recording');
+        voiceState.button.innerHTML = voiceState.button.dataset.labelHtml || '语音输入';
+      }
+    }
+
+    function toggleVoiceInput(targetId, button) {
+      // Second click while recording stops and transcribes.
+      if (voiceState.recorder && voiceState.recorder.state === 'recording') {
+        voiceState.recorder.stop();
+        return;
+      }
+      if (!setVoiceButtonsEnabled()) return;
+
+      const mime = pickVoiceMime();
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          const recorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+          voiceState.recorder = recorder;
+          voiceState.chunks = [];
+          voiceState.targetId = targetId;
+          voiceState.button = button;
+          recorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) voiceState.chunks.push(e.data);
+          };
+          recorder.onstop = () => {
+            stream.getTracks().forEach((t) => t.stop());
+            clearTimeout(voiceState.timer);
+            resetVoiceButton();
+            const blob = new Blob(voiceState.chunks, { type: recorder.mimeType });
+            voiceState.recorder = null;
+            if (blob.size > 0) transcribeVoice(blob, targetId);
+          };
+          recorder.start();
+          button.classList.add('recording');
+          button.textContent = '停止录音';
+          // Safety cap so a forgotten recording can't run forever.
+          voiceState.timer = setTimeout(() => {
+            if (voiceState.recorder && voiceState.recorder.state === 'recording') voiceState.recorder.stop();
+          }, 120000);
+        })
+        .catch((err) => {
+          console.error('voice input recording failed', err);
+          resetVoiceButton();
+          alert(err && err.name === 'NotAllowedError' ? '麦克风权限被拒绝' : '录音失败');
+        });
+    }
+
+    function transcribeVoice(blob, targetId) {
+      const button = voiceState.button;
+      if (button) button.textContent = '转写中…';
+      const form = new FormData();
+      form.append('file', blob, blob.type.indexOf('mp4') >= 0 ? 'audio.m4a' : 'audio.webm');
+      fetch(state.baseUrl + '/v1/audio/transcriptions', {
+        method: 'POST',
+        headers: state.apiKey ? { Authorization: 'Bearer ' + state.apiKey } : {},
+        body: form
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error('transcription failed: ' + res.status);
+          return res.json();
+        })
+        .then((data) => {
+          if (data && data.text) insertVoiceTranscript(targetId, data.text);
+        })
+        .catch((err) => {
+          console.error('voice input transcription failed', err);
+          alert('语音转写失败，请在桌面端设置中配置语音输入模型');
+        })
+        .finally(() => {
+          resetVoiceButton();
+        });
+    }
+
+    function insertVoiceTranscript(targetId, text) {
+      const inp = document.getElementById(targetId);
+      if (!inp) return;
+      const start = inp.selectionStart == null ? inp.value.length : inp.selectionStart;
+      const end = inp.selectionEnd == null ? inp.value.length : inp.selectionEnd;
+      inp.value = inp.value.slice(0, start) + text + inp.value.slice(end);
+      const caret = start + text.length;
+      inp.focus();
+      inp.setSelectionRange(caret, caret);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setVoiceButtonsEnabled);
+    } else {
+      setVoiceButtonsEnabled();
     }
 
     function getSystemPrompt(view) {

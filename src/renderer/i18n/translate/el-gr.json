@@ -1627,6 +1627,16 @@
         "image_or_document": "Μεταφόρτωση εικόνας ή εγγράφου",
         "upload_from_local": "Μεταφόρτωση αρχείου από τον υπολογιστή..."
       },
+      "voice_input": {
+        "label": "[to be translated]:Voice Input",
+        "no_model": "[to be translated]:No speech-to-text model configured",
+        "not_supported": "[to be translated]:Audio recording is not supported in this environment",
+        "permission_denied": "[to be translated]:Microphone permission denied",
+        "recording_failed": "[to be translated]:Recording failed",
+        "stop": "[to be translated]:Stop recording",
+        "transcribing": "[to be translated]:Transcribing…",
+        "transcription_failed": "[to be translated]:Transcription failed"
+      },
       "web_search": {
         "builtin": {
           "disabled_content": "Η τρέχουσα έκδοση του μοντέλου δεν υποστηρίζει τη δυνατότητα διαδικτυακής αναζήτησης",
@@ -7514,7 +7524,11 @@
       "translate_model_prompt_message": "Εισάγετε την προσδιορισμένη προειδοποίηση μετάφρασης",
       "translate_model_prompt_title": "Προσδιορισμός προκαθορισμένου θέματος μετάφρασης",
       "use_assistant": "Χρήση Βοηθού",
-      "use_model": "Προεπιλεγμένο Μοντέλο"
+      "use_model": "Προεπιλεγμένο Μοντέλο",
+      "voice_input": {
+        "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
+        "label": "[to be translated]:Voice Input Model"
+      }
     },
     "moresetting": {
       "check": {

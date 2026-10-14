@@ -1627,6 +1627,16 @@
         "image_or_document": "Upload image or document file",
         "upload_from_local": "Upload local file..."
       },
+      "voice_input": {
+        "label": "Voice Input",
+        "no_model": "No speech-to-text model configured",
+        "not_supported": "Audio recording is not supported in this environment",
+        "permission_denied": "Microphone permission denied",
+        "recording_failed": "Recording failed",
+        "stop": "Stop recording",
+        "transcribing": "Transcribing…",
+        "transcription_failed": "Transcription failed"
+      },
       "web_search": {
         "builtin": {
           "disabled_content": "The current model does not support web search",
@@ -7514,7 +7524,11 @@
       "translate_model_prompt_message": "Please enter the translate model prompt",
       "translate_model_prompt_title": "Translate Model Prompt",
       "use_assistant": "Use Assistant",
-      "use_model": "Default Model"
+      "use_model": "Default Model",
+      "voice_input": {
+        "description": "Speech-to-text model used by the composer voice input button",
+        "label": "Voice Input Model"
+      }
     },
     "moresetting": {
       "check": {

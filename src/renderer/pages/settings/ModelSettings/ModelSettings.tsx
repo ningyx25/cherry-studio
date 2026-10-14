@@ -1,4 +1,5 @@
 import { Button, InfoTooltip, PageSidePanel } from '@cherrystudio/ui'
+import { usePreference } from '@data/hooks/usePreference'
 import { loggerService } from '@logger'
 import {
   SettingContainer,
@@ -10,14 +11,14 @@ import {
   SettingsContentColumn,
   SettingTitle
 } from '@renderer/components/SettingsPrimitives'
-import { useDefaultModel } from '@renderer/hooks/useModel'
+import { useDefaultModel, useModelById } from '@renderer/hooks/useModel'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useTheme } from '@renderer/hooks/useTheme'
 import { toast } from '@renderer/services/toast'
 import { cn } from '@renderer/utils/style'
-import { type Model } from '@shared/data/types/model'
-import { isNonChatModel } from '@shared/utils/model'
-import { MessageSquareMore, Rocket, Settings2 } from 'lucide-react'
+import { type Model, type UniqueModelId } from '@shared/data/types/model'
+import { isNonChatModel, isSpeechToTextModel } from '@shared/utils/model'
+import { MessageSquareMore, Mic, Rocket, Settings2 } from 'lucide-react'
 import type { FC, ReactNode } from 'react'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -80,6 +81,8 @@ const ModelSettings: FC<ModelSettingsProps> = ({
 }) => {
   const { defaultModel, quickModel, setDefaultModel, setQuickModel } = useDefaultModel()
   const { providers } = useProviders({ enabled: true })
+  const [voiceInputModelId, setVoiceInputModelId] = usePreference('feature.voice_input.model_id')
+  const { model: voiceInputModel } = useModelById(voiceInputModelId as UniqueModelId | null)
   const [activePanel, setActivePanel] = useState<ModelSettingsPanel>(null)
   const { theme } = useTheme()
   const { t } = useTranslation()
@@ -87,6 +90,14 @@ const ModelSettings: FC<ModelSettingsProps> = ({
   const chatModelFilter = useCallback(
     (model: Model) => !isNonChatModel(model) && (modelFilter?.(model) ?? true),
     [modelFilter]
+  )
+  const speechModelFilter = useCallback((model: Model) => isSpeechToTextModel(model), [])
+  const onSelectVoiceInput = useCallback(
+    (selected: Model | undefined) => {
+      if (!selected) return
+      void setVoiceInputModelId(selected.id)
+    },
+    [setVoiceInputModelId]
   )
   const selectableDefaultModel = defaultModel && chatModelFilter(defaultModel) ? defaultModel : undefined
   const selectableQuickModel = quickModel && chatModelFilter(quickModel) ? quickModel : undefined
@@ -179,6 +190,21 @@ const ModelSettings: FC<ModelSettingsProps> = ({
                 <Settings2 size={16} />
               </Button>
             )}
+          </ModelSettingRow>
+          {showDividers && <SettingDivider />}
+          <ModelSettingRow
+            compact={compact}
+            icon={<Mic size={16} className="lucide-custom shrink-0 text-foreground" />}
+            title={t('settings.models.voice_input.label')}
+            description={showDescription ? t('settings.models.voice_input.description') : undefined}>
+            <DefaultModelSelector
+              model={voiceInputModel}
+              providers={providers}
+              filter={speechModelFilter}
+              compact={compact}
+              onSelect={onSelectVoiceInput}
+              placeholder={t('settings.models.empty')}
+            />
           </ModelSettingRow>
           {showDividers && <SettingDivider />}
         </SettingGroup>

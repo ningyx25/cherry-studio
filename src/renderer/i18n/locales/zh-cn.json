@@ -1627,6 +1627,16 @@
         "image_or_document": "上传图片或文档",
         "upload_from_local": "上传本地文件..."
       },
+      "voice_input": {
+        "label": "语音输入",
+        "no_model": "未配置语音转文字模型",
+        "not_supported": "当前环境不支持录音",
+        "permission_denied": "麦克风权限被拒绝",
+        "recording_failed": "录音失败",
+        "stop": "停止录音",
+        "transcribing": "转写中…",
+        "transcription_failed": "语音转写失败"
+      },
       "web_search": {
         "builtin": {
           "disabled_content": "当前模型不支持网络搜索功能",
@@ -7514,7 +7524,11 @@
       "translate_model_prompt_message": "请输入翻译模型提示词",
       "translate_model_prompt_title": "翻译模型提示词",
       "use_assistant": "使用助手",
-      "use_model": "默认模型"
+      "use_model": "默认模型",
+      "voice_input": {
+        "description": "输入框语音输入按钮使用的语音转文字模型",
+        "label": "语音输入模型"
+      }
     },
     "moresetting": {
       "check": {

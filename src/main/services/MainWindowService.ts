@@ -58,6 +58,7 @@ export class MainWindowService extends BaseService {
   protected async onInit() {
     const windowManager = application.get('WindowManager')
     this.setupHtmlArtifactPreviewSession()
+    this.setupMicrophonePermissionHandler()
 
     // Wire business listeners onto fresh main windows. Reuse paths (singleton reopen)
     // do not fire onWindowCreatedByType — by design, since listeners are already attached.
@@ -263,6 +264,38 @@ export class MainWindowService extends BaseService {
           })
         : mainWindow.maximize()
     }
+  }
+
+  /**
+   * Restricts microphone (`media`/`audio`) permission requests to the app's own
+   * renderer, so the composer's voice input works while embedded content cannot
+   * grab the mic. Only `media` is intercepted — every other permission keeps
+   * Electron's default (approve), leaving existing webview/fullscreen behavior
+   * untouched. The HTML-artifact preview partition keeps its own deny-all
+   * handlers (see `setupHtmlArtifactPreviewSession`).
+   */
+  private setupMicrophonePermissionHandler() {
+    const defaultSession = session.defaultSession
+    const isAudioRequest = (details: unknown) =>
+      (details as Electron.MediaAccessPermissionRequest | undefined)?.mediaTypes?.includes('audio') === true
+
+    defaultSession.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
+      if (permission !== 'media') return true
+      if (!isAudioRequest(details)) return false
+      return isAppRendererUrl(webContents ? webContents.getURL() : requestingOrigin)
+    })
+    defaultSession.setPermissionRequestHandler((webContents, permission, callback, details) => {
+      if (permission !== 'media') {
+        callback(true)
+        return
+      }
+      callback(isAudioRequest(details) && isAppRendererUrl(webContents?.getURL()))
+    })
+
+    this.registerDisposable(() => {
+      defaultSession.setPermissionCheckHandler(null)
+      defaultSession.setPermissionRequestHandler(null)
+    })
   }
 
   private setupHtmlArtifactPreviewSession() {

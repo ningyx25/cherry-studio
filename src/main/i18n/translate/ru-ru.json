@@ -28,7 +28,8 @@
         "list_models": "Список моделей, доступных через этот шлюз, в формате models OpenAI.",
         "messages": "Создаёт сообщение. Формат запроса и ответа соответствует Anthropic Messages; с `stream: true` вывод передаётся по частям.",
         "responses": "Создаёт ответ. Формат запроса и ответа соответствует OpenAI Responses.",
-        "search_knowledge_bases": "Ищет в одной или нескольких базах знаний и возвращает подходящие фрагменты документов."
+        "search_knowledge_bases": "Ищет в одной или нескольких базах знаний и возвращает подходящие фрагменты документов.",
+        "transcriptions": "[to be translated]:Transcribe uploaded audio to text. Request and response bodies follow the OpenAI audio transcriptions format; the app's configured voice-input model is used when no model is specified."
       },
       "tags": {
         "anthropic": "Эндпоинты, совместимые с Anthropic. Укажите базовый URL этого шлюза в Anthropic SDK, чтобы их использовать.",
