@@ -1,15 +1,6 @@
 {
   "sourceRevision": "d316ec5345680f1de511fd6df3a7fbdb3edad151",
   "providers": {
-    "huatuoin": {
-      "type": "openai",
-      "apiHost": "https://open.cherryin.net",
-      "anthropicApiHost": "https://open.cherryin.net",
-      "isNotSupportArrayContent": false,
-      "isNotSupportDeveloperRole": false,
-      "isNotSupportStreamOptions": false,
-      "models": {}
-    },
     "silicon": {
       "type": "openai",
       "apiHost": "https://api.siliconflow.cn",

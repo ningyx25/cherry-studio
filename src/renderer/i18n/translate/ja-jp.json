@@ -4705,11 +4705,9 @@
     },
     "skip": "スキップ",
     "toast": {
-      "complete_failed": "セットアップを完了できませんでした。もう一度お試しください。",
-      "connected": "HuaTuoINに正常に接続されました"
+      "complete_failed": "セットアップを完了できませんでした。もう一度お試しください。"
     },
     "welcome": {
-      "login_huatuoin": "HuaTuoINでログイン",
       "or_continue_with": "または続行",
       "other_provider": "他のプロバイダーを選択",
       "select_other_provider": "他のプロバイダーを選択",
@@ -5259,8 +5257,6 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
-    "huatuoai": "HuaTuoAI",
-    "huatuoin": "HuaTuoIN",
     "huggingface": "ハギングフェイス",
     "hunyuan": "腾讯混元",
     "hyperbolic": "Hyperbolic",
@@ -7533,7 +7529,9 @@
       "use_model": "デフォルトモデル",
       "voice_input": {
         "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
-        "label": "[to be translated]:Voice Input Model"
+        "label": "[to be translated]:Voice Input Model",
+        "language_auto": "[to be translated]:Auto-detect",
+        "language_label": "[to be translated]:Voice input language"
       }
     },
     "moresetting": {
@@ -7872,12 +7870,6 @@
         "sign_in_success": "Grok CLIにサインインしました",
         "signing_in": "ブラウザを待機中…"
       },
-      "huatuoin": {
-        "api_host": {
-          "acceleration": "加速度領域",
-          "international": "国際ドメイン"
-        }
-      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "/images/editsに使用します。デフォルトのチャットエンドポイントのBase URLを使用する場合は空白にしてください",
@@ -7912,18 +7904,6 @@
         "connect": "{{provider}}に接続",
         "description": "本サービスは<website>{{provider}}</website>によって提供されます",
         "error": "認証失敗",
-        "huatuoIn": {
-          "description": "セルフホストしたNew-APIサーバーでOAuth 2.0（PKCE）を使用してログイン",
-          "logged_in": "OAuth経由でログインしました",
-          "login_button": "HuaTuoINで認証",
-          "logout_button": "ログアウト",
-          "not_logged_in": "未ログイン",
-          "register_account": "Create account",
-          "service_attribution": "This service is provided by <link>open.cherryin.ai</link>",
-          "tagline": "After you sign in, you can use all model services",
-          "title": "OAuthログイン",
-          "use_api_key": "Use API key instead"
-        },
         "logged_in": "ログインしました",
         "logout": "ログアウト",
         "logout_confirm": "本当にログアウトしますか？",

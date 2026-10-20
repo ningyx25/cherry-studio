@@ -4705,11 +4705,9 @@
     },
     "skip": "Bỏ qua",
     "toast": {
-      "complete_failed": "Không thể hoàn tất thiết lập. Vui lòng thử lại.",
-      "connected": "Đã kết nối thành công với HuaTuoIN"
+      "complete_failed": "Không thể hoàn tất thiết lập. Vui lòng thử lại."
     },
     "welcome": {
-      "login_huatuoin": "Đăng nhập bằng HuaTuoIN",
       "or_continue_with": "HOẶC TIẾP TỤC VỚI",
       "other_provider": "Chọn Nhà Cung Cấp Khác",
       "select_other_provider": "Chọn Nhà Cung Cấp Khác",
@@ -5259,8 +5257,6 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
-    "huatuoai": "HuaTuoAI",
-    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "Tencent Hunyuan",
     "hyperbolic": "Hyperbol",
@@ -7533,7 +7529,9 @@
       "use_model": "Mô hình Mặc định",
       "voice_input": {
         "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
-        "label": "[to be translated]:Voice Input Model"
+        "label": "[to be translated]:Voice Input Model",
+        "language_auto": "[to be translated]:Auto-detect",
+        "language_label": "[to be translated]:Voice input language"
       }
     },
     "moresetting": {
@@ -7872,12 +7870,6 @@
         "sign_in_success": "Đã đăng nhập vào Grok CLI",
         "signing_in": "Đang chờ trình duyệt…"
       },
-      "huatuoin": {
-        "api_host": {
-          "acceleration": "Miền gia tốc",
-          "international": "Tên miền quốc tế"
-        }
-      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "Được sử dụng cho /images/edits; để trống để sử dụng URL cơ sở điểm cuối chat mặc định",
@@ -7912,18 +7904,6 @@
         "connect": "Kết nối {{provider}}",
         "description": "Dịch vụ này được cung cấp bởi <website>{{provider}}</website>",
         "error": "Autentificación fallida",
-        "huatuoIn": {
-          "description": "Đăng nhập vào HuaTuoIN bằng OAuth 2.0",
-          "logged_in": "Đã đăng nhập qua OAuth",
-          "login_button": "Ủy quyền với HuaTuoIN",
-          "logout_button": "Keluar",
-          "not_logged_in": "Chưa đăng nhập",
-          "register_account": "Create account",
-          "service_attribution": "This service is provided by <link>open.cherryin.ai</link>",
-          "tagline": "After you sign in, you can use all model services",
-          "title": "Đăng nhập OAuth",
-          "use_api_key": "Use API key instead"
-        },
         "logged_in": "Đã đăng nhập",
         "logout": "Logga ut",
         "logout_confirm": "Bạn có chắc chắn muốn đăng xuất?",

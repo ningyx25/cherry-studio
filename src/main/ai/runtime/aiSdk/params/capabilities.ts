@@ -52,7 +52,7 @@ export interface ResolveCapabilitiesOptions {
   serving?: KimiFormulaCredentials
   /**
    * The id the runtime actually instantiates. `config.ts` may override the registry's adapter family
-   * (moonshot and huatuoin resolve to `openai-compatible` there but run under their own extension),
+   * (moonshot and new-api resolve to `openai-compatible` there but run under their own extension),
    * and `providerToolPlugin` reads its config by THAT id — so the config has to be built under it,
    * not under the registry's. Keying it off the adapter family handed the Kimi factory an empty
    * config, i.e. an empty api key.

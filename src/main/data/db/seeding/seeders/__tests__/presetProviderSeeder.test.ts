@@ -122,4 +122,33 @@ describe('PresetProviderSeeder.run — insert-only behavior', () => {
     const after = await dbh.db.select().from(userProviderTable)
     expect(after).toHaveLength(before.length)
   })
+
+  it('prunes canonical preset rows dropped from the registry, keeping custom and grouped rows', async () => {
+    // Legacy residue: 'huatuoai' is a canonical preset that no longer exists in
+    // the (fake) registry, 'user-gateway' is a fully custom row,
+    // 'custom-zhipu' is a user instance grouped under the zhipu preset, and
+    // 'local-embedding' is owned by LocalModelSeeder (never the registry).
+    const [huatuoKey, customKey, groupedKey, localKey] = generateOrderKeySequence(4)
+    await dbh.db.insert(userProviderTable).values([
+      { providerId: 'huatuoai', name: 'HuaTuoAI', orderKey: huatuoKey, presetProviderId: 'huatuoai' },
+      { providerId: 'user-gateway', name: 'My Gateway', orderKey: customKey, presetProviderId: null },
+      { providerId: 'custom-zhipu', name: 'My ZhiPu', orderKey: groupedKey, presetProviderId: 'zhipu' },
+      {
+        providerId: 'local-embedding',
+        name: 'Local Embedding',
+        orderKey: localKey,
+        presetProviderId: 'local-embedding'
+      }
+    ])
+
+    const seed = new PresetProviderSeeder()
+    seed.run(dbh.db)
+
+    const rows = await dbh.db.select().from(userProviderTable)
+    const ids = rows.map((r) => r.providerId)
+    expect(ids).not.toContain('huatuoai') // canonical preset dropped from registry → pruned
+    expect(ids).toContain('user-gateway') // custom provider untouched
+    expect(ids).toContain('custom-zhipu') // preset-grouped custom row untouched
+    expect(ids).toContain('local-embedding') // LocalModelSeeder-owned provider untouched
+  })
 })

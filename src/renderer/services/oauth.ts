@@ -30,6 +30,10 @@ export const oauthWithSiliconFlow = async (setKey) => {
   window.addEventListener('message', messageHandler)
 }
 
+// NOTE: the OAuth credentials below (`cherry_studio_oauth`, `cherry-ai.com`, `cherryCode`) are
+// registered server-side by third-party platforms (Inferera, 302.ai, AiOnly). They are opaque
+// identifiers issued to the app, not our branding: renaming any of them breaks sign-in on those
+// providers. Left as-is deliberately.
 export const oauthWithAihubmix = async (setKey) => {
   const authUrl = ` https://console.inferera.com/token?client_id=cherry_studio_oauth&lang=${await getLanguageCode()}&aff=SJyh`
 

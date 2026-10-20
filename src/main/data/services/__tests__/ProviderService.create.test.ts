@@ -18,9 +18,9 @@ vi.mock('@huatuostudio/provider-registry/node', () => {
         {
           id: 'huatuoin',
           endpointConfigs: {
-            'google-generate-content': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
-            'openai-responses': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
-            'openai-chat-completions': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' }
+            'google-generate-content': { adapterFamily: 'huatuoin', baseUrl: 'https://api.example-gateway.test' },
+            'openai-responses': { adapterFamily: 'huatuoin', baseUrl: 'https://api.example-gateway.test' },
+            'openai-chat-completions': { adapterFamily: 'huatuoin', baseUrl: 'https://api.example-gateway.test' }
           },
           defaultChatEndpoint: 'openai-chat-completions'
         }
@@ -55,15 +55,15 @@ describe('ProviderService.create — endpoint config overrides', () => {
       name: 'HuaTuoIn Express',
       defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
       endpointConfigs: {
-        [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://express-ent-admin.cherryin.ai' },
-        [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]: { baseUrl: 'https://express-ent-admin.cherryin.ai/v1beta' },
-        [ENDPOINT_TYPE.OPENAI_RESPONSES]: { baseUrl: 'https://express-ent-admin.cherryin.ai' }
+        [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://enterprise.example-gateway.test' },
+        [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]: { baseUrl: 'https://enterprise.example-gateway.test/v1beta' },
+        [ENDPOINT_TYPE.OPENAI_RESPONSES]: { baseUrl: 'https://enterprise.example-gateway.test' }
       }
     })
 
     // baseUrls are preserved; adapterFamily is derived.
     expect(created.endpointConfigs?.[ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]).toEqual({
-      baseUrl: 'https://express-ent-admin.cherryin.ai/v1beta',
+      baseUrl: 'https://enterprise.example-gateway.test/v1beta',
       adapterFamily: 'huatuoin'
     })
     expect(created.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]?.adapterFamily).toBe('huatuoin')
@@ -76,7 +76,7 @@ describe('ProviderService.create — endpoint config overrides', () => {
       .from(userProviderTable)
       .where(eq(userProviderTable.providerId, 'huatuoin-express'))
     expect(row.endpointConfigs?.[ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]).toEqual({
-      baseUrl: 'https://express-ent-admin.cherryin.ai/v1beta'
+      baseUrl: 'https://enterprise.example-gateway.test/v1beta'
     })
     expect(row.defaultChatEndpoint).toBeNull()
   })

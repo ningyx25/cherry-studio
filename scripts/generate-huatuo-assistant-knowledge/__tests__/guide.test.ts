@@ -211,7 +211,7 @@ describe('HuaTuo Assistant guide', () => {
 
     expect(supportingPrompts).toContain('mcp__assistant__product_info')
     expect(supportingPrompts).not.toMatch(/\/(?:app|settings)\//)
-    expect(supportingPrompts).not.toContain('open.cherryin.ai')
+    expect(supportingPrompts).not.toMatch(/cherry/i)
     expect(supportingPrompts).not.toContain('live official release notes')
   })
 

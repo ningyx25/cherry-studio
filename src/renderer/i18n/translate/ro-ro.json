@@ -4705,11 +4705,9 @@
     },
     "skip": "Sariți",
     "toast": {
-      "complete_failed": "Nu s-a putut finaliza configurarea. Vă rugăm să încercați din nou.",
-      "connected": "Conectat cu succes la HuaTuoIN"
+      "complete_failed": "Nu s-a putut finaliza configurarea. Vă rugăm să încercați din nou."
     },
     "welcome": {
-      "login_huatuoin": "Conectare cu HuaTuoIN",
       "or_continue_with": "SAU CONTINUAȚI CU",
       "other_provider": "Alegeți alți furnizori",
       "select_other_provider": "Selectați alt furnizor",
@@ -5259,8 +5257,6 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
-    "huatuoai": "HuaTuoAI",
-    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "Tencent Hunyuan",
     "hyperbolic": "Hyperbolic",
@@ -7533,7 +7529,9 @@
       "use_model": "Model implicit",
       "voice_input": {
         "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
-        "label": "[to be translated]:Voice Input Model"
+        "label": "[to be translated]:Voice Input Model",
+        "language_auto": "[to be translated]:Auto-detect",
+        "language_label": "[to be translated]:Voice input language"
       }
     },
     "moresetting": {
@@ -7872,12 +7870,6 @@
         "sign_in_success": "Conectat la Grok CLI",
         "signing_in": "Așteptând browserul…"
       },
-      "huatuoin": {
-        "api_host": {
-          "acceleration": "Domeniu de accelerație",
-          "international": "Domeniu internațional"
-        }
-      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "Utilizat pentru /images/edits; lăsați gol pentru a utiliza URL-ul de bază implicit al endpoint-ului de chat",
@@ -7912,18 +7904,6 @@
         "connect": "Conectează {{provider}}",
         "description": "Acest serviciu este furnizat de <website>{{provider}}</website>",
         "error": "Autentificare eșuată",
-        "huatuoIn": {
-          "description": "Autentifică-te cu serverul tău auto-găzduit New-API folosind OAuth 2.0 (PKCE)",
-          "logged_in": "Conectat prin OAuth",
-          "login_button": "Autorizează cu HuaTuoIN",
-          "logout_button": "Deconectare",
-          "not_logged_in": "Neautentificat",
-          "register_account": "Create account",
-          "service_attribution": "This service is provided by <link>open.cherryin.ai</link>",
-          "tagline": "After you sign in, you can use all model services",
-          "title": "Autentificare OAuth",
-          "use_api_key": "Use API key instead"
-        },
         "logged_in": "Conectat",
         "logout": "Deconectare",
         "logout_confirm": "Ești sigur că vrei să te deconectezi?",

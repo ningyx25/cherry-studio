@@ -19,7 +19,12 @@ const REDIRECT_URI = 'huatuostudio://oauth/callback'
 const FLOW_TTL_MS = 10 * 60 * 1000
 
 function registerFlow(transport: DeepLinkCallbackTransport, state = 'state') {
-  transport.registerAuthorizationRequest('https://open.cherryin.ai/oauth2/auth', state, 'verifier', 'settings-window')
+  transport.registerAuthorizationRequest(
+    'https://open.example-oauth.test/oauth2/auth',
+    state,
+    'verifier',
+    'settings-window'
+  )
 }
 
 describe('DeepLinkCallbackTransport', () => {

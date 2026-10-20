@@ -301,7 +301,7 @@ describe('ProviderModelMappings', () => {
       expect(result.apiKeys).toEqual([])
     })
 
-    it('preserves OAuth for non-anthropic legacy providers (e.g. cherryin)', () => {
+    it('preserves OAuth for non-anthropic legacy providers', () => {
       const result = transformProvider(
         {
           id: 'someoauth',

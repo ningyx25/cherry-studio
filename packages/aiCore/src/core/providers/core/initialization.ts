@@ -19,8 +19,6 @@ import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import type { ProviderV3 } from '@ai-sdk/provider'
 import type { XaiProvider, XaiProviderSettings } from '@ai-sdk/xai'
 import { createXai } from '@ai-sdk/xai'
-import type { HuaTuoInProvider, HuaTuoInProviderSettings } from '@huatuostudio/ai-sdk-provider'
-import { createHuaTuoIn } from '@huatuostudio/ai-sdk-provider'
 import type { OpenRouterProvider, OpenRouterProviderSettings } from '@openrouter/ai-sdk-provider'
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import { customProvider, type LanguageModel } from 'ai'
@@ -122,26 +120,6 @@ const AzureExtension = ProviderExtension.create({
     } satisfies ProviderVariant<AzureOpenAIProviderSettings, AzureOpenAIProvider, AnthropicProvider>
   ] as const
 } as const satisfies ProviderExtensionConfig<AzureOpenAIProviderSettings, AzureOpenAIProvider, 'azure'>)
-
-const HuaTuoInExtension = ProviderExtension.create({
-  name: 'huatuoin',
-  supportsImageGeneration: true,
-  create: createHuaTuoIn,
-
-  variants: [
-    {
-      suffix: 'chat',
-      name: 'HuaTuoIN Chat',
-      transform: (provider): ProviderV3 =>
-        customProvider({
-          fallbackProvider: {
-            ...provider,
-            languageModel: (modelId: string) => provider.chat(modelId)
-          }
-        })
-    }
-  ] as const
-} as const satisfies ProviderExtensionConfig<HuaTuoInProviderSettings, HuaTuoInProvider, 'huatuoin'>)
 
 const DeepSeekExtension = ProviderExtension.create({
   name: 'deepseek',
@@ -267,8 +245,7 @@ type CoreExtensions = readonly [
   typeof XaiExtension,
   typeof DeepSeekExtension,
   typeof OpenRouterExtension,
-  typeof OpenAICompatibleExtension,
-  typeof HuaTuoInExtension
+  typeof OpenAICompatibleExtension
 ]
 
 export const coreExtensions: CoreExtensions = [
@@ -279,8 +256,7 @@ export const coreExtensions: CoreExtensions = [
   XaiExtension,
   DeepSeekExtension,
   OpenRouterExtension,
-  OpenAICompatibleExtension,
-  HuaTuoInExtension
+  OpenAICompatibleExtension
 ]
 
 /**

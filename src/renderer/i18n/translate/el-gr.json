@@ -4705,11 +4705,9 @@
     },
     "skip": "Παράλειψη",
     "toast": {
-      "complete_failed": "Αδυναμία ολοκλήρωσης της ρύθμισης. Παρακαλώ προσπαθήστε ξανά.",
-      "connected": "Συνδέθηκε επιτυχώς με το HuaTuoIN"
+      "complete_failed": "Αδυναμία ολοκλήρωσης της ρύθμισης. Παρακαλώ προσπαθήστε ξανά."
     },
     "welcome": {
-      "login_huatuoin": "Σύνδεση με HuaTuoIN",
       "or_continue_with": "Ή ΣΥΝΕΧΕΙΑ ΜΕ",
       "other_provider": "Επιλέξτε Άλλους Παρόχους",
       "select_other_provider": "Επιλέξτε Άλλο Πάροχο",
@@ -5259,8 +5257,6 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
-    "huatuoai": "HuaTuoAI",
-    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "Tencent Hunyuan",
     "hyperbolic": "Υπερβολικός",
@@ -7533,7 +7529,9 @@
       "use_model": "Προεπιλεγμένο Μοντέλο",
       "voice_input": {
         "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
-        "label": "[to be translated]:Voice Input Model"
+        "label": "[to be translated]:Voice Input Model",
+        "language_auto": "[to be translated]:Auto-detect",
+        "language_label": "[to be translated]:Voice input language"
       }
     },
     "moresetting": {
@@ -7872,12 +7870,6 @@
         "sign_in_success": "Συνδεδεμένος στο Grok CLI",
         "signing_in": "Αναμονή για πρόγραμμα περιήγησης…"
       },
-      "huatuoin": {
-        "api_host": {
-          "acceleration": "Τομέας επιτάχυνσης",
-          "international": "Διεθνής τομέας"
-        }
-      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "Χρησιμοποιείται για /images/edits; αφήστε το κενό για να χρησιμοποιήσετε την προεπιλεγμένη Βασική URL τελικού σημείου συζήτησης",
@@ -7912,18 +7904,6 @@
         "connect": "Σύνδεση {{provider}}",
         "description": "Η υπηρεσία παρέχεται από την ιστοσελίδα {{provider}}",
         "error": "Αποτυχία πιστοποίησης",
-        "huatuoIn": {
-          "description": "Συνδεθείτε με τον διακομιστή New-API που φιλοξενείτε ο ίδιος χρησιμοποιώντας OAuth 2.0 (PKCE)",
-          "logged_in": "Σύνδεση μέσω OAuth",
-          "login_button": "Εξουσιοδότηση με HuaTuoIN",
-          "logout_button": "Αποσύνδεση",
-          "not_logged_in": "Δεν έχετε συνδεθεί",
-          "register_account": "Create account",
-          "service_attribution": "This service is provided by <link>open.cherryin.ai</link>",
-          "tagline": "After you sign in, you can use all model services",
-          "title": "Σύνδεση μέσω OAuth",
-          "use_api_key": "Use API key instead"
-        },
         "logged_in": "Συνδεδεμένος",
         "logout": "Αποσύνδεση",
         "logout_confirm": "Είσαι σίγουρος ότι θέλεις να αποσυνδεθείς;",

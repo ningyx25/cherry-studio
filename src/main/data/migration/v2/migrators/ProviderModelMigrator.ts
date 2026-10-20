@@ -22,12 +22,7 @@ import {
   synthesizePresetFromOverride
 } from '@data/services/ProviderRegistryService'
 import { generateOrderKeySequenceBetween } from '@data/services/utils/orderKey'
-import {
-  ENDPOINT_TYPE,
-  type EndpointType,
-  type ProtoModelConfig,
-  type ProtoProviderConfig
-} from '@huatuostudio/provider-registry'
+import type { EndpointType, ProtoModelConfig, ProtoProviderConfig } from '@huatuostudio/provider-registry'
 import { RegistryLoader } from '@huatuostudio/provider-registry/node'
 import { loggerService } from '@logger'
 import type { Model as LegacyModel, Provider as LegacyProvider } from '@main/data/migration/legacyTypes'
@@ -68,17 +63,6 @@ const V1_CUSTOM_PROVIDER_API_FEATURES_BASELINE = {
   streamOptions: true,
   developerRole: false
 } satisfies ApiFeatures
-
-function inferCherryInEndpointTypes(modelId: string): EndpointType[] {
-  const normalizedModelId = modelId.trim().toLowerCase()
-  if (normalizedModelId.startsWith('anthropic/')) {
-    return [ENDPOINT_TYPE.ANTHROPIC_MESSAGES]
-  }
-  if (normalizedModelId.startsWith('google/')) {
-    return [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]
-  }
-  return [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]
-}
 
 const PROVIDER_MODEL_MIGRATION_ERROR_IDS = {
   prepare: 'provider_model_prepare_failed',
@@ -337,11 +321,7 @@ export class ProviderModelMigrator extends BaseMigrator {
     legacy: LegacyModel
   ): Omit<InsertUserModelRow, 'orderKey'> {
     const presetProvider = this.resolveEffectivePresetProvider(providerRow)
-    // 'cherryin' was retired from the registry, so the preset lookup above can no
-    // longer resolve it; match the legacy row ids directly (v1 databases still
-    // carry 'cherryin' providers).
-    const isLegacyCherryIn = providerRow.providerId === 'cherryin' || providerRow.presetProviderId === 'cherryin'
-    const endpointTypes = row.endpointTypes ?? (isLegacyCherryIn ? inferCherryInEndpointTypes(row.modelId) : null)
+    const endpointTypes = row.endpointTypes
     const loader = this.getLoader()
     const registryOverride = presetProvider ? loader.findOverride(presetProvider.id, row.modelId) : null
     const presetModel: ProtoModelConfig | null =
@@ -357,9 +337,6 @@ export class ProviderModelMigrator extends BaseMigrator {
       return {
         ...row,
         presetModelId: presetModel.id,
-        // Retired legacy ids (e.g. 'cherryin') no longer resolve a preset, but
-        // their endpoint routing can no longer be re-derived from the registry
-        // either — carry the inferred value through.
         endpointTypes,
         capabilities: hasExplicitCapabilitySelection ? row.capabilities : null,
         inputModalities: null,

@@ -4705,11 +4705,9 @@
     },
     "skip": "Passer",
     "toast": {
-      "complete_failed": "Impossible de terminer la configuration. Veuillez réessayer.",
-      "connected": "Connecté avec succès à HuaTuoIN"
+      "complete_failed": "Impossible de terminer la configuration. Veuillez réessayer."
     },
     "welcome": {
-      "login_huatuoin": "Se connecter avec HuaTuoIN",
       "or_continue_with": "OU CONTINUER AVEC",
       "other_provider": "Choisir d'autres fournisseurs",
       "select_other_provider": "Sélectionner un autre fournisseur",
@@ -5259,8 +5257,6 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
-    "huatuoai": "HuaTuoAI",
-    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "Tencent HunYuan",
     "hyperbolic": "Hyperbolique",
@@ -7533,7 +7529,9 @@
       "use_model": "Modèle par défaut",
       "voice_input": {
         "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
-        "label": "[to be translated]:Voice Input Model"
+        "label": "[to be translated]:Voice Input Model",
+        "language_auto": "[to be translated]:Auto-detect",
+        "language_label": "[to be translated]:Voice input language"
       }
     },
     "moresetting": {
@@ -7872,12 +7870,6 @@
         "sign_in_success": "Connecté à Grok CLI",
         "signing_in": "En attente du navigateur…"
       },
-      "huatuoin": {
-        "api_host": {
-          "acceleration": "Domaine d'accélération",
-          "international": "Domaine international"
-        }
-      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "Utilisé pour /images/edits ; laissez vide pour utiliser l'URL de base du point de terminaison de chat par défaut",
@@ -7912,18 +7904,6 @@
         "connect": "Connecter {{provider}}",
         "description": "Этот сервис предоставляется <website>{{provider}}</website>",
         "error": "Échec de l'authentification",
-        "huatuoIn": {
-          "description": "Connectez-vous à votre serveur New-API auto-hébergé à l'aide d'OAuth 2.0 (PKCE)",
-          "logged_in": "Connecté via OAuth",
-          "login_button": "Autoriser avec HuaTuoIN",
-          "logout_button": "Déconnexion",
-          "not_logged_in": "Non connecté",
-          "register_account": "Create account",
-          "service_attribution": "This service is provided by <link>open.cherryin.ai</link>",
-          "tagline": "After you sign in, you can use all model services",
-          "title": "Connexion OAuth",
-          "use_api_key": "Use API key instead"
-        },
         "logged_in": "Connecté",
         "logout": "Déconnexion",
         "logout_confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",

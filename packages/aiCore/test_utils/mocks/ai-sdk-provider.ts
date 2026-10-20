@@ -3,11 +3,6 @@
  * This mock is used in tests to avoid importing the actual package
  */
 
-export type HuaTuoInProviderSettings = {
-  apiKey?: string
-  baseURL?: string
-}
-
 export class OpenAICompatibleRerankingModel {
   readonly specificationVersion = 'v3'
 
@@ -30,36 +25,3 @@ export const createOpenAICompatibleRerankingModel = (
     baseURL: string
   }
 ) => new OpenAICompatibleRerankingModel(modelId, { provider: `${settings.name}.rerank` })
-
-// oxlint-disable-next-line no-unused-vars
-export const createHuaTuoIn = (_options?: HuaTuoInProviderSettings) => ({
-  // oxlint-disable-next-line no-unused-vars
-  languageModel: (_modelId: string) => ({
-    specificationVersion: 'v3',
-    provider: 'huatuoin',
-    modelId: 'mock-model',
-    supportedUrls: {},
-    doGenerate: async () => ({ text: 'mock response' }),
-    doStream: async () => ({ stream: (async function* () {})() })
-  }),
-  // oxlint-disable-next-line no-unused-vars
-  chat: (_modelId: string) => ({
-    specificationVersion: 'v3',
-    provider: 'huatuoin-chat',
-    modelId: 'mock-model',
-    supportedUrls: {},
-    doGenerate: async () => ({ text: 'mock response' }),
-    doStream: async () => ({ stream: (async function* () {})() })
-  }),
-  // oxlint-disable-next-line no-unused-vars
-  textEmbeddingModel: (_modelId: string) => ({
-    specificationVersion: 'v3',
-    provider: 'huatuoin',
-    modelId: 'mock-embedding-model'
-  }),
-  rerankingModel: (modelId: string) => ({
-    specificationVersion: 'v3',
-    provider: 'huatuoin.rerank',
-    modelId
-  })
-})

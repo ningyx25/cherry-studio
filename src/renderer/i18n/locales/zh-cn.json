@@ -4694,7 +4694,7 @@
       "missing_model": "请先启用该服务商下的至少一个模型",
       "missing_provider": "请先启用一个服务商",
       "next": "下一步",
-      "subtitle": "添加 API Key 或登录 HuaTuoIN，然后启用一个服务商。",
+      "subtitle": "添加 API Key 或登录，然后启用一个服务商。",
       "title": "选择服务商"
     },
     "select_model": {
@@ -4705,11 +4705,9 @@
     },
     "skip": "稍后设置",
     "toast": {
-      "complete_failed": "无法完成引导，请重试",
-      "connected": "成功连接 HuaTuoIN"
+      "complete_failed": "无法完成引导，请重试"
     },
     "welcome": {
-      "login_huatuoin": "连接 HuaTuoIN",
       "or_continue_with": "或",
       "other_provider": "配置其他服务商",
       "select_other_provider": "选择其他服务商",
@@ -5259,8 +5257,6 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
-    "huatuoai": "HuaTuoAI",
-    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "腾讯混元",
     "hyperbolic": "Hyperbolic",
@@ -7533,7 +7529,9 @@
       "use_model": "默认模型",
       "voice_input": {
         "description": "输入框语音输入按钮使用的语音转文字模型",
-        "label": "语音输入模型"
+        "label": "语音输入模型",
+        "language_auto": "自动检测",
+        "language_label": "语音输入语言"
       }
     },
     "moresetting": {
@@ -7872,12 +7870,6 @@
         "sign_in_success": "已登录 Grok CLI",
         "signing_in": "等待浏览器…"
       },
-      "huatuoin": {
-        "api_host": {
-          "acceleration": "加速域名",
-          "international": "国际域名"
-        }
-      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "用于 /images/edits；留空时使用默认对话端点的 Base URL",
@@ -7912,18 +7904,6 @@
         "connect": "关联 {{provider}} 账号",
         "description": "本服务由 <website>{{provider}}</website> 提供",
         "error": "认证失败",
-        "huatuoIn": {
-          "description": "使用 OAuth 2.0 登录 HuaTuoIN",
-          "logged_in": "已通过 OAuth 登录",
-          "login_button": "HuaTuoIN 授权登录",
-          "logout_button": "退出登录",
-          "not_logged_in": "未登录",
-          "register_account": "注册账户",
-          "service_attribution": "本服务由 <link>open.cherryin.ai</link> 提供",
-          "tagline": "登录后即可使用所有模型服务",
-          "title": "OAuth 登录",
-          "use_api_key": "使用 API Key 登录"
-        },
         "logged_in": "已登录",
         "logout": "退出登录",
         "logout_confirm": "确定要退出登录吗？",

@@ -2,7 +2,7 @@
   "name": "@huatuostudio/ai-sdk-provider",
   "version": "0.1.6",
   "description": "HuaTuo Studio AI SDK provider bundle with HuaTuoIN routing.",
-  "keywords": ["ai-sdk", "provider", "huatuoin", "vercel-ai-sdk", "huatuo-studio"],
+  "keywords": ["ai-sdk", "provider", "rerank", "huatuo-studio"],
   "author": "HuaTuo Studio",
   "license": "MIT",
   "homepage": "https://github.com/huatuostudio/huatuo-studio",

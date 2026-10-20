@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { createHuaTuoIn } from '../huatuoin-provider'
 import { createOpenAICompatibleRerankingModel } from '../openai-compatible-reranking-model'
 
 describe('createOpenAICompatibleRerankingModel', () => {
@@ -160,39 +159,5 @@ describe('createOpenAICompatibleRerankingModel', () => {
         documents: { type: 'text', values: ['alpha'] }
       })
     ).rejects.toThrow()
-  })
-
-  it('is reused by HuaTuoIN reranking models', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          results: [{ index: 0, relevance_score: 0.7 }]
-        })
-      )
-    )
-    const provider = createHuaTuoIn({
-      apiKey: 'huatuo-key',
-      baseURL: 'https://open.cherryin.net/v1',
-      headers: { 'x-static': 'yes' },
-      fetch: fetchMock
-    })
-
-    const result = await provider.rerankingModel('BAAI/bge-reranker-v2-m3').doRerank({
-      query: 'hello',
-      documents: { type: 'text', values: ['alpha'] },
-      topN: 1
-    })
-
-    expect(fetchMock).toHaveBeenCalledWith('https://open.cherryin.net/v1/rerank', expect.any(Object))
-    const init = fetchMock.mock.calls[0]?.[1] as RequestInit
-    expect(JSON.parse(init.body as string)).toEqual({
-      model: 'BAAI/bge-reranker-v2-m3',
-      query: 'hello',
-      documents: ['alpha'],
-      top_n: 1
-    })
-    expect(new Headers(init.headers).get('Authorization')).toBe('Bearer huatuo-key')
-    expect(new Headers(init.headers).get('x-static')).toBe('yes')
-    expect(result.ranking).toEqual([{ index: 0, relevanceScore: 0.7 }])
   })
 })

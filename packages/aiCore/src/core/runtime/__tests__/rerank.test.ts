@@ -95,14 +95,14 @@ describe('RuntimeExecutor.rerank', () => {
     })
   })
 
-  it('resolves HuaTuoIN rerank models through the provider registry', async () => {
-    const huatuoInExecutor = await createExecutor('huatuoin', {
+  it('resolves rerank models through the provider registry', async () => {
+    const registryExecutor = await createExecutor('openai-compatible', {
       apiKey: 'test-key',
-      baseURL: 'https://open.cherryin.net/v1',
-      endpointType: 'jina-rerank'
+      baseURL: 'https://api.example-gateway.test/v1',
+      name: 'openai-compatible'
     })
 
-    await huatuoInExecutor.rerank({
+    await registryExecutor.rerank({
       model: 'BAAI/bge-reranker-v2-m3(free)',
       query: 'test',
       documents: ['test'],
@@ -112,7 +112,7 @@ describe('RuntimeExecutor.rerank', () => {
     expect(aiRerank).toHaveBeenLastCalledWith(
       expect.objectContaining({
         model: expect.objectContaining({
-          provider: 'huatuoin.rerank',
+          provider: 'openai-compatible.rerank',
           modelId: 'BAAI/bge-reranker-v2-m3(free)'
         }),
         query: 'test',

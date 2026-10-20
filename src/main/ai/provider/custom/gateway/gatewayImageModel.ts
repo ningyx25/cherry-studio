@@ -12,7 +12,7 @@
  *
  * This file ports that same adapter, wrapping the gateway's own
  * `languageModel()` (the only thing that speaks the gateway protocol) instead
- * of Google's. The aihubmix / huatuoin meta-providers solve the equivalent
+ * of Google's. The aihubmix / new-api meta-providers solve the equivalent
  * problem by pointing a real `@ai-sdk/google` provider at their Google-native
  * endpoint — the gateway has no such endpoint, so it needs this.
  */

@@ -36,7 +36,7 @@ const EndpointTypeSchema = z.enum(objectValues(ENDPOINT_TYPE))
 
 // `z.record(enum, value)` in zod 4 requires every enum key to be present —
 // `partialRecord` keeps keys optional so PATCH bodies can carry just the
-// endpoints actually configured (e.g. huatuoin only sets `openai-chat-completions`
+// endpoints actually configured (e.g. new-api only sets `openai-chat-completions`
 // and `anthropic-messages`, not the full EndpointType set).
 //
 // Values are the persisted OVERRIDE shape, not the full runtime EndpointConfig:

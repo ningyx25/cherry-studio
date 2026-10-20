@@ -317,7 +317,7 @@ describe('OAuthRuntimeService', () => {
       () => ({ input: 'http://example/api', init: {} }),
       doFetch,
       {
-        context: { apiHost: 'https://open.cherryin.ai' },
+        context: { apiHost: 'https://open.example-oauth.test' },
         onUnauthorized
       }
     )

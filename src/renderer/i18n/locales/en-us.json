@@ -4694,7 +4694,7 @@
       "missing_model": "Enable at least one model from the enabled provider",
       "missing_provider": "Enable a provider to continue",
       "next": "Next",
-      "subtitle": "Add an API key or sign in with HuaTuoIN, then enable a provider.",
+      "subtitle": "Add an API key or sign in, then enable a provider.",
       "title": "Choose a Provider"
     },
     "select_model": {
@@ -4705,11 +4705,9 @@
     },
     "skip": "Set up later",
     "toast": {
-      "complete_failed": "Unable to complete setup. Please try again.",
-      "connected": "Successfully connected to HuaTuoIN"
+      "complete_failed": "Unable to complete setup. Please try again."
     },
     "welcome": {
-      "login_huatuoin": "Connect HuaTuoIN",
       "or_continue_with": "or",
       "other_provider": "Set up another provider",
       "select_other_provider": "Select Other Provider",
@@ -5259,8 +5257,6 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
-    "huatuoai": "HuaTuoAI",
-    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "Tencent Hunyuan",
     "hyperbolic": "Hyperbolic",
@@ -7533,7 +7529,9 @@
       "use_model": "Default Model",
       "voice_input": {
         "description": "Speech-to-text model used by the composer voice input button",
-        "label": "Voice Input Model"
+        "label": "Voice Input Model",
+        "language_auto": "Auto-detect",
+        "language_label": "Voice input language"
       }
     },
     "moresetting": {
@@ -7872,12 +7870,6 @@
         "sign_in_success": "Signed in to Grok CLI",
         "signing_in": "Waiting for browser…"
       },
-      "huatuoin": {
-        "api_host": {
-          "acceleration": "Acceleration domain",
-          "international": "International domain"
-        }
-      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "Used for /images/edits; leave blank to use the default chat endpoint Base URL",
@@ -7912,18 +7904,6 @@
         "connect": "Connect {{provider}}",
         "description": "This service is provided by <website>{{provider}}</website>",
         "error": "Authentication failed",
-        "huatuoIn": {
-          "description": "Login to HuaTuoIN using OAuth 2.0",
-          "logged_in": "Logged in via OAuth",
-          "login_button": "Authorize with HuaTuoIN",
-          "logout_button": "Logout",
-          "not_logged_in": "Not logged in",
-          "register_account": "Create account",
-          "service_attribution": "This service is provided by <link>open.cherryin.ai</link>",
-          "tagline": "After you sign in, you can use all model services",
-          "title": "OAuth Login",
-          "use_api_key": "Use API key instead"
-        },
         "logged_in": "Logged in",
         "logout": "Logout",
         "logout_confirm": "Are you sure you want to logout?",

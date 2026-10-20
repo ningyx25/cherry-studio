@@ -104,7 +104,7 @@ export function isGeminiWebSearchProvider(provider: Provider): boolean {
 /**
  * Whether this host injects Google's NATIVE web tools for a Gemini model — the thing pre-3 Gemini
  * refuses to mix with function declarations. Direct Gemini/Vertex do; so do the gateways whose models
- * carry a `<host>.google` provider segment (huatuoin, aihubmix, new-api), because
+ * carry a `<host>.google` provider segment (aihubmix, new-api), because
  * `resolveToolCapability`'s aggregator fallback lands on the same google factory. Their declarations
  * are exactly the ones narrowed to the `gemini` vendor, so read that instead of the host id — keying
  * the guard to the host let those gateways ship native tools alongside function tools.

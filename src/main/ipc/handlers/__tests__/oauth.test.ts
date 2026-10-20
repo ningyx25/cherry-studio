@@ -10,7 +10,7 @@ const runtimeService = {
   hasToken: vi.fn(() => Promise.resolve(true)),
   getAccount: vi.fn(() => Promise.resolve({ accountId: 'acc-1' })),
   logout: vi.fn(() => Promise.resolve()),
-  startDeepLinkFlow: vi.fn(() => Promise.resolve({ authUrl: 'https://open.cherryin.ai/auth', state: 'st' }))
+  startDeepLinkFlow: vi.fn(() => Promise.resolve({ authUrl: 'https://open.example-oauth.test/auth', state: 'st' }))
 }
 
 const codeCliService = {
@@ -63,13 +63,17 @@ describe('oauthHandlers', () => {
   it('forwards the initiator window id, provider, and hosts to startDeepLinkFlow', async () => {
     await expect(
       oauthHandlers['oauth.start_deep_link_flow'](
-        { providerId: 'huatuoin', oauthServer: 'https://open.cherryin.ai', apiHost: 'https://api.cherryin.ai' },
+        {
+          providerId: 'huatuoin',
+          oauthServer: 'https://open.example-oauth.test',
+          apiHost: 'https://api.example-oauth.test'
+        },
         ctx
       )
-    ).resolves.toEqual({ authUrl: 'https://open.cherryin.ai/auth', state: 'st' })
+    ).resolves.toEqual({ authUrl: 'https://open.example-oauth.test/auth', state: 'st' })
     expect(runtimeService.startDeepLinkFlow).toHaveBeenCalledWith('w1', 'huatuoin', {
-      oauthServer: 'https://open.cherryin.ai',
-      apiHost: 'https://api.cherryin.ai'
+      oauthServer: 'https://open.example-oauth.test',
+      apiHost: 'https://api.example-oauth.test'
     })
   })
 
@@ -77,12 +81,12 @@ describe('oauthHandlers', () => {
   // no window) passes through so the runtime rejects it.
   it('defaults apiHost to oauthServer and passes a null senderId through', async () => {
     await oauthHandlers['oauth.start_deep_link_flow'](
-      { providerId: 'huatuoin', oauthServer: 'https://open.cherryin.ai' },
+      { providerId: 'huatuoin', oauthServer: 'https://open.example-oauth.test' },
       { senderId: null }
     )
     expect(runtimeService.startDeepLinkFlow).toHaveBeenCalledWith(null, 'huatuoin', {
-      oauthServer: 'https://open.cherryin.ai',
-      apiHost: 'https://open.cherryin.ai'
+      oauthServer: 'https://open.example-oauth.test',
+      apiHost: 'https://open.example-oauth.test'
     })
   })
 })

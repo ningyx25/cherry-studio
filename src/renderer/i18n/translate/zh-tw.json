@@ -4705,11 +4705,9 @@
     },
     "skip": "跳過",
     "toast": {
-      "complete_failed": "無法完成引導，請重試",
-      "connected": "成功連接到 HuaTuoIN"
+      "complete_failed": "無法完成引導，請重試"
     },
     "welcome": {
-      "login_huatuoin": "使用 HuaTuoIN 登入",
       "or_continue_with": "或繼續使用",
       "other_provider": "選擇其他供應商",
       "select_other_provider": "選擇其他供應商",
@@ -5259,8 +5257,6 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
-    "huatuoai": "HuaTuoAI",
-    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "騰訊混元",
     "hyperbolic": "Hyperbolic",
@@ -7533,7 +7529,9 @@
       "use_model": "預設模型",
       "voice_input": {
         "description": "[to be translated]:Speech-to-text model used by the composer voice input button",
-        "label": "[to be translated]:Voice Input Model"
+        "label": "[to be translated]:Voice Input Model",
+        "language_auto": "[to be translated]:Auto-detect",
+        "language_label": "[to be translated]:Voice input language"
       }
     },
     "moresetting": {
@@ -7872,12 +7870,6 @@
         "sign_in_success": "已登入 Grok CLI",
         "signing_in": "等待瀏覽器…"
       },
-      "huatuoin": {
-        "api_host": {
-          "acceleration": "加速網域",
-          "international": "國際網域"
-        }
-      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "用於 /images/edits；留空則使用預設聊天端點 Base URL",
@@ -7912,18 +7904,6 @@
         "connect": "關聯 {{provider}} 帳號",
         "description": "本服務由 <website>{{provider}}</website> 提供",
         "error": "認證失敗",
-        "huatuoIn": {
-          "description": "使用 OAuth 2.0 登入 HuaTuoIN",
-          "logged_in": "已透過 OAuth 登入",
-          "login_button": "HuaTuoIN 授權登入",
-          "logout_button": "登出",
-          "not_logged_in": "未登入",
-          "register_account": "註冊帳戶",
-          "service_attribution": "本服務由 <link>open.cherryin.ai</link> 提供",
-          "tagline": "登入後即可使用所有模型服務",
-          "title": "OAuth 登入",
-          "use_api_key": "使用 API 金鑰登入"
-        },
         "logged_in": "已登入",
         "logout": "登出",
         "logout_confirm": "確定要登出嗎？",

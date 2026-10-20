@@ -18,10 +18,10 @@ vi.mock('@huatuostudio/provider-registry/node', () => {
         {
           id: 'huatuoin',
           endpointConfigs: {
-            'anthropic-messages': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
-            'google-generate-content': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
-            'openai-responses': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
-            'openai-chat-completions': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' }
+            'anthropic-messages': { adapterFamily: 'huatuoin', baseUrl: 'https://api.example-gateway.test' },
+            'google-generate-content': { adapterFamily: 'huatuoin', baseUrl: 'https://api.example-gateway.test' },
+            'openai-responses': { adapterFamily: 'huatuoin', baseUrl: 'https://api.example-gateway.test' },
+            'openai-chat-completions': { adapterFamily: 'huatuoin', baseUrl: 'https://api.example-gateway.test' }
           }
         }
       ]
@@ -77,7 +77,7 @@ describe('ProviderService.update — endpoint config overrides', () => {
       name: 'HuaTuoIn Express',
       defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
       endpointConfigs: {
-        [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://express-ent-admin.cherryin.ai' }
+        [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://enterprise.example-gateway.test' }
       }
     })
 
@@ -85,9 +85,9 @@ describe('ProviderService.update — endpoint config overrides', () => {
     providerService.update('huatuoin-express', {
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: {
-          baseUrl: 'https://express-ent-admin.cherryin.ai'
+          baseUrl: 'https://enterprise.example-gateway.test'
         },
-        [ENDPOINT_TYPE.ANTHROPIC_MESSAGES]: { baseUrl: 'https://express-ent-admin.cherryin.ai/v1' }
+        [ENDPOINT_TYPE.ANTHROPIC_MESSAGES]: { baseUrl: 'https://enterprise.example-gateway.test/v1' }
       }
     })
 
@@ -99,10 +99,10 @@ describe('ProviderService.update — endpoint config overrides', () => {
     // Rows persist only the user-owned override shape — the echoed
     // adapterFamily is stripped for preset-linked providers.
     expect(row.endpointConfigs?.[ENDPOINT_TYPE.ANTHROPIC_MESSAGES]).toEqual({
-      baseUrl: 'https://express-ent-admin.cherryin.ai/v1'
+      baseUrl: 'https://enterprise.example-gateway.test/v1'
     })
     expect(row.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]).toEqual({
-      baseUrl: 'https://express-ent-admin.cherryin.ai'
+      baseUrl: 'https://enterprise.example-gateway.test'
     })
     // The runtime read supplies the preset family for the newly-added
     // endpoint instead of the openai-compatible fallback.
@@ -149,13 +149,13 @@ describe('ProviderService.update — endpoint config overrides', () => {
       name: 'HuaTuoIn Express 2',
       defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
       endpointConfigs: {
-        [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://express-ent-admin.cherryin.ai' }
+        [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://enterprise.example-gateway.test' }
       }
     })
 
     providerService.update('huatuoin-express-2', {
       endpointConfigs: {
-        [ENDPOINT_TYPE.OPENAI_RESPONSES]: { baseUrl: 'https://express-ent-admin.cherryin.ai' }
+        [ENDPOINT_TYPE.OPENAI_RESPONSES]: { baseUrl: 'https://enterprise.example-gateway.test' }
       }
     })
 
@@ -164,7 +164,7 @@ describe('ProviderService.update — endpoint config overrides', () => {
       .from(userProviderTable)
       .where(eq(userProviderTable.providerId, 'huatuoin-express-2'))
     expect(row.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_RESPONSES]).toEqual({
-      baseUrl: 'https://express-ent-admin.cherryin.ai'
+      baseUrl: 'https://enterprise.example-gateway.test'
     })
     const runtime = providerService.getByProviderId('huatuoin-express-2')
     expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_RESPONSES]?.adapterFamily).toBe('huatuoin')

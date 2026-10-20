@@ -46,7 +46,7 @@ export default defineProvider({
       baseUrl: 'http://localhost:3000'
     }
   },
-  // Gateway-mapped delivery (same vendor-segment fallback as huatuoin): a
+  // Gateway-mapped delivery (same vendor-segment fallback as aihubmix): a
   // self-hosted New API can front any model, but only vendors owning a native
   // tool factory actually receive one.
   serverTools: [
