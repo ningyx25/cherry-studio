@@ -26,10 +26,6 @@ vi.mock('@renderer/pages/settings/ProviderSettings/ProviderSpecific/ProviderOaut
   default: ({ providerId }: any) => <div>{`provider-oauth-${providerId}`}</div>
 }))
 
-vi.mock('@renderer/pages/settings/ProviderSettings/ProviderSpecific/CherryInOauth', () => ({
-  default: ({ providerId }: any) => <div>{`cherryin-oauth-${providerId}`}</div>
-}))
-
 vi.mock('@renderer/pages/settings/ProviderSettings/ProviderSpecific/DmxapiSettings', () => ({
   default: ({ providerId }: any) => <div>{`dmxapi-settings-${providerId}`}</div>
 }))
@@ -66,7 +62,6 @@ describe('ProviderSpecificSettings', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     useProviderMetaMock.mockReturnValue({
-      isCherryIN: false,
       isDmxapi: false
     })
     isProviderSupportAuthMock.mockReturnValue(false)
@@ -86,65 +81,59 @@ describe('ProviderSpecificSettings', () => {
 
   it.each([
     {
-      providerId: 'cherryin',
-      placement: 'beforeAuth' as const,
-      meta: { isCherryIN: true, isDmxapi: false },
-      expectedText: 'cherryin-oauth-cherryin'
-    },
-    {
       providerId: 'dmxapi',
       placement: 'beforeAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: true },
+      meta: { isDmxapi: true },
       expectedText: 'dmxapi-settings-dmxapi'
     },
     {
       providerId: 'ovms',
       placement: 'beforeAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: false },
+      meta: { isDmxapi: false },
       expectedText: 'ovms-settings'
     },
     {
       providerId: 'radeon-cloud',
       placement: 'beforeAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: false },
+      meta: { isDmxapi: false },
       expectedText: 'radeon-cloud-benefits'
     },
     {
       providerId: 'lmstudio',
       placement: 'afterAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: false },
+      meta: { isDmxapi: false },
       expectedText: 'lmstudio-settings-lmstudio'
     },
     {
       providerId: 'gpustack',
       placement: 'afterAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: false },
+      meta: { isDmxapi: false },
       expectedText: 'gpustack-settings-gpustack'
     },
     {
       providerId: 'copilot',
       placement: 'afterAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: false },
+      meta: { isDmxapi: false },
       expectedText: 'copilot-settings-copilot'
     },
     {
       providerId: 'aws-bedrock',
       placement: 'afterAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: false },
+      meta: { isDmxapi: false },
       expectedText: 'aws-bedrock-settings-aws-bedrock',
       authType: 'iam-aws'
     },
     {
       providerId: 'aws-bedrock',
       placement: 'afterAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: false },
+      meta: { isDmxapi: false },
       expectedText: 'aws-bedrock-settings-aws-bedrock',
       authType: 'api-key-aws'
     },
     {
       providerId: 'vertexai',
       placement: 'afterAuth' as const,
-      meta: { isCherryIN: false, isDmxapi: false },
+      meta: { isDmxapi: false },
       expectedText: 'vertexai-settings-vertexai',
       authType: 'iam-gcp'
     }
@@ -169,7 +158,7 @@ describe('ProviderSpecificSettings', () => {
     useProviderMock.mockReturnValue({
       provider: { id: 'radeon-cloud', name: 'AMD GPU Cloud', isEnabled: true }
     })
-    useProviderMetaMock.mockReturnValue({ isCherryIN: false, isDmxapi: false })
+    useProviderMetaMock.mockReturnValue({ isDmxapi: false })
     isProviderSupportAuthMock.mockReturnValue(false)
 
     const { container } = render(<ProviderSpecificSettings providerId="radeon-cloud" placement="beforeAuth" />)

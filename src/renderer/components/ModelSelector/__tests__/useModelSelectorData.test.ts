@@ -140,16 +140,16 @@ describe('useModelSelectorData', () => {
     expect(result.current.selectableModelsById.has('google::gemini-pro')).toBe(false)
   })
 
-  it.each(['cherryai', LOCAL_EMBEDDING_PROVIDER_ID])('hides the provider settings action for %s', (providerId) => {
+  it('hides the provider settings action for the local embedding provider', () => {
     wireDeps({
-      providers: [makeProvider(providerId)],
-      models: [makeModel('qwen', providerId)]
+      providers: [makeProvider(LOCAL_EMBEDDING_PROVIDER_ID)],
+      models: [makeModel('qwen', LOCAL_EMBEDDING_PROVIDER_ID)]
     })
 
     const { result } = renderHook(() => useModelSelectorData({ searchText: '' }))
 
     expect(result.current.listItems.find((item) => item.type === 'group')).toMatchObject({
-      key: `provider-${providerId}`,
+      key: `provider-${LOCAL_EMBEDDING_PROVIDER_ID}`,
       canNavigateToSettings: false
     })
   })

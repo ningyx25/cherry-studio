@@ -1,4 +1,4 @@
-import { InputGroup, InputGroupAddon, InputGroupInput, Tooltip } from '@cherrystudio/ui'
+import { InputGroup, InputGroupAddon, InputGroupInput, Tooltip } from '@huatuostudio/ui'
 import { useProvider } from '@renderer/hooks/useProvider'
 import type { ApiKeyConnectivity } from '@renderer/pages/settings/ProviderSettings/types/healthCheck'
 import { Activity, Eye, EyeOff, KeyRound, Loader2 } from 'lucide-react'
@@ -59,7 +59,7 @@ export default function ApiKey({
 
   return (
     <>
-      <ProviderSection id={provider.id === 'cherryin' ? 'cherryin-api-key-section' : undefined}>
+      <ProviderSection>
         <ProviderField
           className="space-y-2"
           title={

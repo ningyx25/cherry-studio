@@ -209,8 +209,6 @@ export function buildCapabilityProviderOptions(
     case SystemProviderIds.ollama:
       providerSpecificOptions = buildOllamaProviderOptions(model, reasoningOptions.options)
       break
-    case 'cherryin':
-    case 'cherryin-chat':
     case 'newapi':
     case 'aihubmix':
     case SystemProviderIds.dmxapi:
@@ -289,7 +287,7 @@ export function isCustomProviderNamespace(
 /**
  * For `openai-compatible`, rename `reasoning_effort` → `reasoningEffort` —
  * AI SDK silently drops the snake_case form.
- * See https://github.com/ningyx25/cherry-studio/issues/11987.
+ * See https://github.com/huatuostudio/huatuo-studio/issues/11987.
  */
 export function mergeCustomProviderParameters(
   providerOptions: Record<string, Record<string, JSONValue>>,

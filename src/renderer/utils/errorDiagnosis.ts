@@ -1,10 +1,9 @@
-import { dataApiService } from '@data/DataApiService'
 import { loggerService } from '@logger'
 import i18n from '@renderer/i18n/resolver'
 import type { SerializedError } from '@renderer/types/error'
 import { fetchGenerate } from '@renderer/utils/aiGeneration'
 import { isMcpErrorMessage, isQuotaErrorMessage } from '@renderer/utils/errorClassifier'
-import { CHERRYAI_DEFAULT_UNIQUE_MODEL_ID } from '@shared/data/presets/cherryai'
+import { readDefaultModel } from '@renderer/utils/model'
 import type { Model } from '@shared/data/types/model'
 import type { DiagnosisResult } from '@shared/data/types/uiParts'
 
@@ -20,10 +19,17 @@ export interface DiagnosisContext {
   modelId?: string
 }
 
-async function getCherryAiDefaultFreeModel(): Promise<Model> {
-  const model = await dataApiService.get(`/models/${CHERRYAI_DEFAULT_UNIQUE_MODEL_ID}`)
+/**
+ * Resolve the model used for AI-assisted diagnosis.
+ *
+ * There is no bundled managed model any more, so diagnosis runs on whatever the user has
+ * configured as their default chat model. With none configured the caller surfaces a
+ * "model unavailable" message instead of silently failing.
+ */
+async function getDiagnosisModel(): Promise<Model> {
+  const model = await readDefaultModel()
   if (!model) {
-    throw new Error(`Diagnosis model not found: ${CHERRYAI_DEFAULT_UNIQUE_MODEL_ID}`)
+    throw new Error('No default model configured for diagnosis')
   }
   return model
 }
@@ -249,7 +255,7 @@ Output: {"summary":"OpenAI account balance is exhausted","category":"quota","exp
   const content = JSON.stringify(errorInfo)
 
   try {
-    const model = await getCherryAiDefaultFreeModel()
+    const model = await getDiagnosisModel()
     const response = await fetchGenerate({ prompt, content, model, throwOnError: true })
     if (!response) {
       throw new Error(`Empty response from model: ${model.id}`)
@@ -270,7 +276,7 @@ export async function classifyErrorByAI(error: SerializedError, language: string
   const content = `Error: ${error.name}: ${error.message}`
 
   try {
-    const model = await getCherryAiDefaultFreeModel()
+    const model = await getDiagnosisModel()
     const response = await fetchGenerate({ prompt, content, model, throwOnError: true })
     return response?.trim() || ''
   } catch (error) {

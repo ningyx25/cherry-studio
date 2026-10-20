@@ -24,7 +24,7 @@ vi.mock('@logger', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui/icons', () => ({
+vi.mock('@huatuostudio/ui/icons', () => ({
   useIcon: () => ({
     Avatar: ({ size, shape }: { size: number; shape: string }) => (
       <span data-testid="model-icon" data-size={size} data-shape={shape} />
@@ -32,7 +32,7 @@ vi.mock('@cherrystudio/ui/icons', () => ({
   })
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<object>()
 
   return {
@@ -47,10 +47,6 @@ vi.mock('@cherrystudio/ui', async (importOriginal) => {
 vi.mock('@renderer/utils/model', async (importOriginal) => ({
   ...(await importOriginal<object>()),
   getModelLogoRef: () => undefined
-}))
-
-vi.mock('../../components/FreeTrialModelTag', () => ({
-  FreeTrialModelTag: () => null
 }))
 
 vi.mock('../../components/ModelTagsWithLabel', () => ({

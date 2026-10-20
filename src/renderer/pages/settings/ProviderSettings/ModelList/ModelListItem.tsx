@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, Button, RowFlex, Tooltip } from '@cherrystudio/ui'
-import { useIcon } from '@cherrystudio/ui/icons'
+import { Avatar, AvatarFallback, Button, RowFlex, Tooltip } from '@huatuostudio/ui'
+import { useIcon } from '@huatuostudio/ui/icons'
 import { toast } from '@renderer/services/toast'
 import { getModelLogoRef } from '@renderer/utils/model'
 import type { Model } from '@shared/data/types/model'
@@ -8,7 +8,6 @@ import { Bolt, Minus } from 'lucide-react'
 import React, { memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { FreeTrialModelTag } from '../components/FreeTrialModelTag'
 import ModelTagsWithLabel from '../components/ModelTagsWithLabel'
 import { modelListClasses } from '../primitives/ProviderSettingsPrimitives'
 import { getModelOperationErrorMessage } from './errorMessage'
@@ -82,7 +81,6 @@ const ModelListItem: React.FC<ModelListItemProps> = ({
             <div className={modelListClasses.rowCapabilityTagCluster}>
               <ModelTagsWithLabel model={model} provider={provider} size={12} style={{ flexWrap: 'nowrap' }} />
             </div>
-            <FreeTrialModelTag modelId={model.id} providerId={model.providerId} />
           </div>
           <div className={modelListClasses.rowInlineActions}>
             <Tooltip content={t('common.settings')} placement="top">

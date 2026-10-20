@@ -5,10 +5,8 @@ import { providerService } from '@data/services/ProviderService'
 import { topicService } from '@data/services/TopicService'
 import { loggerService } from '@logger'
 import type { AiGenerateRequest } from '@main/ai/AiService'
-import { isCherryAiClientSecretConfigured } from '@main/ai/provider/cherryai'
 import { WindowType } from '@main/core/window/types'
 import { messageService } from '@main/data/services/MessageService'
-import { CHERRYAI_DEFAULT_UNIQUE_MODEL_ID, isManagedCherryAiDefaultModel } from '@shared/data/presets/cherryai'
 import type { Message, MessageData, UIMessage } from '@shared/data/types/message'
 import { parseUniqueModelId, type UniqueModelId, UniqueModelIdSchema } from '@shared/data/types/model'
 import type { Topic } from '@shared/data/types/topic'
@@ -421,15 +419,14 @@ export class TopicNamingService {
       )
     }
 
-    // A title is a lightweight summary, so prefer the user's own quick-assistant model over the
-    // managed CherryAI default whenever the dedicated naming model is unset or unusable.
+    // A title is a lightweight summary, so prefer the user's own quick-assistant model
+    // whenever the dedicated naming model is unset or unusable.
     const quickModelId = this.toUsableNamingModelId(preferenceService.get('feature.quick_assistant.model_id'))
     if (quickModelId) return quickModelId
 
-    // Last resort. When the signing secret was never injected (local/dev builds),
-    // the managed default cannot serve a request either — return null and skip
-    // auto-naming rather than 401 on every exchange.
-    return isCherryAiClientSecretConfigured() ? CHERRYAI_DEFAULT_UNIQUE_MODEL_ID : null
+    // No managed fallback exists: without a user-configured or quick-assistant model there is
+    // nothing that can serve the request, so skip auto-naming instead of failing every exchange.
+    return null
   }
 
   /**
@@ -444,12 +441,6 @@ export class TopicNamingService {
     if (!parsed.success) return null
 
     const { providerId, modelId } = parseUniqueModelId(parsed.data)
-    // The managed CherryAI default only works when the signing secret was injected
-    // at build time; without it every request 401s. Treat it as unusable so naming
-    // falls back to a configured model instead of erroring.
-    if (isManagedCherryAiDefaultModel(providerId, modelId) && !isCherryAiClientSecretConfigured()) {
-      return null
-    }
     try {
       const provider = providerService.getByProviderId(providerId)
       if (isExternalCliProvider(provider)) return null

@@ -2,7 +2,6 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 
 import { WindowType } from '@main/core/window/types'
-import { CHERRYAI_DEFAULT_UNIQUE_MODEL_ID } from '@shared/data/presets/cherryai'
 import { MockMainPreferenceServiceUtils } from '@test-mocks/main/PreferenceService'
 import { mockMainLoggerService } from '@test-mocks/MainLoggerService'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -112,11 +111,13 @@ describe('TopicNamingService', () => {
     MockMainPreferenceServiceUtils.resetMocks()
     mockMainLoggerService.warn.mockClear()
     mockMainLoggerService.debug.mockClear()
-    // Most tests assume a working build where the CherryAI signing secret was
-    // injected at build time. Tests exercising the missing-secret fallback gate
-    // stub the env to the absent state themselves.
-    vi.stubEnv('MAIN_VITE_CHERRYAI_CLIENT_SECRET', 'present')
     MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.enabled', true)
+    // Summary rename resolves its model from topic.naming.model_id, falling back
+    // to the quick-assistant model; every rename-path test needs one of the two.
+    MockMainPreferenceServiceUtils.setPreferenceValue(
+      'feature.quick_assistant.model_id',
+      'adf11f2e-26bf-496f-b196-a118a1a9b40e::deepseek-v4-flash-0731'
+    )
     mocks.getModelByKey.mockReturnValue({ id: 'openai::gpt-4o-mini' })
     mocks.getProviderByProviderId.mockReturnValue({ authMethods: ['api-key'] })
     mockRenameInputs()
@@ -162,8 +163,12 @@ describe('TopicNamingService', () => {
     })
   })
 
-  it('falls back to the managed CherryAI default when topic naming model preference is empty', async () => {
+  it('falls back to the quick-assistant model when the naming model preference is empty', async () => {
     MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', null)
+    MockMainPreferenceServiceUtils.setPreferenceValue(
+      'feature.quick_assistant.model_id',
+      'adf11f2e-26bf-496f-b196-a118a1a9b40e::deepseek-v4-flash-0731'
+    )
 
     await createService().maybeRenameFromConversationSummary('topic-1', undefined, 'message-1', {
       role: 'assistant',
@@ -172,51 +177,8 @@ describe('TopicNamingService', () => {
 
     expect(mocks.generateText).toHaveBeenCalledWith(
       expect.objectContaining({
-        assistantId: undefined,
-        uniqueModelId: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID
+        uniqueModelId: 'adf11f2e-26bf-496f-b196-a118a1a9b40e::deepseek-v4-flash-0731'
       })
-    )
-  })
-
-  it('falls back to the managed CherryAI default when topic naming model preference is invalid', async () => {
-    MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', 'bad-value')
-
-    await createService().maybeRenameFromConversationSummary('topic-1', undefined, 'message-1', {
-      role: 'assistant',
-      parts: [{ type: 'text', text: 'Assistant response' }]
-    } as never)
-
-    expect(mocks.generateText).toHaveBeenCalledWith(
-      expect.objectContaining({
-        uniqueModelId: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID
-      })
-    )
-    expect(mockMainLoggerService.warn).toHaveBeenCalledWith(
-      'topic.naming.model_id is not usable (invalid, missing, or agent-only provider); falling back to quick assistant model',
-      { configured: 'bad-value' }
-    )
-  })
-
-  it('falls back to the managed CherryAI default when topic naming model no longer exists', async () => {
-    MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', 'ghost::missing')
-    mocks.getModelByKey.mockImplementation(() => {
-      throw new Error('missing model')
-    })
-
-    await createService().maybeRenameFromConversationSummary('topic-1', undefined, 'message-1', {
-      role: 'assistant',
-      parts: [{ type: 'text', text: 'Assistant response' }]
-    } as never)
-
-    expect(mocks.getModelByKey).toHaveBeenCalledWith('ghost', 'missing')
-    expect(mocks.generateText).toHaveBeenCalledWith(
-      expect.objectContaining({
-        uniqueModelId: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID
-      })
-    )
-    expect(mockMainLoggerService.warn).toHaveBeenCalledWith(
-      'topic.naming.model_id is not usable (invalid, missing, or agent-only provider); falling back to quick assistant model',
-      { configured: 'ghost::missing' }
     )
   })
 
@@ -599,24 +561,18 @@ describe('TopicNamingService', () => {
     } as never)
 
     expect(mocks.getModelByKey).not.toHaveBeenCalledWith('claude-code', 'haiku')
-    expect(mocks.generateText).toHaveBeenCalledWith(
-      expect.objectContaining({
-        uniqueModelId: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID
-      })
-    )
     expect(mockMainLoggerService.warn).toHaveBeenCalledWith(
       'topic.naming.model_id is not usable (invalid, missing, or agent-only provider); falling back to quick assistant model',
       { configured: 'claude-code::haiku' }
     )
   })
 
-  it('falls back to the quick-assistant model when the naming model is the CherryAI default and the signing secret is absent', async () => {
-    MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', CHERRYAI_DEFAULT_UNIQUE_MODEL_ID)
+  it('uses the quick-assistant model when the naming model preference is unusable', async () => {
+    MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', null)
     MockMainPreferenceServiceUtils.setPreferenceValue(
       'feature.quick_assistant.model_id',
       'adf11f2e-26bf-496f-b196-a118a1a9b40e::deepseek-v4-flash-0731'
     )
-    vi.unstubAllEnvs() // secret absent
 
     await createService().maybeRenameFromConversationSummary('topic-1', 'assistant-1', 'message-1', {
       role: 'assistant',
@@ -630,10 +586,9 @@ describe('TopicNamingService', () => {
     )
   })
 
-  it('skips summary naming entirely when no usable model exists and the CherryAI secret is absent', async () => {
-    MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', CHERRYAI_DEFAULT_UNIQUE_MODEL_ID)
+  it('skips summary naming entirely when no usable model exists', async () => {
+    MockMainPreferenceServiceUtils.setPreferenceValue('topic.naming.model_id', null)
     MockMainPreferenceServiceUtils.setPreferenceValue('feature.quick_assistant.model_id', null)
-    vi.unstubAllEnvs() // secret absent
 
     await createService().maybeRenameFromConversationSummary('topic-1', 'assistant-1', 'message-1', {
       role: 'assistant',

@@ -1,16 +1,14 @@
 /**
- * `Provider + Model` → `ProviderConfig` for `@cherrystudio/ai-core`.
+ * `Provider + Model` → `ProviderConfig` for `@huatuostudio/ai-core`.
  * Resolves the serving credential and its safe identity in one step so billing
  * can attribute the request without consulting mutable rotation state later.
  */
 
 import { application } from '@application'
-import { formatPrivateKey, hasProviderConfig, type StringKeys } from '@cherrystudio/ai-core/provider'
-import type { CherryInProviderSettings } from '@cherrystudio/ai-sdk-provider'
+import { formatPrivateKey, hasProviderConfig, type StringKeys } from '@huatuostudio/ai-core/provider'
 import { providerService, type ResolvedProviderApiKey } from '@main/data/services/ProviderService'
 import { copilotService } from '@main/services/CopilotService'
 import { defaultAppHeaders } from '@main/utils/http'
-import { CHERRYAI_PROVIDER_ID } from '@shared/data/presets/cherryai'
 import { OPENAI_CODEX_PROVIDER_ID } from '@shared/data/presets/codex'
 import { GROK_CLI_PROVIDER_ID } from '@shared/data/presets/grokCli'
 import { LOCAL_EMBEDDING_PROVIDER_ID } from '@shared/data/presets/localEmbedding'
@@ -28,7 +26,6 @@ import { type AppProviderId, appProviderIds, type AppProviderSettingsMap } from 
 import { customFetch } from '../utils/customFetch'
 import { getBaseUrl, getExtraHeaders, routeToEndpoint } from '../utils/provider'
 import { stripArkUnsupportedIncludes } from './ark'
-import { generateSignature } from './cherryai'
 import { buildCodexRequestHeaders, coerceCodexRequestBody } from './codex'
 import { COPILOT_DEFAULT_HEADERS } from './constants'
 import type { ServingAuthMethod, ServingCredentialReceipt } from './credential'
@@ -87,15 +84,7 @@ function formatBaseURL(baseURL: string, provider: Provider, endpointType?: Endpo
   if (isGeminiProvider(provider)) return formatApiHost(baseURL, appendApiVersion, 'v1beta')
 
   // Providers that don't append API version
-  const noVersionProviders = [
-    'copilot',
-    'github',
-    CHERRYAI_PROVIDER_ID,
-    'perplexity',
-    'newapi',
-    'new-api',
-    'azure-openai'
-  ]
+  const noVersionProviders = ['copilot', 'github', 'perplexity', 'newapi', 'new-api', 'azure-openai']
   if (noVersionProviders.includes(provider.id) || noVersionProviders.includes(provider.presetProviderId ?? '')) {
     return formatApiHost(baseURL, false)
   }
@@ -189,7 +178,6 @@ export async function resolveProviderAiSdkConfig(
     { match: (p) => p.id === SystemProviderIds.copilot, build: withProviderAuth('oauth', buildCopilotConfig) },
     { match: (p) => p.id === OPENAI_CODEX_PROVIDER_ID, build: withProviderAuth('oauth', buildCodexConfig) },
     { match: (p) => p.id === GROK_CLI_PROVIDER_ID, build: withProviderAuth('oauth', buildGrokCliConfig) },
-    { match: (p) => p.id === CHERRYAI_PROVIDER_ID, build: withSelectedApiKey(buildCherryAIConfig) },
     // Local embedding runs fully in-process (transformers.js in a worker): no
     // endpoint, baseURL, or apiKey. Without this entry it falls through to the
     // openai-compatible builder, which hands ai-core an empty baseURL and throws
@@ -309,10 +297,6 @@ export async function resolveProviderAiSdkConfig(
       match: (_, id) => id === 'google-vertex' || id === 'google-vertex-anthropic',
       build: withProviderAuth('iam-gcp', buildVertexConfig)
     },
-    {
-      match: (p) => matchesPreset(p, SystemProviderIds.cherryin),
-      build: withSelectedApiKey(buildCherryinConfig)
-    },
     { match: (_, id) => id === 'newapi', build: withSelectedApiKey(buildNewApiConfig) },
     { match: (_, id) => id === 'aihubmix', build: withSelectedApiKey(buildAiHubMixConfig) },
     { match: (_, id) => id === 'dmxapi', build: withSelectedApiKey(buildDmxapiConfig) }
@@ -331,7 +315,7 @@ export async function resolveProviderAiSdkConfig(
   const { config } = resolved
   // Default every provider to the proxy-aware net.fetch base so the app proxy
   // (ProxyService → session.setProxy) applies to provider HTTP traffic. Builders
-  // that install their own fetch wrapper (e.g. CherryAI request signing) compose
+  // that install their own fetch wrapper (e.g. HuaTuoAI request signing) compose
   // on top of customFetch; `??=` preserves them rather than clobbering them.
   config.providerSettings.fetch ??= customFetch
 
@@ -476,28 +460,6 @@ function buildGrokCliFetch() {
   }
 }
 
-async function buildCherryAIConfig(ctx: BuilderContext): Promise<ProviderConfig<'openai-compatible'>> {
-  return {
-    providerId: 'openai-compatible',
-    endpoint: ctx.endpoint,
-    providerSettings: {
-      ...ctx.baseConfig,
-      name: ctx.actualProvider.id,
-      includeUsage: ctx.actualProvider.apiFeatures.streamOptions,
-      headers: { ...defaultAppHeaders(), ...getExtraHeaders(ctx.actualProvider) },
-      fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
-        const signature = generateSignature({
-          method: 'POST',
-          path: '/chat/completions',
-          query: '',
-          body: init?.body && typeof init.body === 'string' ? JSON.parse(init.body) : undefined
-        })
-        return customFetch(input, { ...init, headers: { ...init?.headers, ...signature } })
-      }
-    }
-  }
-}
-
 function buildCommonOptions(ctx: BuilderContext) {
   const options: Record<string, any> = {
     headers: {
@@ -620,48 +582,6 @@ function buildVertexConfig(
       ...(creds && { googleCredentials: creds })
     }
   } as ProviderConfig<'google-vertex'>
-}
-
-function mapCherryinEndpointType(epType: string | undefined): CherryInProviderSettings['endpointType'] {
-  if (!epType) return undefined
-
-  switch (epType) {
-    case ENDPOINT_TYPE.ANTHROPIC_MESSAGES:
-      return 'anthropic'
-    case ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT:
-      return 'gemini'
-    case ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS:
-    case ENDPOINT_TYPE.OLLAMA_CHAT:
-      return 'openai'
-    case ENDPOINT_TYPE.OPENAI_RESPONSES:
-      return 'openai-response'
-    case ENDPOINT_TYPE.JINA_RERANK:
-      return 'jina-rerank'
-    case ENDPOINT_TYPE.OPENAI_EMBEDDINGS:
-      return 'embedding'
-    default:
-      return 'openai'
-  }
-}
-
-function buildCherryinConfig(ctx: BuilderContext): ProviderConfig {
-  const provider = ctx.actualProvider
-  const anthropicBaseURL = formatApiHost(provider.endpointConfigs?.[ENDPOINT_TYPE.ANTHROPIC_MESSAGES]?.baseUrl)
-  const geminiBaseURL = formatApiHost(getBaseUrl(provider, ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT), true, 'v1beta')
-
-  const cherryinEndpointType = mapCherryinEndpointType(ctx.endpointType)
-
-  return {
-    providerId: ctx.aiSdkProviderId,
-    endpoint: ctx.endpoint,
-    providerSettings: {
-      ...ctx.baseConfig,
-      endpointType: cherryinEndpointType,
-      anthropicBaseURL,
-      geminiBaseURL,
-      headers: { ...defaultAppHeaders(), ...getExtraHeaders(ctx.actualProvider) }
-    }
-  }
 }
 
 function formatAzureBaseURL(baseURL: string, forAnthropic: boolean): string {
@@ -804,6 +724,26 @@ function formatNewApiBaseURL(baseURL: string, endpointType: EndpointType | undef
   }
 }
 
+function mapEndpointTypeToProviderSettings(
+  epType: string | undefined
+): 'anthropic' | 'gemini' | 'openai' | 'openai-response' | undefined {
+  if (!epType) return undefined
+
+  switch (epType) {
+    case ENDPOINT_TYPE.ANTHROPIC_MESSAGES:
+      return 'anthropic'
+    case ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT:
+      return 'gemini'
+    case ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS:
+    case ENDPOINT_TYPE.OLLAMA_CHAT:
+      return 'openai'
+    case ENDPOINT_TYPE.OPENAI_RESPONSES:
+      return 'openai-response'
+    default:
+      return undefined
+  }
+}
+
 function buildNewApiConfig(ctx: BuilderContext): ProviderConfig<'newapi'> {
   const endpointType = ctx.endpointType
   let rawBaseURL: string
@@ -823,7 +763,7 @@ function buildNewApiConfig(ctx: BuilderContext): ProviderConfig<'newapi'> {
     providerSettings: {
       ...ctx.baseConfig,
       baseURL,
-      endpointType: mapCherryinEndpointType(endpointType),
+      endpointType: mapEndpointTypeToProviderSettings(endpointType),
       headers: { ...defaultAppHeaders(), ...getExtraHeaders(ctx.actualProvider) }
     }
   }

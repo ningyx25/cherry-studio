@@ -1,4 +1,4 @@
-import { ENDPOINT_TYPE } from '@cherrystudio/provider-registry'
+import { ENDPOINT_TYPE } from '@huatuostudio/provider-registry'
 import { describe, expect, it } from 'vitest'
 
 import { transformModel, transformProvider } from '../ProviderModelMappings'

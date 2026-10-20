@@ -119,8 +119,6 @@ export function resolveProviderOptionsKey(
     case 'github-copilot-openai-compatible':
     case 'openai-compatible':
       return context?.actualProviderId ?? providerId
-    case 'cherryin':
-    case 'cherryin-chat':
     case 'newapi':
     case 'aihubmix':
     case SystemProviderIds.dmxapi:

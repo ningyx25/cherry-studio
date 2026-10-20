@@ -13,7 +13,7 @@ const useProviderHostPreviewMock = vi.fn()
 const useProviderEndpointActionsMock = vi.fn()
 const updateProviderMock = vi.fn()
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<any>()
 
   return {
@@ -23,10 +23,6 @@ vi.mock('@cherrystudio/ui', async (importOriginal) => {
     Tooltip: ({ children }: any) => <>{children}</>
   }
 })
-
-vi.mock('@renderer/pages/settings/ProviderSettings/ProviderSpecific/CherryInSettings', () => ({
-  default: () => <div>cherry-in-settings</div>
-}))
 
 vi.mock('../../ConnectionSettings/ProviderCustomHeaderDrawer', () => ({
   default: ({ providerId, open }: any) =>
@@ -105,7 +101,6 @@ describe('ApiHost', () => {
     useProviderMetaMock.mockReturnValue({
       isConnectionFieldVisible: true,
       isAzureOpenAI: false,
-      isCherryIN: false,
       isChineseUser: false
     })
   })
@@ -307,7 +302,6 @@ describe('ApiHost', () => {
     useProviderMetaMock.mockReturnValue({
       isConnectionFieldVisible: false,
       isAzureOpenAI: false,
-      isCherryIN: false,
       isChineseUser: false
     })
     useProviderHostPreviewMock.mockReturnValue({

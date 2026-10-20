@@ -20,7 +20,7 @@ const { providerEditorDrawerSpy } = vi.hoisted(() => ({
 let providerItemRects: Record<string, { bottom: number; top: number }> = {}
 let scrollerRect = { bottom: 100, top: 0 }
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<any>()
 
   return {
@@ -216,13 +216,13 @@ describe('ProviderList', () => {
     expect(onSelectProvider).toHaveBeenCalledWith('anthropic')
   })
 
-  it('hides CherryAI from the provider list', () => {
+  it('lists stale in-house provider rows like any other provider', () => {
     useProvidersMock.mockReturnValue({
       providers: [
         ...providers,
         {
-          id: 'cherryai',
-          name: 'CherryAI',
+          id: 'huatuoai',
+          name: 'HuaTuoAI',
           defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
           isEnabled: true
         }
@@ -233,8 +233,8 @@ describe('ProviderList', () => {
     render(<ProviderList selectedProviderId="openai" onSelectProvider={vi.fn()} />)
 
     expect(screen.getByText('OpenAI')).toBeInTheDocument()
-    expect(screen.queryByText('CherryAI')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('provider-list-item-cherryai')).not.toBeInTheDocument()
+    expect(screen.getByText('HuaTuoAI')).toBeInTheDocument()
+    expect(screen.getByTestId('provider-list-item-huatuoai')).toBeInTheDocument()
   })
 
   it('offers only safe canonical preset sources to the custom provider editor', () => {

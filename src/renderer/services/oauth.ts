@@ -2,7 +2,6 @@ import { loggerService } from '@logger'
 import i18n, { getLanguageCode } from '@renderer/i18n/resolver'
 import { ipcApi } from '@renderer/ipc'
 import { toast } from '@renderer/services/toast'
-import { SystemProviderIds } from '@shared/utils/systemProviderId'
 
 const logger = loggerService.withContext('oauth')
 
@@ -68,7 +67,7 @@ export const oauthWithAihubmix = async (setKey) => {
 }
 
 export const oauthWithPPIO = async (setKey) => {
-  const redirectUri = 'cherrystudio://'
+  const redirectUri = 'huatuostudio://'
   const authUrl = `https://ppio.com/oauth/authorize?invited_by=JYT9GD&client_id=${PPIO_CLIENT_ID}&scope=api%20openid&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}`
 
   window.open(
@@ -143,7 +142,7 @@ export const oauthWithPPIO = async (setKey) => {
 }
 
 export const oauthWith302AI = async (setKey) => {
-  const authUrl = 'https://dash.302.ai/sso/login?app=cherry-ai.com&name=Cherry%20Studio'
+  const authUrl = 'https://dash.302.ai/sso/login?app=cherry-ai.com&name=HuaTuo%20Studio'
 
   const popup = window.open(
     authUrl,
@@ -184,90 +183,6 @@ export const oauthWithAiOnly = async (setKey) => {
   window.addEventListener('message', messageHandler)
 }
 
-export interface NewApiOAuthConfig {
-  oauthServer: string
-  apiHost?: string
-}
-
-/**
- * CherryIN OAuth flow using Authorization Code with PKCE.
- *
- * PKCE, token exchange and API-key fetch all happen in the main process
- * (`OAuthRuntimeService`); the deep-link callback is routed by `ProtocolService`
- * directly to this renderer's webContents (captured at flow-start time), so we
- * just await a single point-to-point IPC event keyed by `state`.
- */
-export const oauthWithCherryIn = async (
-  setKey: (key: string) => void | Promise<void>,
-  config: NewApiOAuthConfig
-): Promise<string> => {
-  const { oauthServer, apiHost } = config
-
-  const { authUrl, state } = await ipcApi.request('oauth.start_deep_link_flow', {
-    providerId: SystemProviderIds.cherryin,
-    oauthServer,
-    apiHost
-  })
-
-  logger.debug('Opening authorization URL')
-
-  window.open(
-    authUrl,
-    'oauth',
-    'width=720,height=720,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,alwaysOnTop=yes,alwaysRaised=yes'
-  )
-
-  return new Promise<string>((resolve, reject) => {
-    let timeoutId: ReturnType<typeof setTimeout> | null = null
-
-    const removeListener = ipcApi.on('oauth.deep_link_result', async (result) => {
-      // Defensive: another concurrent CherryIN flow on the same window would
-      // hit the same listener; main only ever pushes for our state, but filter
-      // anyway to keep the contract explicit.
-      if (result.state !== state) return
-
-      cleanup()
-
-      if ('error' in result) {
-        logger.error(`OAuth error: ${result.error}`)
-        reject(new Error(result.error))
-        return
-      }
-
-      if (!result.apiKeys) {
-        reject(new Error('No API keys received'))
-        return
-      }
-
-      logger.debug('Successfully obtained API keys')
-      try {
-        await setKey(result.apiKeys)
-      } catch (err) {
-        reject(err)
-        return
-      }
-      resolve(result.apiKeys)
-    })
-
-    function cleanup(): void {
-      removeListener()
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-        timeoutId = null
-      }
-    }
-
-    timeoutId = setTimeout(
-      () => {
-        logger.warn('Flow timed out')
-        cleanup()
-        reject(new Error('OAuth flow timed out'))
-      },
-      10 * 60 * 1000
-    )
-  })
-}
-
 export const providerCharge = async (provider: string) => {
   const lang = await getLanguageCode()
   const chargeUrlMap = {
@@ -282,7 +197,7 @@ export const providerCharge = async (provider: string) => {
       height: 900
     },
     ppio: {
-      url: 'https://ppio.com/user/register?invited_by=JYT9GD&utm_source=github_cherry-studio&redirect=/billing',
+      url: 'https://ppio.com/user/register?invited_by=JYT9GD&utm_source=github_huatuo-studio&redirect=/billing',
       width: 900,
       height: 700
     },
@@ -321,7 +236,7 @@ export const providerBills = async (provider: string) => {
       height: 700
     },
     ppio: {
-      url: 'https://ppio.com/user/register?invited_by=JYT9GD&utm_source=github_cherry-studio&redirect=/billing/billing-details',
+      url: 'https://ppio.com/user/register?invited_by=JYT9GD&utm_source=github_huatuo-studio&redirect=/billing/billing-details',
       width: 900,
       height: 700
     },

@@ -40,7 +40,7 @@ vi.mock('react-i18next', async (importOriginal) => {
   }
 })
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<object>()
 
   return {
@@ -224,6 +224,41 @@ describe('Model drawers', () => {
         capabilities: [MODEL_CAPABILITY.IMAGE_GENERATION],
         inputModalities: [MODALITY.IMAGE],
         outputModalities: [MODALITY.IMAGE]
+      })
+    )
+  })
+
+  it('atomically maps a custom model to speech transcription from the purpose surface', async () => {
+    useProviderMock.mockReturnValue({
+      provider: {
+        id: 'custom-provider',
+        name: 'Custom Provider',
+        defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
+        endpointConfigs: {
+          [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://api.deepgram.com' }
+        }
+      }
+    })
+
+    render(<AddModelDrawer providerId="custom-provider" open prefill={null} onClose={vi.fn()} />)
+
+    fireEvent.click(screen.getByRole('radio', { name: /settings\.models\.add\.purpose\.transcription\.label/ }))
+    fireEvent.change(screen.getByLabelText('settings.models.add.model_id.label'), {
+      target: { value: 'nova-3' }
+    })
+
+    await act(async () => {
+      fireEvent.submit(screen.getByTestId('provider-settings-model-add-drawer-content'))
+    })
+
+    expect(createModelMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        providerId: 'custom-provider',
+        modelId: 'nova-3',
+        endpointTypes: [ENDPOINT_TYPE.OPENAI_AUDIO_TRANSCRIPTION],
+        capabilities: [MODEL_CAPABILITY.AUDIO_TRANSCRIPT],
+        inputModalities: [MODALITY.AUDIO],
+        outputModalities: [MODALITY.TEXT]
       })
     )
   })
@@ -819,18 +854,18 @@ describe('Model drawers', () => {
 
   it('shows and preserves the image-edit endpoint when adding another endpoint type', async () => {
     useProviderMock.mockReturnValue({
-      provider: { id: 'cherryin', name: 'CherryIN' }
+      provider: { id: 'aionly', name: 'AIOnly' }
     })
 
     render(
       <EditModelDrawer
-        providerId="cherryin"
+        providerId="aionly"
         open
         onClose={vi.fn()}
         model={
           {
-            id: 'cherryin::qwen-image-edit',
-            providerId: 'cherryin',
+            id: 'aionly::qwen-image-edit',
+            providerId: 'aionly',
             name: 'qwen-image-edit',
             group: 'Image',
             capabilities: [],
@@ -853,7 +888,7 @@ describe('Model drawers', () => {
     })
 
     expect(updateModelMock).toHaveBeenCalledWith(
-      'cherryin',
+      'aionly',
       'qwen-image-edit',
       expect.objectContaining({
         endpointTypes: [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS, ENDPOINT_TYPE.OPENAI_IMAGE_EDIT]
@@ -863,18 +898,18 @@ describe('Model drawers', () => {
 
   it('allows clearing the last endpoint type from the edit drawer', async () => {
     useProviderMock.mockReturnValue({
-      provider: { id: 'cherryin', name: 'CherryIN' }
+      provider: { id: 'aionly', name: 'AIOnly' }
     })
 
     render(
       <EditModelDrawer
-        providerId="cherryin"
+        providerId="aionly"
         open
         onClose={vi.fn()}
         model={
           {
-            id: 'cherryin::claude-4-sonnet',
-            providerId: 'cherryin',
+            id: 'aionly::claude-4-sonnet',
+            providerId: 'aionly',
             name: 'claude-4-sonnet',
             group: 'Anthropic',
             capabilities: [],
@@ -900,7 +935,7 @@ describe('Model drawers', () => {
     })
 
     expect(updateModelMock).toHaveBeenCalledWith(
-      'cherryin',
+      'aionly',
       'claude-4-sonnet',
       expect.objectContaining({ endpointTypes: [] })
     )

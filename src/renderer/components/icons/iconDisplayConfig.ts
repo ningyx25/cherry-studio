@@ -25,7 +25,6 @@ const ICON_DISPLAY_CONFIG: Readonly<Record<IconDisplayContext, Readonly<Record<s
     ling: miniAppContainedIcon
   },
   'provider-list': {
-    cherryin: providerListContainedIcon,
     aihubmix: providerListContainedIcon,
     lmstudio: providerListContainedIcon,
     anthropic: providerListContainedIcon,

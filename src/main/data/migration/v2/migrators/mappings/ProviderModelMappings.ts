@@ -2,6 +2,8 @@
  * Provider/model migration transforms for Redux llm -> SQLite user tables.
  */
 
+import type { InsertUserModelRow } from '@data/db/schemas/userModel'
+import type { InsertUserProviderRow, StoredEndpointConfigOverride } from '@data/db/schemas/userProvider'
 import {
   CURRENCY,
   type Currency,
@@ -10,9 +12,7 @@ import {
   type EndpointType,
   MODEL_CAPABILITY,
   type ModelCapability
-} from '@cherrystudio/provider-registry'
-import type { InsertUserModelRow } from '@data/db/schemas/userModel'
-import type { InsertUserProviderRow, StoredEndpointConfigOverride } from '@data/db/schemas/userProvider'
+} from '@huatuostudio/provider-registry'
 import { loggerService } from '@logger'
 import type { Model as LegacyModel, ModelType, Provider as LegacyProvider } from '@main/data/migration/legacyTypes'
 import { createUniqueModelId, type RuntimeModelPricing } from '@shared/data/types/model'
@@ -91,6 +91,7 @@ const LEGACY_TYPE_TO_ADAPTER_FAMILY: Partial<Record<LegacyProvider['type'], stri
 }
 
 const SYSTEM_PROVIDER_IDS = new Set([
+  // Legacy (v1) id — v1 databases still carry 'cherryin'.
   'cherryin',
   'silicon',
   'aihubmix',
@@ -301,6 +302,7 @@ function buildAuthConfig(legacy: LegacyProvider, settings: OldLlmSettings): Auth
     }
   }
 
+  // Legacy (v1) provider id — v1 databases still carry 'cherryin'.
   if (
     legacy.id === 'cherryin' &&
     settings.cherryIn &&

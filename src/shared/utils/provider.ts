@@ -7,8 +7,7 @@ import {
   type ServerTool,
   type ServerToolConfig,
   supportsServerToolFunctionMixing
-} from '@cherrystudio/provider-registry'
-import { CHERRYAI_PROVIDER_ID } from '@shared/data/presets/cherryai'
+} from '@huatuostudio/provider-registry'
 import { ENDPOINT_TYPE, type EndpointType, type Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 
@@ -90,12 +89,8 @@ export function isPerplexityProvider(provider: Provider): boolean {
   return provider.id === 'perplexity' || provider.presetProviderId === 'perplexity'
 }
 
-export function isCherryAIProvider(provider: Provider): boolean {
-  return provider.id === CHERRYAI_PROVIDER_ID || provider.presetProviderId === CHERRYAI_PROVIDER_ID
-}
-
 export function isNewApiProvider(provider: Provider): boolean {
-  return matchesPreset(provider, 'new-api') || matchesPreset(provider, 'cherryin') || matchesPreset(provider, 'aionly')
+  return matchesPreset(provider, 'new-api') || matchesPreset(provider, 'aionly')
 }
 
 export function isAIGatewayProvider(provider: Provider): boolean {
@@ -109,7 +104,7 @@ export function isGeminiWebSearchProvider(provider: Provider): boolean {
 /**
  * Whether this host injects Google's NATIVE web tools for a Gemini model — the thing pre-3 Gemini
  * refuses to mix with function declarations. Direct Gemini/Vertex do; so do the gateways whose models
- * carry a `<host>.google` provider segment (cherryin, aihubmix, new-api), because
+ * carry a `<host>.google` provider segment (huatuoin, aihubmix, new-api), because
  * `resolveToolCapability`'s aggregator fallback lands on the same google factory. Their declarations
  * are exactly the ones narrowed to the `gemini` vendor, so read that instead of the host id — keying
  * the guard to the host let those gateways ship native tools alongside function tools.
@@ -155,7 +150,7 @@ export function isProviderSupportAuth(provider: Pick<Provider, 'id'>): boolean {
  * suppressed and their sign-in panel renders through the provider registry
  * instead. Derived from the provider's `authMethods` (registry capability):
  * login-based ⇔ it declares methods and none is `'api-key'`. Absent ⇒ default
- * `['api-key']` ⇒ not login-based. CherryIN declares `['api-key', 'oauth']`, so
+ * `['api-key']` ⇒ not login-based. HuaTuoIN declares `['api-key', 'oauth']`, so
  * it is *not* login-based — its key inputs stay alongside the OAuth panel.
  */
 export function isLoginBasedProvider(provider: Pick<Provider, 'authMethods'>): boolean {

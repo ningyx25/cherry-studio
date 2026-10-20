@@ -119,12 +119,11 @@ jobs:
         env:
           ELECTRON_BUILDER_7Z_FILTER: BCJ
           WIN_SIGN: true
-          CHERRY_CERT_PATH: ${{ secrets.CHERRY_CERT_PATH }}
-          CHERRY_CERT_KEY: ${{ secrets.CHERRY_CERT_KEY }}
-          CHERRY_CERT_CSP: ${{ secrets.CHERRY_CERT_CSP }}
+          HUATUO_CERT_PATH: ${{ secrets.HUATUO_CERT_PATH }}
+          HUATUO_CERT_KEY: ${{ secrets.HUATUO_CERT_KEY }}
+          HUATUO_CERT_CSP: ${{ secrets.HUATUO_CERT_CSP }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_OPTIONS: --max-old-space-size=8192
-          MAIN_VITE_CHERRYAI_CLIENT_SECRET: ${{ secrets.MAIN_VITE_CHERRYAI_CLIENT_SECRET }}
           MAIN_VITE_MINERU_API_KEY: ${{ secrets.MAIN_VITE_MINERU_API_KEY }}
           RENDERER_VITE_AIHUBMIX_SECRET: ${{ secrets.RENDERER_VITE_AIHUBMIX_SECRET }}
           RENDERER_VITE_PPIO_APP_SECRET: ${{ secrets.RENDERER_VITE_PPIO_APP_SECRET }}

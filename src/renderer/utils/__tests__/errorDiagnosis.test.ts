@@ -1,5 +1,4 @@
 import type { SerializedError } from '@renderer/types/error'
-import { CHERRYAI_DEFAULT_UNIQUE_MODEL_ID } from '@shared/data/presets/cherryai'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('@renderer/utils/aiGeneration', () => ({
@@ -36,31 +35,22 @@ import { classifyErrorByAI, diagnoseError } from '../errorDiagnosis'
 const mockFetchGenerate = vi.mocked(fetchGenerate)
 const mockReadDefaultModel = vi.mocked(readDefaultModel)
 
+// Generic fixture model id (no in-house managed provider exists anymore).
+const HUATUOAI_DEFAULT_UNIQUE_MODEL_ID = 'huatuoai::qwen'
+
 function makeError(overrides: Partial<SerializedError> = {}): SerializedError {
   return { name: 'Error', message: 'test error', stack: null, ...overrides }
 }
 
-const { mockGetDiagnosisModel, mockIpcRequest } = vi.hoisted(() => ({
-  mockGetDiagnosisModel: vi.fn(),
-  mockIpcRequest: vi.fn()
-}))
-vi.mock('@data/DataApiService', () => ({
-  dataApiService: { get: mockGetDiagnosisModel }
-}))
-
-vi.mock('@renderer/ipc', () => ({
-  ipcApi: { request: mockIpcRequest }
-}))
-
 describe('ErrorDiagnosisService', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockGetDiagnosisModel.mockResolvedValue({
-      id: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID,
+    mockReadDefaultModel.mockResolvedValue({
+      id: HUATUOAI_DEFAULT_UNIQUE_MODEL_ID,
       name: 'Qwen',
-      providerId: 'cherryai',
+      providerId: 'huatuoai',
       apiModelId: 'qwen'
-    })
+    } as any)
   })
 
   describe('diagnoseError', () => {
@@ -107,7 +97,7 @@ describe('ErrorDiagnosisService', () => {
       await expect(diagnoseError(makeError(), 'en')).rejects.toThrow('Free diagnosis model is unavailable')
     })
 
-    it('uses the persisted CherryAI free model', async () => {
+    it("uses the user's default model for diagnosis", async () => {
       const mockResult = {
         summary: 'Error',
         category: 'unknown',
@@ -118,11 +108,11 @@ describe('ErrorDiagnosisService', () => {
 
       await diagnoseError(makeError(), 'en')
       expect(mockFetchGenerate.mock.calls[0][0]).toEqual(
-        expect.objectContaining({ model: expect.objectContaining({ id: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID }) })
+        expect.objectContaining({ model: expect.objectContaining({ id: HUATUOAI_DEFAULT_UNIQUE_MODEL_ID }) })
       )
     })
 
-    it('uses persisted Qwen without falling back to the default model', async () => {
+    it('diagnoses with whichever model the user configured as default', async () => {
       const defaultModel = { id: 'dashscope::deepseek-v3', name: 'DeepSeek V3', providerId: 'dashscope' }
       mockReadDefaultModel.mockResolvedValueOnce(defaultModel as any)
 
@@ -135,47 +125,21 @@ describe('ErrorDiagnosisService', () => {
       mockFetchGenerate.mockResolvedValue(JSON.stringify(mockResult))
 
       await diagnoseError(makeError(), 'en')
-      expect(mockGetDiagnosisModel).toHaveBeenCalledWith(`/models/${CHERRYAI_DEFAULT_UNIQUE_MODEL_ID}`)
       expect(mockFetchGenerate).toHaveBeenCalledTimes(1)
       expect(mockFetchGenerate).toHaveBeenCalledWith(
         expect.objectContaining({
-          model: expect.objectContaining({ id: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID }),
+          model: expect.objectContaining({ id: defaultModel.id }),
           throwOnError: true
         })
       )
-      expect(mockFetchGenerate).not.toHaveBeenCalledWith(expect.objectContaining({ model: defaultModel }))
-      expect(mockReadDefaultModel).not.toHaveBeenCalled()
-      expect(mockIpcRequest).not.toHaveBeenCalled()
     })
 
-    it('does not fall back when persisted Qwen is missing', async () => {
-      mockGetDiagnosisModel.mockResolvedValueOnce(undefined)
-      mockReadDefaultModel.mockResolvedValueOnce({
-        id: 'dashscope::deepseek-v3',
-        name: 'DeepSeek V3',
-        providerId: 'dashscope'
-      } as any)
+    it('surfaces the unavailable error when no default model is configured', async () => {
+      mockReadDefaultModel.mockResolvedValueOnce(undefined)
 
       await expect(diagnoseError(makeError(), 'en')).rejects.toThrow('Free diagnosis model is unavailable')
       expect(mockFetchGenerate).not.toHaveBeenCalled()
-      expect(mockReadDefaultModel).not.toHaveBeenCalled()
-    })
-
-    it('uses only CherryAI when no default model', async () => {
-      const mockResult = {
-        summary: 'Error',
-        category: 'unknown',
-        explanation: 'Something went wrong.',
-        steps: []
-      }
-      mockFetchGenerate.mockResolvedValue(JSON.stringify(mockResult))
-
-      await diagnoseError(makeError(), 'en')
-      expect(mockFetchGenerate).toHaveBeenCalledWith(
-        expect.objectContaining({
-          model: expect.objectContaining({ id: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID })
-        })
-      )
+      expect(mockReadDefaultModel).toHaveBeenCalledTimes(1)
     })
 
     it('includes context in error info', async () => {
@@ -309,18 +273,17 @@ describe('ErrorDiagnosisService', () => {
   })
 
   describe('classifyErrorByAI', () => {
-    it('returns an empty result instead of falling back when free Qwen fails', async () => {
+    it('returns an empty result instead of throwing when the default model fails', async () => {
       mockFetchGenerate.mockRejectedValue(new Error('network unavailable'))
 
       await expect(classifyErrorByAI(makeError(), 'en')).resolves.toBe('')
       expect(mockFetchGenerate).toHaveBeenCalledTimes(1)
       expect(mockFetchGenerate).toHaveBeenCalledWith(
         expect.objectContaining({
-          model: expect.objectContaining({ id: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID }),
+          model: expect.objectContaining({ id: HUATUOAI_DEFAULT_UNIQUE_MODEL_ID }),
           throwOnError: true
         })
       )
-      expect(mockReadDefaultModel).not.toHaveBeenCalled()
     })
   })
 })

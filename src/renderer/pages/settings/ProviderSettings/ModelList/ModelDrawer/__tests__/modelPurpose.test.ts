@@ -22,8 +22,6 @@ describe('getModelDrawerMode', () => {
     [{ id: 'custom-provider', presetProviderId: undefined }, 'purpose'],
     [{ id: 'new-api', presetProviderId: 'new-api' }, 'endpoint-types'],
     [{ id: 'custom-new-api', presetProviderId: 'new-api' }, 'endpoint-types'],
-    [{ id: 'cherryin', presetProviderId: 'cherryin' }, 'endpoint-types'],
-    [{ id: 'custom-cherryin', presetProviderId: 'cherryin' }, 'endpoint-types'],
     [{ id: 'aionly', presetProviderId: 'aionly' }, 'endpoint-types'],
     [{ id: 'openai', presetProviderId: undefined }, 'legacy'],
     [{ id: 'openai', presetProviderId: 'openai' }, 'legacy'],
@@ -94,9 +92,53 @@ describe('model purpose mapping', () => {
 
   it.each([
     [ENDPOINT_TYPE.OPENAI_IMAGE_GENERATION, 'image-generation'],
-    [ENDPOINT_TYPE.OPENAI_IMAGE_EDIT, 'image-edit']
+    [ENDPOINT_TYPE.OPENAI_IMAGE_EDIT, 'image-edit'],
+    [ENDPOINT_TYPE.OPENAI_AUDIO_TRANSCRIPTION, 'transcription']
   ] as const)('infers %s as %s', (endpointType, purpose) => {
     expect(inferModelPurpose({ endpointTypes: [endpointType] })).toBe(purpose)
+  })
+
+  it('infers transcription from the audio-transcript capability without an endpoint', () => {
+    expect(inferModelPurpose({ capabilities: [MODEL_CAPABILITY.AUDIO_TRANSCRIPT] })).toBe('transcription')
+  })
+
+  it('atomically maps transcription to the dedicated endpoint with audio-in / text-out', () => {
+    const result = applyModelPurpose(
+      {
+        endpointTypes: [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS],
+        capabilities: [],
+        inputModalities: [MODALITY.TEXT],
+        outputModalities: [MODALITY.TEXT]
+      },
+      'transcription'
+    )
+
+    expect(result).toEqual({
+      endpointTypes: [ENDPOINT_TYPE.OPENAI_AUDIO_TRANSCRIPTION],
+      capabilities: [MODEL_CAPABILITY.AUDIO_TRANSCRIPT],
+      inputModalities: [MODALITY.TEXT, MODALITY.AUDIO],
+      outputModalities: [MODALITY.TEXT]
+    })
+  })
+
+  it('strips transcription-owned fields when switching back to chat', () => {
+    const result = applyModelPurpose(
+      {
+        endpointTypes: [ENDPOINT_TYPE.OPENAI_AUDIO_TRANSCRIPTION],
+        capabilities: [MODEL_CAPABILITY.AUDIO_TRANSCRIPT],
+        inputModalities: [MODALITY.AUDIO],
+        outputModalities: [MODALITY.TEXT]
+      },
+      'chat',
+      { previousPurpose: 'transcription' }
+    )
+
+    expect(result).toEqual({
+      endpointTypes: [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS],
+      capabilities: [],
+      inputModalities: [],
+      outputModalities: [MODALITY.TEXT]
+    })
   })
 
   it('infers image generation from capability when no endpoint is available', () => {

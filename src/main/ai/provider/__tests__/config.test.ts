@@ -1,18 +1,10 @@
 import {
-  CHERRYAI_API_BASE_URL,
-  CHERRYAI_DEFAULT_MODEL_ID,
-  CHERRYAI_DEFAULT_MODEL_NAME,
-  CHERRYAI_DEFAULT_UNIQUE_MODEL_ID,
-  CHERRYAI_PROVIDER_ID
-} from '@shared/data/presets/cherryai'
-import {
   LOCAL_EMBEDDING_MODEL_ID,
   LOCAL_EMBEDDING_PROVIDER_ID,
   LOCAL_EMBEDDING_UNIQUE_MODEL_ID
 } from '@shared/data/presets/localEmbedding'
 import { ENDPOINT_TYPE, MODEL_CAPABILITY } from '@shared/data/types/model'
 import { type AuthConfig, DEFAULT_API_FEATURES } from '@shared/data/types/provider'
-import { net } from 'electron'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { makeModel } from '../../__tests__/fixtures/model'
@@ -27,9 +19,6 @@ const { resolveApiKeyMock, getAuthConfigMock, getByProviderIdMock } = vi.hoisted
   getAuthConfigMock: vi.fn<(providerId: string) => AuthConfig | null>(),
   getByProviderIdMock: vi.fn()
 }))
-const { generateSignatureMock } = vi.hoisted(() => ({
-  generateSignatureMock: vi.fn()
-}))
 
 vi.mock('@main/data/services/ProviderService', () => ({
   providerService: {
@@ -37,10 +26,6 @@ vi.mock('@main/data/services/ProviderService', () => ({
     getAuthConfig: getAuthConfigMock,
     getByProviderId: getByProviderIdMock
   }
-}))
-
-vi.mock('@main/ai/provider/cherryai', () => ({
-  generateSignature: generateSignatureMock
 }))
 
 // Import the SUT after the mock is declared.
@@ -504,217 +489,6 @@ describe('providerToAiSdkConfig — builder dispatch matrix', () => {
     })
   })
 
-  describe('CherryIn routing (default chat endpoint upgrades to cherryin-chat variant)', () => {
-    it('routes the default cherryin chat endpoint to buildCherryinConfig, not the generic builder (REGRESSION)', async () => {
-      // The resolver upgrades the default OpenAI chat endpoint to the `cherryin-chat` variant,
-      // so the old `id === 'cherryin'` dispatch row never matched and the request fell through
-      // to buildGenericProviderConfig — dropping endpointType + the relay anthropic/gemini URLs.
-      getByProviderIdMock.mockReturnValue(
-        makeProvider({
-          id: 'cherryin',
-          endpointConfigs: {
-            [ENDPOINT_TYPE.ANTHROPIC_MESSAGES]: { baseUrl: 'https://open.cherryin.net' },
-            [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]: { baseUrl: 'https://open.cherryin.net' }
-          }
-        })
-      )
-      const provider = makeProvider({
-        id: 'cherryin',
-        defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
-        endpointConfigs: {
-          [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: {
-            baseUrl: 'https://open.cherryin.net',
-            adapterFamily: 'cherryin'
-          }
-        }
-      })
-      const model = makeModel({
-        id: 'cherryin::gpt-4o',
-        apiModelId: 'gpt-4o',
-        endpointTypes: undefined
-      })
-
-      const config = await providerToAiSdkConfig(provider, model)
-      const settings = config.providerSettings as Record<string, unknown>
-
-      // The variant id still flows through as the providerId so the chat transform is selected.
-      expect(config.providerId).toBe('cherryin-chat')
-      // buildCherryinConfig sets endpointType + relay base URLs; the generic builder would not.
-      expect(settings.endpointType).toBe('openai')
-      expect(settings.anthropicBaseURL).toBeDefined()
-      expect(settings.geminiBaseURL).toBeDefined()
-    })
-
-    it('routes a CherryIN OpenAI model on the Responses endpoint through the CherryIN provider', async () => {
-      const provider = makeProvider({
-        id: 'cherryin',
-        defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
-        endpointConfigs: {
-          [ENDPOINT_TYPE.OPENAI_RESPONSES]: {
-            baseUrl: 'https://open.cherryin.net',
-            adapterFamily: 'cherryin'
-          }
-        }
-      })
-      const model = makeModel({
-        id: 'cherryin::openai/gpt-5.6-terra',
-        apiModelId: 'openai/gpt-5.6-terra',
-        endpointTypes: [ENDPOINT_TYPE.OPENAI_RESPONSES]
-      })
-
-      const config = await providerToAiSdkConfig(provider, model)
-
-      expect(config.providerId).toBe('cherryin')
-      expect(config.providerSettings).toMatchObject({ endpointType: 'openai-response' })
-    })
-
-    it('routes a CherryIn google-generate-content model (e.g. nano-banana image) to the cherryin extension, not openai-compatible (REGRESSION)', async () => {
-      // CherryIN relays its Google models via Gemini's native `generateContent`; its
-      // registry declares `google-generate-content` → adapterFamily 'cherryin'.
-      // Without that declaration the endpoint fell through to `openai-compatible`,
-      // whose image model POSTs edits to `/v1/images/edits` — which CherryIN serves
-      // only for imagen (500 "only imagen models supported"). The declaration routes
-      // it to the cherryin extension so createImageModel() drives editing through
-      // `generateContent`.
-      const cherryinEndpointConfigs = {
-        [ENDPOINT_TYPE.ANTHROPIC_MESSAGES]: { baseUrl: 'https://open.cherryin.net', adapterFamily: 'cherryin' },
-        [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]: { baseUrl: 'https://open.cherryin.net', adapterFamily: 'cherryin' },
-        [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://open.cherryin.net', adapterFamily: 'cherryin' }
-      }
-      getByProviderIdMock.mockReturnValue(makeProvider({ id: 'cherryin', endpointConfigs: cherryinEndpointConfigs }))
-      const provider = makeProvider({
-        id: 'cherryin',
-        defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
-        endpointConfigs: cherryinEndpointConfigs
-      })
-      const model = makeModel({
-        providerId: 'cherryin',
-        apiModelId: 'google/gemini-3.1-flash-image-preview',
-        endpointTypes: [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT],
-        capabilities: [MODEL_CAPABILITY.IMAGE_GENERATION]
-      })
-
-      const config = await providerToAiSdkConfig(provider, model)
-      expect(config.providerId).toBe('cherryin')
-    })
-
-    it('leaves a CherryIn image model on an undeclared endpoint (e.g. imagen via openai-image-generation) on openai-compatible', async () => {
-      // Only `google-generate-content` (Gemini) is declared. An imagen model reports
-      // `openai-image-generation`, which stays undeclared → resolveAiSdkProviderId
-      // returns openai-compatible, keeping imagen on its working `/v1/images/*` path.
-      getByProviderIdMock.mockReturnValue(makeProvider({ id: 'cherryin', endpointConfigs: {} }))
-      const provider = makeProvider({
-        id: 'cherryin',
-        defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
-        endpointConfigs: {
-          [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]: { baseUrl: 'https://open.cherryin.net', adapterFamily: 'cherryin' },
-          [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://open.cherryin.net', adapterFamily: 'cherryin' }
-        }
-      })
-      const model = makeModel({
-        providerId: 'cherryin',
-        apiModelId: 'imagen-4.0-generate-001',
-        endpointTypes: [ENDPOINT_TYPE.OPENAI_IMAGE_GENERATION],
-        capabilities: [MODEL_CAPABILITY.IMAGE_GENERATION]
-      })
-
-      const config = await providerToAiSdkConfig(provider, model)
-      expect(config.providerId).toBe('openai-compatible')
-    })
-
-    it('routes a preset-derived CherryIN instance (custom host) through buildCherryinConfig with ITS OWN relay base URLs (REGRESSION)', async () => {
-      // A user-created / enterprise CherryIN instance: UUID id, presetProviderId
-      // 'cherryin', custom host. `matchesPreset` (not a bare `id === 'cherryin'`)
-      // must still dispatch to buildCherryinConfig, and its gemini/anthropic base
-      // URLs must come from THIS instance — reading the hardcoded preset would send
-      // the request to open.cherryin.net instead of the enterprise host.
-      const host = 'https://express-ent-admin.cherryin.ai'
-      const provider = makeProvider({
-        id: 'aa1dff45-uuid',
-        presetProviderId: 'cherryin',
-        defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
-        endpointConfigs: {
-          [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: host, adapterFamily: 'cherryin' },
-          [ENDPOINT_TYPE.ANTHROPIC_MESSAGES]: { baseUrl: `${host}/v1`, adapterFamily: 'cherryin' },
-          [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]: { baseUrl: `${host}/v1beta`, adapterFamily: 'cherryin' }
-        }
-      })
-      // Gemini image model with EMPTY endpointTypes (how the instance's models are
-      // stored) → falls back to the chat endpoint → cherryin-chat variant;
-      // createImageModel still dispatches gemini→generateContent by model id.
-      const model = makeModel({
-        providerId: 'aa1dff45-uuid',
-        apiModelId: 'google/gemini-3.1-flash-image-preview',
-        endpointTypes: undefined,
-        capabilities: [MODEL_CAPABILITY.IMAGE_GENERATION]
-      })
-
-      const config = await providerToAiSdkConfig(provider, model)
-      const settings = config.providerSettings as Record<string, unknown>
-
-      expect(config.providerId).toBe('cherryin-chat')
-      // The fix: relay base URLs come from THIS instance, not open.cherryin.net.
-      expect(settings.geminiBaseURL).toBe(`${host}/v1beta`)
-      expect(settings.anthropicBaseURL).toBe(`${host}/v1`)
-    })
-  })
-
-  describe('CherryAI routing', () => {
-    it('uses custom fetch to sign chat completions requests', async () => {
-      resolveApiKeyMock.mockReturnValue({ value: '', apiKeySelection: { attribution: 'unknown' } })
-      generateSignatureMock.mockReturnValue({
-        'X-Client-ID': 'cherry-studio',
-        'X-Timestamp': '1700000000',
-        'X-Signature': 'signed'
-      })
-      // The signing wrapper composes onto customFetch (net.fetch), so the request
-      // routes through Chromium's proxy-aware network stack rather than globalThis.fetch.
-      vi.mocked(net.fetch).mockResolvedValue(new Response('{}'))
-
-      const provider = makeProvider({
-        id: CHERRYAI_PROVIDER_ID,
-        presetProviderId: CHERRYAI_PROVIDER_ID,
-        endpointConfigs: {
-          [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: {
-            baseUrl: CHERRYAI_API_BASE_URL
-          }
-        },
-        defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS
-      })
-      const model = makeModel({
-        id: CHERRYAI_DEFAULT_UNIQUE_MODEL_ID,
-        providerId: CHERRYAI_PROVIDER_ID,
-        name: CHERRYAI_DEFAULT_MODEL_NAME
-      })
-
-      const config = await providerToAiSdkConfig(provider, model)
-      await (config.providerSettings as { fetch: typeof fetch }).fetch(`${CHERRYAI_API_BASE_URL}/chat/completions`, {
-        method: 'POST',
-        headers: { Existing: 'yes' },
-        body: JSON.stringify({ model: CHERRYAI_DEFAULT_MODEL_ID })
-      })
-
-      expect(config.providerId).toBe('openai-compatible')
-      expect(generateSignatureMock).toHaveBeenCalledWith({
-        method: 'POST',
-        path: '/chat/completions',
-        query: '',
-        body: { model: CHERRYAI_DEFAULT_MODEL_ID }
-      })
-      expect(net.fetch).toHaveBeenCalledWith(
-        `${CHERRYAI_API_BASE_URL}/chat/completions`,
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            Existing: 'yes',
-            'X-Client-ID': 'cherry-studio',
-            'X-Timestamp': '1700000000',
-            'X-Signature': 'signed'
-          })
-        })
-      )
-    })
-  })
-
   describe('Local embedding routing (in-process provider, no endpoint/baseURL/apiKey)', () => {
     it('routes the local embedding provider to its own provider id instead of the openai-compatible fallback (REGRESSION)', async () => {
       // The local embedding provider has no endpoint config, so resolveAiSdkProviderId
@@ -777,7 +551,7 @@ describe('providerToAiSdkConfig — builder dispatch matrix', () => {
       const radeonSettings = radeonConfig.providerSettings as Record<string, unknown>
       const openAISettings = openAIConfig.providerSettings as Record<string, unknown>
 
-      expect(radeonSettings.headers).toMatchObject({ 'X-Source': 'cherry-studio' })
+      expect(radeonSettings.headers).toMatchObject({ 'X-Source': 'huatuo-studio' })
       expect(openAISettings.headers).not.toHaveProperty('X-Source')
       expect(radeonSettings).not.toHaveProperty('source')
       expect(radeonSettings).not.toHaveProperty('request_source')

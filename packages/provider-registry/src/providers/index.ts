@@ -9,7 +9,6 @@ import p_baichuan from './baichuan'
 import p_baidu_cloud from './baidu-cloud'
 import p_burncloud from './burncloud'
 import p_cerebras from './cerebras'
-import p_cherryin from './cherryin'
 import p_claude_code from './claude-code'
 import p_copilot from './copilot'
 import p_dashscope from './dashscope'
@@ -64,7 +63,6 @@ import p_zhipu from './zhipu'
 
 /** Every provider, in registry order. Source of truth for data/providers.json + data/provider-models.json. */
 export const PROVIDERS: Provider[] = [
-  p_cherryin,
   p_radeon_cloud,
   p_silicon,
   p_aihubmix,

@@ -11,7 +11,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { extensionRegistry, type ToolCapability } from '@cherrystudio/ai-core/provider'
+import { extensionRegistry, type ToolCapability } from '@huatuostudio/ai-core/provider'
 import { describe, expect, it } from 'vitest'
 
 import { extensions } from '../extensions'
@@ -68,7 +68,6 @@ const DELIVERY: Record<string, Partial<Record<string, Delivery>>> = {
   // $web_search echo tool injected by the moonshot extension factory.
   moonshot: { 'web-search': factories('moonshot') },
   poe: { 'web-search': { kind: 'provider-options' } },
-  cherryin: { 'web-search': { kind: 'gateway-mapped' }, 'url-context': { kind: 'gateway-mapped' } },
   'new-api': { 'web-search': { kind: 'gateway-mapped' }, 'url-context': { kind: 'gateway-mapped' } },
   // Native vendor endpoints behind `aihubmix.<vendor>` model provider strings.
   aihubmix: { 'web-search': { kind: 'gateway-mapped' }, 'url-context': { kind: 'gateway-mapped' } },

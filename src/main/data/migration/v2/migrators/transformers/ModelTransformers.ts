@@ -7,7 +7,6 @@
  * and pre-composed ID passthrough.
  */
 
-import { CHERRYAI_DEFAULT_UNIQUE_MODEL_ID, CHERRYAI_PROVIDER_ID } from '@shared/data/presets/cherryai'
 import {
   createUniqueModelId,
   isUniqueModelId,
@@ -77,24 +76,15 @@ export function legacyModelToUniqueId(
 /**
  * Opt-in chat/default-model migration rule.
  *
- * Legacy CherryAI model references are managed by the v2 seeded default model,
- * but this rule must not apply to every model reference type (for example,
+ * Applies the generic legacy-model resolution to chat/default-model references
+ * only — it must not apply to every model reference type (for example,
  * embedding/rerank preferences keep their original domain semantics).
  */
 export function legacyChatModelToUniqueId(
   model: LegacyModelRef | null | undefined,
   fallback?: string | null
 ): UniqueModelId | null {
-  const providerId = typeof model?.provider === 'string' ? model.provider.trim() : ''
-  if (providerId === CHERRYAI_PROVIDER_ID) {
-    return CHERRYAI_DEFAULT_UNIQUE_MODEL_ID
-  }
-
-  const modelId = legacyModelToUniqueId(model, fallback)
-  if (modelId?.startsWith(`${CHERRYAI_PROVIDER_ID}${UNIQUE_MODEL_ID_SEPARATOR}`)) {
-    return CHERRYAI_DEFAULT_UNIQUE_MODEL_ID
-  }
-  return modelId
+  return legacyModelToUniqueId(model, fallback)
 }
 
 export type ModelReferenceResolution =

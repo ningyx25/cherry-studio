@@ -2,53 +2,6 @@
   "providers": [
     {
       "defaultChatEndpoint": "openai-chat-completions",
-      "description": "CherryIN - AI model provider",
-      "endpointConfigs": {
-        "anthropic-messages": {
-          "adapterFamily": "cherryin",
-          "baseUrl": "https://open.cherryin.net"
-        },
-        "google-generate-content": {
-          "adapterFamily": "cherryin",
-          "baseUrl": "https://open.cherryin.net"
-        },
-        "openai-chat-completions": {
-          "adapterFamily": "cherryin",
-          "baseUrl": "https://open.cherryin.net",
-          "reasoningFormat": {
-            "type": "openai-chat"
-          }
-        },
-        "openai-responses": {
-          "adapterFamily": "cherryin",
-          "baseUrl": "https://open.cherryin.net"
-        }
-      },
-      "id": "cherryin",
-      "metadata": {
-        "website": {
-          "apiKey": "https://open.cherryin.ai/console/token",
-          "docs": "https://open.cherryin.ai",
-          "models": "https://open.cherryin.ai/pricing",
-          "official": "https://open.cherryin.ai"
-        }
-      },
-      "name": "CherryIN",
-      "serverTools": [
-        {
-          "id": "web-search",
-          "modelScope": "model-dependent",
-          "vendors": ["anthropic", "gemini", "openai"]
-        },
-        {
-          "id": "url-context",
-          "modelScope": "model-dependent",
-          "vendors": ["anthropic", "gemini"]
-        }
-      ]
-    },
-    {
-      "defaultChatEndpoint": "openai-chat-completions",
       "description": "AMD GPU Cloud - AI model provider",
       "endpointConfigs": {
         "openai-chat-completions": {
@@ -59,9 +12,9 @@
       "id": "radeon-cloud",
       "metadata": {
         "website": {
-          "apiKey": "https://developer.amd.com.cn/radeon/tokenfactory?source=cherry-studio",
+          "apiKey": "https://developer.amd.com.cn/radeon/tokenfactory?source=huatuo-studio",
           "docs": "https://developer.amd.com.cn/radeon/",
-          "models": "https://developer.amd.com.cn/radeon/tokenfactory?source=cherry-studio",
+          "models": "https://developer.amd.com.cn/radeon/tokenfactory?source=huatuo-studio",
           "official": "https://developer.amd.com.cn/radeon/"
         }
       },
@@ -510,7 +463,7 @@
       "metadata": {
         "website": {
           "apiKey": "https://ppio.com/settings/key-management",
-          "docs": "https://docs.cherry-ai.com/pre-basic/providers/ppio",
+          "docs": "https://docs.huatuo.ai/pre-basic/providers/ppio",
           "models": "https://ppio.com/model-api/product/llm-api",
           "official": "https://ppio.com/"
         }
@@ -2074,5 +2027,5 @@
       "presetProviderId": "minimax"
     }
   ],
-  "version": "7e60b48af9eec108"
+  "version": "d4529733f3b7df08"
 }
