@@ -216,7 +216,7 @@ describe('OnboardingPage', () => {
     expect(screen.getByRole('button', { name: /onboarding\.select_model\.start/ })).toBeDisabled()
   })
 
-  it('accepts every provider in the model filter and enables start with built-in selections', async () => {
+  it('offers every provider to the model picker and enables start with built-in selections', async () => {
     selectedModelsMock.defaultModel = { id: 'huatuoai::qwen', providerId: HUATUOAI_PROVIDER_ID }
     selectedModelsMock.quickModel = { id: 'huatuoai::qwen', providerId: HUATUOAI_PROVIDER_ID }
     selectedModelsMock.translateModel = { id: 'huatuoai::qwen', providerId: HUATUOAI_PROVIDER_ID }
@@ -227,8 +227,8 @@ describe('OnboardingPage', () => {
     const modelSettingsProps = modelSettingsPropsMock.mock.lastCall?.[0]
     expect(modelSettingsProps?.autoFillEmptyModels).toBe(true)
     expect(modelSettingsProps?.onDefaultModelSelected).toBeTypeOf('function')
-    expect(modelSettingsProps?.modelFilter?.({ providerId: HUATUOAI_PROVIDER_ID })).toBe(true)
-    expect(modelSettingsProps?.modelFilter?.({ providerId: 'openai' })).toBe(true)
+    // No provider is special-cased any more, so the picker applies its own default filter.
+    expect(modelSettingsProps?.modelFilter).toBeUndefined()
     expect(screen.getByRole('button', { name: /onboarding\.select_model\.start/ })).toBeEnabled()
   })
 

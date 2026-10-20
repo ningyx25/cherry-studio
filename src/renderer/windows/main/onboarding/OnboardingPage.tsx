@@ -35,7 +35,6 @@ type OnboardingCompletionStatus = Exclude<OnboardingProviderSetupStatus, 'pendin
 type PrivacyChoiceAction = () => void | Promise<void>
 
 const PESSIMISTIC_PREFERENCE_OPTIONS = { optimistic: false } as const
-const isOnboardingModel = (_model: Model) => true
 const ONBOARDING_PREFERENCE_KEYS = {
   providerSetupStatus: 'app.onboarding.provider_setup.status',
   dataCollectionEnabled: 'app.privacy.data_collection.enabled',
@@ -67,9 +66,7 @@ export default function OnboardingPage() {
   const [isUpdatingPrivacy, setIsUpdatingPrivacy] = useState(false)
   const [privacyAccepted, setPrivacyAccepted] = useState(true)
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false)
-  const canCompleteModelSetup = [defaultModel, quickModel, translateModel].every(
-    (model) => model && isOnboardingModel(model)
-  )
+  const canCompleteModelSetup = [defaultModel, quickModel, translateModel].every(Boolean)
   const eligibleProviderIds = new Set(enabledProviders.map((provider) => provider.id))
   const hasEligibleProvider = eligibleProviderIds.size > 0
   const hasEligibleModel = enabledModels.some((model) => eligibleProviderIds.has(model.providerId))
@@ -310,7 +307,6 @@ export default function OnboardingPage() {
                         showSettingsButton={false}
                         showDescription={false}
                         showDividers={false}
-                        modelFilter={isOnboardingModel}
                         compact
                         className="mt-4 min-h-0 w-full flex-none overflow-visible"
                       />
