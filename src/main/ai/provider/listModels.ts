@@ -20,6 +20,7 @@ import {
   createUniqueModelId,
   ENDPOINT_TYPE,
   endpointImpliedCapability,
+  MODALITY,
   MODEL_CAPABILITY
 } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
@@ -35,7 +36,7 @@ import {
 import { SystemProviderIds } from '@shared/utils/systemProviderId'
 import * as z from 'zod'
 
-import { defaultHeaders, getBaseUrl } from '../utils/provider'
+import { defaultHeaders, getBaseUrl, getExtraHeaders } from '../utils/provider'
 import { COPILOT_DEFAULT_HEADERS } from './constants'
 import {
   createVertexModelListRequest,
@@ -48,6 +49,7 @@ import {
   AIHubMixModelsResponseSchema,
   AnthropicModelsResponseSchema,
   CopilotModelsResponseSchema,
+  DeepgramModelsResponseSchema,
   GeminiModelsResponseSchema,
   GitHubModelsResponseSchema,
   NewApiModelsResponseSchema,
@@ -475,6 +477,57 @@ const newApiFetcher: ModelFetcher = {
   }
 }
 
+/**
+ * Deepgram's native API is not OpenAI-compatible: API keys authenticate with
+ * `Authorization: Token …` (Bearer is JWT-only) and `GET /v1/models` returns
+ * `{stt, tts, languages}` grouped objects, one entry per model×language version
+ * (hundreds of rows). Canonical ids are deduped and filtered down to the
+ * general-purpose dictation families, each mapped to the dedicated transcription
+ * endpoint so pulled models are immediately usable as the voice-input
+ * speech-to-text model.
+ */
+const DEEPGRAM_STT_ID_PATTERN =
+  /^(nova(-(?:2|3))?-(?:general|medical|pharma|meeting|phonecall)|whisper-(?:large|medium|base))$/i
+
+function isDeepgramProvider(provider: Provider): boolean {
+  return /deepgram\./i.test(getBaseUrl(provider))
+}
+
+function deepgramHeaders(provider: Provider): Record<string, string> {
+  const apiKey = providerService.getRotatedApiKey(provider.id)
+  return {
+    ...defaultAppHeaders(),
+    ...(apiKey ? { Authorization: `Token ${apiKey}` } : {}),
+    ...getExtraHeaders(provider)
+  }
+}
+
+const deepgramFetcher: ModelFetcher = {
+  match: isDeepgramProvider,
+  fetch: async (provider, signal) => {
+    const baseUrl = formatApiHost(getBaseUrl(provider))
+    const response = await getFromApi({
+      url: `${baseUrl}/models`,
+      headers: deepgramHeaders(provider),
+      responseSchema: DeepgramModelsResponseSchema,
+      abortSignal: signal
+    })
+    return dedup(response.stt, (m) => m.canonical_name ?? m.name)
+      .map((m) => m.canonical_name ?? m.name)
+      .filter((id): id is string => Boolean(id))
+      .filter((id) => DEEPGRAM_STT_ID_PATTERN.test(id))
+      .map((id) =>
+        toModel(id, provider, {
+          ownedBy: 'deepgram',
+          endpointTypes: [ENDPOINT_TYPE.OPENAI_AUDIO_TRANSCRIPTION],
+          capabilities: [MODEL_CAPABILITY.AUDIO_TRANSCRIPT],
+          inputModalities: [MODALITY.AUDIO],
+          outputModalities: [MODALITY.TEXT]
+        })
+      )
+  }
+}
+
 const openRouterFetcher: ModelFetcher = {
   match: (p) => p.id === SystemProviderIds.openrouter,
   fetch: async (provider, signal, options) => {
@@ -730,6 +783,7 @@ const fetchers: ModelFetcher[] = [
   ovmsFetcher,
   togetherFetcher,
   newApiFetcher,
+  deepgramFetcher,
   openRouterFetcher,
   ppioFetcher,
   gatewayFetcher,

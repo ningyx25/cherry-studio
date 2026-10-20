@@ -279,6 +279,26 @@
       ]
     },
     {
+      "defaultChatEndpoint": null,
+      "description": "Deepgram - AI model provider",
+      "endpointConfigs": {
+        "openai-audio-transcription": {
+          "adapterFamily": "openai-compatible",
+          "baseUrl": "https://api.deepgram.com"
+        }
+      },
+      "id": "deepgram",
+      "metadata": {
+        "website": {
+          "apiKey": "https://console.deepgram.com/",
+          "docs": "https://developers.deepgram.com/docs/",
+          "models": "https://developers.deepgram.com/docs/models",
+          "official": "https://deepgram.com/"
+        }
+      },
+      "name": "Deepgram"
+    },
+    {
       "defaultChatEndpoint": "openai-chat-completions",
       "description": "AlayaNew - AI model provider",
       "endpointConfigs": {
@@ -2027,5 +2047,5 @@
       "presetProviderId": "minimax"
     }
   ],
-  "version": "d4529733f3b7df08"
+  "version": "dc35fb884791fb72"
 }

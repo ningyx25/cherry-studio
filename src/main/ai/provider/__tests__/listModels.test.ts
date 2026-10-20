@@ -954,3 +954,69 @@ describe('listModels — openAICompatibleFetcher display names', () => {
     expect(models.map((model) => model.name)).toEqual(['Named Model', 'unnamed-model'])
   })
 })
+
+describe('listModels — deepgramFetcher', () => {
+  const makeDeepgramProvider = () =>
+    makeProvider({
+      id: 'custom-deepgram',
+      defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
+      endpointConfigs: {
+        [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://api.deepgram.com/v1' }
+      }
+    })
+
+  it('authenticates with Token and maps STT models to the transcription endpoint', async () => {
+    // Real /v1/models shape: {stt, tts, languages} with one entry per
+    // model×language version — dedup + whitelist collapse it to dictation ids.
+    aiSdkGetFromApiMock.mockResolvedValue({
+      value: {
+        stt: [
+          { name: 'general', canonical_name: 'nova-3-general', languages: ['cy'] },
+          { name: 'general', canonical_name: 'nova-3-general', languages: ['en'] },
+          { name: 'general', canonical_name: 'nova-2-general', languages: ['en'] },
+          { name: 'medical', canonical_name: 'nova-2-medical', languages: ['en'] },
+          { name: 'general', canonical_name: 'enhanced-general', languages: ['en'] },
+          { name: 'Whisper', canonical_name: 'whisper-large', languages: ['en'] },
+          { name: 'atc', canonical_name: 'nova-2-atc', languages: ['en'] }
+        ],
+        tts: [{ name: 'aura-2-thalia', canonical_name: 'aura-2-thalia-en' }],
+        languages: ['en', 'zh']
+      }
+    })
+
+    const models = await listModels(makeDeepgramProvider())
+
+    const call = aiSdkGetFromApiMock.mock.calls[0][0]
+    expect(call.url).toBe('https://api.deepgram.com/v1/models')
+    expect(call.headers.Authorization).toBe('Token AIza-secret-key')
+
+    // Language duplicates collapse; non-dictation families (atc, enhanced,
+    // aura TTS) are dropped.
+    expect(models.map((model) => model.apiModelId)).toEqual([
+      'nova-3-general',
+      'nova-2-general',
+      'nova-2-medical',
+      'whisper-large'
+    ])
+    expect(models[0]).toMatchObject({
+      endpointTypes: [ENDPOINT_TYPE.OPENAI_AUDIO_TRANSCRIPTION],
+      capabilities: [MODEL_CAPABILITY.AUDIO_TRANSCRIPT]
+    })
+  })
+
+  it('does not claim non-deepgram hosts', async () => {
+    aiSdkGetFromApiMock.mockResolvedValue({ value: { data: [{ id: 'chat-model' }] } })
+
+    await listModels(
+      makeProvider({
+        id: 'plain-relay',
+        defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
+        endpointConfigs: {
+          [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://relay.example.com/v1' }
+        }
+      })
+    )
+
+    expect(aiSdkGetFromApiMock.mock.calls[0][0].url).toBe('https://relay.example.com/v1/models')
+  })
+})

@@ -12,6 +12,7 @@ import p_cerebras from './cerebras'
 import p_claude_code from './claude-code'
 import p_copilot from './copilot'
 import p_dashscope from './dashscope'
+import p_deepgram from './deepgram'
 import p_deepseek from './deepseek'
 import p_dmxapi from './dmxapi'
 import p_doubao from './doubao'
@@ -70,6 +71,7 @@ export const PROVIDERS: Provider[] = [
   p_ocoolai,
   p_zhipu,
   p_deepseek,
+  p_deepgram,
   p_alayanew,
   p_dmxapi,
   p_aionly,

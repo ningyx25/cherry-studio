@@ -161,6 +161,21 @@ export const NewApiModelsResponseSchema = z.object({
   object: z.string().optional()
 })
 
+// === Deepgram ===
+// GET /v1/models groups models by domain: `{stt:[…], tts:[…], languages:[…]}`
+// (no OpenAI `data` wrapper). `canonical_name` is the wire id used as `?model=`
+// on /v1/listen.
+
+export const DeepgramSttModelSchema = z.looseObject({
+  name: z.string().optional(),
+  canonical_name: z.string().optional()
+})
+
+export const DeepgramModelsResponseSchema = z.object({
+  stt: z.array(DeepgramSttModelSchema).default([]),
+  tts: z.array(DeepgramSttModelSchema).optional()
+})
+
 // === OVMS (OpenVINO Model Server) ===
 
 export const OVMSConfigResponseSchema = z.record(
