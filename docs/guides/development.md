@@ -115,3 +115,5 @@ $ pnpm build:mac
 # For Linux
 $ pnpm build:linux
 ```
+
+Step-by-step commands (environment setup, packaging, signing, GitHub Actions) live in the [Build & Release guide](./building.md).
