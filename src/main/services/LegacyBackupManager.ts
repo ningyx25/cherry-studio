@@ -1083,7 +1083,7 @@ class BackupManager {
     // Accept both the current and the legacy product name so backups created
     // before the rebrand remain restorable.
     const isSupportedApp =
-      raw && typeof raw === 'object' && (raw.appName === 'HuaTuo Studio' || raw.appName === 'HuaTuo Studio')
+      raw && typeof raw === 'object' && (raw.appName === 'HuaTuo Studio' || raw.appName === 'Cherry Studio')
     if (!isSupportedApp) {
       throw new Error('This backup file is not from HuaTuo Studio and cannot be restored')
     }
