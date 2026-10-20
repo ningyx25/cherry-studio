@@ -10,7 +10,7 @@ import type { GetAgentResponse } from '@renderer/types/agent'
 import { type Topic, TopicType, type TopicType as TopicTypeEnum } from '@renderer/types/topic'
 import { getAgentAvatarFromConfiguration } from '@renderer/utils/agent'
 import { buildAgentSessionTopicId } from '@renderer/utils/agentSession'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { memo, useEffect, useMemo } from 'react'
 
 import { useAgentMessageListProviderValue } from '../messages/agentMessageListAdapter'
@@ -21,9 +21,9 @@ const logger = loggerService.withContext('AgentSessionMessages')
 type Props = {
   agentId?: string
   sessionId: string
-  messages: CherryUIMessage[]
+  messages: HuaTuoUIMessage[]
   activeAgent?: GetAgentResponse
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   streamingLayers?: MessageStreamingLayers
   optimisticAskUserQuestionInputsByToolCallId?: Record<string, unknown>
   isLoading: boolean
@@ -77,7 +77,7 @@ const AgentSessionMessages = ({
     for (let index = messages.length - 1; index >= 0; index -= 1) {
       const message = messages[index]
       if (message?.role !== 'assistant') continue
-      const parts = partsByMessageId[message.id] ?? ((message.parts ?? []) as CherryMessagePart[])
+      const parts = partsByMessageId[message.id] ?? ((message.parts ?? []) as HuaTuoMessagePart[])
       if (parts.length > 0) return message.id
     }
     return undefined

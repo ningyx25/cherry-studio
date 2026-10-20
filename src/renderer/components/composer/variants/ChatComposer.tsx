@@ -49,7 +49,7 @@ import {
 } from '@renderer/utils/model'
 import type { ComposerQueuedMessagePayload } from '@shared/ai/transport'
 import type { KnowledgeBase } from '@shared/data/types/knowledge'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { Model, UniqueModelId } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import { getKnowledgeBaseIdsFromParts, withKnowledgeScopePart } from '@shared/data/types/uiParts'
@@ -142,7 +142,7 @@ export interface ChatComposerProps {
     text: string,
     options?: {
       mentionedModels?: UniqueModelId[]
-      userMessageParts?: CherryMessagePart[]
+      userMessageParts?: HuaTuoMessagePart[]
       reasoningEffort?: ReasoningEffortOption
       fastMode?: boolean
     }
@@ -166,14 +166,14 @@ interface InputHistoryToolSnapshot extends Pick<SavedComposerDraft, 'files' | 's
   mentionedModels: Model[]
 }
 
-type ComposerFilePart = Extract<CherryMessagePart, { type: 'file' }>
+type ComposerFilePart = Extract<HuaTuoMessagePart, { type: 'file' }>
 
-const isComposerEditableMessagePart = (part: CherryMessagePart) => part.type === 'text' || part.type === 'file'
+const isComposerEditableMessagePart = (part: HuaTuoMessagePart) => part.type === 'text' || part.type === 'file'
 
 const replaceComposerEditableMessageParts = (
-  originalParts: CherryMessagePart[],
-  editedParts: CherryMessagePart[]
-): CherryMessagePart[] => {
+  originalParts: HuaTuoMessagePart[],
+  editedParts: HuaTuoMessagePart[]
+): HuaTuoMessagePart[] => {
   const firstEditablePartIndex = originalParts.findIndex(isComposerEditableMessagePart)
   if (firstEditablePartIndex === -1) return editedParts
 
@@ -1243,7 +1243,7 @@ const ChatComposerInner = ({
       const newFiles = payloadFiles.filter((file) => !originalFilePartsByTokenId.has(chatComposerTokenId.file(file)))
       const [textPart] = createComposerUserMessageParts(normalizedDraft)
       const newFileParts = await buildFilePartsForAttachments(newFiles)
-      const rebuiltFileParts = new Map<string, CherryMessagePart>()
+      const rebuiltFileParts = new Map<string, HuaTuoMessagePart>()
 
       newFileParts.forEach((part, index) => {
         const file = newFiles[index]

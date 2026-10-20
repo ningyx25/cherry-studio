@@ -254,7 +254,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => translationMock
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const DropdownContext = React.createContext<{
     open: boolean
     setOpen: (open: boolean) => void

@@ -29,7 +29,7 @@ vi.mock('@renderer/components/CollapsibleSearchBar', () => ({
   default: () => <div data-testid="search-bar" />
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, onClick, disabled }: { children?: ReactNode; onClick?: () => void; disabled?: boolean }) => (
     <button type="button" onClick={onClick} disabled={disabled}>
       {children}

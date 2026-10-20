@@ -5,10 +5,10 @@
   },
   "access": "public",
   "baseBranch": "main",
-  "changelog": ["@changesets/changelog-github", { "repo": "ningyx25/cherry-studio" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "huatuostudio/huatuo-studio" }],
   "commit": false,
   "fixed": [],
-  "ignore": ["@cherrystudio/ui", "@cherrystudio/provider-registry"],
+  "ignore": ["@huatuostudio/ui", "@huatuostudio/provider-registry"],
   "linked": [],
   "updateInternalDependencies": "patch"
 }

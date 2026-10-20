@@ -10,7 +10,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { toast } from '@renderer/services/toast'
 import { ImageUp, Link, LoaderCircle, UploadCloud } from 'lucide-react'

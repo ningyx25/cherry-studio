@@ -1,4 +1,4 @@
-import { PageSidePanel } from '@cherrystudio/ui'
+import { PageSidePanel } from '@huatuostudio/ui'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 

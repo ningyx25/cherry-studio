@@ -82,7 +82,7 @@ vi.mock('@logger', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   return {
     Button: ({ children, ...props }: { children: ReactNode; [key: string]: unknown }) => (
       <button type="button" {...props}>

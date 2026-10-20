@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   Spinner
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { importChatGPTConversations } from '@renderer/services/import'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'

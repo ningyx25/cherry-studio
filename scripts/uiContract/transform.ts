@@ -39,11 +39,11 @@ const DATA_SLOT_VALUE = /^[A-Za-z0-9][A-Za-z0-9._:~-]*$/
 // Mirrors SEMANTIC_ID in src/renderer/utils/uiContract/tokens.ts so authored
 // tokens that the consumer grammar would reject fail the build instead.
 const SEMANTIC_ID = /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/
-export const UI_CONTRACT_RUNTIME_MODULE_ID = 'virtual:cherry-ui-contract-runtime'
+export const UI_CONTRACT_RUNTIME_MODULE_ID = 'virtual:huatuo-ui-contract-runtime'
 
-const RUNTIME_MERGE_DATA_UI = '__cherryUiContractMergeDataUi'
-const RUNTIME_MERGE_UI_PROPS = '__cherryUiContractMergeUiProps'
-const RUNTIME_SLOT = '__CherryUiContractSlot'
+const RUNTIME_MERGE_DATA_UI = '__huatuoUiContractMergeDataUi'
+const RUNTIME_MERGE_UI_PROPS = '__huatuoUiContractMergeUiProps'
+const RUNTIME_SLOT = '__HuaTuoUiContractSlot'
 
 type AstRecord = Record<string, unknown> & { span?: Span; type?: string }
 

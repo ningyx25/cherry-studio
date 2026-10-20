@@ -19,7 +19,7 @@ vi.mock('@renderer/components/CodeViewer', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   EmptyState: ({ title, description }: { title: string; description?: string }) => (
     <div>
       <span>{title}</span>

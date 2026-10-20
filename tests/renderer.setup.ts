@@ -159,10 +159,10 @@ vi.stubGlobal('api', {
 })
 
 // Markdown stylesheet import is a side-effect no-op in tests
-vi.mock('@cherrystudio/ui/components/composites/markdown/styles', () => ({}))
+vi.mock('@huatuostudio/ui/components/composites/markdown/styles', () => ({}))
 
-// Mock @cherrystudio/ui globally for renderer tests
-vi.mock('@cherrystudio/ui', () => {
+// Mock @huatuostudio/ui globally for renderer tests
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react')
   const SelectContext = React.createContext({ value: undefined, onValueChange: undefined })
   const PopoverContext = React.createContext({ open: false, onOpenChange: undefined })
@@ -177,7 +177,7 @@ vi.mock('@cherrystudio/ui', () => {
   const AccordionItemContext = React.createContext({ disabled: false, value: '' })
   const FormFieldNameContext = React.createContext(undefined)
   return {
-    // Markdown — `@cherrystudio/ui` barrel re-exports composites/markdown (#16228).
+    // Markdown — `@huatuostudio/ui` barrel re-exports composites/markdown (#16228).
     // Lightweight stand-ins so tests mounting real ChatMarkdown still surface text.
     Markdown: ({ children }) => React.createElement('div', null, children),
     StreamingMarkdown: ({ children }) => React.createElement('div', null, children),

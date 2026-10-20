@@ -7,7 +7,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { BaseNavigator as BaseNavigatorComponent } from '../navigator'
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react') as typeof ReactModule
 
   const PopoverContext = React.createContext<{ open: boolean; onOpenChange?: (open: boolean) => void }>({ open: false })

@@ -1,4 +1,4 @@
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Filter, Search } from 'lucide-react'
 import type { RefObject } from 'react'
 

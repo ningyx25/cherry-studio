@@ -1,7 +1,7 @@
 import type { MessageListProviderValue, MessageListRuntime } from '@renderer/components/chat/messages/types'
 import { toast } from '@renderer/services/toast'
 import type { Topic } from '@renderer/types/topic'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import type { ExternalAppInfo } from '@shared/types/externalApp'
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -190,7 +190,7 @@ describe('useAgentMessageListProviderValue', () => {
     })
   })
 
-  it('adapts CherryUIMessage input and injects supported agent capabilities', () => {
+  it('adapts HuaTuoUIMessage input and injects supported agent capabilities', () => {
     const topic = {
       id: 'agent-session-topic',
       assistantId: 'agent-1',
@@ -221,7 +221,7 @@ describe('useAgentMessageListProviderValue', () => {
           }
         }
       }
-    ] as CherryUIMessage[]
+    ] as HuaTuoUIMessage[]
     const partsByMessageId = Object.fromEntries(messages.map((message) => [message.id, message.parts ?? []]))
     const deleteMessage = vi.fn()
     const respondToolApproval = vi.fn()
@@ -447,7 +447,7 @@ describe('useAgentMessageListProviderValue', () => {
           parts: [
             expect.objectContaining({
               providerMetadata: expect.objectContaining({
-                cherry: expect.objectContaining({ diagnosis: expect.objectContaining({ summary: 'Runtime failed' }) })
+                huatuo: expect.objectContaining({ diagnosis: expect.objectContaining({ summary: 'Runtime failed' }) })
               })
             })
           ]
@@ -490,7 +490,7 @@ describe('useAgentMessageListProviderValue', () => {
         parts: [{ type: 'data-agent-task-event', data: {} }],
         metadata: { createdAt: '2026-01-01T00:00:03.000Z', status: 'success' }
       }
-    ] as CherryUIMessage[]
+    ] as HuaTuoUIMessage[]
     const partsByMessageId = Object.fromEntries(messages.map((message) => [message.id, message.parts ?? []]))
     const streamingLayers = { historyPartsByMessageId: partsByMessageId, liveMessageIds: [] }
     let value: MessageListProviderValue | undefined
@@ -544,16 +544,16 @@ describe('useAgentMessageListProviderValue', () => {
       role: 'assistant',
       parts: [{ type: 'text', text: 'history' }],
       metadata: { createdAt: '2026-01-01T00:00:00.000Z', status: 'success' }
-    } as CherryUIMessage
+    } as HuaTuoUIMessage
     const activeMessage = {
       id: 'assistant-active',
       role: 'assistant',
       parts: [{ type: 'text', text: 'a' }],
       metadata: { createdAt: '2026-01-01T00:00:01.000Z', status: 'pending' }
-    } as CherryUIMessage
+    } as HuaTuoUIMessage
     const historyPartsByMessageId = {
-      [historyMessage.id]: (historyMessage.parts ?? []) as CherryMessagePart[],
-      [activeMessage.id]: (activeMessage.parts ?? []) as CherryMessagePart[]
+      [historyMessage.id]: (historyMessage.parts ?? []) as HuaTuoMessagePart[],
+      [activeMessage.id]: (activeMessage.parts ?? []) as HuaTuoMessagePart[]
     }
     const streamingLayers = { historyPartsByMessageId, liveMessageIds: [activeMessage.id] }
     let value: MessageListProviderValue | undefined
@@ -562,8 +562,8 @@ describe('useAgentMessageListProviderValue', () => {
       messages,
       partsByMessageId = Object.fromEntries(messages.map((message) => [message.id, message.parts ?? []]))
     }: {
-      messages: CherryUIMessage[]
-      partsByMessageId?: Record<string, CherryMessagePart[]>
+      messages: HuaTuoUIMessage[]
+      partsByMessageId?: Record<string, HuaTuoMessagePart[]>
     }) => {
       value = useAgentMessageListProviderValue({
         topic,
@@ -582,7 +582,7 @@ describe('useAgentMessageListProviderValue', () => {
     const nextActiveMessage = {
       ...activeMessage,
       parts: [{ type: 'text', text: 'ab' }]
-    } as CherryUIMessage
+    } as HuaTuoUIMessage
 
     view.rerender(
       <Probe
@@ -614,7 +614,7 @@ describe('useAgentMessageListProviderValue', () => {
         parts: [{ type: 'text', text: 'hello' }],
         metadata: { createdAt: '2026-01-01T00:00:00.000Z' }
       }
-    ] as CherryUIMessage[]
+    ] as HuaTuoUIMessage[]
     let value: MessageListProviderValue | undefined
 
     const Probe = () => {
@@ -653,7 +653,7 @@ describe('useAgentMessageListProviderValue', () => {
         parts: [{ type: 'text', text: 'hello' }],
         metadata: { createdAt: '2026-01-01T00:00:00.000Z' }
       }
-    ] as CherryUIMessage[]
+    ] as HuaTuoUIMessage[]
     let value: MessageListProviderValue | undefined
 
     exportActionsMock.saveTextFile.mockResolvedValue(null)
@@ -699,7 +699,7 @@ describe('useAgentMessageListProviderValue', () => {
         parts: [{ type: 'text', text: 'hello' }],
         metadata: { createdAt: '2026-01-01T00:00:00.000Z' }
       }
-    ] as CherryUIMessage[]
+    ] as HuaTuoUIMessage[]
     let visibleValue: MessageListProviderValue | undefined
     let captureValue: MessageListProviderValue | undefined
 

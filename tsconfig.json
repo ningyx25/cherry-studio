@@ -17,7 +17,7 @@
     "paths": {
       "@renderer/*": ["src/renderer/*"],
       "@shared/*": ["src/shared/*"],
-      "@cherrystudio/provider-registry": ["packages/provider-registry/src/index.ts"]
+      "@huatuostudio/provider-registry": ["packages/provider-registry/src/index.ts"]
     }
   }
 }

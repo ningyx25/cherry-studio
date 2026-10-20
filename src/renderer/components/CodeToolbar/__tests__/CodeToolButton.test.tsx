@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import type { ActionTool } from '@renderer/components/ActionTools'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import CodeToolButton from '../CodeToolButton'
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => importOriginal<typeof CherryStudioUi>())
+vi.mock('@huatuostudio/ui', async (importOriginal) => importOriginal<typeof HuaTuoStudioUi>())
 
 function makeTool(overrides: Partial<ActionTool> = {}): ActionTool {
   return {

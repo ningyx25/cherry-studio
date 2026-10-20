@@ -1,7 +1,7 @@
 {
   "agent": {
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "Built-in HuaTuo Studio advisor. Diagnose issues, guide operations, collect FAQs, submit bugs/feature requests, and search/create Skills"
       }
     },
@@ -15,7 +15,7 @@
   },
   "apiGateway": {
     "docs": {
-      "description": "HTTP API του HuaTuo Studio συμβατό με OpenAI, Anthropic και Gemini, καθώς και endpoints αποκλειστικά του Cherry (μοντέλα, βάσεις γνώσης)",
+      "description": "HTTP API του HuaTuo Studio συμβατό με OpenAI, Anthropic και Gemini, καθώς και endpoints αποκλειστικά του HuaTuo (μοντέλα, βάσεις γνώσης)",
       "language_switcher_label": "Γλώσσα τεκμηρίωσης",
       "operations": {
         "chat_completions": "Δημιουργεί ένα chat completion. Το σώμα αιτήματος και απόκρισης ακολουθεί τη μορφή OpenAI Chat Completions· με `stream: true` η έξοδος γίνεται σταδιακά.",
@@ -33,8 +33,8 @@
       },
       "tags": {
         "anthropic": "Endpoints συμβατά με Anthropic. Στρέψτε το base URL ενός Anthropic SDK σε αυτή την πύλη για να τα χρησιμοποιήσετε.",
-        "cherry": "Τα δικά του endpoints του HuaTuo Studio: βάσεις γνώσης, πληροφορίες υπηρεσίας και έλεγχος υγείας.",
         "gemini": "Endpoints συμβατά με Gemini, διαθέσιμα κάτω από το `/v1beta` όπως και στο αρχικό API.",
+        "huatuo": "Τα δικά του endpoints του HuaTuo Studio: βάσεις γνώσης, πληροφορίες υπηρεσίας και έλεγχος υγείας.",
         "openai": "Endpoints συμβατά με OpenAI. Στρέψτε το base URL ενός OpenAI SDK σε αυτή την πύλη για να τα χρησιμοποιήσετε."
       }
     }

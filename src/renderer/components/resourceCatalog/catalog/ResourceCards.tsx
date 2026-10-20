@@ -1,4 +1,4 @@
-import { Badge, Button } from '@cherrystudio/ui'
+import { Badge, Button } from '@huatuostudio/ui'
 import type { ResourceItem } from '@renderer/types/resourceCatalog'
 import { RESOURCE_TYPE_META } from '@renderer/utils/resourceCatalog'
 import { cn } from '@renderer/utils/style'

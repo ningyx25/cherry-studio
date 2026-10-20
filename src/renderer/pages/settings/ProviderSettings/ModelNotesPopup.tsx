@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import MarkdownEditor from '@renderer/components/MarkdownEditor'
 import { useProvider } from '@renderer/hooks/useProvider'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'

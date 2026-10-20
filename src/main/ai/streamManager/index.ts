@@ -16,7 +16,7 @@ export type {
   AiStreamDetachRequest,
   AiStreamManagerConfig,
   AiStreamOpenRequest,
-  CherryUIMessage,
+  HuaTuoUIMessage,
   StreamChunkPayload,
   StreamDonePayload,
   StreamDoneResult,

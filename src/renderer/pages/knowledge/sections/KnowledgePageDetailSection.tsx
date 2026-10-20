@@ -1,4 +1,4 @@
-import { Button, PageSidePanel } from '@cherrystudio/ui'
+import { Button, PageSidePanel } from '@huatuostudio/ui'
 import { FilePreview } from '@renderer/components/FilePreview'
 import { useDeleteKnowledgeItem, useKnowledgeItems, useReindexKnowledgeItem } from '@renderer/hooks/useKnowledgeItems'
 import type { KnowledgeItemOf } from '@shared/data/types/knowledge'

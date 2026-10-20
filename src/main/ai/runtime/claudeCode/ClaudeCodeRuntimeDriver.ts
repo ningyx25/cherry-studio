@@ -32,9 +32,9 @@ import type { Tool } from '@shared/ai/tool'
 import type { AgentPermissionMode } from '@shared/data/api/schemas/agents'
 import type { AgentSessionMessageEntity } from '@shared/data/api/schemas/agentSessionMessages'
 import type { AgentSessionEntity } from '@shared/data/api/schemas/agentSessions'
-import type { CherryUIMessage, FileUIPart } from '@shared/data/types/message'
+import type { FileUIPart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { parseUniqueModelId, type UniqueModelId } from '@shared/data/types/model'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { parseDataUrl } from '@shared/utils/dataUrl'
 import { archiveExts } from '@shared/utils/file'
 import { isVisionModel } from '@shared/utils/model'
@@ -1118,21 +1118,21 @@ async function materializeUserContent(
 ): Promise<SDKUserMessage['message']['content']> {
   const parts = message.data?.parts ?? []
   const firstPartyFileParts = parts.filter(
-    (part): part is FileUIPart => part.type === 'file' && Boolean(readCherryMeta(part)?.fileEntryId)
+    (part): part is FileUIPart => part.type === 'file' && Boolean(readHuaTuoMeta(part)?.fileEntryId)
   )
   const firstPartyArchiveParts = firstPartyFileParts.filter(isArchiveFilePart)
   const firstPartyParts = parts.filter(
     (part) =>
       part.type === 'text' ||
-      (part.type === 'file' && Boolean(readCherryMeta(part)?.fileEntryId) && !isArchiveFilePart(part))
+      (part.type === 'file' && Boolean(readHuaTuoMeta(part)?.fileEntryId) && !isArchiveFilePart(part))
   )
   const externalFileParts = parts.filter(
-    (part): part is FileUIPart => part.type === 'file' && !readCherryMeta(part)?.fileEntryId
+    (part): part is FileUIPart => part.type === 'file' && !readHuaTuoMeta(part)?.fileEntryId
   )
   const originalFirstPartyFiles = new Map(
     firstPartyParts
       .filter((part): part is FileUIPart => part.type === 'file')
-      .map((part) => [readCherryMeta(part)?.fileEntryId, part] as const)
+      .map((part) => [readHuaTuoMeta(part)?.fileEntryId, part] as const)
       .filter((entry): entry is [string, FileUIPart] => Boolean(entry[0]))
   )
 
@@ -1141,11 +1141,11 @@ async function materializeUserContent(
   const hasRoutableFirstPartyFiles = firstPartyParts.some((part) => part.type === 'file')
   if (supportsAttachmentReads && (hasRoutableFirstPartyFiles || firstPartyArchiveParts.length > 0)) {
     turnAttachments = collectAssistantFileAttachments([
-      { id: message.id, role: 'user', parts: [...firstPartyParts, ...firstPartyArchiveParts] } as CherryUIMessage
+      { id: message.id, role: 'user', parts: [...firstPartyParts, ...firstPartyArchiveParts] } as HuaTuoUIMessage
     ])
   }
   if (hasRoutableFirstPartyFiles) {
-    const userMessage = { id: message.id, role: 'user', parts: firstPartyParts } as CherryUIMessage
+    const userMessage = { id: message.id, role: 'user', parts: firstPartyParts } as HuaTuoUIMessage
     const attachments = supportsAttachmentReads ? turnAttachments : collectFileAttachments([userMessage])
     const [prepared] = await prepareChatMessages([userMessage], {
       attachments,
@@ -1168,7 +1168,7 @@ async function materializeUserContent(
     ...firstPartyArchiveParts,
     ...externalFileParts
   ]) {
-    const fileEntryId = readCherryMeta(part)?.fileEntryId
+    const fileEntryId = readHuaTuoMeta(part)?.fileEntryId
     const originalPart = (fileEntryId && originalFirstPartyFiles.get(fileEntryId)) || part
     const isArchive = isArchiveFilePart(originalPart)
     if (isArchive || !supportsImages || !canBeClaudeImage(part)) {

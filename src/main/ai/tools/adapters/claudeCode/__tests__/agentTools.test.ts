@@ -6,17 +6,17 @@
  * `disallowedTools`, so the live gate and the fresh-connection block stay consistent.
  */
 
-import { CLI_INSTALL_TOOL_NAME, CLI_LIST_TOOL_NAME, CLI_SEARCH_TOOL_NAME } from '@main/ai/mcp/servers/cherryCliTools'
+import { CLI_INSTALL_TOOL_NAME, CLI_LIST_TOOL_NAME, CLI_SEARCH_TOOL_NAME } from '@main/ai/mcp/servers/huatuoCliTools'
 import {
   ASSISTANT_APPROVAL_REQUIRED_RUNTIME_NAMES,
   ASSISTANT_AUTO_APPROVED_RUNTIME_NAMES,
   ASSISTANT_FILE_APPROVAL_REQUIRED_RUNTIME_NAMES,
   ASSISTANT_FILE_AUTO_APPROVED_RUNTIME_NAMES,
-  CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES,
-  CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES,
-  CHERRY_BUILTIN_MCP_SERVER,
-  toCherryBuiltinRuntimeName
-} from '@main/ai/tools/adapters/claudeCode/cherryBuiltinApproval'
+  HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES,
+  HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES,
+  HUATUO_BUILTIN_MCP_SERVER,
+  toHuaTuoBuiltinRuntimeName
+} from '@main/ai/tools/adapters/claudeCode/huatuoBuiltinApproval'
 import { KB_MANAGE_TOOL_NAME } from '@shared/ai/builtinTools'
 import type { AgentEntity } from '@shared/data/api/schemas/agents'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -85,11 +85,11 @@ describe('createClaudeAgentToolPolicySnapshot — live disabledTools', () => {
 
   it('honors disabledTools for notify and config autonomy tools', async () => {
     const snapshot = await createClaudeAgentToolPolicySnapshot(
-      makeAgent(['mcp__cherry-tools__notify', 'mcp__cherry-tools__config'])
+      makeAgent(['mcp__huatuo-tools__notify', 'mcp__huatuo-tools__config'])
     )
-    expect(snapshot.isDisabled('mcp__cherry-tools__notify')).toBe(true)
-    expect(snapshot.isDisabled('mcp__cherry-tools__config')).toBe(true)
-    expect(snapshot.isDisabled('mcp__cherry-tools__cron')).toBe(false)
+    expect(snapshot.isDisabled('mcp__huatuo-tools__notify')).toBe(true)
+    expect(snapshot.isDisabled('mcp__huatuo-tools__config')).toBe(true)
+    expect(snapshot.isDisabled('mcp__huatuo-tools__cron')).toBe(false)
   })
 
   it('keeps prior MCP descriptors when a later server listing fails', async () => {
@@ -198,33 +198,33 @@ describe('createClaudeAgentToolPolicySnapshot — auto-allow prefix + approval e
 
   it('auto-approves an injected tool matching an auto-allow prefix', async () => {
     const snapshot = await createClaudeAgentToolPolicySnapshot(makeAgent(), {
-      autoAllowRuntimeNamePrefixes: ['mcp__cherry-tools__']
+      autoAllowRuntimeNamePrefixes: ['mcp__huatuo-tools__']
     })
-    expect(snapshot.resolve('mcp__cherry-tools__kb_search')).toMatchObject({ approval: 'auto' })
+    expect(snapshot.resolve('mcp__huatuo-tools__kb_search')).toMatchObject({ approval: 'auto' })
   })
 
   it('requires approval for an excepted tool even though it matches the auto-allow prefix', async () => {
     const snapshot = await createClaudeAgentToolPolicySnapshot(makeAgent(), {
-      autoAllowRuntimeNamePrefixes: ['mcp__cherry-tools__'],
-      autoAllowRuntimeNameExceptions: ['mcp__cherry-tools__kb_manage']
+      autoAllowRuntimeNamePrefixes: ['mcp__huatuo-tools__'],
+      autoAllowRuntimeNameExceptions: ['mcp__huatuo-tools__kb_manage']
     })
     // kb_manage mutates the knowledge base — it must prompt, not auto-approve, despite the prefix.
-    expect(snapshot.resolve('mcp__cherry-tools__kb_manage')).toMatchObject({ approval: 'prompt' })
+    expect(snapshot.resolve('mcp__huatuo-tools__kb_manage')).toMatchObject({ approval: 'prompt' })
     // A sibling read tool under the same prefix is still auto-approved.
-    expect(snapshot.resolve('mcp__cherry-tools__kb_read')).toMatchObject({ approval: 'auto' })
+    expect(snapshot.resolve('mcp__huatuo-tools__kb_read')).toMatchObject({ approval: 'auto' })
   })
 
   it('auto-approves the merged autonomy tools while kb_manage still prompts', async () => {
-    // The former standalone `cherry` server's cron/notify/config now live under cherry-tools and
+    // The former standalone `huatuo` server's cron/notify/config now live under huatuo-tools and
     // must stay auto-approved; the mutating kb_manage carve-out must survive the merge.
     const snapshot = await createClaudeAgentToolPolicySnapshot(makeAgent(), {
-      autoAllowRuntimeNamePrefixes: ['mcp__cherry-tools__'],
-      autoAllowRuntimeNameExceptions: ['mcp__cherry-tools__kb_manage']
+      autoAllowRuntimeNamePrefixes: ['mcp__huatuo-tools__'],
+      autoAllowRuntimeNameExceptions: ['mcp__huatuo-tools__kb_manage']
     })
-    expect(snapshot.resolve('mcp__cherry-tools__cron')).toMatchObject({ approval: 'auto' })
-    expect(snapshot.resolve('mcp__cherry-tools__notify')).toMatchObject({ approval: 'auto' })
-    expect(snapshot.resolve('mcp__cherry-tools__config')).toMatchObject({ approval: 'auto' })
-    expect(snapshot.resolve('mcp__cherry-tools__kb_manage')).toMatchObject({ approval: 'prompt' })
+    expect(snapshot.resolve('mcp__huatuo-tools__cron')).toMatchObject({ approval: 'auto' })
+    expect(snapshot.resolve('mcp__huatuo-tools__notify')).toMatchObject({ approval: 'auto' })
+    expect(snapshot.resolve('mcp__huatuo-tools__config')).toMatchObject({ approval: 'auto' })
+    expect(snapshot.resolve('mcp__huatuo-tools__kb_manage')).toMatchObject({ approval: 'prompt' })
   })
 })
 
@@ -239,30 +239,30 @@ describe('createClaudeAgentToolPolicySnapshot — production approval-gate wirin
   })
 
   // Drive the snapshot with the SAME values settingsBuilder.buildToolPermissions wires in production:
-  // the cherry-tools auto-allow prefix plus the approval exceptions derived from the shared constant.
+  // the huatuo-tools auto-allow prefix plus the approval exceptions derived from the shared constant.
   // The literal-string tests above stay green even if these constants are emptied or .map() drifts;
   // these fail the moment the real gate stops carving the mutating tools out.
-  const PREFIX = `mcp__${CHERRY_BUILTIN_MCP_SERVER}__`
+  const PREFIX = `mcp__${HUATUO_BUILTIN_MCP_SERVER}__`
   const productionOptions = {
-    autoAllowRuntimeNames: CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES.map(toCherryBuiltinRuntimeName),
+    autoAllowRuntimeNames: HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName),
     autoAllowRuntimeNamePrefixes: [],
-    autoAllowRuntimeNameExceptions: CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toCherryBuiltinRuntimeName)
+    autoAllowRuntimeNameExceptions: HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName)
   }
 
   it('keeps kb_manage approval-gated and the two policy sets disjoint', () => {
     // Catches the gate being undone: kb_manage dropped from approval-required, or added to
     // auto-approved, or the two sets overlapping. (It cannot catch a brand-new mutating tool added
     // only to auto-approved — nothing marks a tool as mutating — that is the human reviewer's job.)
-    expect(CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES).toContain(KB_MANAGE_TOOL_NAME)
-    expect(CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES).toContain(CLI_INSTALL_TOOL_NAME)
-    expect(CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES).toEqual(
+    expect(HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES).toContain(KB_MANAGE_TOOL_NAME)
+    expect(HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES).toContain(CLI_INSTALL_TOOL_NAME)
+    expect(HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES).toEqual(
       expect.arrayContaining([CLI_LIST_TOOL_NAME, CLI_SEARCH_TOOL_NAME])
     )
-    expect(CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES).not.toContain(KB_MANAGE_TOOL_NAME)
-    const autoApproved = new Set<string>(CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES)
-    expect(CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.some((name) => autoApproved.has(name))).toBe(false)
+    expect(HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES).not.toContain(KB_MANAGE_TOOL_NAME)
+    const autoApproved = new Set<string>(HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES)
+    expect(HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.some((name) => autoApproved.has(name))).toBe(false)
     // The derived prefix matches the fully-qualified runtime name, pinning the two helpers in sync.
-    expect(toCherryBuiltinRuntimeName(KB_MANAGE_TOOL_NAME)).toBe(`${PREFIX}${KB_MANAGE_TOOL_NAME}`)
+    expect(toHuaTuoBuiltinRuntimeName(KB_MANAGE_TOOL_NAME)).toBe(`${PREFIX}${KB_MANAGE_TOOL_NAME}`)
   })
 
   it('keeps Assistant read-only and sensitive tools in disjoint policy sets', () => {
@@ -287,17 +287,17 @@ describe('createClaudeAgentToolPolicySnapshot — production approval-gate wirin
   it('prompts for every approval-required tool and auto-approves every allowlisted tool under the real wiring', async () => {
     const snapshot = await createClaudeAgentToolPolicySnapshot(makeAgent(), productionOptions)
 
-    for (const name of CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES) {
-      expect(snapshot.resolve(toCherryBuiltinRuntimeName(name))).toMatchObject({ approval: 'prompt' })
+    for (const name of HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES) {
+      expect(snapshot.resolve(toHuaTuoBuiltinRuntimeName(name))).toMatchObject({ approval: 'prompt' })
     }
-    for (const name of CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES) {
-      expect(snapshot.resolve(toCherryBuiltinRuntimeName(name))).toMatchObject({ approval: 'auto' })
+    for (const name of HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES) {
+      expect(snapshot.resolve(toHuaTuoBuiltinRuntimeName(name))).toMatchObject({ approval: 'auto' })
     }
   })
 
-  it('does not auto-approve future cherry-tools by prefix under the real wiring', async () => {
+  it('does not auto-approve future huatuo-tools by prefix under the real wiring', async () => {
     const snapshot = await createClaudeAgentToolPolicySnapshot(makeAgent(), productionOptions)
 
-    expect(snapshot.resolve('mcp__cherry-tools__future_mutator')).toBeUndefined()
+    expect(snapshot.resolve('mcp__huatuo-tools__future_mutator')).toBeUndefined()
   })
 })

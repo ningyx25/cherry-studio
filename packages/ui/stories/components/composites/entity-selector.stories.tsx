@@ -1,5 +1,5 @@
-import { Button } from '@cherrystudio/ui/components/primitives/button'
-import { Checkbox } from '@cherrystudio/ui/components/primitives/checkbox'
+import { Button } from '@huatuostudio/ui/components/primitives/button'
+import { Checkbox } from '@huatuostudio/ui/components/primitives/checkbox'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ArrowDown, ArrowUp, Check, ChevronRight, Pencil, Pin, PinOff, Plus } from 'lucide-react'
 import { useMemo, useState } from 'react'

@@ -31,7 +31,7 @@ export function prepareContext(
 
   return {
     file,
-    workingDirectoryPrefix: path.join(application.getPath('app.temp'), 'cherry-ovocr-')
+    workingDirectoryPrefix: path.join(application.getPath('app.temp'), 'huatuo-ovocr-')
   }
 }
 

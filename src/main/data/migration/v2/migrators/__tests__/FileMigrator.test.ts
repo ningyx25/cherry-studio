@@ -54,7 +54,7 @@ const FIXTURE_WINDOWS_ROW: FileMetadata = {
   id: '11111111-1111-4111-8111-111111111111',
   name: '11111111-1111-4111-8111-111111111111.png',
   origin_name: 'Screenshot_2025-03-13_21-25-45.png',
-  path: 'C:\\Users\\testuser\\AppData\\Roaming\\CherryStudio\\Data\\Files\\11111111-1111-4111-8111-111111111111.png',
+  path: 'C:\\Users\\testuser\\AppData\\Roaming\\HuaTuoStudio\\Data\\Files\\11111111-1111-4111-8111-111111111111.png',
   size: 442074,
   ext: '.png',
   type: 'image',

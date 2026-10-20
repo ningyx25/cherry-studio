@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { useTimer } from '@renderer/hooks/useTimer'
 import { ipcApi } from '@renderer/ipc'

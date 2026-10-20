@@ -13,8 +13,8 @@
  * @deprecated v1 legacy — do not extend; v2 code uses the data-layer entities in
  * `@shared/data/types/*`.
  */
-import type OpenAI from '@cherrystudio/openai'
 import type { OpenAIVerbosity } from '@shared/types/aiSdk'
+import type OpenAI from 'openai'
 
 export type ProviderType =
   | 'openai'

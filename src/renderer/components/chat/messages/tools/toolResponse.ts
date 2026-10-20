@@ -2,7 +2,7 @@ import type { McpToolResponse, McpToolResponseStatus, NormalToolResponse } from 
 import type { BaseTool, McpTool } from '@renderer/types/tool'
 import { extractOutputMetadata, isToolType, type ToolMetadata, type ToolType } from '@renderer/utils/message/toolOutput'
 import { parseFunctionCallToolName } from '@shared/ai/tools/mcpToolName'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { DynamicToolUIPart, ProviderMetadata, ToolUIPart, UIDataTypes, UIMessagePart, UITools } from 'ai'
 import { getToolName, isToolUIPart } from 'ai'
 
@@ -63,10 +63,10 @@ function isLegacyAgentToolName(toolName: string): boolean {
   return AGENT_TOOL_NAMES.has(toolName) || toolName.startsWith(AGENT_MCP_TOOLS_PREFIX)
 }
 
-function extractCherryToolMetadataFrom(metadata: ProviderMetadata | undefined): ToolMetadata | undefined {
+function extractHuaTuoToolMetadataFrom(metadata: ProviderMetadata | undefined): ToolMetadata | undefined {
   if (!isRecord(metadata)) return undefined
-  const cherry = isRecord(metadata.cherry) ? metadata.cherry : undefined
-  const tool = cherry && isRecord(cherry.tool) ? cherry.tool : undefined
+  const huatuo = isRecord(metadata.huatuo) ? metadata.huatuo : undefined
+  const tool = huatuo && isRecord(huatuo.tool) ? huatuo.tool : undefined
   if (!tool) return undefined
   return {
     description: typeof tool.description === 'string' ? tool.description : undefined,
@@ -77,10 +77,10 @@ function extractCherryToolMetadataFrom(metadata: ProviderMetadata | undefined): 
   }
 }
 
-function extractCherryToolMetadata(part: ToolResponsePart): ToolMetadata | undefined {
+function extractHuaTuoToolMetadata(part: ToolResponsePart): ToolMetadata | undefined {
   const resultProviderMetadata = 'resultProviderMetadata' in part ? part.resultProviderMetadata : undefined
   return (
-    extractCherryToolMetadataFrom(part.callProviderMetadata) ?? extractCherryToolMetadataFrom(resultProviderMetadata)
+    extractHuaTuoToolMetadataFrom(part.callProviderMetadata) ?? extractHuaTuoToolMetadataFrom(resultProviderMetadata)
   )
 }
 
@@ -99,10 +99,10 @@ function extractParentToolUseId(part: ToolResponsePart): string | undefined {
   )
 }
 
-function hasCherryTransport(metadata: ProviderMetadata | undefined): boolean {
+function hasHuaTuoTransport(metadata: ProviderMetadata | undefined): boolean {
   if (!isRecord(metadata)) return false
-  const cherry = isRecord(metadata.cherry) ? metadata.cherry : undefined
-  return cherry?.transport === CLAUDE_AGENT_TRANSPORT
+  const huatuo = isRecord(metadata.huatuo) ? metadata.huatuo : undefined
+  return huatuo?.transport === CLAUDE_AGENT_TRANSPORT
 }
 
 function resolveToolType(part: ToolResponsePart, toolName: string, metadata?: ToolMetadata): ToolType {
@@ -111,7 +111,7 @@ function resolveToolType(part: ToolResponsePart, toolName: string, metadata?: To
   if (parseFunctionCallToolName(toolName)) return 'mcp'
   if (toolPartWasProviderExecuted(part)) return 'provider'
   if (hasProviderMetadata(part, 'claude-code')) return 'provider'
-  if (hasCherryTransport(part.callProviderMetadata)) return 'provider'
+  if (hasHuaTuoTransport(part.callProviderMetadata)) return 'provider'
   if (part.type === 'dynamic-tool' && isLegacyAgentToolName(toolName)) return 'provider'
   if (part.type === 'dynamic-tool') return 'mcp'
   if (toolName.startsWith('builtin_')) return 'builtin'
@@ -159,7 +159,7 @@ function normalizeErrorOutput(part: ToolResponsePart): unknown {
   return normalizeToolErrorResponse(part.errorText)
 }
 
-export function buildToolResponseFromPart(part: CherryMessagePart, fallbackId?: string): ToolResponseLike | null {
+export function buildToolResponseFromPart(part: HuaTuoMessagePart, fallbackId?: string): ToolResponseLike | null {
   if (!isToolUIPart(part as UIMessagePart<UIDataTypes, UITools>)) return null
 
   const toolPart = part as unknown as ToolResponsePart
@@ -169,8 +169,8 @@ export function buildToolResponseFromPart(part: CherryMessagePart, fallbackId?: 
   const status = mapPartStateToStatus(toolPart.state)
 
   const { response: rawResponse, metadata: outputMetadata } = extractOutputMetadata(toolPart.output)
-  const cherryMetadata = extractCherryToolMetadata(toolPart)
-  const metadata = outputMetadata ?? cherryMetadata
+  const huatuoMetadata = extractHuaTuoToolMetadata(toolPart)
+  const metadata = outputMetadata ?? huatuoMetadata
   const toolType = resolveToolType(toolPart, toolName, metadata)
   const response = status === 'error' ? normalizeErrorOutput(toolPart) : rawResponse
   const parentToolUseId = extractParentToolUseId(toolPart)
@@ -207,7 +207,7 @@ export function buildToolResponseFromPart(part: CherryMessagePart, fallbackId?: 
   return normalResponse
 }
 
-export function buildToolRenderItemFromPart(part: CherryMessagePart, id: string): ToolRenderItem | null {
+export function buildToolRenderItemFromPart(part: HuaTuoMessagePart, id: string): ToolRenderItem | null {
   const toolResponse = buildToolResponseFromPart(part, id)
   if (!toolResponse) return null
   return { id, toolResponse }
@@ -215,7 +215,7 @@ export function buildToolRenderItemFromPart(part: CherryMessagePart, id: string)
 
 /** Matched `ToolUIPart` plus decoded approval fields. */
 export type ToolApprovalMatch = {
-  part: CherryMessagePart
+  part: HuaTuoMessagePart
   state: string
   toolCallId: string
   messageId: string
@@ -229,7 +229,7 @@ export type ToolApprovalMatch = {
  * source of truth for approval state after the message-parts migration.
  */
 export function findToolPartByCallId(
-  partsMap: Record<string, CherryMessagePart[]> | null | undefined,
+  partsMap: Record<string, HuaTuoMessagePart[]> | null | undefined,
   toolCallId: string | undefined
 ): ToolApprovalMatch | null {
   if (!partsMap || !toolCallId) return null
@@ -254,7 +254,7 @@ export function findToolPartByCallId(
 }
 
 export function isToolPartAwaitingApproval(
-  partsMap: Record<string, CherryMessagePart[]> | null | undefined,
+  partsMap: Record<string, HuaTuoMessagePart[]> | null | undefined,
   toolCallId: string | undefined
 ): boolean {
   return findToolPartByCallId(partsMap, toolCallId)?.state === APPROVAL_REQUESTED

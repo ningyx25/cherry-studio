@@ -1,4 +1,4 @@
-import { Divider, type MarkdownSource } from '@cherrystudio/ui'
+import { Divider, type MarkdownSource } from '@huatuostudio/ui'
 import { Languages } from 'lucide-react'
 import type { FC } from 'react'
 import { Fragment } from 'react'

@@ -1,4 +1,4 @@
-import { Badge, Button, PageHeader } from '@cherrystudio/ui'
+import { Badge, Button, PageHeader } from '@huatuostudio/ui'
 import type { KnowledgeBase } from '@shared/data/types/knowledge'
 import { FlaskConical, SlidersHorizontal } from 'lucide-react'
 import { useTranslation } from 'react-i18next'

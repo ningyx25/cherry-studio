@@ -1,5 +1,5 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
-import { Form } from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
+import { Form } from '@huatuostudio/ui'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
@@ -13,7 +13,7 @@ const { mockLoggerWarn, mockUseQuery, mockIpcRequest, mockToastSuccess } = vi.ho
   mockToastSuccess: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => await importOriginal<typeof CherryStudioUi>())
+vi.mock('@huatuostudio/ui', async (importOriginal) => await importOriginal<typeof HuaTuoStudioUi>())
 
 vi.mock('@logger', () => ({
   loggerService: {

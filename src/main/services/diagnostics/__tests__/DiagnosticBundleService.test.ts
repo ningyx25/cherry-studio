@@ -297,7 +297,7 @@ describe('DiagnosticBundleService', () => {
     }
 
     expect(await readFile(destination, 'utf8')).toBe('external file')
-    expect((await readdir(workDir)).filter((name) => name.startsWith('.cherry-studio-diagnostics-'))).toEqual([])
+    expect((await readdir(workDir)).filter((name) => name.startsWith('.huatuo-studio-diagnostics-'))).toEqual([])
     expect(await readdir(appTempDir)).toEqual([])
   })
 })

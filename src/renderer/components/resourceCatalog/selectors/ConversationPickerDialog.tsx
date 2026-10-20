@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { Loader2 } from 'lucide-react'

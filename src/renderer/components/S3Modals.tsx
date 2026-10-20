@@ -9,7 +9,7 @@ import {
   DialogTitle,
   Input,
   Spinner
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { ipcApi } from '@renderer/ipc'
 import { backupToS3 } from '@renderer/services/BackupService'
 import { popup } from '@renderer/services/popup'
@@ -50,7 +50,7 @@ export function useS3BackupModal() {
     const deviceType = await ipcApi.request('system.get_device_type')
     const hostname = await window.api.system.getHostname()
     const timestamp = dayjs().format('YYYYMMDDHHmmss')
-    const defaultFileName = `cherry-studio.${timestamp}.${hostname}.${deviceType}.zip`
+    const defaultFileName = `huatuo-studio.${timestamp}.${hostname}.${deviceType}.zip`
     setCustomFileName(defaultFileName)
     setIsModalVisible(true)
   }, [])

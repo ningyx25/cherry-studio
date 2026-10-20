@@ -22,8 +22,8 @@ describe('ProviderSettings ModelTagsWithLabel', () => {
       <ModelTagsWithLabel
         model={
           {
-            id: 'cherryin::baai/bge-m3(free)',
-            providerId: 'cherryin',
+            id: 'huatuoin::baai/bge-m3(free)',
+            providerId: 'huatuoin',
             name: 'BGE M3',
             capabilities: [MODEL_CAPABILITY.EMBEDDING, MODEL_CAPABILITY.RERANK],
             inputModalities: [],

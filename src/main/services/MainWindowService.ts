@@ -303,7 +303,7 @@ export class MainWindowService extends BaseService {
     const handleWillDownload = (event: Electron.Event) => event.preventDefault()
     const userAgent = previewSession
       .getUserAgent()
-      .replace(/CherryStudio\/\S+\s/, '')
+      .replace(/HuaTuoStudio\/\S+\s/, '')
       .replace(/Electron\/\S+\s/, '')
 
     previewSession.setUserAgent(userAgent)

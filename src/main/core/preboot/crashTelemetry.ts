@@ -35,7 +35,7 @@ export function initCrashTelemetry(): void {
  */
 function startCrashReporter(): void {
   crashReporter.start({
-    companyName: 'CherryHQ',
+    companyName: 'HuaTuoHQ',
     productName: 'HuaTuoStudio',
     submitURL: '',
     uploadToServer: false

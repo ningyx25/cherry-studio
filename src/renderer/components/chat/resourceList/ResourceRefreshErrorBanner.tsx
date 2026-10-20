@@ -1,4 +1,4 @@
-import { Alert, Button } from '@cherrystudio/ui'
+import { Alert, Button } from '@huatuostudio/ui'
 import { useTranslation } from 'react-i18next'
 
 /**

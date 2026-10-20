@@ -18,7 +18,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

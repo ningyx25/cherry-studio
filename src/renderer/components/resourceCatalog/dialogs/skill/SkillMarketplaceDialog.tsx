@@ -9,7 +9,7 @@ import {
   SegmentedControl,
   Spinner,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { DynamicVirtualList } from '@renderer/components/VirtualList'
 import { useSkillInstall, useSkillSearch } from '@renderer/hooks/useSkills'
 import { toast } from '@renderer/services/toast'

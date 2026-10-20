@@ -19,7 +19,7 @@ describe('ReduxExporter', () => {
 
   it('writes only selected slices as separate files without parsing their contents', async () => {
     localStorage.setItem(
-      'persist:cherry-studio',
+      'persist:huatuo-studio',
       JSON.stringify({ assistants: 'not-json', ignored: '{"large":true}', settings: '{"theme":"dark"}' })
     )
 
@@ -33,7 +33,7 @@ describe('ReduxExporter', () => {
 
   it('splits a large slice on valid UTF-16 boundaries', async () => {
     const settings = `${'a'.repeat(CHUNK_LIMIT - 1)}😀tail`
-    localStorage.setItem('persist:cherry-studio', JSON.stringify({ settings }))
+    localStorage.setItem('persist:huatuo-studio', JSON.stringify({ settings }))
 
     await new ReduxExporter().export('/export/redux')
 
@@ -46,7 +46,7 @@ describe('ReduxExporter', () => {
   })
 
   it('creates an empty file for a present empty slice', async () => {
-    localStorage.setItem('persist:cherry-studio', JSON.stringify({ settings: '' }))
+    localStorage.setItem('persist:huatuo-studio', JSON.stringify({ settings: '' }))
 
     const result = await new ReduxExporter().export('/export/redux')
 
@@ -62,7 +62,7 @@ describe('ReduxExporter', () => {
 
   it('decodes JSON string escapes while streaming the slice to disk', async () => {
     const settings = '{"line":"first\\nsecond","quote":"\\\"","emoji":"😀","control":"\\b\\f\\r\\t"}'
-    localStorage.setItem('persist:cherry-studio', JSON.stringify({ settings }))
+    localStorage.setItem('persist:huatuo-studio', JSON.stringify({ settings }))
 
     await new ReduxExporter().export('/export/redux')
 
@@ -70,7 +70,7 @@ describe('ReduxExporter', () => {
   })
 
   it('preserves export write errors instead of reporting them as parse failures', async () => {
-    localStorage.setItem('persist:cherry-studio', JSON.stringify({ settings: '{"theme":"dark"}' }))
+    localStorage.setItem('persist:huatuo-studio', JSON.stringify({ settings: '{"theme":"dark"}' }))
     const writeError = new Error('disk full')
     invoke.mockRejectedValueOnce(writeError)
 
@@ -78,7 +78,7 @@ describe('ReduxExporter', () => {
   })
 
   it('labels malformed Redux Persist data as a parse failure', async () => {
-    localStorage.setItem('persist:cherry-studio', '{')
+    localStorage.setItem('persist:huatuo-studio', '{')
 
     await expect(new ReduxExporter().export('/export/redux')).rejects.toThrow(
       'Failed to parse Redux Persist root data: Unterminated Redux Persist root object'

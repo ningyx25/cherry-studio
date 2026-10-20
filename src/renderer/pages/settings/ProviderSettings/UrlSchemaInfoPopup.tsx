@@ -1,3 +1,4 @@
+import { useQuery } from '@data/hooks/useDataApi'
 import {
   Button,
   Dialog,
@@ -6,8 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
-import { useQuery } from '@data/hooks/useDataApi'
+} from '@huatuostudio/ui'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { getFancyProviderName } from '@renderer/pages/settings/ProviderSettings/utils/providerDisplay'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'

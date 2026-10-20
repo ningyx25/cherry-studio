@@ -41,7 +41,7 @@ describe('internal/content/write', () => {
 
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-writetest-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-writetest-'))
     filesDir = path.join(tmp, 'Files')
     const { mkdir } = await import('node:fs/promises')
     await mkdir(filesDir, { recursive: true })

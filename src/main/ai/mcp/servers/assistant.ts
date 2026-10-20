@@ -193,7 +193,7 @@ The tool returns the new agent id. After creation, query product_info and naviga
       model: {
         type: 'string',
         description:
-          'Optional model id in the form "providerId::modelId" (e.g. "cherryin::agent/glm-5.1", "anthropic::claude-sonnet"). When omitted, the new agent uses HuaTuo Assistant\'s current model.'
+          'Optional model id in the form "providerId::modelId" (e.g. "aihubmix::agent/glm-5.1", "anthropic::claude-sonnet"). When omitted, the new agent uses HuaTuo Assistant\'s current model.'
       }
     },
     required: ['name', 'instructions']

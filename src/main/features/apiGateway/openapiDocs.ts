@@ -49,7 +49,7 @@ export const DOC_TAGS = {
   openai: 'OpenAI API',
   anthropic: 'Anthropic API',
   gemini: 'Gemini API',
-  cherry: 'HuaTuo Studio'
+  huatuo: 'HuaTuo Studio'
 } as const
 
 /**
@@ -149,7 +149,7 @@ export function buildOpenApiDocument(app: AnyElysia, lang: LanguageVarious, serv
       { name: DOC_TAGS.openai, description: t('apiGateway.docs.tags.openai', undefined, lang) },
       { name: DOC_TAGS.anthropic, description: t('apiGateway.docs.tags.anthropic', undefined, lang) },
       { name: DOC_TAGS.gemini, description: t('apiGateway.docs.tags.gemini', undefined, lang) },
-      { name: DOC_TAGS.cherry, description: t('apiGateway.docs.tags.cherry', undefined, lang) }
+      { name: DOC_TAGS.huatuo, description: t('apiGateway.docs.tags.huatuo', undefined, lang) }
     ],
     // An absolute URL keeps Scalar's generated curl examples copyable.
     servers: [{ url: serverUrl }],

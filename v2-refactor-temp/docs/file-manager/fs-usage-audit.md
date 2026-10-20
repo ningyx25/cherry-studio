@@ -499,7 +499,7 @@
 | `fs.promises.writeFile()` | 异步 | 将下载的 ZIP 文件写入临时目录 |
 | `fs.promises.stat()` | 异步 | 处理前验证 ZIP 文件 |
 
-### `services/agents/services/cherryclaw/seedWorkspace.ts`
+### `services/agents/services/huatuoclaw/seedWorkspace.ts`
 > **历史（PR #16726）**：文件已删除（`seedWorkspaceTemplates` 随 Soul Mode 移除而下线），以下为审计快照。
 - **Import**: `import { mkdir, stat, writeFile } from 'node:fs/promises'`
 - **Tags**: `async` `dir` `rw` `stat`
@@ -510,7 +510,7 @@
 | `writeFile()` | 异步 | 写入 SOUL.md 和 USER.md 模板文件 |
 | `stat()` | 异步 | 检查模板文件是否已存在（幂等播种） |
 
-### `services/agents/services/cherryclaw/prompt.ts`
+### `services/agents/services/huatuoclaw/prompt.ts`
 > **历史（PR #16726）**：已迁移至 `src/main/ai/agents/prompt.ts`（fs 用法不变）。
 - **Import**: `import { readdir, readFile, stat } from 'node:fs/promises'`
 - **Tags**: `async` `rw` `stat` `dir`
@@ -521,7 +521,7 @@
 | `stat()` | 异步 | 检查文件存在性并获取 mtime 用于缓存 |
 | `readFile()` | 异步 | 读取 SOUL.md、USER.md、FACT.md 记忆文件用于构建提示词 |
 
-### `services/agents/services/cherryclaw/heartbeat.ts`
+### `services/agents/services/huatuoclaw/heartbeat.ts`
 > **历史（PR #16726）**：已迁移至 `src/main/ai/agents/heartbeat.ts`（fs 用法不变）。
 - **Import**: `import { readFile } from 'node:fs/promises'`
 - **Tags**: `async` `rw`
@@ -775,7 +775,7 @@
 | `fs.readFileSync()` | 同步 | 读取源文件内容用于诊断 |
 
 ### `mcpServers/claw.ts`
-> **历史（PR #16726）**：已重命名/合并至 `src/main/ai/mcp/servers/cherryAutonomyTools.ts`（fs 用法不变）。
+> **历史（PR #16726）**：已重命名/合并至 `src/main/ai/mcp/servers/huatuoAutonomyTools.ts`（fs 用法不变）。
 - **Import**: `import { appendFile, mkdir, readdir, readFile, rename, stat, writeFile } from 'node:fs/promises'`
 - **Tags**: `async` `rw` `dir` `stat` `copy`
 
@@ -920,7 +920,7 @@
 | `import fs from 'node:fs/promises'` | ~4 | ProtocolClient, MistralService |
 | `import { promises } from 'fs'` | ~2 | AnthropicService |
 | `import { promises as fs } from 'fs'` | ~2 | WebviewService, memory.ts |
-| Named imports (`{ readFile, ... }`) | ~5 | cherryAutonomyTools.ts, ai/agents/*（原 claw.ts, cherryclaw/*，PR #16726 迁移） |
+| Named imports (`{ readFile, ... }`) | ~5 | huatuoAutonomyTools.ts, ai/agents/*（原 claw.ts, huatuoclaw/*，PR #16726 迁移） |
 
 > **问题**：8+ 种 import 风格混用，无统一规范。
 

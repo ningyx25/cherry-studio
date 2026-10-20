@@ -6,8 +6,8 @@
  * `application.get('FileManager')`.
  *
  * Every FileEntry has an `origin`:
- * - `internal`: Cherry owns the content (stored at `{userData}/Data/Files/{id}.{ext}`)
- * - `external`: Cherry references a user-provided absolute path
+ * - `internal`: HuaTuo owns the content (stored at `{userData}/Data/Files/{id}.{ext}`)
+ * - `external`: HuaTuo references a user-provided absolute path
  *
  * ## Facade pattern
  *
@@ -64,7 +64,7 @@
  * ## External entries — best-effort reference semantics
  *
  * External entries represent "the caller expressed an intention to reference
- * this path at some point in time". Cherry does not track external renames/
+ * this path at some point in time". HuaTuo does not track external renames/
  * moves; external filesystem changes surface naturally as "read returns new
  * content" or "entry becomes dangling".
  *
@@ -74,11 +74,11 @@
  * - [file-manager-architecture.md](../../../docs/references/file/file-manager-architecture.md)
  * - [architecture.md](../../../docs/references/file/architecture.md)
  *
- * Cherry **allows** user-initiated modification of external files:
+ * HuaTuo **allows** user-initiated modification of external files:
  * - `write` / `writeIfUnchanged` → atomic write to `externalPath`
  * - `rename` → `fs.rename` + update DB
  *
- * Cherry **never** modifies external files automatically. Specifically:
+ * HuaTuo **never** modifies external files automatically. Specifically:
  * - No watcher-driven writebacks
  * - No background sync
  * - No tracking of external rename/move
@@ -439,7 +439,7 @@ export interface IFileManager {
   // actual semantics per origin.
 
   /**
-   * Create a new Cherry-owned (internal) FileEntry.
+   * Create a new HuaTuo-owned (internal) FileEntry.
    *
    * `params` is a `source`-discriminated union (`'path' | 'url' | 'base64' | 'bytes'`)
    * that type-gates which of `name`/`ext` each content source may supply —

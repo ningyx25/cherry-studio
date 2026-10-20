@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => ({
   refetch: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return {
     ...actual,

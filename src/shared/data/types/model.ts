@@ -22,7 +22,7 @@ import type {
   ReasoningEffort,
   ServerTool,
   SupportSpec
-} from '@cherrystudio/provider-registry'
+} from '@huatuostudio/provider-registry'
 import {
   CANONICAL_PARAM_KEY,
   CURRENCY,
@@ -36,7 +36,7 @@ import {
   REASONING_EFFORT,
   ReasoningControlSchema,
   SERVER_TOOL
-} from '@cherrystudio/provider-registry'
+} from '@huatuostudio/provider-registry'
 import * as z from 'zod'
 
 // Re-export const objects for consumers

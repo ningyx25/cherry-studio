@@ -1,5 +1,5 @@
-import { Button, InfoTooltip, PageSidePanel } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, InfoTooltip, PageSidePanel } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import {
   SettingContainer,

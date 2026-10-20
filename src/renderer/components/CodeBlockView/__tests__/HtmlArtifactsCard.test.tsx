@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { toast } from '@renderer/services/toast'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -18,7 +18,7 @@ const mocks = vi.hoisted(() => ({
   write: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => importOriginal<typeof CherryStudioUi>())
+vi.mock('@huatuostudio/ui', async (importOriginal) => importOriginal<typeof HuaTuoStudioUi>())
 
 vi.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: vi.fn() },

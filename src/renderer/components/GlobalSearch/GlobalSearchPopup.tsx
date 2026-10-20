@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@cherrystudio/ui'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@huatuostudio/ui'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'
 import { lazy, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'

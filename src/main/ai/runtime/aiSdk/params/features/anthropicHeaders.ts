@@ -3,7 +3,7 @@
  * beta flags via `providerOptions.bedrock.anthropicBeta`).
  */
 
-import { type AiPlugin, definePlugin, type StreamTextParams, type StreamTextResult } from '@cherrystudio/ai-core'
+import { type AiPlugin, definePlugin, type StreamTextParams, type StreamTextResult } from '@huatuostudio/ai-core'
 import type { Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 

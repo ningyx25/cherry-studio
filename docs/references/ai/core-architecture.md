@@ -1,6 +1,6 @@
 # Core Architecture
 
-End-to-end view of how a Cherry chat turn moves from user input to LLM
+End-to-end view of how a HuaTuo chat turn moves from user input to LLM
 response and back to UI, with pointers to the focused references for
 each subsystem.
 
@@ -47,7 +47,7 @@ each subsystem.
 │    → agent.stream(messages, signal)                                   │
 │    pipeStreamLoop tees:                                              │
 │      • broadcast → WebContents / SSE / channel-adapter / persistence │
-│      • readUIMessageStream → CherryUIMessage snapshot                │
+│      • readUIMessageStream → HuaTuoUIMessage snapshot                │
 │                                                                      │
 │  Terminal listeners:                                                 │
 │    PersistenceListener → MessageService / TemporaryChat / Translation
@@ -177,6 +177,6 @@ src/main/ai/
 
 src/renderer/services/aiTransport/ ← IpcChatTransport, dispatch coordinator
 src/renderer/hooks/               ← useChatWithHistory, useToolApprovalBridge, useTopicStreamStatus
-packages/aiCore/                  ← @cherrystudio/ai-core (Agent + plugins + provider extensions)
+packages/aiCore/                  ← @huatuostudio/ai-core (Agent + plugins + provider extensions)
 packages/provider-registry/       ← provider catalog, registry-utils (adapterFamily inference)
 ```

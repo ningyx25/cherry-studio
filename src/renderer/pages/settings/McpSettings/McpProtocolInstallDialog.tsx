@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   Scrollbar
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { getMcpTypeLabelKey } from '@renderer/i18n/label'
 import type { ProtocolMcpServerInstall } from '@shared/data/types/mcpProtocolInstall'
 import { useState } from 'react'

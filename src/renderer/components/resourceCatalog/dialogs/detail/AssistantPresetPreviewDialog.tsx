@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { useTranslation } from 'react-i18next'
 
 export interface AssistantPresetPreviewDialogPreset {

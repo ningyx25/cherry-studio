@@ -2,7 +2,7 @@
 
 import { messageService } from '@main/data/services/MessageService'
 import type { ContextSettingsOverride } from '@shared/data/types/contextSettings'
-import type { AssistantTurnOptions, CherryUIMessage } from '@shared/data/types/message'
+import type { AssistantTurnOptions, HuaTuoUIMessage } from '@shared/data/types/message'
 
 import type { PersistAssistantInput, PersistenceBackend } from '../PersistenceBackend'
 import { trimOversizedToolOutputs } from '../trimToolOutputs'
@@ -15,13 +15,13 @@ export interface MessageServiceBackendOptions {
    *  — keeps the persist-time trim on the same effective settings as the turn. */
   contextSettingsOverride?: ContextSettingsOverride | null
   /** Post-success hook (topic auto-rename, usage reporting, …). */
-  afterPersist?: (finalMessage: CherryUIMessage) => Promise<void>
+  afterPersist?: (finalMessage: HuaTuoUIMessage) => Promise<void>
 }
 
 export class MessageServiceBackend implements PersistenceBackend {
   readonly kind = 'sqlite'
   readonly canPersistEmptyTerminal = true
-  readonly afterPersist?: (finalMessage: CherryUIMessage) => Promise<void>
+  readonly afterPersist?: (finalMessage: HuaTuoUIMessage) => Promise<void>
 
   constructor(private readonly opts: MessageServiceBackendOptions) {
     this.afterPersist = opts.afterPersist

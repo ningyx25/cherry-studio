@@ -4,10 +4,10 @@
 !.gitignore
 !README*.md
 !public-skills.txt
-!cherry-electron-dev/
-!cherry-electron-dev/**
-!cherry-pr-test/
-!cherry-pr-test/**
+!huatuo-electron-dev/
+!huatuo-electron-dev/**
+!huatuo-pr-test/
+!huatuo-pr-test/**
 !create-skill/
 !create-skill/**
 !demand-first-review/

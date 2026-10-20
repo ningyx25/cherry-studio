@@ -1,4 +1,4 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cherrystudio/ui'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@huatuostudio/ui'
 import { OgCard } from '@renderer/components/OgCard'
 import React, { memo, useMemo, useState } from 'react'
 

@@ -1,5 +1,5 @@
-import { Switch } from '@cherrystudio/ui'
 import { useMultiplePreferences } from '@data/hooks/usePreference'
+import { Switch } from '@huatuostudio/ui'
 import {
   SettingDivider,
   SettingGroup,

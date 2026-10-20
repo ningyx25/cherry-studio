@@ -11,7 +11,7 @@ vi.mock('@renderer/components/command', () => ({
   CommandPopupMenu: ({ children }: { children: ReactNode }) => <>{children}</>
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({
     children,
     type = 'button',

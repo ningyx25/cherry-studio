@@ -14,7 +14,7 @@ import {
   Switch,
   TabsContent,
   Textarea
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { PermissionModeIcon, PermissionModeOptionLabel } from '@renderer/components/PermissionModeOption'
 import PromptEditorField from '@renderer/components/PromptEditorField'

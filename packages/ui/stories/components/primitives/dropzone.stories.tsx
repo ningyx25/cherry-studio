@@ -1,4 +1,4 @@
-import { Dropzone, DropzoneContent, DropzoneEmptyState } from '@cherrystudio/ui'
+import { Dropzone, DropzoneContent, DropzoneEmptyState } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

@@ -21,7 +21,7 @@ vi.mock('@data/services/McpServerService', () => ({
 }))
 
 const shellEnvMock = vi.hoisted(() => ({
-  getShellEnv: vi.fn().mockResolvedValue({ Path: 'C:\\Users\\me\\.cherrystudio\\bin;C:\\Windows' })
+  getShellEnv: vi.fn().mockResolvedValue({ Path: 'C:\\Users\\me\\.huatuostudio\\bin;C:\\Windows' })
 }))
 vi.mock('@main/utils/shellEnv', () => ({
   getShellEnv: shellEnvMock.getShellEnv
@@ -163,7 +163,7 @@ describe('McpRuntimeService stdio environment', () => {
     BaseService.resetInstances()
     MockMainCacheServiceUtils.resetMocks()
     mcpSdkMock.stdioTransports.length = 0
-    shellEnvMock.getShellEnv.mockResolvedValue({ Path: 'C:\\Users\\me\\.cherrystudio\\bin;C:\\Windows' })
+    shellEnvMock.getShellEnv.mockResolvedValue({ Path: 'C:\\Users\\me\\.huatuostudio\\bin;C:\\Windows' })
   })
 
   it('canonicalizes a mixed-case Windows Path key to PATH before crossing the MCP SDK boundary', async () => {
@@ -182,7 +182,7 @@ describe('McpRuntimeService stdio environment', () => {
 
     const transportEnv = mcpSdkMock.stdioTransports.at(-1)?.env
     expect(Object.keys(transportEnv ?? {}).filter((key) => key.toLowerCase() === 'path')).toEqual(['PATH'])
-    expect(transportEnv?.PATH).toBe('C:\\Users\\me\\.cherrystudio\\bin;C:\\Windows')
+    expect(transportEnv?.PATH).toBe('C:\\Users\\me\\.huatuostudio\\bin;C:\\Windows')
     platformSpy.mockRestore()
   })
 

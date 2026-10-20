@@ -5,7 +5,7 @@
  * - `tool-web_search` / `tool-web_fetch` / `tool-kb_search` / `tool-kb_read`
  *   results (assistant runtime), including the same tools called through
  *   `tool_invoke` (deferred)
- *   or the `cherry-tools` in-process MCP server (agent runtime, `dynamic-tool`
+ *   or the `huatuo-tools` in-process MCP server (agent runtime, `dynamic-tool`
  *   parts). Result ids ("3f2a1b9c-2") are minted per lookup call in the main
  *   process (`citationIds.ts`) and echoed back by the model as `[cite:id]`.
  * - `source-url` parts from provider-native web search, keyed by their
@@ -17,7 +17,7 @@
  * `components/`. `resolveCitationMarkers` is the shared core — `withToolCitationTags`
  * is the render-side wrapper that turns the markers into `<sup>` badges.
  *
- * Migrated v1 messages carry `providerMetadata.cherry.references` instead and
+ * Migrated v1 messages carry `providerMetadata.huatuo.references` instead and
  * keep rendering through the legacy `partsToBlocks` path — MainTextBlock
  * prefers that path whenever reference metadata is present.
  */
@@ -38,8 +38,8 @@ import {
 } from '@shared/ai/builtinTools'
 import { parseFunctionCallToolName } from '@shared/ai/tools/mcpToolName'
 import { isDeferredToolOutput, isPersistedToolOutput } from '@shared/ai/transport'
-import type { CherryMessagePart } from '@shared/data/types/message'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import type { DynamicToolUIPart, ToolUIPart, UIDataTypes, UIMessagePart, UITools } from 'ai'
 import { getToolName, isToolUIPart } from 'ai'
 
@@ -67,7 +67,7 @@ const CITABLE_TOOL_NAMES: ReadonlySet<string> = new Set([
   KB_SEARCH_TOOL_NAME,
   KB_READ_TOOL_NAME
 ])
-const CHERRY_TOOLS_MCP_SERVER = 'cherry-tools'
+const HUATUO_TOOLS_MCP_SERVER = 'huatuo-tools'
 const TOOL_INVOKE_TOOL_NAME = 'tool_invoke'
 
 /**
@@ -102,11 +102,11 @@ function sourceIdToNumber(sourceId: unknown): number | undefined {
 
 /**
  * The builtin lookup tool a part's completed output belongs to, across all
- * three wire shapes (static AI-SDK part, tool_invoke wrapper, cherry-tools
+ * three wire shapes (static AI-SDK part, tool_invoke wrapper, huatuo-tools
  * MCP dynamic-tool). Third-party MCP tools that happen to share a name are
  * deliberately excluded.
  */
-function resolveCitableToolName(part: CherryMessagePart): string | null {
+function resolveCitableToolName(part: HuaTuoMessagePart): string | null {
   if (!isToolUIPart(part as UIMessagePart<UIDataTypes, UITools>)) return null
   const toolPart = part as unknown as ToolResponsePart
   if (toolPart.state !== 'output-available') return null
@@ -115,11 +115,11 @@ function resolveCitableToolName(part: CherryMessagePart): string | null {
   if (CITABLE_TOOL_NAMES.has(rawName)) {
     if (part.type !== 'dynamic-tool') return rawName
 
-    const partMetadata = readCherryMeta(part)?.tool
+    const partMetadata = readHuaTuoMeta(part)?.tool
     const outputMetadata = extractOutputMetadata((toolPart as { output?: unknown }).output).metadata
-    const belongsToCherryTools = (metadata: ToolMetadata | typeof partMetadata | undefined) =>
-      metadata?.serverId === CHERRY_TOOLS_MCP_SERVER || metadata?.serverName === CHERRY_TOOLS_MCP_SERVER
-    return belongsToCherryTools(partMetadata) || belongsToCherryTools(outputMetadata) ? rawName : null
+    const belongsToHuaTuoTools = (metadata: ToolMetadata | typeof partMetadata | undefined) =>
+      metadata?.serverId === HUATUO_TOOLS_MCP_SERVER || metadata?.serverName === HUATUO_TOOLS_MCP_SERVER
+    return belongsToHuaTuoTools(partMetadata) || belongsToHuaTuoTools(outputMetadata) ? rawName : null
   }
 
   if (rawName === TOOL_INVOKE_TOOL_NAME) {
@@ -129,7 +129,7 @@ function resolveCitableToolName(part: CherryMessagePart): string | null {
   }
 
   const parsed = parseFunctionCallToolName(rawName)
-  if (parsed && parsed.serverPart === CHERRY_TOOLS_MCP_SERVER && CITABLE_TOOL_NAMES.has(parsed.toolPart)) {
+  if (parsed && parsed.serverPart === HUATUO_TOOLS_MCP_SERVER && CITABLE_TOOL_NAMES.has(parsed.toolPart)) {
     return parsed.toolPart
   }
   return null
@@ -197,7 +197,7 @@ function markerNumberOfId(id: string | number): number | undefined {
   return suffix ? Number(suffix) : undefined
 }
 
-export function resolveMessageCitations(parts: readonly CherryMessagePart[]): MessageCitations {
+export function resolveMessageCitations(parts: readonly HuaTuoMessagePart[]): MessageCitations {
   const byId = new Map<string, Citation>()
   const byMarkerNumber = new Map<number, Citation>()
   const all: Citation[] = []
@@ -457,7 +457,7 @@ const CITATION_MARKER_PATTERN = /([ \t]?)\[cite:([\w-]+)\]/g
  */
 export function toExportableCitations(
   content: string,
-  parts: readonly CherryMessagePart[]
+  parts: readonly HuaTuoMessagePart[]
 ): { content: string; cited: Citation[] } {
   const { content: resolved, byMarker, cited } = resolveCitationMarkers(content, resolveMessageCitations(parts))
   return {

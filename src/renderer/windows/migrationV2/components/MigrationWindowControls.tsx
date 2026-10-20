@@ -1,5 +1,5 @@
-import { Button } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { isMac } from '@renderer/utils/platform'
 import { MigrationIpcChannels } from '@shared/data/migration/v2/types'
 import { Minus, X } from 'lucide-react'

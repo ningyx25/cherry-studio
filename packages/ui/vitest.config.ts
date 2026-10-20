@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   resolve: {
     alias: {
-      '@cherrystudio/ui': resolve(__dirname, 'src')
+      '@huatuostudio/ui': resolve(__dirname, 'src')
     }
   },
   test: {

@@ -15,7 +15,7 @@ vi.mock('@renderer/ipc', () => ({
   useIpcOn: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => ({
+vi.mock('@huatuostudio/ui', async (importOriginal) => ({
   ...(await importOriginal()),
   Badge: ({ children }: PropsWithChildren) => <span>{children}</span>,
   Button: ({ active, children, ...props }: PropsWithChildren<Record<string, unknown> & { active?: boolean }>) => (

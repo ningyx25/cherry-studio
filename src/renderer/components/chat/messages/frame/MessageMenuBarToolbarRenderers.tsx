@@ -1,4 +1,4 @@
-import { ConfirmDialog, Tooltip } from '@cherrystudio/ui'
+import { ConfirmDialog, Tooltip } from '@huatuostudio/ui'
 import { actionsToCommandMenuExtraItems } from '@renderer/components/chat/actions/actionMenuItems'
 import { type CommandContextMenuExtraItem, CommandPopupMenu } from '@renderer/components/command'
 import type { ReactNode } from 'react'

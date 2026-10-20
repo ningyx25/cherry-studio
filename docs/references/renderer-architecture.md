@@ -24,7 +24,7 @@ Four layers. Dependencies may only flow **downward** (1 → 2 → 3 → 4).
 | 1 | **App / composition** | `windows/`, `routes/`, top-level `pages/` (cross-domain shells only) | Entry points, provider mounting, router, app shell; composes features |
 | 2 | **Domain** | `features/<domain>/` | One business domain's vertical slice; mutually isolated from sibling features (consumed from above by the app layer) |
 | 3 | **Shared** (no single owner) | `components/` → `hooks/` / `services/` → `utils/` / `data/` / `ipc/` / `workers/`; plus `i18n/` / `assets/` / `types/` | Cross-domain reusable artifacts |
-| 4 | **Primitives** | `packages/ui` (`@cherrystudio/ui`), `@shared`, `@logger` | App-agnostic foundation |
+| 4 | **Primitives** | `packages/ui` (`@huatuostudio/ui`), `@shared`, `@logger` | App-agnostic foundation |
 
 Rules:
 
@@ -50,7 +50,7 @@ It is orthogonal to the domain axis (§1) — a `page` may be domain-owned (`fea
 
 **Primitive requirements** (`packages/ui` and `@shared`):
 
-- `packages/ui` (`@cherrystudio/ui`) holds app-agnostic UI primitives (Shadcn + Tailwind). It imports only third-party packages and **never** `@renderer/*`; it carries no business, domain, or data-layer knowledge.
+- `packages/ui` (`@huatuostudio/ui`) holds app-agnostic UI primitives (Shadcn + Tailwind). It imports only third-party packages and **never** `@renderer/*`; it carries no business, domain, or data-layer knowledge.
 - `@shared` holds **cross-process** types, contracts, and pure logic, importable by both `main` and `renderer` and depending on no app layer. **Cross-process is the entry gate, not a description**: logic reachable from only one process stays in that process's own layer. For `@shared`'s internal layout, its two invariants (cross-process; no mutable runtime state), and the closed top-level set, see [Shared Layer Architecture](./shared-layer-architecture.md).
 - Primitives are the leaves: everything may import them; they import no app code.
 
@@ -72,7 +72,7 @@ src/renderer/
 ├── data/ ipc/ workers/  # Shared infra — data access, IpcApi bridge, web workers
 └── i18n/ assets/ types/ # Shared — locale, static assets, cross-domain types
 
-packages/ui (@cherrystudio/ui)  # Primitive — app-agnostic design system
+packages/ui (@huatuostudio/ui)  # Primitive — app-agnostic design system
 src/shared                       # Primitive — cross-process types / contracts / pure logic
 ```
 

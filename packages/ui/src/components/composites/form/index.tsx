@@ -1,7 +1,7 @@
 'use client'
 
-import { Label } from '@cherrystudio/ui/components/primitives/label'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Label } from '@huatuostudio/ui/components/primitives/label'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Slot } from '@radix-ui/react-slot'
 import * as React from 'react'
 import {

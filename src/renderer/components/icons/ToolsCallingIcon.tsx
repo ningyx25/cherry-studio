@@ -1,4 +1,4 @@
-import { Tooltip } from '@cherrystudio/ui'
+import { Tooltip } from '@huatuostudio/ui'
 import { Wrench } from 'lucide-react'
 import type { FC } from 'react'
 import React from 'react'

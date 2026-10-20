@@ -8,19 +8,19 @@ import { setupTestDatabase } from '@test-helpers/db'
 import { eq } from 'drizzle-orm'
 import { describe, expect, it, vi } from 'vitest'
 
-// Stub the registry loader so the preset lookup returns a minimal CherryIN row
-// (its gemini / OpenAI endpoints tagged `cherryin`) without reading the
+// Stub the registry loader so the preset lookup returns a minimal HuaTuoIN row
+// (its gemini / OpenAI endpoints tagged `huatuoin`) without reading the
 // shipped providers.json, whose path is mocked away in the test harness.
-vi.mock('@cherrystudio/provider-registry/node', () => {
+vi.mock('@huatuostudio/provider-registry/node', () => {
   class RegistryLoader {
     loadProviders() {
       return [
         {
-          id: 'cherryin',
+          id: 'huatuoin',
           endpointConfigs: {
-            'google-generate-content': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' },
-            'openai-responses': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' },
-            'openai-chat-completions': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' }
+            'google-generate-content': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
+            'openai-responses': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
+            'openai-chat-completions': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' }
           },
           defaultChatEndpoint: 'openai-chat-completions'
         }
@@ -45,14 +45,14 @@ vi.mock('@cherrystudio/provider-registry/node', () => {
 describe('ProviderService.create — endpoint config overrides', () => {
   const dbh = setupTestDatabase()
 
-  it('resolves adapterFamily from the preset for a preset-derived instance (custom CherryIN host)', async () => {
-    // Mirrors the "add CherryIN instance" flow: user-entered baseUrls only, no
+  it('resolves adapterFamily from the preset for a preset-derived instance (custom HuaTuoIN host)', async () => {
+    // Mirrors the "add HuaTuoIN instance" flow: user-entered baseUrls only, no
     // adapterFamily. Without read-time resolution the gemini endpoint resolves
     // to openai-compatible and image generation POSTs to /v1/images/generations.
     const created = providerService.create({
-      providerId: 'cherryin-express',
-      presetProviderId: 'cherryin',
-      name: 'CherryIn Express',
+      providerId: 'huatuoin-express',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIn Express',
       defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://express-ent-admin.cherryin.ai' },
@@ -64,17 +64,17 @@ describe('ProviderService.create — endpoint config overrides', () => {
     // baseUrls are preserved; adapterFamily is derived.
     expect(created.endpointConfigs?.[ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]).toEqual({
       baseUrl: 'https://express-ent-admin.cherryin.ai/v1beta',
-      adapterFamily: 'cherryin'
+      adapterFamily: 'huatuoin'
     })
-    expect(created.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]?.adapterFamily).toBe('cherryin')
-    expect(created.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_RESPONSES]?.adapterFamily).toBe('cherryin')
+    expect(created.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]?.adapterFamily).toBe('huatuoin')
+    expect(created.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_RESPONSES]?.adapterFamily).toBe('huatuoin')
 
     // The row persists only the user-owned override shape — adapterFamily is
     // registry-owned and supplied at read time, never frozen into the row.
     const [row] = await dbh.db
       .select()
       .from(userProviderTable)
-      .where(eq(userProviderTable.providerId, 'cherryin-express'))
+      .where(eq(userProviderTable.providerId, 'huatuoin-express'))
     expect(row.endpointConfigs?.[ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]).toEqual({
       baseUrl: 'https://express-ent-admin.cherryin.ai/v1beta'
     })

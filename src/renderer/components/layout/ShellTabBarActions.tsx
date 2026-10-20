@@ -1,5 +1,5 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
 import { usePersistCache } from '@data/hooks/useCache'
+import { Button, Tooltip } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { CommandTooltip } from '@renderer/components/command'
 import GlobalSearchPopup from '@renderer/components/GlobalSearch/GlobalSearchPopup'

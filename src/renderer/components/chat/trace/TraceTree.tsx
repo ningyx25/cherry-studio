@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import * as React from 'react'
 import { useState } from 'react'

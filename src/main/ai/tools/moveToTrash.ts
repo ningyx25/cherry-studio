@@ -197,7 +197,7 @@ export async function moveWorkspaceItemToTrash(
   const protectionContext: TrashProtectionContext = {
     homeDirectory: application.getPath('sys.home'),
     downloadsDirectory: application.getPath('sys.downloads'),
-    protectedDirectories: [application.getPath('cherry.home'), application.getPath('app.userdata')]
+    protectedDirectories: [application.getPath('huatuo.home'), application.getPath('app.userdata')]
   }
   const protectedReason = getProtectedTrashTargetReason(resolvedTargetPath, resolvedWorkspacePath, protectionContext)
   if (protectedReason) {

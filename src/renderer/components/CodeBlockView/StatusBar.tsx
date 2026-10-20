@@ -1,4 +1,4 @@
-import { Flex } from '@cherrystudio/ui'
+import { Flex } from '@huatuostudio/ui'
 import type { FC, ReactNode } from 'react'
 import { memo } from 'react'
 

@@ -1,4 +1,4 @@
-import type { ColumnDef } from '@cherrystudio/ui'
+import type { ColumnDef } from '@huatuostudio/ui'
 import {
   Button,
   DataTable,
@@ -10,7 +10,7 @@ import {
   Flex,
   Spinner,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { restoreFromLocal } from '@renderer/services/BackupService'
 import { popup } from '@renderer/services/popup'
 import { toast } from '@renderer/services/toast'

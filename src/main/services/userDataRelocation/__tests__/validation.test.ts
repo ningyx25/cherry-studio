@@ -15,7 +15,7 @@ vi.mock('@application', () => ({
     getPath: (key: string, filename?: string) => {
       let root: unknown
       if (key === 'app.install') root = relocationState.installPath
-      else if (key === 'cherry.home') root = relocationState.cherryHome
+      else if (key === 'huatuo.home') root = relocationState.huatuoHome
       else if (key in relocationState) root = relocationState[key]
       else root = path.join(String(relocationState.protectedRoot), key.replaceAll('.', '-'))
       return filename ? path.join(String(root), filename) : root
@@ -42,7 +42,7 @@ vi.mock('@main/data/bootConfig', () => ({
 const roots: string[] = []
 
 function makeRoot(): string {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cherry-relocation-'))
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huatuo-relocation-'))
   roots.push(root)
   return root
 }
@@ -62,7 +62,7 @@ beforeEach(() => {
 
   relocationState = {
     installPath: makeRoot(),
-    cherryHome: makeRoot(),
+    huatuoHome: makeRoot(),
     protectedRoot: makeRoot(),
     'app.temp': makeRoot(),
     'app.userdata': null
@@ -162,7 +162,7 @@ describe('userDataRelocation validation', () => {
   })
 
   it('allows an app-specific directory below the Linux config root while protecting the root', async () => {
-    const root = fs.mkdtempSync(path.join('/tmp', 'cherry-relocation-linux-'))
+    const root = fs.mkdtempSync(path.join('/tmp', 'huatuo-relocation-linux-'))
     roots.push(root)
     const source = path.join(root, 'source')
     const systemHome = path.join(root, 'home', 'alice')
@@ -245,7 +245,7 @@ describe('userDataRelocation validation', () => {
       valid: false,
       reason: 'target_contains_source'
     })
-    expect(inspectUserDataRelocationTarget(String(relocationState.cherryHome))).toEqual({
+    expect(inspectUserDataRelocationTarget(String(relocationState.huatuoHome))).toEqual({
       valid: false,
       reason: 'target_protected'
     })
@@ -274,7 +274,7 @@ describe('userDataRelocation validation', () => {
   it('allows writable descendants of protected Linux top-level directories but not the directories themselves', async () => {
     vi.resetModules()
     const entries: string[] = []
-    const existing = new Set(['/home/alice/cherry', '/var', '/var/cherry', '/', String(relocationState.installPath)])
+    const existing = new Set(['/home/alice/huatuo', '/var', '/var/huatuo', '/', String(relocationState.installPath)])
     const realpathSync = vi.fn((value: string) => value)
     ;(realpathSync as typeof realpathSync & { native?: typeof realpathSync }).native = realpathSync
     vi.doMock('node:fs', () => {
@@ -289,7 +289,7 @@ describe('userDataRelocation validation', () => {
           if (existing.has(value)) return { isDirectory: () => true, isFile: () => false, size: 0 }
           throw Object.assign(new Error('missing'), { code: 'ENOENT' })
         }),
-        readdirSync: vi.fn((value: string) => (value === '/var/cherry' ? entries : [])),
+        readdirSync: vi.fn((value: string) => (value === '/var/huatuo' ? entries : [])),
         readFileSync: vi.fn(() => {
           throw Object.assign(new Error('missing'), { code: 'ENOENT' })
         }),
@@ -298,11 +298,11 @@ describe('userDataRelocation validation', () => {
       return { ...mock, default: mock }
     })
     platformState.isLinux = true
-    relocationState['app.userdata'] = '/home/alice/cherry'
+    relocationState['app.userdata'] = '/home/alice/huatuo'
 
     const { inspectUserDataRelocationTarget } = await loadDomain()
 
-    expect(inspectUserDataRelocationTarget('/var/cherry')).toEqual({
+    expect(inspectUserDataRelocationTarget('/var/huatuo')).toEqual({
       valid: true,
       targetEmpty: true
     })
@@ -311,7 +311,7 @@ describe('userDataRelocation validation', () => {
       reason: 'target_protected'
     })
     entries.push('unrelated.txt')
-    expect(inspectUserDataRelocationTarget('/var/cherry')).toEqual({
+    expect(inspectUserDataRelocationTarget('/var/huatuo')).toEqual({
       valid: true,
       targetEmpty: false
     })

@@ -4,7 +4,7 @@
  * page. Knowledge-base citations render through `KnowledgeCitation.tsx`.
  */
 
-import { Skeleton } from '@cherrystudio/ui'
+import { Skeleton } from '@huatuostudio/ui'
 import Favicon from '@renderer/components/icons/FallbackFavicon'
 import MarqueeText from '@renderer/components/MarqueeText'
 import SelectionContextMenu from '@renderer/components/SelectionContextMenu'

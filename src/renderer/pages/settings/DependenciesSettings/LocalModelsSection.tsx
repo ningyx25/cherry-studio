@@ -1,4 +1,4 @@
-import { Badge, Button } from '@cherrystudio/ui'
+import { Badge, Button } from '@huatuostudio/ui'
 import { useLocalModel } from '@renderer/hooks/useLocalModel'
 import { cn } from '@renderer/utils/style'
 import type { LocalModelKind, LocalModelStatus } from '@shared/data/presets/localModel'

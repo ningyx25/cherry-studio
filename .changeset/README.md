@@ -47,9 +47,9 @@ See `config.json` for the changeset configuration:
 
 | Package | Description |
 | --- | --- |
-| `@cherrystudio/ai-core` | Unified AI Provider Interface |
-| `@cherrystudio/ai-sdk-provider` | AI SDK provider bundle with CherryIN routing |
-| `@cherrystudio/extension-table-plus` | Table extension for Tiptap |
+| `@huatuostudio/ai-core` | Unified AI Provider Interface |
+| `@huatuostudio/ai-sdk-provider` | AI SDK provider bundle with HuaTuoIN routing |
+| `@huatuostudio/extension-table-plus` | Table extension for Tiptap |
 
 ### Dependency relationships
 

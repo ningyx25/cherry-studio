@@ -1,4 +1,4 @@
-# @cherrystudio/ui
+# @huatuostudio/ui
 
 HuaTuo Studio UI component library for React applications.
 
@@ -18,18 +18,18 @@ HuaTuo Studio UI component library for React applications.
 ### Install
 
 ```bash
-npm install @cherrystudio/ui
+npm install @huatuostudio/ui
 # peer dependencies
 npm install motion react react-dom tailwindcss
 ```
 
 > The recommended integration style in this repository is to use the package export entry points:
-> `@cherrystudio/ui`
-> `@cherrystudio/ui/components`
-> `@cherrystudio/ui/icons`
-> `@cherrystudio/ui/utils`
-> `@cherrystudio/ui/styles/tokens.css`
-> `@cherrystudio/ui/styles/theme.css`
+> `@huatuostudio/ui`
+> `@huatuostudio/ui/components`
+> `@huatuostudio/ui/icons`
+> `@huatuostudio/ui/utils`
+> `@huatuostudio/ui/styles/tokens.css`
+> `@huatuostudio/ui/styles/theme.css`
 >
 ### Two Integration Modes
 
@@ -39,7 +39,7 @@ Use the full HuaTuo Studio design system so Tailwind theme tokens resolve to Hua
 
 ```css
 /* app.css */
-@import '@cherrystudio/ui/styles/theme.css';
+@import '@huatuostudio/ui/styles/theme.css';
 ```
 
 **Characteristics:**
@@ -47,7 +47,7 @@ Use the full HuaTuo Studio design system so Tailwind theme tokens resolve to Hua
 - ✅ Use standard Tailwind utility names directly (`bg-primary`, `bg-red-500`, `p-4`, `rounded-lg`)
 - ✅ Colors resolve to HuaTuo Studio design values
 - ✅ Uses Tailwind's standard numeric spacing scale
-- ✅ Includes Shadcn-derived radii through `rounded-4xl` plus `rounded-full`; smaller Cherry aliases remain available for compatibility
+- ✅ Includes Shadcn-derived radii through `rounded-4xl` plus `rounded-full`; smaller HuaTuo aliases remain available for compatibility
 - ⚠️ Overrides the default Tailwind theme contract for the imported app bundle
 
 **Example:**
@@ -74,7 +74,7 @@ Import only primitives and existing foundation providers, then decide which valu
 ```css
 /* app.css */
 @import 'tailwindcss';
-@import '@cherrystudio/ui/styles/tokens.css';
+@import '@huatuostudio/ui/styles/tokens.css';
 
 /* Re-export only the parts you need */
 @theme inline {
@@ -136,9 +136,9 @@ To avoid mixing value sources, semantic variables, theme mappings, and runtime o
 
 Default consumption rules:
 
-1. Regular application packages should depend on `@cherrystudio/ui/styles/theme.css` by default
+1. Regular application packages should depend on `@huatuostudio/ui/styles/theme.css` by default
 2. Components should prefer semantic utilities such as `bg-background`, `text-muted-foreground`, and `bg-success`; custom CSS may use the matching official or product variable
-3. Only design-system-adjacent packages that explicitly need foundation-level access should depend on `@cherrystudio/ui/styles/tokens.css`
+3. Only design-system-adjacent packages that explicitly need foundation-level access should depend on `@huatuostudio/ui/styles/tokens.css`
 4. Runtime theme logic should write shared theme values only through registered `--cs-theme-*` inputs, not directly to official semantics or derived `--color-*` variables; renderer-only runtime values stay owner-local under `--app-*`
 
 ### Shadcn CLI Ownership
@@ -159,7 +159,7 @@ theme layers and generator own the shared CSS contract, even though `components.
 ### Basic Components
 
 ```tsx
-import { Button, Input } from '@cherrystudio/ui'
+import { Button, Input } from '@huatuostudio/ui'
 
 function App() {
   return (
@@ -179,10 +179,10 @@ function App() {
 
 ```tsx
 // Components only
-import { Button } from '@cherrystudio/ui/components'
+import { Button } from '@huatuostudio/ui/components'
 
 // Utilities only
-import { DIALOG_CLOSE_DURATION_MS, DIALOG_UNMOUNT_DELAY_MS, toUndefinedIfNull } from '@cherrystudio/ui/utils'
+import { DIALOG_CLOSE_DURATION_MS, DIALOG_UNMOUNT_DELAY_MS, toUndefinedIfNull } from '@huatuostudio/ui/utils'
 ```
 
 ## Development

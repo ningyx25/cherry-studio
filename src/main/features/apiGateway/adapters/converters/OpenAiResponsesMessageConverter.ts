@@ -2,18 +2,18 @@
  * OpenAI Responses API Message Converter
  *
  * Converts OpenAI Responses API format to AI SDK format.
- * Uses types from @cherrystudio/openai SDK.
+ * Uses types from the openai SDK.
  */
 
 import type { ProviderOptions } from '@ai-sdk/provider-utils'
-import type OpenAI from '@cherrystudio/openai'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import { parseDataUrl } from '@shared/utils/dataUrl'
 import type { DynamicToolUIPart, FileUIPart, TextUIPart, ToolSet } from 'ai'
 import { tool, zodSchema } from 'ai'
 import mime from 'mime'
+import type OpenAI from 'openai'
 
 import type { IMessageConverter, StreamTextOptions } from '../interfaces'
 import { type JsonSchemaLike, jsonSchemaToZod } from './jsonSchemaToZod'
@@ -93,14 +93,14 @@ export type ResponsesCreateParams = ResponseCreateParams & {
  */
 export class OpenAiResponsesMessageConverter implements IMessageConverter<ResponsesCreateParams> {
   /**
-   * Convert Responses API params to AI SDK `CherryUIMessage[]`.
+   * Convert Responses API params to AI SDK `HuaTuoUIMessage[]`.
    *
    * `instructions` become a leading system UIMessage. `function_call` +
    * `function_call_output` items are paired into a single assistant
    * `dynamic-tool` part so `convertToModelMessages` rebuilds the call/result.
    */
-  toUIMessages(params: ResponsesCreateParams): CherryUIMessage[] {
-    const messages: CherryUIMessage[] = []
+  toUIMessages(params: ResponsesCreateParams): HuaTuoUIMessage[] {
+    const messages: HuaTuoUIMessage[] = []
 
     if (params.instructions && typeof params.instructions === 'string') {
       messages.push({ id: nextUIMessageId(), role: 'system', parts: [{ type: 'text', text: params.instructions }] })
@@ -169,7 +169,7 @@ export class OpenAiResponsesMessageConverter implements IMessageConverter<Respon
   /**
    * Convert EasyInputMessage to a UIMessage (or null to skip).
    */
-  private convertEasyInputMessage(msg: EasyInputMessage): CherryUIMessage | null {
+  private convertEasyInputMessage(msg: EasyInputMessage): HuaTuoUIMessage | null {
     switch (msg.role) {
       case 'developer':
       case 'system':
@@ -183,7 +183,7 @@ export class OpenAiResponsesMessageConverter implements IMessageConverter<Respon
     }
   }
 
-  private convertSystemMessage(content: EasyInputMessage['content']): CherryUIMessage | null {
+  private convertSystemMessage(content: EasyInputMessage['content']): HuaTuoUIMessage | null {
     let text = ''
     if (typeof content === 'string') {
       text = content
@@ -197,13 +197,13 @@ export class OpenAiResponsesMessageConverter implements IMessageConverter<Respon
     return { id: nextUIMessageId(), role: 'system', parts: [{ type: 'text', text }] }
   }
 
-  private convertUserMessage(content: EasyInputMessage['content']): CherryUIMessage | null {
+  private convertUserMessage(content: EasyInputMessage['content']): HuaTuoUIMessage | null {
     if (typeof content === 'string') {
       if (!content) return null
       return { id: nextUIMessageId(), role: 'user', parts: [{ type: 'text', text: content }] }
     }
 
-    const parts: CherryUIMessage['parts'] = []
+    const parts: HuaTuoUIMessage['parts'] = []
     for (const part of content) {
       if (part.type === 'input_text') {
         const p: TextUIPart = { type: 'text', text: part.text }
@@ -222,8 +222,8 @@ export class OpenAiResponsesMessageConverter implements IMessageConverter<Respon
     return null
   }
 
-  private convertAssistantMessage(content: EasyInputMessage['content']): CherryUIMessage | null {
-    const parts: CherryUIMessage['parts'] = []
+  private convertAssistantMessage(content: EasyInputMessage['content']): HuaTuoUIMessage | null {
+    const parts: HuaTuoUIMessage['parts'] = []
 
     if (typeof content === 'string') {
       parts.push({ type: 'text', text: content })

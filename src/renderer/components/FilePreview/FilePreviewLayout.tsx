@@ -1,4 +1,4 @@
-import { Scrollbar } from '@cherrystudio/ui'
+import { Scrollbar } from '@huatuostudio/ui'
 import type { ReactNode } from 'react'
 
 interface FilePreviewFrameProps {

@@ -37,7 +37,7 @@ vi.mock('../../messages/hooks/useMessagePlatformActions', () => ({
   useMessagePlatformActions: () => ({ copyText: mocks.copyText, notifyError: mocks.notifyError })
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   PageSidePanel: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Scrollbar: ({ children, className }: React.HTMLAttributes<HTMLDivElement>) => (
     <div data-testid="citations-scrollbar" className={className}>

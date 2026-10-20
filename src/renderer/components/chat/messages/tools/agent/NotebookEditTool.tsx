@@ -1,4 +1,4 @@
-import { Badge } from '@cherrystudio/ui'
+import { Badge } from '@huatuostudio/ui'
 import { Streamdown } from 'streamdown'
 
 import type { NotebookEditToolInput, NotebookEditToolOutput } from '../shared/agentToolTypes'

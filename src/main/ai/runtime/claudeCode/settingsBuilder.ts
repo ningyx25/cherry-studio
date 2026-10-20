@@ -38,7 +38,7 @@ import { PromptBuilder } from '@main/ai/agents/prompt'
 import AgentMemoryServer from '@main/ai/mcp/servers/agentMemory'
 import AssistantServer from '@main/ai/mcp/servers/assistant'
 import { AssistantFileToolsServer } from '@main/ai/mcp/servers/AssistantFileToolsServer'
-import CherryBuiltinToolsServer from '@main/ai/mcp/servers/cherryBuiltinTools'
+import HuaTuoBuiltinToolsServer from '@main/ai/mcp/servers/huatuoBuiltinTools'
 import SkillsServer from '@main/ai/mcp/servers/skills'
 import { buildCitationsGuidance } from '@main/ai/runtime/claudeCode/citationsGuidance'
 import { createSdkMcpServerInstance } from '@main/ai/runtime/claudeCode/createSdkMcpServerInstance'
@@ -50,10 +50,10 @@ import {
   ASSISTANT_AUTO_APPROVED_RUNTIME_NAMES,
   ASSISTANT_FILE_APPROVAL_REQUIRED_RUNTIME_NAMES,
   ASSISTANT_FILE_AUTO_APPROVED_RUNTIME_NAMES,
-  CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES,
-  CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES,
-  toCherryBuiltinRuntimeName
-} from '@main/ai/tools/adapters/claudeCode/cherryBuiltinApproval'
+  HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES,
+  HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES,
+  toHuaTuoBuiltinRuntimeName
+} from '@main/ai/tools/adapters/claudeCode/huatuoBuiltinApproval'
 import { type ClaudeToolContext, resolveDisallowedTools } from '@main/ai/tools/adapters/claudeCode/toolConditions'
 import { resolveKnowledgeBaseScope } from '@main/ai/utils/knowledgeScope'
 import { isLinux, isMac, isWin } from '@main/core/platform'
@@ -81,7 +81,7 @@ import { AGENT_WORKSPACE_TYPE, type AgentSessionWorkspaceSource } from '@shared/
 import type { McpServer } from '@shared/data/types/mcpServer'
 import { parseUniqueModelId } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
-import type { CherryToolMeta } from '@shared/data/types/uiParts'
+import type { HuaTuoToolMeta } from '@shared/data/types/uiParts'
 import type { McpTool } from '@shared/types/mcp'
 import { languageEnglishNameMap } from '@shared/utils/languages'
 import { isExternalCliProvider } from '@shared/utils/provider'
@@ -89,9 +89,9 @@ import { isExternalCliProvider } from '@shared/utils/provider'
 import type { AgentRuntimeUserInput } from '../types'
 import {
   type Environment,
-  hasStaleCherryProxyMarkers,
+  hasStaleHuaTuoProxyMarkers,
   mergeAgentLoopbackProxyBypass,
-  stripInheritedCherryProxyMarkers
+  stripInheritedHuaTuoProxyMarkers
 } from './agentProxyEnvironment'
 import {
   detectDestructiveAssistantCommand,
@@ -105,7 +105,7 @@ import type { ClaudeCodeSettings, McpToolDisplayMetadata, SteerHolder, ToolAppro
 const logger = loggerService.withContext('ClaudeCodeSettingsBuilder')
 const MIN_AUTO_COMPACT_WINDOW = 100_000
 const MAX_AUTO_COMPACT_WINDOW = 1_000_000
-const MINIMAL_CHERRY_ASSISTANT_INSTRUCTIONS =
+const MINIMAL_HUATUO_ASSISTANT_INSTRUCTIONS =
   'Within HuaTuo Studio, serve as HuaTuo Assistant, its built-in general-purpose Agent and onboarding guide. Help the user complete any request using the available tools.'
 const require_ = createRequire(import.meta.url)
 
@@ -140,17 +140,17 @@ const HEADLESS_CONFIG_MUTATION_ACTIONS = new Set([
   'remove_channel',
   'reconnect_channel'
 ])
-const CHERRY_BUILTIN_APPROVAL_REQUIRED_RUNTIME_NAMES =
-  CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toCherryBuiltinRuntimeName)
+const HUATUO_BUILTIN_APPROVAL_REQUIRED_RUNTIME_NAMES =
+  HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName)
 
 function approvalRequiredRuntimeNames(assistantMcpEnabled: boolean): readonly string[] {
   return assistantMcpEnabled
     ? [
-        ...CHERRY_BUILTIN_APPROVAL_REQUIRED_RUNTIME_NAMES,
+        ...HUATUO_BUILTIN_APPROVAL_REQUIRED_RUNTIME_NAMES,
         ...ASSISTANT_APPROVAL_REQUIRED_RUNTIME_NAMES,
         ...ASSISTANT_FILE_APPROVAL_REQUIRED_RUNTIME_NAMES
       ]
-    : CHERRY_BUILTIN_APPROVAL_REQUIRED_RUNTIME_NAMES
+    : HUATUO_BUILTIN_APPROVAL_REQUIRED_RUNTIME_NAMES
 }
 const WORKSPACE_PATH_FIELDS = {
   Edit: 'file_path',
@@ -499,7 +499,7 @@ export async function buildClaudeCodeSessionSettings(
     settingSources: getSettingSources(provider),
     settings: {
       autoCompactEnabled: true,
-      // Cherry owns persistent Agent memory through SOUL/USER/FACT/JOURNAL and agent-memory.
+      // HuaTuo owns persistent Agent memory through SOUL/USER/FACT/JOURNAL and agent-memory.
       // Disable Claude Code's separate auto-memory store so the preset does not introduce a
       // second, conflicting memory contract.
       autoMemoryEnabled: false,
@@ -667,10 +667,10 @@ export async function getClaudeCodeLoginShellEnvironment(
   currentProxyEnvironment: Environment
 ): Promise<Record<string, string | undefined>> {
   let loginShellEnv = await getShellEnv()
-  if (hasStaleCherryProxyMarkers(loginShellEnv, currentProxyEnvironment)) {
+  if (hasStaleHuaTuoProxyMarkers(loginShellEnv, currentProxyEnvironment)) {
     loginShellEnv = await refreshShellEnv()
   }
-  return stripInheritedCherryProxyMarkers(loginShellEnv)
+  return stripInheritedHuaTuoProxyMarkers(loginShellEnv)
 }
 
 async function buildEnvironment(provider: Provider, agent: AgentEntity): Promise<Record<string, string | undefined>> {
@@ -738,8 +738,8 @@ async function buildEnvironment(provider: Provider, agent: AgentEntity): Promise
     // (streamAdapter.ts), which the CLI only emits when this flag is set.
     CLAUDE_CODE_EMIT_SESSION_STATE_EVENTS: '1',
     CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT: '1',
-    CHERRY_STUDIO_BUN_PATH: bunPath,
-    CHERRY_STUDIO_SKILLS_DIR: application.getPath('feature.agents.skills'),
+    HUATUO_STUDIO_BUN_PATH: bunPath,
+    HUATUO_STUDIO_SKILLS_DIR: application.getPath('feature.agents.skills'),
     ...(customGitBashPath ? { CLAUDE_CODE_GIT_BASH_PATH: customGitBashPath } : {}),
     // Model-row output cap → CLI max_tokens (only when the model declares one).
     ...(maxOutputTokens !== undefined ? { CLAUDE_CODE_MAX_OUTPUT_TOKENS: String(maxOutputTokens) } : {})
@@ -763,10 +763,10 @@ async function buildEnvironment(provider: Provider, agent: AgentEntity): Promise
       'CLAUDE_CODE_USE_VERTEX',
       'CLAUDE_CODE_GIT_BASH_PATH',
       'ENABLE_TOOL_SEARCH',
-      'CHERRY_STUDIO_NODE_PROXY_RULES',
-      'CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES',
-      'CHERRY_STUDIO_BUN_PATH',
-      'CHERRY_STUDIO_SKILLS_DIR',
+      'HUATUO_STUDIO_NODE_PROXY_RULES',
+      'HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES',
+      'HUATUO_STUDIO_BUN_PATH',
+      'HUATUO_STUDIO_SKILLS_DIR',
       'NODE_OPTIONS',
       '__PROTO__',
       'CONSTRUCTOR',
@@ -790,10 +790,10 @@ async function buildEnvironment(provider: Provider, agent: AgentEntity): Promise
   // Authorization / x-api-key), and a directly-supplied OAuth token. The
   // warm-query builder already skips injecting the API key for this provider.
   // The Agent SDK only falls through to macOS Keychain lookup when CLAUDE_CONFIG_DIR
-  // is absent; Cherry's isolated agent config dir would otherwise mask a valid
+  // is absent; HuaTuo's isolated agent config dir would otherwise mask a valid
   // CLI login. Elsewhere credentials live in <CLAUDE_CONFIG_DIR>/.credentials.json,
   // so point at the user's real config dir (their shell's CLAUDE_CONFIG_DIR, or
-  // ~/.claude) rather than Cherry's relocated agent config.
+  // ~/.claude) rather than HuaTuo's relocated agent config.
   if (isExternalCliProvider(provider)) {
     delete env.ANTHROPIC_API_KEY
     delete env.ANTHROPIC_AUTH_TOKEN
@@ -882,17 +882,17 @@ async function buildToolPermissions(
   const approvalRequiredTools = approvalRequiredRuntimeNames(assistantMcpEnabled)
 
   const toolPolicySnapshot = await ensureToolPolicySnapshot(session.id, agent, {
-    // cherry-tools is injected for every session. Auto-allowing these explicit tools (no per-call
+    // huatuo-tools is injected for every session. Auto-allowing these explicit tools (no per-call
     // approval) is a deliberate decision (matches feat/chat-page): the READ tools have no side
     // effects in the main process — web_search/web_fetch read the network,
     // kb_search/kb_read/kb_list read the user's knowledge bases, report_artifacts only records a
     // declaration. The untrusted-channel exposure this creates (approval-free reads + web_fetch URL
     // egress for channel-linked sessions) is bounded by the system-level channel security policy
     // (CHANNEL_SECURITY_PROMPT). The autonomy tools (cron/notify/config) also stay auto-approved —
-    // they were blanket-allowed as the standalone `cherry` server before the merge. Keep this an
-    // explicit allowlist so a future cherry-tools addition does not become auto-approved by prefix.
+    // they were blanket-allowed as the standalone `huatuo` server before the merge. Keep this an
+    // explicit allowlist so a future huatuo-tools addition does not become auto-approved by prefix.
     autoAllowRuntimeNames: [
-      ...CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES.map(toCherryBuiltinRuntimeName),
+      ...HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName),
       // Assistant MCP read-only lookups are explicit opt-ins. Sensitive and mutating tools must go
       // through per-call approval.
       ...(assistantMcpEnabled
@@ -990,7 +990,7 @@ async function buildToolPermissions(
         toolName,
         input,
         presentation,
-        providerMetadata: { cherry: { transport: 'claude-agent', toolName } satisfies CherryToolMeta }
+        providerMetadata: { huatuo: { transport: 'claude-agent', toolName } satisfies HuaTuoToolMeta }
       })
     })
   }
@@ -1066,7 +1066,7 @@ async function buildToolPermissions(
   const headlessConfigMutationHook: HookCallback = async (input): Promise<HookJSONOutput> => {
     if (!input || input.hook_event_name !== 'PreToolUse') return {}
     const toolName = String((input as Record<string, unknown>).tool_name ?? '')
-    if (toolName !== toCherryBuiltinRuntimeName(CONFIG_TOOL_NAME)) return {}
+    if (toolName !== toHuaTuoBuiltinRuntimeName(CONFIG_TOOL_NAME)) return {}
     const toolInput = (input as Record<string, unknown>).tool_input as Record<string, unknown> | undefined
     const action = typeof toolInput?.action === 'string' ? toolInput.action : ''
     if (!HEADLESS_CONFIG_MUTATION_ACTIONS.has(action)) return {}
@@ -1353,7 +1353,7 @@ export async function buildSystemPrompt(
       instructions = definition.instructions
     } else if (isAssistant) {
       logger.error('Builtin HuaTuo Assistant definition missing; using minimal fallback instructions')
-      instructions = MINIMAL_CHERRY_ASSISTANT_INSTRUCTIONS
+      instructions = MINIMAL_HUATUO_ASSISTANT_INSTRUCTIONS
     }
   }
 
@@ -1367,7 +1367,7 @@ export async function buildSystemPrompt(
   const isChannelLinked = channelLinked ?? Boolean(channelService.findBySessionId(session.id))
   const channelSecurityBlock = isChannelLinked ? `\n\n${CHANNEL_SECURITY_PROMPT}` : ''
   const unavailableTools = new Set(disallowedTools)
-  const isLookupEnabled = (toolName: string) => !unavailableTools.has(toCherryBuiltinRuntimeName(toolName))
+  const isLookupEnabled = (toolName: string) => !unavailableTools.has(toHuaTuoBuiltinRuntimeName(toolName))
   const citationsGuidance = buildCitationsGuidance({
     web: isLookupEnabled(WEB_SEARCH_TOOL_NAME) || isLookupEnabled(WEB_FETCH_TOOL_NAME),
     kb:
@@ -1378,7 +1378,7 @@ export async function buildSystemPrompt(
   const artifactsBlock = `\n\n${REPORT_ARTIFACTS_PROMPT}`
   const langInstruction = getLanguageInstruction()
 
-  // Runtime and tool-selection strategy lives in the default-enabled cherry-tool-guide skill.
+  // Runtime and tool-selection strategy lives in the default-enabled huatuo-tool-guide skill.
   // PATH injection and the dependency guard enforce availability and isolation without duplicating that handbook here.
   const promptParts = await promptBuilder.buildPromptParts(
     cwd,
@@ -1388,7 +1388,7 @@ export async function buildSystemPrompt(
   )
   const userInstructions = instructions ? `\n\n${instructions}` : ''
   // The Claude Code preset owns its dynamic cwd/git context. A custom base replaces that
-  // preset only, so Cherry restores the workspace contract in its always-appended context.
+  // preset only, so HuaTuo restores the workspace contract in its always-appended context.
   const workspaceContextBlock =
     promptParts.base.kind === 'custom'
       ? `\n\n${[
@@ -1397,13 +1397,13 @@ export async function buildSystemPrompt(
           'Use it as the default base for file operations and shell commands; resolve unspecified or relative paths against it.'
         ].join('\n')}`
       : ''
-  const cherryContext = `${promptParts.context}${userInstructions}${workspaceContextBlock}${channelSecurityBlock}${citationsBlock}${artifactsBlock}\n\n${langInstruction}`
+  const huatuoContext = `${promptParts.context}${userInstructions}${workspaceContextBlock}${channelSecurityBlock}${citationsBlock}${artifactsBlock}\n\n${langInstruction}`
 
-  // The workspace chooses only the base. Cherry-owned context survives either path.
+  // The workspace chooses only the base. HuaTuo-owned context survives either path.
   if (promptParts.base.kind === 'claude_code') {
-    return { type: 'preset', preset: 'claude_code', append: cherryContext }
+    return { type: 'preset', preset: 'claude_code', append: huatuoContext }
   }
-  return promptParts.base.content ? `${promptParts.base.content}\n\n${cherryContext}` : cherryContext
+  return promptParts.base.content ? `${promptParts.base.content}\n\n${huatuoContext}` : huatuoContext
 }
 
 export function buildMcpServers(
@@ -1434,7 +1434,7 @@ export function buildMcpServers(
     }
   }
 
-  // 3. Cherry tools — builtin lookups plus the agent autonomy tools (cron / notify / config),
+  // 3. HuaTuo tools — builtin lookups plus the agent autonomy tools (cron / notify / config),
   // which register only because the agent context is passed. Use `agent.id` instead of
   // `session.agentId` so TS can see the value is non-null after the upstream
   // orphan check in buildClaudeCodeSessionSettings.
@@ -1453,10 +1453,10 @@ export function buildMcpServers(
       throw new Error(`Unsupported workspace type: ${String(exhaustive)}`)
     }
   }
-  mcpList['cherry-tools'] = {
+  mcpList['huatuo-tools'] = {
     type: 'sdk',
-    name: 'cherry-tools',
-    instance: new CherryBuiltinToolsServer({
+    name: 'huatuo-tools',
+    instance: new HuaTuoBuiltinToolsServer({
       agentId: agent.id,
       workspaceSource,
       workspacePath: session.workspace.path,
@@ -1480,7 +1480,7 @@ export function buildMcpServers(
   // so a model only needs one tool call instead of a correct multi-step shell sequence.
   mcpList.skills = { type: 'sdk', name: 'skills', instance: new SkillsServer(agent.id).mcpServer }
 
-  logger.debug('Injected cherry-tools + agent-memory MCP servers', {
+  logger.debug('Injected huatuo-tools + agent-memory MCP servers', {
     agentId: agent.id,
     totalMcpServers: Object.keys(mcpList).length
   })
@@ -1615,8 +1615,8 @@ function resolveSourceChannel(agentId: string, sessionId: string): string | unde
 
 /**
  * Auto-approve allowlist for injected built-in MCP servers, so the
- * cherry-tools/agent-memory/assistant tools pass without per-call approval.
- * The auto-approved cherry-tools and assistant tools are listed explicitly (not a wildcard) so the
+ * huatuo-tools/agent-memory/assistant tools pass without per-call approval.
+ * The auto-approved huatuo-tools and assistant tools are listed explicitly (not a wildcard) so the
  * sensitive tools (mutating kb_manage, local-data-reading diagnose) are excluded from the SDK
  * pre-approval and routed through per-call approval via canUseTool.
  */
@@ -1632,7 +1632,7 @@ function isToolDisallowed(toolName: string, disallowedTools: readonly string[]):
 }
 
 export function adjustAllowedToolsForMcp(assistantMcpEnabled: boolean, disallowedTools: readonly string[]): string[] {
-  const result = CHERRY_BUILTIN_AUTO_APPROVED_TOOL_NAMES.map(toCherryBuiltinRuntimeName)
+  const result = HUATUO_BUILTIN_AUTO_APPROVED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName)
   result.push('mcp__agent-memory__memory')
   // search_skills is a read-only marketplace lookup — auto-approve it. install_skill mutates
   // (clones + installs third-party code), so it deliberately stays on per-call approval.
@@ -1644,7 +1644,7 @@ export function adjustAllowedToolsForMcp(assistantMcpEnabled: boolean, disallowe
 }
 
 function getSettingSources(provider: Provider): Array<'user' | 'project' | 'local'> {
-  // Managed skills are mirrored under Cherry's isolated CLAUDE_CONFIG_DIR/skills, which Claude Code loads from the
+  // Managed skills are mirrored under HuaTuo's isolated CLAUDE_CONFIG_DIR/skills, which Claude Code loads from the
   // user source. Login providers point CLAUDE_CONFIG_DIR at the user's real CLI config, so keep that source isolated.
   return isExternalCliProvider(provider) ? ['project', 'local'] : ['user', 'project', 'local']
 }

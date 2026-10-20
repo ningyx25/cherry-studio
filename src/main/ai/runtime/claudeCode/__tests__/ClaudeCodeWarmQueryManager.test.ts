@@ -385,11 +385,11 @@ describe('ClaudeCodeWarmQueryManager', () => {
 
     const withInstance = createClaudeCodeWarmQuerySignature({
       model: 'sonnet',
-      mcpServers: { cherry: { type: 'sdk', name: 'cherry', instance: fakeInstance } }
+      mcpServers: { huatuo: { type: 'sdk', name: 'huatuo', instance: fakeInstance } }
     } as any)
     const withoutInstance = createClaudeCodeWarmQuerySignature({
       model: 'sonnet',
-      mcpServers: { cherry: { type: 'sdk', name: 'cherry' } }
+      mcpServers: { huatuo: { type: 'sdk', name: 'huatuo' } }
     } as any)
 
     expect(withInstance).toBe(withoutInstance)
@@ -403,6 +403,6 @@ describe('ClaudeCodeWarmQueryManager', () => {
         mcpServers: { srv: { type: 'sdk', name, instance: { connect: vi.fn() } } }
       } as any)
 
-    expect(withInstance('cherry')).not.toBe(withInstance('assistant'))
+    expect(withInstance('huatuo')).not.toBe(withInstance('assistant'))
   })
 })

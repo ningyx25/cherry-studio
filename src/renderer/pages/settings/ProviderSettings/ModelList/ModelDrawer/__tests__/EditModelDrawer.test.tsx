@@ -25,7 +25,7 @@ vi.mock('react-i18next', async (importOriginal) => {
   }
 })
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<object>()
   const React = await import('react')
   const SelectContext = React.createContext<{ onValueChange?: (value: string) => void }>({})

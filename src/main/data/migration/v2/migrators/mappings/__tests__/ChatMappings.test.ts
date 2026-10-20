@@ -2,13 +2,13 @@ import type * as FsPromises from 'node:fs/promises'
 
 import { fileEntryTable } from '@data/db/schemas/file'
 import type {
-  CherryMessagePart,
   DynamicToolUIPart,
   FileUIPart,
+  HuaTuoMessagePart,
   ReasoningUIPart,
   TextUIPart
 } from '@shared/data/types/message'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { setupTestDatabase } from '@test-helpers/db'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -262,7 +262,7 @@ describe('transformBlocksToParts', () => {
     expect(part.type).toBe('text')
     expect(part.text).toBe('Hello world')
     expect(part.state).toBe('done')
-    // Text parts only carry cherry meta when citations merge in via transformMessage;
+    // Text parts only carry huatuo meta when citations merge in via transformMessage;
     // standalone text blocks have no providerMetadata.
     expect(part.providerMetadata).toBeUndefined()
     expect(searchableText).toBe('Hello world')
@@ -278,7 +278,7 @@ describe('transformBlocksToParts', () => {
     expect(part.type).toBe('reasoning')
     expect(part.text).toBe('Let me think...')
     expect(part.state).toBe('done')
-    expect(readCherryMeta(part)?.thinkingMs).toBe(5000)
+    expect(readHuaTuoMeta(part)?.thinkingMs).toBe(5000)
   })
 
   it('transforms tool with rawMcpToolResponse to DynamicToolUIPart', async () => {
@@ -310,10 +310,10 @@ describe('transformBlocksToParts', () => {
     expect(part.input).toEqual({ query: 'test' })
     // output comes from rawMcpToolResponse.response
     expect(part.output).toEqual({ content: [{ type: 'text', text: 'result' }] })
-    expect(part.callProviderMetadata?.cherry).toMatchObject({
+    expect(part.callProviderMetadata?.huatuo).toMatchObject({
       tool: { type: 'mcp', serverId: 's1', serverName: 'search' }
     })
-    expect(readCherryMeta(part)?.tool).toMatchObject({
+    expect(readHuaTuoMeta(part)?.tool).toMatchObject({
       type: 'mcp',
       serverId: 's1',
       serverName: 'search'
@@ -374,10 +374,10 @@ describe('transformBlocksToParts', () => {
     ])
 
     const part = parts[0] as DynamicToolUIPart
-    expect(part.callProviderMetadata?.cherry).toMatchObject({
+    expect(part.callProviderMetadata?.huatuo).toMatchObject({
       tool: { type: 'builtin' }
     })
-    expect(readCherryMeta(part)?.tool).toEqual({ type: 'builtin' })
+    expect(readHuaTuoMeta(part)?.tool).toEqual({ type: 'builtin' })
   })
 
   it('keeps server identity but omits invalid tool type metadata', async () => {
@@ -405,13 +405,13 @@ describe('transformBlocksToParts', () => {
     ])
 
     const part = parts[0] as DynamicToolUIPart
-    expect(readCherryMeta(part)?.tool).toEqual({
+    expect(readHuaTuoMeta(part)?.tool).toEqual({
       serverId: 'custom-server',
       serverName: 'Custom'
     })
   })
 
-  it('does not write cherry tool metadata when raw tool identity is absent', async () => {
+  it('does not write huatuo tool metadata when raw tool identity is absent', async () => {
     const { parts } = await transformBlocksToParts([
       block('tool', {
         toolId: 'call-simple',
@@ -421,7 +421,7 @@ describe('transformBlocksToParts', () => {
     ])
 
     const part = parts[0] as DynamicToolUIPart
-    expect(readCherryMeta(part)).toBeUndefined()
+    expect(readHuaTuoMeta(part)).toBeUndefined()
   })
 
   it('falls back to block fields when rawMcpToolResponse is missing', async () => {
@@ -485,10 +485,10 @@ describe('transformBlocksToParts', () => {
     expect(part.toolName).toBe('WebSearch')
     expect(part.toolCallId).toBe('raw-tool-call-id')
     expect(part.input).toEqual({ query: 'desktop clients' })
-    expect(part.callProviderMetadata?.cherry).toMatchObject({
+    expect(part.callProviderMetadata?.huatuo).toMatchObject({
       tool: { type: 'provider' }
     })
-    expect(readCherryMeta(part)?.tool).toMatchObject({ type: 'provider' })
+    expect(readHuaTuoMeta(part)?.tool).toMatchObject({ type: 'provider' })
   })
 
   it('transforms tool with isError to output-error state', async () => {
@@ -563,7 +563,7 @@ describe('transformBlocksToParts', () => {
       expect(part.url).toBe(dataUrl)
       expect(part.mediaType).toBe('image/png')
       // No fileEntryId — not promoted to v2 entry
-      expect(part.providerMetadata?.cherry).toBeUndefined()
+      expect(part.providerMetadata?.huatuo).toBeUndefined()
     })
 
     it('promotes inline data: URL to v2 file_entry when db dep is provided', async () => {
@@ -577,7 +577,7 @@ describe('transformBlocksToParts', () => {
       const part = parts[0] as FileUIPart
       expect(part.url).toMatch(/^file:\/\/\/mock\/migration-userdata\/Data\/Files\/.+\.png$/)
       expect(part.mediaType).toBe('image/png')
-      const fileEntryId = readCherryMeta(part)?.fileEntryId
+      const fileEntryId = readHuaTuoMeta(part)?.fileEntryId
       expect(fileEntryId).toBeTruthy()
 
       // Real file_entry row written
@@ -605,8 +605,8 @@ describe('transformBlocksToParts', () => {
       )
 
       expect(parts).toHaveLength(2)
-      const id1 = readCherryMeta(parts[0] as FileUIPart)?.fileEntryId
-      const id2 = readCherryMeta(parts[1] as FileUIPart)?.fileEntryId
+      const id1 = readHuaTuoMeta(parts[0] as FileUIPart)?.fileEntryId
+      const id2 = readHuaTuoMeta(parts[1] as FileUIPart)?.fileEntryId
       expect(id1).toBeTruthy()
       expect(id2).toBeTruthy()
       expect(id1).not.toBe(id2)
@@ -635,7 +635,7 @@ describe('transformBlocksToParts', () => {
       )
 
       expect(parts).toHaveLength(1)
-      const fileEntryId = readCherryMeta(parts[0] as FileUIPart)?.fileEntryId
+      const fileEntryId = readHuaTuoMeta(parts[0] as FileUIPart)?.fileEntryId
       expect(fileEntryId).toBeTruthy()
 
       const rows = await dbh.db.select().from(fileEntryTable)
@@ -694,7 +694,7 @@ describe('transformBlocksToParts', () => {
     ])
 
     expect(parts).toHaveLength(1)
-    const part = parts[0] as CherryMessagePart & { data: Record<string, unknown> }
+    const part = parts[0] as HuaTuoMessagePart & { data: Record<string, unknown> }
     expect(part.type).toBe('data-error')
     expect(part.data.name).toBe('AbortError')
     expect(part.data.message).toBe('paused')
@@ -705,7 +705,7 @@ describe('transformBlocksToParts', () => {
       block('translation', { content: '翻译内容', targetLanguage: 'chinese' })
     ])
 
-    const part = parts[0] as CherryMessagePart & { data: Record<string, unknown> }
+    const part = parts[0] as HuaTuoMessagePart & { data: Record<string, unknown> }
     expect(part.type).toBe('data-translation')
     expect(part.data.content).toBe('翻译内容')
     expect(part.data.targetLanguage).toBe('chinese')
@@ -715,7 +715,7 @@ describe('transformBlocksToParts', () => {
   it('transforms video to data-video DataUIPart', async () => {
     const { parts } = await transformBlocksToParts([block('video', { url: 'https://example.com/video.mp4' })])
 
-    const part = parts[0] as CherryMessagePart & { data: Record<string, unknown> }
+    const part = parts[0] as HuaTuoMessagePart & { data: Record<string, unknown> }
     expect(part.type).toBe('data-video')
     expect(part.data.url).toBe('https://example.com/video.mp4')
   })
@@ -725,7 +725,7 @@ describe('transformBlocksToParts', () => {
       block('compact', { content: 'summary', compactedContent: 'original long text' })
     ])
 
-    const part = parts[0] as CherryMessagePart & { data: Record<string, unknown> }
+    const part = parts[0] as HuaTuoMessagePart & { data: Record<string, unknown> }
     expect(part.type).toBe('data-compact')
     expect(part.data.content).toBe('summary')
     expect(part.data.compactedContent).toBe('original long text')
@@ -736,7 +736,7 @@ describe('transformBlocksToParts', () => {
       block('code', { content: 'console.log("hi")', language: 'javascript' })
     ])
 
-    const part = parts[0] as CherryMessagePart & { data: Record<string, unknown> }
+    const part = parts[0] as HuaTuoMessagePart & { data: Record<string, unknown> }
     expect(part.type).toBe('data-code')
     expect(part.data.content).toBe('console.log("hi")')
     expect(part.data.language).toBe('javascript')
@@ -911,7 +911,7 @@ describe('transformMessage', () => {
     expect(result).not.toHaveProperty('traceId')
   })
 
-  it('does not stamp block-level createdAt/updatedAt/metadata/error onto part.providerMetadata.cherry', async () => {
+  it('does not stamp block-level createdAt/updatedAt/metadata/error onto part.providerMetadata.huatuo', async () => {
     const blocks: OldBlock[] = [
       {
         ...mainTextBlock('b1', 'm1', 'hello'),
@@ -926,7 +926,7 @@ describe('transformMessage', () => {
     expect(part.providerMetadata).toBeUndefined()
   })
 
-  it('writes citation references onto the first TextUIPart via withCherryMeta', async () => {
+  it('writes citation references onto the first TextUIPart via withHuaTuoMeta', async () => {
     const citationBlock: OldCitationBlock = {
       ...block('citation'),
       type: 'citation',
@@ -938,7 +938,7 @@ describe('transformMessage', () => {
     const blocks: OldBlock[] = [mainTextBlock('b1', 'm1', 'cited [1]'), citationBlock]
     const result = await transformMessage(msg('m1', 'assistant'), null, 0, blocks, 't1')
     const textPart = result.data.parts?.find((p) => p.type === 'text') as TextUIPart
-    const meta = readCherryMeta(textPart)
+    const meta = readHuaTuoMeta(textPart)
     const references = meta?.references as { category: string }[] | undefined
     expect(references).toBeDefined()
     expect(references?.[0]?.category).toBe('citation')

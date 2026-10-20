@@ -1,4 +1,4 @@
-import { Combobox, type ComboboxOption, Skeleton } from '@cherrystudio/ui'
+import { Combobox, type ComboboxOption, Skeleton } from '@huatuostudio/ui'
 import { useLanguages } from '@renderer/hooks/translate'
 import { cn } from '@renderer/utils/style'
 import type { TranslateSourceLanguage } from '@shared/data/preference/preferenceTypes'

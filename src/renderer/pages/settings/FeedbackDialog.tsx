@@ -12,7 +12,7 @@ import {
   ItemGroup,
   ItemMedia,
   ItemTitle
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { ipcApi } from '@renderer/ipc'
 import { openRoute } from '@renderer/services/mainWindowNavigation'
@@ -22,7 +22,7 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export const FEEDBACK_SURVEY_URL = 'https://mcnnox2fhjfq.feishu.cn/share/base/form/shrcnsjfFkx4gy6wx9LQ70tMaKe'
-export const FEEDBACK_GITHUB_URL = 'https://github.com/ningyx25/cherry-studio/issues/new/choose'
+export const FEEDBACK_GITHUB_URL = 'https://github.com/huatuostudio/huatuo-studio/issues/new/choose'
 
 const logger = loggerService.withContext('FeedbackDialog')
 

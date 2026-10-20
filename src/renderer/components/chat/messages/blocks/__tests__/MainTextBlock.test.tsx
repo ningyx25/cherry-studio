@@ -1,4 +1,4 @@
-import type * as CherryUI from '@cherrystudio/ui'
+import type * as HuaTuoUI from '@huatuostudio/ui'
 import type { ReadOnlyComposerFileTokenPreview } from '@renderer/components/composer/tokenView'
 import type { Citation } from '@renderer/types/message'
 import type { Model } from '@renderer/types/model'
@@ -25,8 +25,8 @@ vi.mock('../../MessageListProvider', () => ({
   useOptionalMessageListActions: () => undefined
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryUI>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoUI>()
   const React = await import('react')
   const { createPortal } = await import('react-dom')
   const PopoverContext = React.createContext<{

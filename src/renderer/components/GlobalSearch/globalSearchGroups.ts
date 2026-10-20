@@ -145,7 +145,7 @@ export function areGlobalSearchRecentEntriesEqual(a: GlobalSearchRecentEntry, b:
 }
 
 function getRoutePathname(url: string) {
-  return new URL(url, 'https://www.cherry-ai.com').pathname
+  return new URL(url, 'https://www.huatuo.ai').pathname
 }
 
 function isLegacyRouteRecentEntry(entry: GlobalSearchRecentEntry) {
@@ -227,7 +227,7 @@ export function createRecentRouteEntryFromTab(
   if (tab.type !== 'route') return null
   if (!lastAccessTime) return null
 
-  const pathname = new URL(tab.url, 'https://www.cherry-ai.com').pathname
+  const pathname = new URL(tab.url, 'https://www.huatuo.ai').pathname
   if (LEGACY_ROUTE_PATHS.has(pathname)) return null
   if (COARSE_ENTITY_ROUTE_PATHS.has(pathname)) return null
 

@@ -1,5 +1,5 @@
-import { Button, CodeEditor, ConfirmDialog, Tooltip } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, CodeEditor, ConfirmDialog, Tooltip } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { loggerService } from '@logger'
 import { EmptyState, LoadingState } from '@renderer/components/chat/primitives'
 import type { CommandContextMenuExtraItem } from '@renderer/components/command'

@@ -24,14 +24,14 @@ import {
 } from '../BuiltinAgentProvisioner'
 
 const TEMPLATE_AGENT_JSON = JSON.stringify({
-  name: { 'en-US': 'Cherry Assistant', 'zh-CN': 'Cherry Assistant CN' },
+  name: { 'en-US': 'HuaTuo Assistant', 'zh-CN': 'HuaTuo Assistant CN' },
   instructions: { 'en-US': 'English instructions', 'zh-CN': 'Chinese instructions' },
   configuration: { permission_mode: 'default' },
-  skills: ['cherry-assistant-guide']
+  skills: ['huatuo-assistant-guide']
 })
-const RC5_STOCK_SOUL_PATH = fileURLToPath(new URL('./fixtures/cherry-assistant-rc5-soul.md', import.meta.url))
+const RC5_STOCK_SOUL_PATH = fileURLToPath(new URL('./fixtures/huatuo-assistant-rc5-soul.md', import.meta.url))
 const PR17870_INTERIM_STOCK_SOUL_PATH = fileURLToPath(
-  new URL('./fixtures/cherry-assistant-pr17870-interim-soul.md', import.meta.url)
+  new URL('./fixtures/huatuo-assistant-pr17870-interim-soul.md', import.meta.url)
 )
 
 function writeFile(filePath: string, content: string): void {
@@ -48,14 +48,14 @@ describe('BuiltinAgentProvisioner', () => {
     MockMainPreferenceServiceUtils.resetMocks()
     mocks.toAsarUnpackedPath.mockClear()
     templateRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'builtin-agent-template-'))
-    templateDir = path.join(templateRoot, 'cherry-assistant')
+    templateDir = path.join(templateRoot, 'huatuo-assistant')
     agentDataPath = fs.mkdtempSync(path.join(os.tmpdir(), 'builtin-agent-data-'))
 
     vi.spyOn(application, 'getPath').mockReturnValue(templateRoot)
     vi.mocked(app.getLocale).mockReturnValue('en-US')
 
     writeFile(path.join(templateDir, '.claude', '.claude-plugin', 'plugin.json'), '{"name":"builtin-test"}')
-    writeFile(path.join(templateDir, '.claude', 'skills', 'cherry-assistant-guide', 'SKILL.md'), 'SKILL_V1')
+    writeFile(path.join(templateDir, '.claude', 'skills', 'huatuo-assistant-guide', 'SKILL.md'), 'SKILL_V1')
     writeFile(path.join(templateDir, 'SOUL.md'), 'TEMPLATE_SOUL')
     writeFile(path.join(templateDir, 'USER.md'), 'TEMPLATE_USER')
     writeFile(path.join(templateDir, 'memory', 'FACT.md'), 'TEMPLATE_FACT')
@@ -72,7 +72,7 @@ describe('BuiltinAgentProvisioner', () => {
     vi.mocked(app.getLocale).mockReturnValue('zh-CN')
 
     expect(loadBuiltinAgentDefinition('assistant')).toMatchObject({
-      name: 'Cherry Assistant CN',
+      name: 'HuaTuo Assistant CN',
       instructions: 'Chinese instructions'
     })
   })
@@ -82,7 +82,7 @@ describe('BuiltinAgentProvisioner', () => {
     vi.mocked(app.getLocale).mockReturnValue('zh-CN')
 
     expect(loadBuiltinAgentDefinition('assistant')).toMatchObject({
-      name: 'Cherry Assistant',
+      name: 'HuaTuo Assistant',
       instructions: 'English instructions'
     })
   })
@@ -90,12 +90,12 @@ describe('BuiltinAgentProvisioner', () => {
   it('loads bundled skills from the app-owned plugin directory', () => {
     expect(getBuiltinAgentPluginDirectory('assistant')).toBe(path.join(templateDir, '.claude'))
     expect(mocks.toAsarUnpackedPath).toHaveBeenCalledWith(path.join(templateDir, '.claude'))
-    expect(loadBuiltinAgentDefinition('assistant')?.skills).toEqual(['cherry-assistant-guide'])
+    expect(loadBuiltinAgentDefinition('assistant')?.skills).toEqual(['huatuo-assistant-guide'])
   })
 
   it('builds creation defaults from the bundled Agent definition', () => {
     expect(loadBuiltinAssistantDefaults()).toEqual({
-      name: 'Cherry Assistant',
+      name: 'HuaTuo Assistant',
       configuration: { permission_mode: 'default', builtin_role: 'assistant' }
     })
   })
@@ -103,7 +103,7 @@ describe('BuiltinAgentProvisioner', () => {
   it('rejects invalid bundled creation defaults', () => {
     writeFile(
       path.join(templateDir, 'agent.json'),
-      JSON.stringify({ name: 'Cherry Assistant', configuration: { max_turns: 'invalid' } })
+      JSON.stringify({ name: 'HuaTuo Assistant', configuration: { max_turns: 'invalid' } })
     )
 
     expect(() => loadBuiltinAssistantDefaults()).toThrow('HuaTuo Assistant package configuration is invalid')
@@ -117,10 +117,10 @@ describe('BuiltinAgentProvisioner', () => {
     expect(fs.readFileSync(path.join(agentDataPath, 'USER.md'), 'utf-8')).toBe('TEMPLATE_USER')
     expect(fs.readFileSync(path.join(agentDataPath, 'memory', 'FACT.md'), 'utf-8')).toBe('TEMPLATE_FACT')
     expect(result).toEqual({
-      name: 'Cherry Assistant',
+      name: 'HuaTuo Assistant',
       instructions: 'English instructions',
       configuration: { permission_mode: 'default' },
-      skills: ['cherry-assistant-guide']
+      skills: ['huatuo-assistant-guide']
     })
   })
 

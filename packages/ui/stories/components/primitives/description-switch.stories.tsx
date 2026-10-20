@@ -1,4 +1,4 @@
-import { DescriptionSwitch } from '@cherrystudio/ui/components/primitives/switch'
+import { DescriptionSwitch } from '@huatuostudio/ui/components/primitives/switch'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Bell, Eye, Lock, Moon, Shield, Wifi, Zap } from 'lucide-react'
 import { useState } from 'react'

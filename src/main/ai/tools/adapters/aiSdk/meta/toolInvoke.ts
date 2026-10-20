@@ -90,7 +90,7 @@ export function createToolInvokeTool(
       "If the tool hasn't been inspected, or the arguments don't match its schema, the call returns the " +
       'tool signature — read it and call again with corrected params. Inspect first to skip that round-trip.',
     inputSchema: toolInvokeInputSchema,
-    inputExamples: [{ input: { name: 'web_search', params: { query: 'cherry studio latest release' } } }],
+    inputExamples: [{ input: { name: 'web_search', params: { query: 'huatuo studio latest release' } } }],
     execute: async ({ name, params }, options) => {
       if (!allowedNames.has(name)) throw new Error(`Tool not available in this request: ${name}`)
       const entry = registry.getByName(name)

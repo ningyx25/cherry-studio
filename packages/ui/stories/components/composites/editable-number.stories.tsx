@@ -1,4 +1,4 @@
-import { EditableNumber } from '@cherrystudio/ui'
+import { EditableNumber } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

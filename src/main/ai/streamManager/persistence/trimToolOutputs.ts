@@ -20,7 +20,7 @@
  * saw in-flight.
  */
 
-import { computeHeadTailExcerpt } from '@cherrystudio/ai-core'
+import { computeHeadTailExcerpt } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import { resolveContextSettings } from '@main/ai/contextBuild/resolveContextSettings'
 import { resolveGlobalContextSettings } from '@main/ai/contextBuild/resolveRequestContextSettings'
@@ -37,7 +37,7 @@ import {
   type PersistedToolOutputRef
 } from '@shared/ai/transport'
 import type { ContextSettingsOverride } from '@shared/data/types/contextSettings'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { getToolName, isToolUIPart } from 'ai'
 
 const logger = loggerService.withContext('TrimToolOutputs')
@@ -104,9 +104,9 @@ async function trimWholeText(output: unknown, threshold: number): Promise<Persis
  * trade real data for a marker).
  */
 export async function trimOversizedToolOutputs(
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   assistantOverride?: ContextSettingsOverride | null
-): Promise<CherryMessagePart[]> {
+): Promise<HuaTuoMessagePart[]> {
   // Same layering as the in-flight middleware's gate (`contextBuild.ts`):
   // persist-time globals + the turn's assistant override snapshot, so both
   // lanes trim at the same effective threshold.
@@ -118,7 +118,7 @@ export async function trimOversizedToolOutputs(
   // the complete source of codecs and `truncatable: false` opt-outs.
   const builtins = new Map(registry.getAll().map((entry) => [entry.name, entry]))
 
-  let trimmed: CherryMessagePart[] | undefined
+  let trimmed: HuaTuoMessagePart[] | undefined
   for (let index = 0; index < parts.length; index++) {
     const part = parts[index]
     if (!isToolUIPart(part) || part.state !== 'output-available') continue
@@ -133,7 +133,7 @@ export async function trimOversizedToolOutputs(
       if (!ref) continue
       const output: PersistedToolOutput = { $persistedToolOutput: ref }
       trimmed ??= [...parts]
-      trimmed[index] = { ...part, output } as CherryMessagePart
+      trimmed[index] = { ...part, output } as HuaTuoMessagePart
     } catch (error) {
       logger.error('tool-output trim failed; keeping the full output in message data', error as Error, {
         toolCallId: part.toolCallId

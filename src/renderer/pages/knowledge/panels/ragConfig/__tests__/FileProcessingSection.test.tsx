@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -7,8 +7,8 @@ const mocks = vi.hoisted(() => ({
   openSettingsTab: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  return importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  return importOriginal<typeof HuaTuoStudioUi>()
 })
 
 vi.mock('@renderer/services/mainWindowNavigation', () => ({

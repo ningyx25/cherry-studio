@@ -1,4 +1,4 @@
-import { HelpTooltip, InfoTooltip, WarnTooltip } from '@cherrystudio/ui'
+import { HelpTooltip, InfoTooltip, WarnTooltip } from '@huatuostudio/ui'
 import type { Meta } from '@storybook/react'
 
 const meta: Meta = {

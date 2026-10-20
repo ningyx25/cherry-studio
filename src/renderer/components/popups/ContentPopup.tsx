@@ -1,5 +1,5 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'
 import type { CSSProperties, ReactNode } from 'react'
 

@@ -8,13 +8,13 @@ import { getPathStatus } from '../pathStatus'
 
 describe('getPathStatus', () => {
   it('reports an existing directory', async () => {
-    const dir = await mkdtemp(path.join(tmpdir(), 'cherry-path-status-'))
+    const dir = await mkdtemp(path.join(tmpdir(), 'huatuo-path-status-'))
 
     await expect(getPathStatus(dir)).resolves.toEqual({ ok: true, kind: 'directory' })
   })
 
   it('reports an existing file', async () => {
-    const root = await mkdtemp(path.join(tmpdir(), 'cherry-path-status-'))
+    const root = await mkdtemp(path.join(tmpdir(), 'huatuo-path-status-'))
     const file = path.join(root, 'file.txt')
     await writeFile(file, 'hi')
 
@@ -22,13 +22,13 @@ describe('getPathStatus', () => {
   })
 
   it('reports missing for a path that does not resolve (ENOENT)', async () => {
-    const root = await mkdtemp(path.join(tmpdir(), 'cherry-path-status-'))
+    const root = await mkdtemp(path.join(tmpdir(), 'huatuo-path-status-'))
 
     await expect(getPathStatus(path.join(root, 'nope'))).resolves.toEqual({ ok: false, reason: 'missing' })
   })
 
   it('reports missing for ENOTDIR (a file in the middle of the path)', async () => {
-    const root = await mkdtemp(path.join(tmpdir(), 'cherry-path-status-'))
+    const root = await mkdtemp(path.join(tmpdir(), 'huatuo-path-status-'))
     const file = path.join(root, 'file.txt')
     await writeFile(file, 'hi')
 

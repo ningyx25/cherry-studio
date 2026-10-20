@@ -23,11 +23,11 @@ import { ipcApi } from '@renderer/ipc'
 import { buildAgentSessionTopicId } from '@renderer/utils/agentSession'
 import { mergeMessagesById } from '@renderer/utils/message/mergeMessagesById'
 import type { AiStreamOpenRequest, AiToolApprovalRespondResponse } from '@shared/ai/transport'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { isToolUIPart } from 'ai'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
-type AskUserQuestionApprovalPart = CherryMessagePart & {
+type AskUserQuestionApprovalPart = HuaTuoMessagePart & {
   type?: string
   toolName?: string
   toolCallId?: string
@@ -42,7 +42,7 @@ export interface AgentTurnInput {
   options?: AgentSendOptions
 }
 
-export function getAgentTurnParts(input: AgentTurnInput): CherryMessagePart[] {
+export function getAgentTurnParts(input: AgentTurnInput): HuaTuoMessagePart[] {
   const parts = input.options?.body?.userMessageParts
   return parts ?? (input.text ? [{ type: 'text', text: input.text }] : [])
 }
@@ -83,7 +83,7 @@ function hasAskUserQuestionAnswers(part: AskUserQuestionApprovalPart): boolean {
 }
 
 function findAskUserQuestionPartByCallId(
-  partsByMessageId: Record<string, CherryMessagePart[]>,
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>,
   toolCallId: string
 ): AskUserQuestionApprovalPart | undefined {
   for (const parts of Object.values(partsByMessageId)) {
@@ -100,8 +100,8 @@ function findAskUserQuestionPartByCallId(
 
 export interface AgentChatRuntimeState {
   sessionId: string
-  uiMessages: CherryUIMessage[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  uiMessages: HuaTuoUIMessage[]
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   streamingLayers: MessageStreamingLayers
   optimisticAskUserQuestionInputsByToolCallId: Record<string, unknown>
   isLoading: boolean
@@ -119,7 +119,7 @@ interface UseAgentChatRuntimeStateParams {
   sessionId: string
   sessionMessagesEnabled: boolean
   sessionHistoryFetchOnMount?: boolean
-  reservedMessages: CherryUIMessage[]
+  reservedMessages: HuaTuoUIMessage[]
 }
 
 export function useAgentChatRuntimeState({

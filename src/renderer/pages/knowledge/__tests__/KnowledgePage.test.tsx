@@ -65,7 +65,7 @@ vi.mock('@renderer/components/Navbar', () => ({
   NavbarCenter: ({ children }: { children: ReactNode }) => <div>{children}</div>
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>
   const React = await import('react')
 

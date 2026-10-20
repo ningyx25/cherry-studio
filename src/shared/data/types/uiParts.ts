@@ -27,7 +27,7 @@ import { type FileType, FileTypeSchema } from '@shared/types/file'
 import * as z from 'zod'
 
 import type { SerializedError } from '../../types/error'
-import type { CherryMessagePart } from './message'
+import type { HuaTuoMessagePart } from './message'
 
 // ============================================================================
 // Custom DataUIPart data shapes
@@ -109,14 +109,14 @@ export interface CodePartData {
 }
 
 // ============================================================================
-// Cherry DataUIPart type map (for useChat dataPartSchemas)
+// HuaTuo DataUIPart type map (for useChat dataPartSchemas)
 // ============================================================================
 
 /**
  * All custom DataUIPart types for HuaTuo Studio.
  * Used with `useChat({ dataPartSchemas })` to enable type-safe custom parts.
  */
-export type CherryDataPartTypes = {
+export type HuaTuoDataPartTypes = {
   error: ErrorPartData
   translation: TranslationPartData
   video: VideoPartData
@@ -130,27 +130,27 @@ export type CherryDataPartTypes = {
 }
 
 // ============================================================================
-// Cherry per-part providerMetadata.cherry shapes
+// HuaTuo per-part providerMetadata.huatuo shapes
 // ============================================================================
 
-/** Cherry metadata on a TextUIPart. */
-export interface CherryTextMeta {
+/** HuaTuo metadata on a TextUIPart. */
+export interface HuaTuoTextMeta {
   /** Content references (citations, mentions). */
   references?: unknown[]
   /** Composer inline token display snapshot — on user TextUIPart by convention. */
   composer?: ComposerMessageSnapshot
 }
 
-/** Cherry metadata on a ReasoningUIPart. */
-export interface CherryReasoningMeta {
+/** HuaTuo metadata on a ReasoningUIPart. */
+export interface HuaTuoReasoningMeta {
   /** Thinking duration in ms. */
   thinkingMs?: number
   /** Thinking start timestamp in epoch ms. */
   startedAt?: number
 }
 
-/** Cherry metadata on a ToolUIPart / DynamicToolUIPart. */
-export interface CherryToolMeta {
+/** HuaTuo metadata on a ToolUIPart / DynamicToolUIPart. */
+export interface HuaTuoToolMeta {
   /** Approval bridge transport. */
   transport?: string
   /** Tool name (used by approval bridge before the part has been finalized). */
@@ -176,14 +176,14 @@ export interface DiagnosisResult {
   steps: DiagnosisStep[]
 }
 
-/** Cherry metadata on a data-error DataUIPart. */
-export interface CherryErrorMeta {
+/** HuaTuo metadata on a data-error DataUIPart. */
+export interface HuaTuoErrorMeta {
   /** Persisted AI error diagnosis, rehydrated into the error-detail popup after close / reload. */
   diagnosis?: DiagnosisResult
 }
 
-/** Cherry metadata on a FileUIPart. */
-export interface CherryFileMeta {
+/** HuaTuo metadata on a FileUIPart. */
+export interface HuaTuoFileMeta {
   /**
    * FileEntryId for internal files (v1→v2 migrator preserves this from
    * `OldFileBlock.file.id` / `OldImageBlock.file.id`). External (user-path)
@@ -198,27 +198,27 @@ export interface CherryFileMeta {
 }
 
 /**
- * Conditional mapping from a part's `type` literal to its cherry-meta shape.
- * Parts without a registered shape have no cherry meta — represented as `Record<string, never>`.
+ * Conditional mapping from a part's `type` literal to its huatuo-meta shape.
+ * Parts without a registered shape have no huatuo meta — represented as `Record<string, never>`.
  */
-export type CherryMetaForPartType<T extends string> = T extends 'text'
-  ? CherryTextMeta
+export type HuaTuoMetaForPartType<T extends string> = T extends 'text'
+  ? HuaTuoTextMeta
   : T extends 'reasoning'
-    ? CherryReasoningMeta
+    ? HuaTuoReasoningMeta
     : T extends `tool-${string}` | 'dynamic-tool'
-      ? CherryToolMeta
+      ? HuaTuoToolMeta
       : T extends 'file'
-        ? CherryFileMeta
+        ? HuaTuoFileMeta
         : T extends 'data-error'
-          ? CherryErrorMeta
+          ? HuaTuoErrorMeta
           : Record<string, never>
 
 /**
- * @deprecated Use `CherryTextMeta` / `CherryReasoningMeta` / `CherryToolMeta` / `CherryFileMeta`
- * directly, or `CherryMetaForPartType<P['type']>` in generic positions. Retained for one PR
+ * @deprecated Use `HuaTuoTextMeta` / `HuaTuoReasoningMeta` / `HuaTuoToolMeta` / `HuaTuoFileMeta`
+ * directly, or `HuaTuoMetaForPartType<P['type']>` in generic positions. Retained for one PR
  * cycle to keep external imports compiling.
  */
-export type CherryProviderMetadata = CherryTextMeta & CherryReasoningMeta & CherryToolMeta & CherryFileMeta
+export type HuaTuoProviderMetadata = HuaTuoTextMeta & HuaTuoReasoningMeta & HuaTuoToolMeta & HuaTuoFileMeta
 
 // ============================================================================
 // Zod schemas — runtime validation at the read boundary
@@ -261,17 +261,17 @@ const ComposerMessageSnapshotSchema: z.ZodType<ComposerMessageSnapshot> = z.obje
   tokens: z.array(ComposerMessageTokenSchema)
 })
 
-export const CherryTextMetaSchema: z.ZodType<CherryTextMeta> = z.object({
+export const HuaTuoTextMetaSchema: z.ZodType<HuaTuoTextMeta> = z.object({
   references: z.array(z.unknown()).optional(),
   composer: ComposerMessageSnapshotSchema.optional()
 })
 
-export const CherryReasoningMetaSchema: z.ZodType<CherryReasoningMeta> = z.object({
+export const HuaTuoReasoningMetaSchema: z.ZodType<HuaTuoReasoningMeta> = z.object({
   thinkingMs: z.number().optional(),
   startedAt: z.number().optional()
 })
 
-export const CherryToolMetaSchema: z.ZodType<CherryToolMeta> = z.object({
+export const HuaTuoToolMetaSchema: z.ZodType<HuaTuoToolMeta> = z.object({
   transport: z.string().optional(),
   toolName: z.string().optional(),
   tool: z
@@ -283,7 +283,7 @@ export const CherryToolMetaSchema: z.ZodType<CherryToolMeta> = z.object({
     .optional()
 })
 
-export const CherryFileMetaSchema: z.ZodType<CherryFileMeta> = z.object({
+export const HuaTuoFileMetaSchema: z.ZodType<HuaTuoFileMeta> = z.object({
   fileEntryId: z.string().optional(),
   fileTokenSourceId: z.string().optional(),
   composerFileKind: z.literal('pasted-text').optional()
@@ -300,7 +300,7 @@ const DiagnosisResultSchema: z.ZodType<DiagnosisResult> = z.object({
   steps: z.array(DiagnosisStepSchema)
 })
 
-export const CherryErrorMetaSchema: z.ZodType<CherryErrorMeta> = z.object({
+export const HuaTuoErrorMetaSchema: z.ZodType<HuaTuoErrorMeta> = z.object({
   diagnosis: DiagnosisResultSchema.optional()
 })
 
@@ -310,11 +310,11 @@ export const KnowledgeScopePartDataSchema: z.ZodType<KnowledgeScopePartData> = z
 
 // Table-driven dispatch — part `type` → schema. First match wins.
 const SCHEMA_BY_PART_TYPE: ReadonlyArray<readonly [(t: string) => boolean, z.ZodTypeAny]> = [
-  [(t) => t === 'text', CherryTextMetaSchema],
-  [(t) => t === 'reasoning', CherryReasoningMetaSchema],
-  [(t) => t === 'dynamic-tool' || t.startsWith('tool-'), CherryToolMetaSchema],
-  [(t) => t === 'file', CherryFileMetaSchema],
-  [(t) => t === 'data-error', CherryErrorMetaSchema]
+  [(t) => t === 'text', HuaTuoTextMetaSchema],
+  [(t) => t === 'reasoning', HuaTuoReasoningMetaSchema],
+  [(t) => t === 'dynamic-tool' || t.startsWith('tool-'), HuaTuoToolMetaSchema],
+  [(t) => t === 'file', HuaTuoFileMetaSchema],
+  [(t) => t === 'data-error', HuaTuoErrorMetaSchema]
 ]
 
 function schemaForPartType(type: string): z.ZodTypeAny | null {
@@ -327,7 +327,7 @@ function schemaForPartType(type: string): z.ZodTypeAny | null {
 const KNOWLEDGE_SCOPE_PART_TYPE = 'data-knowledge-scope'
 const CLEAR_CONTEXT_PART_TYPE = 'data-clear'
 
-export type ClearContextPart = Extract<CherryMessagePart, { type: typeof CLEAR_CONTEXT_PART_TYPE }>
+export type ClearContextPart = Extract<HuaTuoMessagePart, { type: typeof CLEAR_CONTEXT_PART_TYPE }>
 
 /** Create the hidden DataUIPart that marks a model-context boundary. */
 export function createClearContextPart(): ClearContextPart {
@@ -338,12 +338,12 @@ export function createClearContextPart(): ClearContextPart {
 }
 
 /** Whether a message's persisted parts contain a model-context boundary. */
-export function hasClearContextPart(parts: readonly CherryMessagePart[] | undefined): boolean {
+export function hasClearContextPart(parts: readonly HuaTuoMessagePart[] | undefined): boolean {
   return parts?.some((part) => part.type === CLEAR_CONTEXT_PART_TYPE) ?? false
 }
 
 /** Replace the aggregate knowledge scope part while preserving every content part. */
-export function withKnowledgeScopePart(parts: CherryMessagePart[], baseIds: readonly string[]): CherryMessagePart[] {
+export function withKnowledgeScopePart(parts: HuaTuoMessagePart[], baseIds: readonly string[]): HuaTuoMessagePart[] {
   const contentParts = parts.filter((part) => part.type !== KNOWLEDGE_SCOPE_PART_TYPE)
   const uniqueBaseIds = Array.from(new Set(baseIds.filter(Boolean)))
   if (uniqueBaseIds.length === 0) return contentParts
@@ -353,12 +353,12 @@ export function withKnowledgeScopePart(parts: CherryMessagePart[], baseIds: read
     {
       type: KNOWLEDGE_SCOPE_PART_TYPE,
       data: { baseIds: uniqueBaseIds }
-    } as CherryMessagePart
+    } as HuaTuoMessagePart
   ]
 }
 
 /** Read the last valid aggregate scope. Missing or malformed parts yield `undefined`. */
-export function getKnowledgeBaseIdsFromParts(parts: readonly CherryMessagePart[]): string[] | undefined {
+export function getKnowledgeBaseIdsFromParts(parts: readonly HuaTuoMessagePart[]): string[] | undefined {
   for (let index = parts.length - 1; index >= 0; index -= 1) {
     const part = parts[index]
     if (part.type !== KNOWLEDGE_SCOPE_PART_TYPE || !('data' in part)) continue
@@ -370,7 +370,7 @@ export function getKnowledgeBaseIdsFromParts(parts: readonly CherryMessagePart[]
 }
 
 // ============================================================================
-// Accessors — single read/write boundary for providerMetadata.cherry
+// Accessors — single read/write boundary for providerMetadata.huatuo
 // ============================================================================
 
 export type ComposerMessageTokenKind = z.infer<typeof ComposerMessageTokenKindSchema>
@@ -404,38 +404,38 @@ export interface ComposerMessageSnapshot {
 }
 
 /**
- * Read cherry meta with runtime validation. Returns `undefined` for missing,
+ * Read huatuo meta with runtime validation. Returns `undefined` for missing,
  * malformed, or part types without a registered schema. Never throws — this
  * is a leaf util in `packages/shared`, so callers that need to surface
- * validation failures should `safeParse` the appropriate `Cherry*MetaSchema`
+ * validation failures should `safeParse` the appropriate `HuaTuo*MetaSchema`
  * directly with their own logger.
  */
-export function readCherryMeta<P extends CherryMessagePart>(part: P): CherryMetaForPartType<P['type']> | undefined {
-  const raw = (part as { providerMetadata?: Record<string, unknown> }).providerMetadata?.cherry
+export function readHuaTuoMeta<P extends HuaTuoMessagePart>(part: P): HuaTuoMetaForPartType<P['type']> | undefined {
+  const raw = (part as { providerMetadata?: Record<string, unknown> }).providerMetadata?.huatuo
   if (!raw || typeof raw !== 'object') return undefined
   const schema = schemaForPartType(part.type)
   if (!schema) return undefined
   const result = schema.safeParse(raw)
   if (!result.success) return undefined
-  return result.data as CherryMetaForPartType<P['type']>
+  return result.data as HuaTuoMetaForPartType<P['type']>
 }
 
 /**
- * Patch cherry meta with compile-time part-scoping. Writing a field that
+ * Patch huatuo meta with compile-time part-scoping. Writing a field that
  * doesn't belong to the part's meta shape fails to compile — e.g.
- * `withCherryMeta(textPart, { thinkingMs: 1 })` is a type error.
+ * `withHuaTuoMeta(textPart, { thinkingMs: 1 })` is a type error.
  */
-export function withCherryMeta<P extends CherryMessagePart>(
+export function withHuaTuoMeta<P extends HuaTuoMessagePart>(
   part: P,
-  patch: Partial<CherryMetaForPartType<P['type']>>
+  patch: Partial<HuaTuoMetaForPartType<P['type']>>
 ): P {
   const existingMeta = (part as { providerMetadata?: Record<string, unknown> }).providerMetadata
-  const existingCherry = (existingMeta?.cherry ?? {}) as Record<string, unknown>
+  const existingHuaTuo = (existingMeta?.huatuo ?? {}) as Record<string, unknown>
   return {
     ...part,
     providerMetadata: {
       ...existingMeta,
-      cherry: { ...existingCherry, ...(patch as Record<string, unknown>) }
+      huatuo: { ...existingHuaTuo, ...(patch as Record<string, unknown>) }
     }
   } as P
 }

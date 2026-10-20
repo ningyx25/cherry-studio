@@ -49,7 +49,7 @@ describe('buildFilePartsForAttachments', () => {
       url: 'file:///p/fe-1.png',
       mediaType: 'image/png',
       filename: 'image.png',
-      providerMetadata: { cherry: { fileEntryId: 'fe-1', fileTokenSourceId: 'source-1' } }
+      providerMetadata: { huatuo: { fileEntryId: 'fe-1', fileTokenSourceId: 'source-1' } }
     })
   })
 
@@ -110,7 +110,7 @@ describe('buildFilePartsForAttachments', () => {
       })
     ])
 
-    expect(part.providerMetadata?.cherry).toEqual({
+    expect(part.providerMetadata?.huatuo).toEqual({
       fileEntryId: 'fe-1',
       fileTokenSourceId: 'source-1',
       composerFileKind: 'pasted-text'

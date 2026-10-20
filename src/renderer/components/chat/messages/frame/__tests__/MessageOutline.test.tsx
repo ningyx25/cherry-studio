@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MessageListItem } from '../../types'
 import MessageOutline from '../MessageOutline'
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   createSlugger: () => ({
     slug: (value: string) => value.toLowerCase().replace(/\s+/g, '-')
   }),

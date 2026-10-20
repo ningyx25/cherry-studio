@@ -9,7 +9,7 @@ const mocks = vi.hoisted(() => ({
   i18nKeys: new Set<string>()
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
     <button type="button" {...props}>
       {children}

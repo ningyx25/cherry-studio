@@ -17,7 +17,7 @@ import { splitMessage } from '../../utils'
 
 const DISCORD_API_BASE = 'https://discord.com/api/v10'
 const DISCORD_MAX_LENGTH = 2000
-const USER_AGENT = 'DiscordBot (https://github.com/ningyx25/cherry-studio, 1.0.0)'
+const USER_AGENT = 'DiscordBot (https://github.com/huatuostudio/huatuo-studio, 1.0.0)'
 
 // Discord Gateway Opcodes
 const OP_DISPATCH = 0
@@ -425,8 +425,8 @@ class DiscordAdapter extends ChannelAdapter {
         intents,
         properties: {
           os: process.platform,
-          browser: 'cherry-studio',
-          device: 'cherry-studio'
+          browser: 'huatuo-studio',
+          device: 'huatuo-studio'
         }
       }
     })

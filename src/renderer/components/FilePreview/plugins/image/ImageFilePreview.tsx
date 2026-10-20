@@ -1,4 +1,4 @@
-import { EmptyState, ImagePreviewViewport, useImagePreviewTransform } from '@cherrystudio/ui'
+import { EmptyState, ImagePreviewViewport, useImagePreviewTransform } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { toFileUrl } from '@shared/utils/file'
 import ImageOff from 'lucide-react/dist/esm/icons/image-off'

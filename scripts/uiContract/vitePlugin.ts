@@ -16,7 +16,7 @@ export function uiContractPlugin(options: UiContractPluginOptions = {}): Plugin 
   const root = resolve(options.root ?? process.cwd())
 
   return {
-    name: 'cherry-ui-contract',
+    name: 'huatuo-ui-contract',
     enforce: 'pre',
     resolveId(id) {
       return id === UI_CONTRACT_RUNTIME_MODULE_ID ? RESOLVED_RUNTIME_MODULE_ID : null

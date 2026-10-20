@@ -7,8 +7,8 @@ import {
   Switch,
   Tooltip,
   usePortalContainer
-} from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+} from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Search, X } from 'lucide-react'
 import {
   type ComponentPropsWithoutRef,

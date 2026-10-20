@@ -525,7 +525,7 @@ describe('ClaudeCodeRuntimeDriver', () => {
               url: 'file:///tmp/BUNDLE.ZIP',
               mediaType: 'application/zip',
               filename: 'BUNDLE.ZIP',
-              providerMetadata: { cherry: { fileEntryId: 'entry-archive' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-archive' } }
             }
           ]
         }
@@ -561,7 +561,7 @@ describe('ClaudeCodeRuntimeDriver', () => {
       url: 'data:image/png;base64,QUJD',
       mediaType: 'image/png',
       filename: 'pixel.png',
-      providerMetadata: { cherry: { fileEntryId: 'entry-1' } }
+      providerMetadata: { huatuo: { fileEntryId: 'entry-1' } }
     })
     const connection = await new ClaudeCodeRuntimeDriver().connect({
       sessionId: 'session-1',
@@ -582,7 +582,7 @@ describe('ClaudeCodeRuntimeDriver', () => {
               url: 'file:///tmp/pixel.png',
               mediaType: 'image/png',
               filename: 'pixel.png',
-              providerMetadata: { cherry: { fileEntryId: 'entry-1' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-1' } }
             }
           ]
         }
@@ -689,14 +689,14 @@ describe('ClaudeCodeRuntimeDriver', () => {
               url: 'file:///tmp/diagram.bmp',
               mediaType: 'image/bmp',
               filename: 'diagram.bmp',
-              providerMetadata: { cherry: { fileEntryId: 'entry-bmp' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-bmp' } }
             },
             {
               type: 'file',
               url: 'file:///tmp/missing.png',
               mediaType: 'image/png',
               filename: 'missing.png',
-              providerMetadata: { cherry: { fileEntryId: 'entry-missing' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-missing' } }
             },
             { type: 'file', url: 'data:image/png;base64,', mediaType: 'image/png', filename: 'empty.png' },
             { type: 'file', mediaType: 'image/png', filename: 'missing-url.png' },
@@ -769,7 +769,7 @@ describe('ClaudeCodeRuntimeDriver', () => {
               url: 'file:///tmp/spec.pdf',
               mediaType: 'application/pdf',
               filename: 'spec.pdf',
-              providerMetadata: { cherry: { fileEntryId: 'entry-1' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-1' } }
             }
           ]
         }
@@ -837,14 +837,14 @@ describe('ClaudeCodeRuntimeDriver', () => {
               url: 'file:///tmp/spec.pdf',
               mediaType: 'application/pdf',
               filename: 'spec.pdf',
-              providerMetadata: { cherry: { fileEntryId: 'entry-secret' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-secret' } }
             },
             {
               type: 'file',
               url: 'file:///tmp/BUNDLE.ZIP',
               mediaType: 'application/zip',
               filename: 'BUNDLE.ZIP',
-              providerMetadata: { cherry: { fileEntryId: 'entry-archive-secret' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-archive-secret' } }
             }
           ]
         }
@@ -910,7 +910,7 @@ describe('ClaudeCodeRuntimeDriver', () => {
               url: 'file:///tmp/BUNDLE.ZIP',
               mediaType: 'application/zip',
               filename: 'BUNDLE.ZIP',
-              providerMetadata: { cherry: { fileEntryId: 'entry-archive-secret' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-archive-secret' } }
             }
           ]
         }
@@ -968,7 +968,7 @@ describe('ClaudeCodeRuntimeDriver', () => {
               url: 'file:///tmp/pixel.png',
               mediaType: 'image/png',
               filename: 'pixel.png',
-              providerMetadata: { cherry: { fileEntryId: 'entry-1' } }
+              providerMetadata: { huatuo: { fileEntryId: 'entry-1' } }
             }
           ]
         }

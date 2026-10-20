@@ -8,9 +8,9 @@
  * - Progress tracking and detailed logging
  * - Built-in rate limiting to avoid API limits
  */
-import { OpenAI } from '@cherrystudio/openai'
 import * as cliProgress from 'cli-progress'
 import * as fs from 'fs'
+import { OpenAI } from 'openai'
 import * as path from 'path'
 
 import { sortedObjectByKeys } from './sort'

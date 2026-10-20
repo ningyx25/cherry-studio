@@ -1,4 +1,4 @@
-import { EmptyState } from '@cherrystudio/ui'
+import { EmptyState } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import HtmlPreviewFrame, {
   HTML_PREVIEW_IFRAME_SANDBOX,

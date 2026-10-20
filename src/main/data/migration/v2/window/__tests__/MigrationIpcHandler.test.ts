@@ -262,7 +262,7 @@ describe('MigrationIpcHandler', () => {
       expect(application.getPath).not.toHaveBeenCalled()
       expect(dialog.showSaveDialog).toHaveBeenCalledWith({
         title: 'Save diagnostics',
-        defaultPath: 'cherry-studio-migration-diagnostics.zip',
+        defaultPath: 'huatuo-studio-migration-diagnostics.zip',
         filters: [{ name: 'ZIP', extensions: ['zip'] }],
         properties: ['createDirectory', 'showOverwriteConfirmation']
       })
@@ -812,18 +812,18 @@ describe('MigrationIpcHandler', () => {
 
   describe('data-location notice', () => {
     it('retains the recovered data location across Retry so it does not vanish after a failed run', async () => {
-      setDataLocationNotice('/Volumes/Data/CherryStudio')
+      setDataLocationNotice('/Volumes/Data/HuaTuoStudio')
 
       await invoke(MigrationIpcChannels.Retry)
 
       expect(lastProgress()).toMatchObject({
         stage: 'introduction',
-        dataLocation: '/Volumes/Data/CherryStudio'
+        dataLocation: '/Volumes/Data/HuaTuoStudio'
       })
     })
 
     it('drops the notice after resetMigrationData so a later Retry carries no stale location', async () => {
-      setDataLocationNotice('/Volumes/Data/CherryStudio')
+      setDataLocationNotice('/Volumes/Data/HuaTuoStudio')
       resetMigrationData()
 
       await invoke(MigrationIpcChannels.Retry)

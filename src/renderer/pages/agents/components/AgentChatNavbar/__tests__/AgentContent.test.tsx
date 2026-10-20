@@ -7,7 +7,7 @@ const preferenceMock = vi.hoisted(() => ({
   showSidebar: false
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Tooltip: ({ children }: { children: ReactNode }) => children
 }))
 

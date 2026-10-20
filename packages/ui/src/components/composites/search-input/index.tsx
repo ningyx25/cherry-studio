@@ -1,11 +1,11 @@
-import type { InputProps } from '@cherrystudio/ui/components/primitives/input'
+import type { InputProps } from '@huatuostudio/ui/components/primitives/input'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput
-} from '@cherrystudio/ui/components/primitives/input-group'
-import { cn } from '@cherrystudio/ui/lib/utils'
+} from '@huatuostudio/ui/components/primitives/input-group'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Search, X } from 'lucide-react'
 import type * as React from 'react'
 

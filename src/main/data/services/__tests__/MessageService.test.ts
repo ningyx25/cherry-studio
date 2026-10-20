@@ -41,7 +41,7 @@ function partsWithFile(fileEntryId: string, filename = `${fileEntryId}.txt`): Me
         mediaType: 'text/plain',
         url: `file:///tmp/${filename}`,
         filename,
-        providerMetadata: { cherry: { fileEntryId } }
+        providerMetadata: { huatuo: { fileEntryId } }
       }
     ] as MessageData['parts']
   }
@@ -56,14 +56,14 @@ function partsWithDuplicateFile(fileEntryId: string): MessageData {
         mediaType: 'text/plain',
         url: `file:///tmp/${fileEntryId}-a.txt`,
         filename: `${fileEntryId}-a.txt`,
-        providerMetadata: { cherry: { fileEntryId } }
+        providerMetadata: { huatuo: { fileEntryId } }
       },
       {
         type: 'file',
         mediaType: 'text/plain',
         url: `file:///tmp/${fileEntryId}-b.txt`,
         filename: `${fileEntryId}-b.txt`,
-        providerMetadata: { cherry: { fileEntryId } }
+        providerMetadata: { huatuo: { fileEntryId } }
       }
     ] as MessageData['parts']
   }

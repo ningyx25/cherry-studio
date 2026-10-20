@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { toast } from '@renderer/services/toast'
 import { Check, Copy, TriangleAlert } from 'lucide-react'
 import type { FC } from 'react'

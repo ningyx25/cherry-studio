@@ -147,7 +147,7 @@ describe('getReadableToolActivity', () => {
   })
 
   it('hides internal skill names and tool search queries', () => {
-    expect(getReadableToolActivity(AgentToolsType.Skill, { skill: 'cherry-code-review' }, true, t)).toEqual({
+    expect(getReadableToolActivity(AgentToolsType.Skill, { skill: 'huatuo-code-review' }, true, t)).toEqual({
       label: 'Handling',
       description: 'task'
     })

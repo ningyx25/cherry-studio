@@ -1,4 +1,4 @@
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { PermissionMode, PermissionModeCard } from '@renderer/types/agent'
 import type { TFunction } from 'i18next'
 import { FolderPen, Hand, Route, ShieldAlert, ShieldCheck } from 'lucide-react'

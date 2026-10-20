@@ -1,4 +1,4 @@
-import { Button, EmptyState as UiEmptyState, Input, MenuItem, Skeleton, Tooltip } from '@cherrystudio/ui'
+import { Button, EmptyState as UiEmptyState, Input, MenuItem, Skeleton, Tooltip } from '@huatuostudio/ui'
 import { CommandHint } from '@renderer/components/command'
 import { cn } from '@renderer/utils/style'
 import type { CommandId } from '@shared/utils/command'

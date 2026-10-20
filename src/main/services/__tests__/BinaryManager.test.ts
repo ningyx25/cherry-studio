@@ -12,7 +12,7 @@ const { manifestRef, mockExecFileAsync, mockFs, mockFsp, mockPreferenceService, 
     readFileSync: vi.fn(),
     writeFileSync: vi.fn(),
     mkdirSync: vi.fn(),
-    mkdtempSync: vi.fn(() => '/tmp/cherry-mise-test'),
+    mkdtempSync: vi.fn(() => '/tmp/huatuo-mise-test'),
     copyFileSync: vi.fn(),
     chmodSync: vi.fn(),
     unlinkSync: vi.fn(),
@@ -136,7 +136,7 @@ describe('binary execution env split', () => {
     expect(env['XDG_CONFIG_HOME']).toBeUndefined()
     expect(env['XDG_CACHE_HOME']).toBeUndefined()
     expect(env['XDG_STATE_HOME']).toBeUndefined()
-    // Shims still resolve against Cherry's isolated mise data dir.
+    // Shims still resolve against HuaTuo's isolated mise data dir.
     expect(env['MISE_DATA_DIR']).toBe('/mock/feature.binary.data')
   })
 
@@ -427,11 +427,11 @@ describe('BinaryManager', () => {
         [
           '/mock/feature.binary.data/shims/myfd',
           '/mock/feature.binary.data/shims/node',
-          '/mock/cherry.bin/bun'
+          '/mock/huatuo.bin/bun'
         ].includes(candidate)
       )
       mockFs.readFileSync.mockImplementation((candidate: string) =>
-        candidate === '/mock/cherry.bin/.bun-version'
+        candidate === '/mock/huatuo.bin/.bun-version'
           ? '1.2.3'
           : (() => {
               throw new Error('ENOENT')
@@ -451,7 +451,7 @@ describe('BinaryManager', () => {
       await expect(service.getToolSnapshots(['bun', 'missing'])).resolves.toEqual({
         bun: {
           name: 'bun',
-          availability: { source: 'bundled', path: '/mock/cherry.bin/bun', version: '1.2.3' },
+          availability: { source: 'bundled', path: '/mock/huatuo.bin/bun', version: '1.2.3' },
           application: { status: 'absent' }
         },
         missing: {
@@ -696,9 +696,9 @@ describe('BinaryManager', () => {
       MockMainCacheServiceUtils.setCacheValue('feature.binary.install_states', {
         bun: { status: 'failed', action: 'install', error: 'offline' }
       })
-      ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/cherry.bin/bun')
+      ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/huatuo.bin/bun')
       mockFs.readFileSync.mockImplementation((candidate: string) =>
-        candidate === '/mock/cherry.bin/.bun-version'
+        candidate === '/mock/huatuo.bin/.bun-version'
           ? '1.2.3'
           : (() => {
               throw new Error('ENOENT')
@@ -722,9 +722,9 @@ describe('BinaryManager', () => {
         { name: 'fd', tool: 'fd' },
         { name: 'gone', tool: 'gone' }
       ]
-      ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/cherry.bin/bun')
+      ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/huatuo.bin/bun')
       mockFs.readFileSync.mockImplementation((candidate: string) =>
-        candidate === '/mock/cherry.bin/.bun-version'
+        candidate === '/mock/huatuo.bin/.bun-version'
           ? '1.2.3'
           : (() => {
               throw new Error('ENOENT')
@@ -746,7 +746,7 @@ describe('BinaryManager', () => {
       const snapshots = await service.getToolSnapshots(['bun', 'fd'])
       expect(snapshots.bun?.definition).toBeUndefined()
       expect(snapshots.fd?.definition).toBeUndefined()
-      expect(snapshots.bun?.availability).toEqual({ source: 'bundled', path: '/mock/cherry.bin/bun', version: '1.2.3' })
+      expect(snapshots.bun?.availability).toEqual({ source: 'bundled', path: '/mock/huatuo.bin/bun', version: '1.2.3' })
       expect(snapshots.fd?.availability).toEqual({ source: 'system', path: '/usr/local/bin/fd' })
       expect(snapshots.gone?.availability).toEqual({ source: 'none' })
     })
@@ -930,9 +930,9 @@ describe('BinaryManager', () => {
       it('reports unknown/backend_unavailable for every name and never runs mise when mise is missing', async () => {
         const service = new BinaryManager()
         // miseBin stays null.
-        ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/cherry.bin/bun')
+        ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/huatuo.bin/bun')
         mockFs.readFileSync.mockImplementation((candidate: string) =>
-          candidate === '/mock/cherry.bin/.bun-version'
+          candidate === '/mock/huatuo.bin/.bun-version'
             ? '1.2.3'
             : (() => {
                 throw new Error('ENOENT')
@@ -946,7 +946,7 @@ describe('BinaryManager', () => {
         // Bundled/system availability is still resolved independently of the fact.
         expect(snapshots.bun).toEqual({
           name: 'bun',
-          availability: { source: 'bundled', path: '/mock/cherry.bin/bun', version: '1.2.3' },
+          availability: { source: 'bundled', path: '/mock/huatuo.bin/bun', version: '1.2.3' },
           application: { status: 'unknown', reason: 'backend_unavailable' }
         })
         expect(snapshots.fd).toEqual({
@@ -960,9 +960,9 @@ describe('BinaryManager', () => {
         const service = new BinaryManager()
         ;(service as any).miseBin = '/mock/mise'
         ;(service as any).isolatedEnv = {}
-        ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/cherry.bin/bun')
+        ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/huatuo.bin/bun')
         mockFs.readFileSync.mockImplementation((candidate: string) =>
-          candidate === '/mock/cherry.bin/.bun-version'
+          candidate === '/mock/huatuo.bin/.bun-version'
             ? '1.2.3'
             : (() => {
                 throw new Error('ENOENT')
@@ -977,7 +977,7 @@ describe('BinaryManager', () => {
 
         expect(snapshots.bun).toEqual({
           name: 'bun',
-          availability: { source: 'bundled', path: '/mock/cherry.bin/bun', version: '1.2.3' },
+          availability: { source: 'bundled', path: '/mock/huatuo.bin/bun', version: '1.2.3' },
           application: { status: 'unknown', reason: 'query_failed' }
         })
         expect(snapshots.fd).toEqual({
@@ -2293,7 +2293,7 @@ describe('BinaryManager', () => {
       try {
         process.env['GITHUB_TOKEN'] = 'ghp_test'
         process.env['HTTPS_PROXY'] = 'http://proxy:8080'
-        delete process.env['CHERRY_GITHUB_TOKEN']
+        delete process.env['HUATUO_GITHUB_TOKEN']
 
         const service = new BinaryManager()
         ;(service as any).miseBin = '/mock/mise'
@@ -2307,10 +2307,10 @@ describe('BinaryManager', () => {
       }
     })
 
-    it('forwards CHERRY_GITHUB_TOKEN as GITHUB_TOKEN to raise the GitHub API rate limit', async () => {
+    it('forwards HUATUO_GITHUB_TOKEN as GITHUB_TOKEN to raise the GitHub API rate limit', async () => {
       const original = { ...process.env }
       try {
-        process.env['CHERRY_GITHUB_TOKEN'] = 'ghp_opt_in'
+        process.env['HUATUO_GITHUB_TOKEN'] = 'ghp_opt_in'
         process.env['GITHUB_TOKEN'] = 'ghp_ambient_should_be_ignored'
 
         const service = new BinaryManager()
@@ -2949,9 +2949,9 @@ describe('BinaryManager', () => {
             ]
           : []
       )
-      ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/cherry.bin/bun')
+      ;(mockFs.existsSync as any).mockImplementation((candidate: string) => candidate === '/mock/huatuo.bin/bun')
       mockFs.readFileSync.mockImplementation((candidate: string) =>
-        candidate === '/mock/cherry.bin/.bun-version'
+        candidate === '/mock/huatuo.bin/.bun-version'
           ? '1.3.0'
           : (() => {
               throw new Error('ENOENT')
@@ -3065,18 +3065,18 @@ describe('BinaryManager', () => {
         mockFs.existsSync.mockImplementation((...args: unknown[]) => {
           const p = String(args[0])
           if (p.includes('app.root.resources.binaries/win32-x64/mise')) return true
-          return p.endsWith('cherry.bin/mise.exe')
+          return p.endsWith('huatuo.bin/mise.exe')
         })
 
         await (service as any).extractBundledBinaries()
 
         expect(mockFsp.copyFile).toHaveBeenCalledWith(
           expect.stringContaining('app.root.resources.binaries/win32-x64/mise.exe'),
-          expect.stringContaining('cherry.bin/mise.exe.tmp-')
+          expect.stringContaining('huatuo.bin/mise.exe.tmp-')
         )
         expect(mockFsp.copyFile).toHaveBeenCalledWith(
           expect.stringContaining('app.root.resources.binaries/win32-x64/mise-shim.exe'),
-          expect.stringContaining('cherry.bin/mise-shim.exe.tmp-')
+          expect.stringContaining('huatuo.bin/mise-shim.exe.tmp-')
         )
       } finally {
         Object.defineProperties(process, { platform: originalPlatform, arch: originalArch })

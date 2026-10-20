@@ -3,7 +3,7 @@ import {
   ImagePreviewDialog,
   type ImagePreviewItem,
   type ImagePreviewLabels
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { CommandContextMenu, type CommandContextMenuExtraItem } from '@renderer/components/command'
 import { toast } from '@renderer/services/toast'

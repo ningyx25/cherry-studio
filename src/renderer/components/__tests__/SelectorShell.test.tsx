@@ -1,4 +1,4 @@
-import { PortalContainerProvider } from '@cherrystudio/ui'
+import { PortalContainerProvider } from '@huatuostudio/ui'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, RefObject } from 'react'
@@ -20,7 +20,7 @@ const { openAutoFocusEvents, popoverContentProps, portalContainerMock } = vi.hoi
 
 const originalResizeObserver = globalThis.ResizeObserver
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: string; size?: string }) => {
     const { variant, size, type = 'button', ...buttonProps } = props
     void size
@@ -84,7 +84,7 @@ vi.mock('@cherrystudio/ui', () => ({
   usePortalContainer: () => portalContainerMock.current
 }))
 
-vi.mock('@cherrystudio/ui/lib/utils', () => ({
+vi.mock('@huatuostudio/ui/lib/utils', () => ({
   cn: (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' ')
 }))
 

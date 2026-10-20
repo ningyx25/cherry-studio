@@ -1,10 +1,10 @@
-import type { InputProps } from '@cherrystudio/ui/components/primitives/input'
+import type { InputProps } from '@huatuostudio/ui/components/primitives/input'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput
-} from '@cherrystudio/ui/components/primitives/input-group'
+} from '@huatuostudio/ui/components/primitives/input-group'
 import {
   Select,
   SelectContent,
@@ -13,9 +13,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue
-} from '@cherrystudio/ui/components/primitives/select'
-import { cn } from '@cherrystudio/ui/lib/utils'
-import { toUndefinedIfNull } from '@cherrystudio/ui/utils/index'
+} from '@huatuostudio/ui/components/primitives/select'
+import { cn } from '@huatuostudio/ui/lib/utils'
+import { toUndefinedIfNull } from '@huatuostudio/ui/utils/index'
 import type { VariantProps } from 'class-variance-authority'
 import { cva } from 'class-variance-authority'
 import { Edit2Icon, EyeIcon, EyeOffIcon } from 'lucide-react'

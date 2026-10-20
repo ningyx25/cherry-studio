@@ -1,7 +1,7 @@
 import type { ComposerAttachment } from '@renderer/utils/message/composerAttachment'
 import { getComposerTextFromParts } from '@renderer/utils/message/composerTokens'
 import type { ComposerQueuedMessagePayload } from '@shared/ai/transport'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 
 import { createComposerUserMessageParts, trimComposerDraftBoundaryBlankLines } from '../../composerDraft'
 import type { ComposerSerializedDraft } from '../../tokens'
@@ -62,7 +62,7 @@ export function buildComposerQueuedPayload(
  * markers, and returning anything but `''` for a token without prompt text would insert text at an
  * offset the span never occupied.
  */
-export function getComposerHistoryText(userMessageParts: CherryMessagePart[]): string {
+export function getComposerHistoryText(userMessageParts: HuaTuoMessagePart[]): string {
   return getComposerTextFromParts(userMessageParts, (token) =>
     token.kind === 'knowledge' ? '' : (token.promptText ?? '')
   )

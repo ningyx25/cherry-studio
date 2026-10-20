@@ -233,16 +233,16 @@ describe('API gateway routes (integration)', () => {
   })
 
   describe('not found', () => {
-    it('unmatched route → 404 Cherry REST envelope (does not crash onError)', async () => {
+    it('unmatched route → 404 HuaTuo REST envelope (does not crash onError)', async () => {
       const { status, body } = await read(await get(app, '/no-such-route', {}))
       expect(status).toBe(404)
-      // App-level fallback uses the Cherry REST dialect: { error: { code, message } }.
+      // App-level fallback uses the HuaTuo REST dialect: { error: { code, message } }.
       expect(body.error.code).toBe('NOT_FOUND')
       expect(body.error.type).toBeUndefined()
     })
   })
 
-  describe("Cherry endpoints use Cherry's own REST error envelope", () => {
+  describe("HuaTuo endpoints use HuaTuo's own REST error envelope", () => {
     it('knowledge search missing `query` → 422 REST envelope (not OpenAI dialect)', async () => {
       const { status, body } = await read(await post(app, '/v1/knowledge-bases/search', {}))
       expect(status).toBe(422)
@@ -296,7 +296,7 @@ describe('API gateway routes (integration)', () => {
           app,
           '/v1/messages',
           { model: 'anthropic:claude', messages: [{ role: 'user', content: 'hi' }] },
-          { ...AUTH, 'x-cherry-fast-mode': 'true' }
+          { ...AUTH, 'x-huatuo-fast-mode': 'true' }
         )
       )
 
@@ -311,8 +311,8 @@ describe('API gateway routes (integration)', () => {
           { model: 'anthropic:claude', messages: [{ role: 'user', content: 'hi' }] },
           {
             ...AUTH,
-            'x-cherry-fast-mode': 'true',
-            'x-cherry-internal-request-token': 'internal-request-token'
+            'x-huatuo-fast-mode': 'true',
+            'x-huatuo-internal-request-token': 'internal-request-token'
           }
         )
       )
@@ -429,10 +429,10 @@ describe('API gateway routes (integration)', () => {
     })
 
     it('strips the gemini-cli sentinel suffix off the model before routing', async () => {
-      // Cherry hands gemini-cli the address with an `@cherry` suffix so its model
+      // HuaTuo hands gemini-cli the address with an `@huatuo` suffix so its model
       // normalization can't rewrite names ending in "flash"; the route must strip it.
       await read(
-        await post(app, '/v1beta/models/618d8838:agent/deepseek-v4-flash@cherry:streamGenerateContent', geminiBody)
+        await post(app, '/v1beta/models/618d8838:agent/deepseek-v4-flash@huatuo:streamGenerateContent', geminiBody)
       )
       expect(mockProcessMessage.mock.calls[0][0]).toMatchObject({
         modelString: '618d8838:agent/deepseek-v4-flash',
@@ -440,12 +440,12 @@ describe('API gateway routes (integration)', () => {
       })
     })
 
-    it('rejects a model still ending in the reserved @cherry suffix after one strip → 400', async () => {
-      // The sentinel is reserved: the route strips exactly one trailing `@cherry`, so a model that
+    it('rejects a model still ending in the reserved @huatuo suffix after one strip → 400', async () => {
+      // The sentinel is reserved: the route strips exactly one trailing `@huatuo`, so a model that
       // STILL ends in it (a real id ending in the reserved marker, or a doubled sentinel) is
       // ambiguous and never advertised by GET /models — reject rather than route to the wrong id.
       const { status, body } = await read(
-        await post(app, '/v1beta/models/weird:model@cherry@cherry:generateContent', geminiBody)
+        await post(app, '/v1beta/models/weird:model@huatuo@huatuo:generateContent', geminiBody)
       )
       expect(status).toBe(400)
       expect(body.error.status).toBe('INVALID_ARGUMENT')

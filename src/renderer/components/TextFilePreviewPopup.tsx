@@ -1,5 +1,5 @@
-import { CodeEditor, Dialog, DialogContent, DialogHeader, DialogTitle } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { CodeEditor, Dialog, DialogContent, DialogHeader, DialogTitle } from '@huatuostudio/ui'
 import { useCodeStyle } from '@renderer/hooks/useCodeStyle'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'
 

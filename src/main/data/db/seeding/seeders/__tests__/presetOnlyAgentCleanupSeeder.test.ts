@@ -36,9 +36,9 @@ function insertSession(agentId: string, id: string) {
 describe('PresetOnlyAgentCleanupSeeder', () => {
   it('hard-deletes non-preset agents with their sessions and workspaces, keeping only presets', () => {
     new PresetAgentSeeder().run(dbh.db)
-    insertAgent('legacy-cherry', 'Cherry Assistant', { builtin_role: 'assistant' })
+    insertAgent('legacy-huatuo', 'HuaTuo Assistant', { builtin_role: 'assistant' })
     insertAgent('test-agent', '测试')
-    insertSession('legacy-cherry', 'legacy-session-1')
+    insertSession('legacy-huatuo', 'legacy-session-1')
     insertSession('test-agent', 'test-session-1')
 
     new PresetOnlyAgentCleanupSeeder().run(dbh.db)
@@ -53,7 +53,7 @@ describe('PresetOnlyAgentCleanupSeeder', () => {
     const nonPresetSessions = dbh.db
       .select()
       .from(agentSessionTable)
-      .where(inArray(agentSessionTable.agentId, ['legacy-cherry', 'test-agent']))
+      .where(inArray(agentSessionTable.agentId, ['legacy-huatuo', 'test-agent']))
       .all()
     expect(nonPresetSessions).toHaveLength(0)
     const allSessions = dbh.db.select().from(agentSessionTable).all()
@@ -62,8 +62,8 @@ describe('PresetOnlyAgentCleanupSeeder', () => {
 
   it('also removes soft-deleted non-preset rows', () => {
     new PresetAgentSeeder().run(dbh.db)
-    insertAgent('legacy-cherry', 'Cherry Assistant', { builtin_role: 'assistant' })
-    dbh.db.update(agentTable).set({ deletedAt: Date.now() }).where(eq(agentTable.id, 'legacy-cherry')).run()
+    insertAgent('legacy-huatuo', 'HuaTuo Assistant', { builtin_role: 'assistant' })
+    dbh.db.update(agentTable).set({ deletedAt: Date.now() }).where(eq(agentTable.id, 'legacy-huatuo')).run()
 
     new PresetOnlyAgentCleanupSeeder().run(dbh.db)
 
@@ -78,7 +78,7 @@ describe('PresetOnlyAgentCleanupSeeder', () => {
   it('is idempotent across repeated SeedRunner runs', () => {
     const runner = new SeedRunner(dbh.db)
     new PresetAgentSeeder().run(dbh.db)
-    insertAgent('legacy-cherry', 'Cherry Assistant', { builtin_role: 'assistant' })
+    insertAgent('legacy-huatuo', 'HuaTuo Assistant', { builtin_role: 'assistant' })
 
     runner.runAll([new PresetAgentSeeder(), new PresetOnlyAgentCleanupSeeder()])
     runner.runAll([new PresetAgentSeeder(), new PresetOnlyAgentCleanupSeeder()])

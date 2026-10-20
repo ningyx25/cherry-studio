@@ -18,7 +18,7 @@ import {
 
 const commandMock = vi.hoisted(() => ({ handler: undefined as (() => void) | undefined }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Tooltip: ({ children }: PropsWithChildren) => <>{children}</>
 }))
 

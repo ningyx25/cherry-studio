@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => ({
   writeText: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
   const TabsContext = React.createContext<{ onValueChange?: (value: string) => void; value: string }>({ value: '' })
   const Div = ({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) => (

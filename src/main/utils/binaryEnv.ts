@@ -3,8 +3,8 @@ import { isWin } from '@main/core/platform'
 import path from 'path'
 
 /**
- * Layout and environment primitives for Cherry-managed binaries — where the
- * binaries live and what Cherry injects into a child process's env, independent
+ * Layout and environment primitives for HuaTuo-managed binaries — where the
+ * binaries live and what HuaTuo injects into a child process's env, independent
  * of how the base env is obtained. Two scenarios consume these: the **execution**
  * path (running installed binaries; see `shellEnv.ts`, which captures the user's
  * real shell env first) and the **install** path (the mise install subprocess;
@@ -21,7 +21,7 @@ import path from 'path'
  * on Windows, where the shims dir must stay ahead of the system PATH.
  *
  * The single home for this canonicalization: both `mergeBinaryExecutionEnv`
- * here and `shellEnv.appendCherryToolDirsToPath` run it back-to-back on the
+ * here and `shellEnv.appendHuaTuoToolDirsToPath` run it back-to-back on the
  * same PATH during shell capture, so they must agree byte-for-byte.
  */
 export function dedupePathSegments(segments: string[]): string[] {
@@ -38,7 +38,7 @@ export function dedupePathSegments(segments: string[]): string[] {
   return unique
 }
 
-/** Root dir for all Cherry-managed binary state (mise data, shims, isolated home). */
+/** Root dir for all HuaTuo-managed binary state (mise data, shims, isolated home). */
 function binaryDataDir(): string {
   return application.getPath('feature.binary.data')
 }
@@ -49,21 +49,21 @@ export function getBinaryShimsDir(): string {
 }
 
 /**
- * Directories that hold Cherry-managed binaries, in resolution order:
- * mise shims first (user-installed wins), then `cherry.bin` (bundled fallback).
+ * Directories that hold HuaTuo-managed binaries, in resolution order:
+ * mise shims first (user-installed wins), then `huatuo.bin` (bundled fallback).
  *
  * Single source of truth for the binary path layout — `getBinaryPath()`
  * (binaryResolver.ts) and the PATH-appending logic in `shellEnv.ts` consume this. Do not hand-join
- * `cherry.bin` / `feature.binary.data` elsewhere.
+ * `huatuo.bin` / `feature.binary.data` elsewhere.
  */
 export function getBinarySearchDirs(): string[] {
-  return [getBinaryShimsDir(), application.getPath('cherry.bin')]
+  return [getBinaryShimsDir(), application.getPath('huatuo.bin')]
 }
 
 /**
  * Env injected into every process that *runs* a managed binary (the CLIs, the
  * mise shims, ripgrep, …). Carries only `MISE_*` so the shims resolve against
- * Cherry's isolated mise data dir.
+ * HuaTuo's isolated mise data dir.
  *
  * Deliberately does NOT relocate `HOME`/`XDG_*`: the tools we launch
  * (claude/codex/gemini/qwen, the OpenClaw gateway) must read the user's real
@@ -85,7 +85,7 @@ export function getBinaryExecutionEnv(): Record<string, string> {
 }
 
 /**
- * `HOME`/`XDG_*` relocated into Cherry's isolated binary data dir. Used ONLY by
+ * `HOME`/`XDG_*` relocated into HuaTuo's isolated binary data dir. Used ONLY by
  * the mise install subprocess (`BinaryManager.buildIsolatedEnv`) so mise and the
  * package managers it drives cannot read user-level config/creds
  * (`~/.npmrc`, `~/.netrc`, …). Never fold this into the shared execution env, or

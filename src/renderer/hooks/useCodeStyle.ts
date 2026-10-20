@@ -1,4 +1,4 @@
-import type { CodeMirrorTheme } from '@cherrystudio/ui'
+import type { CodeMirrorTheme } from '@huatuostudio/ui'
 import type { HighlightChunkResult, ShikiPreProperties } from '@renderer/services/ShikiStreamService'
 import { createContext, use } from 'react'
 

@@ -178,7 +178,7 @@ export type UseCacheSchema = {
   'message.streaming.content.${messageId}': any // Message (renderer format)
   'message.streaming.block.${blockId}': any // MessageBlock
   'message.streaming.siblings_counter.${topicId}': number
-  'message.streaming.chat_session.${topicId}': any // { chat: Chat<CherryUIMessage> } (renderer memory-only)
+  'message.streaming.chat_session.${topicId}': any // { chat: Chat<HuaTuoUIMessage> } (renderer memory-only)
   'message.ui.${messageId}': {
     foldSelected?: boolean
     multiModelMessageStyle?: string

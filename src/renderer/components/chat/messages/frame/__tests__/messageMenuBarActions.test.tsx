@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 const tooltipOpenValues = vi.hoisted(() => [] as Array<boolean | undefined>)
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   return {
     Button: ({ children, type = 'button', ...props }: ComponentProps<'button'>) => (
       <button type={type} {...props}>
@@ -928,7 +928,7 @@ describe('messageMenuBarActions', () => {
           type: 'text',
           text: ' Use the pdf skill. hello  \nworld',
           providerMetadata: {
-            cherry: {
+            huatuo: {
               composer: {
                 version: 1,
                 tokens: [

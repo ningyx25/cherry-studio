@@ -9,7 +9,7 @@ const mocks = vi.hoisted(() => ({
   actions: {} as MessageListActions
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: ComponentPropsWithoutRef<'button'>) => (
     <button type="button" {...props}>
       {children}

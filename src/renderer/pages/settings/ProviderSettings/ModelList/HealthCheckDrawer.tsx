@@ -8,8 +8,8 @@ import {
   RadioGroupItem,
   SegmentedControl,
   Tooltip
-} from '@cherrystudio/ui'
-import { useIcon } from '@cherrystudio/ui/icons'
+} from '@huatuostudio/ui'
+import { useIcon } from '@huatuostudio/ui/icons'
 import Scrollbar from '@renderer/components/Scrollbar'
 import type {
   ModelHealthCheckGenerationOutput,

@@ -1,4 +1,4 @@
-import { REASONING_FORMAT_PROFILES } from '@cherrystudio/provider-registry'
+import { REASONING_FORMAT_PROFILES } from '@huatuostudio/provider-registry'
 import { ENDPOINT_TYPE, type Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -91,8 +91,8 @@ vi.mock('@main/i18n', () => ({
 }))
 
 vi.mock('@main/services/proxy/proxyEnv', () => ({
-  CHERRY_NODE_PROXY_BYPASS_RULES_ENV: 'CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES',
-  CHERRY_NODE_PROXY_RULES_ENV: 'CHERRY_STUDIO_NODE_PROXY_RULES',
+  HUATUO_NODE_PROXY_BYPASS_RULES_ENV: 'HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES',
+  HUATUO_NODE_PROXY_RULES_ENV: 'HUATUO_STUDIO_NODE_PROXY_RULES',
   getProxyEnvironment: mocks.getProxyEnvironment
 }))
 
@@ -152,8 +152,8 @@ describe('buildClaudeCodeQueryRequestForAgentSession resume-token precedence', (
     mocks.apiGatewayStart.mockResolvedValue(undefined)
     mocks.apiGatewayGetCurrentConfig.mockReturnValue({ host: '127.0.0.1', port: 23333, apiKey: 'gateway-key' })
     mocks.apiGatewayGetAgentSessionUsageHeaders.mockReturnValue({
-      'x-cherry-agent-session-id': 'session-1',
-      'x-cherry-internal-usage-token': 'internal-token'
+      'x-huatuo-agent-session-id': 'session-1',
+      'x-huatuo-internal-usage-token': 'internal-token'
     })
     mocks.getAppLanguage.mockReturnValue('en-US')
     mocks.getProxyEnvironment.mockReturnValue({})
@@ -513,7 +513,7 @@ describe('buildClaudeCodeQueryRequestForAgentSession resume-token precedence', (
       ANTHROPIC_DEFAULT_HAIKU_MODEL: 'claude-sonnet'
     })
     expect(request?.settings.env?.ANTHROPIC_CUSTOM_HEADERS).toBe(
-      'HTTP-Referer: https://cherry-ai.com\nX-Title: HuaTuo Studio'
+      'HTTP-Referer: https://huatuo.ai\nX-Title: HuaTuo Studio'
     )
     expect(request?.usageCapture).toEqual({
       owner: 'agent-sdk',
@@ -711,7 +711,7 @@ describe('buildClaudeCodeQueryRequestForAgentSession resume-token precedence', (
       ANTHROPIC_DEFAULT_HAIKU_MODEL: 'other:small-api'
     })
     expect(request?.settings.env?.ANTHROPIC_CUSTOM_HEADERS).toBe(
-      'x-cherry-agent-session-id: session-1\nx-cherry-internal-usage-token: internal-token'
+      'x-huatuo-agent-session-id: session-1\nx-huatuo-internal-usage-token: internal-token'
     )
     expect(request?.usageCapture).toEqual({ owner: 'provider-calls' })
   })
@@ -762,7 +762,7 @@ describe('buildClaudeCodeQueryRequestForAgentSession resume-token precedence', (
     // `mergeAnthropicCustomHeaders` canonicalizes to a case-insensitively sorted, deduplicated list.
     expect(request?.settings.env).toMatchObject({
       ANTHROPIC_CUSTOM_HEADERS:
-        'x-cherry-agent-session-id: session-1\nX-Cherry-Fast-Mode: true\nX-Cherry-Internal-Request-Token: internal-request-token\nx-cherry-internal-usage-token: internal-token'
+        'x-huatuo-agent-session-id: session-1\nX-HuaTuo-Fast-Mode: true\nX-HuaTuo-Internal-Request-Token: internal-request-token\nx-huatuo-internal-usage-token: internal-token'
     })
   })
 
@@ -787,7 +787,7 @@ describe('buildClaudeCodeQueryRequestForAgentSession resume-token precedence', (
 
     // Sorted canonical order — the retained custom header survives the merge.
     expect(request?.settings.env?.ANTHROPIC_CUSTOM_HEADERS).toBe(
-      'x-cherry-agent-session-id: session-1\nX-Cherry-Fast-Mode: true\nX-Cherry-Internal-Request-Token: internal-request-token\nx-cherry-internal-usage-token: internal-token\nX-Custom-Header: retained'
+      'X-Custom-Header: retained\nx-huatuo-agent-session-id: session-1\nX-HuaTuo-Fast-Mode: true\nX-HuaTuo-Internal-Request-Token: internal-request-token\nx-huatuo-internal-usage-token: internal-token'
     )
   })
 
@@ -1057,7 +1057,7 @@ describe('deriveConnectionConfig', () => {
     ).toEqual(['language'])
   })
 
-  it('changes only the proxy-environment rebuild fact when the effective Cherry proxy changes', async () => {
+  it('changes only the proxy-environment rebuild fact when the effective HuaTuo proxy changes', async () => {
     mocks.getProxyEnvironment.mockReturnValue({ HTTP_PROXY: 'http://proxy-a.example.com:8080' })
     const first = await deriveSignature()
 
@@ -1093,7 +1093,7 @@ describe('deriveConnectionConfig', () => {
   })
 
   it('derives proxy rebuild facts from the provenance-aware login-shell snapshot', async () => {
-    const currentProxyEnvironment = { HTTP_PROXY: 'http://current-cherry-proxy.example:7890' }
+    const currentProxyEnvironment = { HTTP_PROXY: 'http://current-huatuo-proxy.example:7890' }
     mocks.getProxyEnvironment.mockReturnValue(currentProxyEnvironment)
     mocks.getClaudeCodeLoginShellEnvironment.mockResolvedValueOnce({
       SOCKS_PROXY: 'socks5://user-shell-proxy.example:1080'

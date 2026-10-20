@@ -13,8 +13,8 @@ import type {
 } from '@shared/data/preference/preferenceTypes'
 import type { AiUsageRecordMessageKind } from '@shared/data/types/aiUsageRecord'
 import type {
-  CherryMessagePart,
-  CherryUIMessage,
+  HuaTuoMessagePart,
+  HuaTuoUIMessage,
   MessageSnapshot,
   MessageStats,
   MessageStatus,
@@ -111,7 +111,7 @@ export const defaultMessageMenuConfig: MessageMenuConfig = {
 
 export interface MessageModelPickerRenderOptions {
   message: MessageListItem
-  messageParts: CherryMessagePart[]
+  messageParts: HuaTuoMessagePart[]
   trigger: ReactNode
   onOpenChange?: (open: boolean) => void
 }
@@ -146,7 +146,7 @@ export interface MessageUserProfile {
 }
 
 export interface MessageToolApprovalMatch {
-  part: CherryMessagePart
+  part: HuaTuoMessagePart
   state: string
   toolCallId: string
   messageId: string
@@ -182,7 +182,7 @@ export interface RemoveMessageErrorPartInput {
 
 export interface MessageListItem {
   id: string
-  role: CherryUIMessage['role']
+  role: HuaTuoUIMessage['role']
   assistantId?: string
   topicId: string
   parentId?: string | null
@@ -270,7 +270,7 @@ export type MessageRenderConfigUpdate = Partial<
  * stream snapshots); `liveMessageIds` marks the mutable streaming tail.
  */
 export interface MessageStreamingLayers {
-  historyPartsByMessageId: Record<string, CherryMessagePart[]>
+  historyPartsByMessageId: Record<string, HuaTuoMessagePart[]>
   liveMessageIds: readonly string[]
 }
 
@@ -282,7 +282,7 @@ export interface MessageTailSlot {
 export interface MessageListState {
   topic: Topic
   messages: MessageListItem[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   /** When provided, streaming updates stay isolated from historical message subtrees. */
   streamingLayers?: MessageStreamingLayers
   beforeList?: ReactNode
@@ -392,11 +392,11 @@ export interface MessageListActions {
   deleteSelectedMessages?: (messageIds?: readonly string[]) => void | Promise<void>
   updateMessageUiState?: (messageId: string, updates: MessageUiState) => void
   updateRenderConfig?: (updates: MessageRenderConfigUpdate) => void
-  editMessage?: (messageId: string, parts: CherryMessagePart[]) => void | Promise<void>
+  editMessage?: (messageId: string, parts: HuaTuoMessagePart[]) => void | Promise<void>
   /** Open the inline editor for a message. Absent = editing unavailable (read-only embeds). */
   startEditing?: (
     message: MessageListItem,
-    parts: CherryMessagePart[],
+    parts: HuaTuoMessagePart[],
     options?: { lockedMentionedModels?: Model[] }
   ) => void
   getMessageDeleteAvailability?: (messageId: string) => MessageDeleteAvailability

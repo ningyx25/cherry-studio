@@ -1,3 +1,4 @@
+import { usePreference } from '@data/hooks/usePreference'
 import {
   Badge,
   Button,
@@ -18,8 +19,7 @@ import {
   InputGroupButton,
   InputGroupInput,
   SelectDropdown
-} from '@cherrystudio/ui'
-import { usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import { Icon } from '@iconify/react'
 import { loggerService } from '@logger'
 import {

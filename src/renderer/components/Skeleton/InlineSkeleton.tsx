@@ -1,4 +1,4 @@
-import { Skeleton } from '@cherrystudio/ui'
+import { Skeleton } from '@huatuostudio/ui'
 import type { FC } from 'react'
 
 export interface SkeletonSpanProps {

@@ -1,4 +1,4 @@
-import type { DragPosition, TreeListSlotArgs } from '@cherrystudio/ui'
+import type { DragPosition, TreeListSlotArgs } from '@huatuostudio/ui'
 import type { CommandContextMenuExtraItem } from '@renderer/components/command'
 import type React from 'react'
 
@@ -51,7 +51,7 @@ export interface FileTreeProps {
 
   /** Optional trailing slot per row - e.g. ContextMenu trigger, action buttons, badges. */
   renderRowExtras?: (node: FileTreeNode) => React.ReactNode
-  /** Optional command-system context menu items for the whole row (Cherry/Native presentation). */
+  /** Optional command-system context menu items for the whole row (HuaTuo/Native presentation). */
   getMenuItems?: (node: FileTreeNode) => readonly CommandContextMenuExtraItem[]
 
   /** Override default folder/file icons. */

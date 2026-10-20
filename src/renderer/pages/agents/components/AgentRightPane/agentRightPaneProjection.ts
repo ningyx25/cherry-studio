@@ -12,7 +12,7 @@ import {
 } from '@renderer/components/chat/messages/tools/toolParentMetadata'
 import type { AgentSessionTaskEvents } from '@shared/ai/agentSessionBackgroundTasks'
 import { REPORT_ARTIFACTS_TOOL_NAME, reportArtifactsInputSchema } from '@shared/ai/builtinTools'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import type { AgentTaskEventPartData } from '@shared/data/types/uiParts'
 import { getToolName, isDataUIPart, isToolUIPart } from 'ai'
 
@@ -37,8 +37,8 @@ export interface AgentToolFlowProjection {
   selectedTool?: AgentToolFlowNode
   toolNodes: AgentToolFlowNode[]
   selectedToolCallIds: Set<string>
-  messages: CherryUIMessage[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  messages: HuaTuoUIMessage[]
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 }
 
 /**
@@ -100,9 +100,9 @@ export interface AgentRightPaneStatus {
   artifacts: AgentArtifactFile[]
 }
 
-const strippedParentMetadataCache = new WeakMap<object, CherryMessagePart>()
+const strippedParentMetadataCache = new WeakMap<object, HuaTuoMessagePart>()
 
-function getPartWithoutParentMetadata(part: CherryMessagePart): CherryMessagePart {
+function getPartWithoutParentMetadata(part: HuaTuoMessagePart): HuaTuoMessagePart {
   if (typeof part !== 'object' || part === null) return stripPartParentToolMetadata(part)
   const cached = strippedParentMetadataCache.get(part)
   if (cached) return cached
@@ -115,27 +115,27 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-function getToolCallId(part: CherryMessagePart): string | undefined {
+function getToolCallId(part: HuaTuoMessagePart): string | undefined {
   const toolCallId = (part as unknown as { toolCallId?: unknown }).toolCallId
   return typeof toolCallId === 'string' && toolCallId ? toolCallId : undefined
 }
 
-function getToolPartState(part: CherryMessagePart): string | undefined {
+function getToolPartState(part: HuaTuoMessagePart): string | undefined {
   const state = (part as unknown as { state?: unknown }).state
   return typeof state === 'string' ? state : undefined
 }
 
-function getToolPartInput(part: CherryMessagePart): unknown {
+function getToolPartInput(part: HuaTuoMessagePart): unknown {
   return (part as unknown as { input?: unknown }).input
 }
 
-function getToolPartOutput(part: CherryMessagePart): unknown {
+function getToolPartOutput(part: HuaTuoMessagePart): unknown {
   const output = (part as unknown as { output?: unknown }).output
   if (isRecord(output) && 'content' in output) return output.content
   return output
 }
 
-function getToolNameFromPart(part: CherryMessagePart): string | undefined {
+function getToolNameFromPart(part: HuaTuoMessagePart): string | undefined {
   if (!isToolUIPart(part)) return undefined
   const toolName = getToolName(part)
   return toolName.trim() || undefined
@@ -166,7 +166,7 @@ function textFromContent(value: unknown): string | undefined {
   return json === '{}' ? undefined : json
 }
 
-function getToolPromptText(part: CherryMessagePart | undefined): string | undefined {
+function getToolPromptText(part: HuaTuoMessagePart | undefined): string | undefined {
   if (!part) return undefined
   const input = getToolPartInput(part)
   if (typeof input === 'string') return input.trim() || undefined
@@ -175,7 +175,7 @@ function getToolPromptText(part: CherryMessagePart | undefined): string | undefi
   return textFromContent(input.prompt) ?? textFromContent(input.description)
 }
 
-function getToolOutputText(part: CherryMessagePart | undefined, resolvedOutput?: unknown): string | undefined {
+function getToolOutputText(part: HuaTuoMessagePart | undefined, resolvedOutput?: unknown): string | undefined {
   if (resolvedOutput !== undefined) return textFromContent(resolvedOutput)
   if (!part) return undefined
   return textFromContent(getToolPartOutput(part))
@@ -183,34 +183,34 @@ function getToolOutputText(part: CherryMessagePart | undefined, resolvedOutput?:
 
 function createFlowTextMessage(
   id: string,
-  role: CherryUIMessage['role'],
+  role: HuaTuoUIMessage['role'],
   text: string | undefined,
   createdAt: string
-): CherryUIMessage | undefined {
+): HuaTuoUIMessage | undefined {
   if (!text?.trim()) return undefined
   return {
     id,
     role,
-    parts: [{ type: 'text', text }] as CherryMessagePart[],
+    parts: [{ type: 'text', text }] as HuaTuoMessagePart[],
     metadata: {
       createdAt,
       status: role === 'assistant' ? 'success' : undefined
     }
-  } as CherryUIMessage
+  } as HuaTuoUIMessage
 }
 
-function getMessageCreatedAt(message: CherryUIMessage | undefined): string {
+function getMessageCreatedAt(message: HuaTuoUIMessage | undefined): string {
   const createdAt = (message as unknown as { createdAt?: unknown } | undefined)?.createdAt
   return message?.metadata?.createdAt ?? (typeof createdAt === 'string' ? createdAt : new Date(0).toISOString())
 }
 
 function getOrderedMessageParts(
-  messages: CherryUIMessage[],
-  partsByMessageId: Record<string, CherryMessagePart[]>
-): Array<{ message: CherryUIMessage; parts: CherryMessagePart[] }> {
+  messages: HuaTuoUIMessage[],
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
+): Array<{ message: HuaTuoUIMessage; parts: HuaTuoMessagePart[] }> {
   const entries = messages.map((message) => ({
     message,
-    parts: partsByMessageId[message.id] ?? ((message.parts ?? []) as CherryMessagePart[])
+    parts: partsByMessageId[message.id] ?? ((message.parts ?? []) as HuaTuoMessagePart[])
   }))
   const seenMessageIds = new Set(messages.map((message) => message.id))
 
@@ -225,7 +225,7 @@ function getOrderedMessageParts(
           status: 'pending',
           createdAt: new Date(0).toISOString()
         }
-      } as CherryUIMessage,
+      } as HuaTuoUIMessage,
       parts
     })
   }
@@ -238,14 +238,14 @@ function isTerminalToolState(state: string | undefined): boolean {
 }
 
 export function buildAgentToolFlowProjection(
-  messages: CherryUIMessage[],
-  partsByMessageId: Record<string, CherryMessagePart[]>,
+  messages: HuaTuoUIMessage[],
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>,
   selectedToolCallId?: string,
   selectedToolOutput?: unknown
 ): AgentToolFlowProjection {
   const toolNodes: AgentToolFlowNode[] = []
   const childrenByParent = new Map<string, string[]>()
-  const toolPartByCallId = new Map<string, CherryMessagePart>()
+  const toolPartByCallId = new Map<string, HuaTuoMessagePart>()
   const messageById = new Map(messages.map((message) => [message.id, message]))
   const messageEntries = getOrderedMessageParts(messages, partsByMessageId)
 
@@ -287,8 +287,8 @@ export function buildAgentToolFlowProjection(
     }
   }
 
-  const flowMessages: CherryUIMessage[] = []
-  const flowPartsByMessageId: Record<string, CherryMessagePart[]> = {}
+  const flowMessages: HuaTuoUIMessage[] = []
+  const flowPartsByMessageId: Record<string, HuaTuoMessagePart[]> = {}
 
   if (selectedToolCallIds.size) {
     const selectedTool = toolNodes.find((node) => node.toolCallId === selectedToolCallId)
@@ -303,10 +303,10 @@ export function buildAgentToolFlowProjection(
     )
     if (promptMessage) {
       flowMessages.push(promptMessage)
-      flowPartsByMessageId[promptMessage.id] = promptMessage.parts as CherryMessagePart[]
+      flowPartsByMessageId[promptMessage.id] = promptMessage.parts as HuaTuoMessagePart[]
     }
 
-    const assistantParts: CherryMessagePart[] = []
+    const assistantParts: HuaTuoMessagePart[] = []
     for (const { parts } of messageEntries) {
       for (let partIndex = 0; partIndex < parts.length; partIndex++) {
         const part = parts[partIndex]
@@ -323,7 +323,7 @@ export function buildAgentToolFlowProjection(
     }
 
     const outputText = getToolOutputText(selectedToolPart, selectedToolOutput)
-    if (outputText) assistantParts.push({ type: 'text', text: outputText } as CherryMessagePart)
+    if (outputText) assistantParts.push({ type: 'text', text: outputText } as HuaTuoMessagePart)
     const isFlowActive = toolNodes.some(
       (node) => selectedToolCallIds.has(node.toolCallId) && !isTerminalToolState(node.state)
     )
@@ -336,7 +336,7 @@ export function buildAgentToolFlowProjection(
           createdAt: selectedCreatedAt,
           status: isFlowActive ? 'pending' : 'success'
         }
-      } as CherryUIMessage
+      } as HuaTuoUIMessage
       flowMessages.push(assistantMessage)
       flowPartsByMessageId[assistantMessage.id] = assistantParts
     }
@@ -351,7 +351,7 @@ export function buildAgentToolFlowProjection(
   }
 }
 
-function applyTaskToolPart(taskMap: Map<string, AgentStatusTask>, part: CherryMessagePart, fallbackId: string): void {
+function applyTaskToolPart(taskMap: Map<string, AgentStatusTask>, part: HuaTuoMessagePart, fallbackId: string): void {
   const toolName = getToolNameFromPart(part)
   const input = getToolPartInput(part)
   const output = getToolPartOutput(part)
@@ -458,8 +458,8 @@ function getPathBasename(path: string): string {
 }
 
 export function buildAgentRightPaneStatus(
-  messages: CherryUIMessage[],
-  partsByMessageId: Record<string, CherryMessagePart[]>,
+  messages: HuaTuoUIMessage[],
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>,
   /**
    * Latest per-task lifecycle edge for the current CLI process. Applied last by task id so a
    * background task's completion settles the row the transcript parts built.
@@ -474,7 +474,7 @@ export function buildAgentRightPaneStatus(
   const artifactByPath = new Map<string, AgentArtifactFile>()
 
   for (const message of messages) {
-    const parts = partsByMessageId[message.id] ?? ((message.parts ?? []) as CherryMessagePart[])
+    const parts = partsByMessageId[message.id] ?? ((message.parts ?? []) as HuaTuoMessagePart[])
     parts.forEach((part, partIndex) => {
       if (isDataUIPart(part) && part.type === 'data-agent-task-event') {
         applyAgentTaskEvent(runTaskMap, part.data, message.id, runTaskOriginMessageIds)

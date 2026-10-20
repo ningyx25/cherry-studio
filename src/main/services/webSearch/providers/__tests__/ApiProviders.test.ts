@@ -210,7 +210,7 @@ describe('main web search API providers', () => {
           },
           "headers": {
             "content-type": "application/json",
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-api-key": "exa-key",
             "x-title": "HuaTuo Studio",
           },
@@ -265,7 +265,7 @@ describe('main web search API providers', () => {
           "headers": {
             "authorization": "Bearer tavily-key",
             "content-type": "application/json",
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-title": "HuaTuo Studio",
           },
           "method": "POST",
@@ -373,7 +373,7 @@ describe('main web search API providers', () => {
           "headers": {
             "accept": "application/json",
             "authorization": "Bearer jina-key",
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-retain-images": "none",
             "x-title": "HuaTuo Studio",
           },
@@ -786,7 +786,7 @@ describe('main web search API providers', () => {
           "body": null,
           "headers": {
             "authorization": "Basic YWxpY2U6c2VjcmV0",
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-title": "HuaTuo Studio",
           },
           "method": "GET",
@@ -822,7 +822,7 @@ describe('main web search API providers', () => {
         "configRequest": {
           "body": null,
           "headers": {
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-title": "HuaTuo Studio",
           },
           "method": "GET",
@@ -831,7 +831,7 @@ describe('main web search API providers', () => {
         "searchRequest": {
           "body": null,
           "headers": {
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-title": "HuaTuo Studio",
           },
           "method": "GET",
@@ -1088,7 +1088,7 @@ describe('main web search API providers', () => {
           "headers": {
             "authorization": "Bearer bocha-key",
             "content-type": "application/json",
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-title": "HuaTuo Studio",
           },
           "method": "POST",
@@ -1167,7 +1167,7 @@ describe('main web search API providers', () => {
           "headers": {
             "authorization": "Bearer querit-key",
             "content-type": "application/json",
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-title": "HuaTuo Studio",
           },
           "method": "POST",
@@ -1222,7 +1222,7 @@ describe('main web search API providers', () => {
           "headers": {
             "authorization": "Bearer zhipu-key",
             "content-type": "application/json",
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-title": "HuaTuo Studio",
           },
           "method": "POST",
@@ -1340,7 +1340,7 @@ describe('main web search API providers', () => {
           "headers": {
             "accept": "application/json, text/event-stream",
             "content-type": "application/json",
-            "http-referer": "https://cherry-ai.com",
+            "http-referer": "https://huatuo.ai",
             "x-api-key": "test-key",
             "x-title": "HuaTuo Studio",
           },
@@ -1648,7 +1648,7 @@ describe('main web search API providers', () => {
             "headers": {
               "authorization": "Bearer firecrawl-key",
               "content-type": "application/json",
-              "http-referer": "https://cherry-ai.com",
+              "http-referer": "https://huatuo.ai",
               "x-title": "HuaTuo Studio",
             },
             "method": "POST",

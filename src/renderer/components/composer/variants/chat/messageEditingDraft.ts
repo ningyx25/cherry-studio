@@ -7,8 +7,8 @@ import {
   readComposerFileTokenIdSuffix
 } from '@renderer/utils/message/composerFileTokenSource'
 import type { KnowledgeBase } from '@shared/data/types/knowledge'
-import type { CherryMessagePart } from '@shared/data/types/message'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { getFileTypeByExt } from '@shared/utils/file'
 
 import { type ComposerSerializedToken, isComposerDraftTokenKind } from '../../tokens'
@@ -21,13 +21,13 @@ export interface EditableMessageDraft {
 }
 
 function findEditableFileToken(
-  part: Extract<CherryMessagePart, { type: 'file' }>,
+  part: Extract<HuaTuoMessagePart, { type: 'file' }>,
   path: string,
   fileTokens: ComposerSerializedToken[],
   usedTokenIds: Set<string>
 ) {
-  const cherry = readCherryMeta(part)
-  const sourceIds = [cherry?.fileTokenSourceId, cherry?.fileEntryId, path].filter(
+  const huatuo = readHuaTuoMeta(part)
+  const sourceIds = [huatuo?.fileTokenSourceId, huatuo?.fileEntryId, path].filter(
     (sourceId): sourceId is string => !!sourceId
   )
   const matchedToken = fileTokens.find(
@@ -52,7 +52,7 @@ function getFileExtension(value: string | undefined, mediaType: string | undefin
 }
 
 function createEditableAttachment(
-  part: Extract<CherryMessagePart, { type: 'file' }>,
+  part: Extract<HuaTuoMessagePart, { type: 'file' }>,
   index: number,
   fileTokenSourceId: string
 ): ComposerAttachment | null {
@@ -78,10 +78,10 @@ function createEditableAttachment(
   }
 }
 
-export function createEditableMessageDraft(parts: CherryMessagePart[]): EditableMessageDraft {
-  const textParts = parts.filter((part): part is Extract<CherryMessagePart, { type: 'text' }> => part.type === 'text')
+export function createEditableMessageDraft(parts: HuaTuoMessagePart[]): EditableMessageDraft {
+  const textParts = parts.filter((part): part is Extract<HuaTuoMessagePart, { type: 'text' }> => part.type === 'text')
   const text = textParts.map((part) => part.text).join('\n\n')
-  const composer = textParts.length === 1 ? readCherryMeta(textParts[0])?.composer : undefined
+  const composer = textParts.length === 1 ? readHuaTuoMeta(textParts[0])?.composer : undefined
   const draftTokens =
     composer?.tokens.flatMap((token) =>
       isComposerDraftTokenKind(token.kind)
@@ -101,9 +101,9 @@ export function createEditableMessageDraft(parts: CherryMessagePart[]): Editable
     const path = part.url
     const token = path ? findEditableFileToken(part, path, fileTokens, usedFileTokenIds) : undefined
     if (token) usedFileTokenIds.add(token.id)
-    const cherry = readCherryMeta(part)
+    const huatuo = readHuaTuoMeta(part)
     const fileTokenSourceId =
-      getComposerFileTokenSourceId({ fileTokenSourceId: cherry?.fileTokenSourceId }) ??
+      getComposerFileTokenSourceId({ fileTokenSourceId: huatuo?.fileTokenSourceId }) ??
       createComposerFileTokenSourceId()
     if (token) fileTokenSourceByMatchedTokenId.set(token.id, fileTokenSourceId)
     const file = createEditableAttachment(part, index, fileTokenSourceId)

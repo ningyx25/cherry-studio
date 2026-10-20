@@ -1,5 +1,5 @@
 {
-  "name": "@cherrystudio/provider-registry",
+  "name": "@huatuostudio/provider-registry",
   "version": "0.0.1-alpha.1",
   "description": "Provider and Model Registry",
   "private": true,
@@ -24,12 +24,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ningyx25/cherry-studio.git"
+    "url": "git+https://github.com/huatuostudio/huatuo-studio.git"
   },
   "bugs": {
-    "url": "https://github.com/ningyx25/cherry-studio/issues"
+    "url": "https://github.com/huatuostudio/huatuo-studio/issues"
   },
-  "homepage": "https://github.com/ningyx25/cherry-studio#readme",
+  "homepage": "https://github.com/huatuostudio/huatuo-studio#readme",
   "exports": {
     ".": {
       "import": {

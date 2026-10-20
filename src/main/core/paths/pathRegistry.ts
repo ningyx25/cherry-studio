@@ -2,7 +2,7 @@
  * Path registry — single source of truth for all main-process paths.
  * See `./README.md` for naming conventions and namespace taxonomy.
  *
- * Default to `feature.*` for new keys; cherry/sys/app are effectively closed.
+ * Default to `feature.*` for new keys; huatuo/sys/app are effectively closed.
  *
  * **File constraint**: No object literals besides the registry itself — the
  * ESLint rule `data-schema-key/valid-key` validates every string-keyed property.
@@ -16,7 +16,7 @@ import { loggerService } from '@logger'
 import { isMac, isWin } from '@main/core/platform'
 import { app } from 'electron'
 
-import { CHERRY_HOME, LOGS_DIR } from './constants'
+import { HUATUO_HOME, LOGS_DIR } from './constants'
 
 const logger = loggerService.withContext('PathRegistry')
 
@@ -51,25 +51,25 @@ export function buildPathRegistry() {
   const appUserDataToolchainMise = path.join(appUserDataToolchain, 'mise')
   const appSession = app.getPath('sessionData')
   const sysTemp = app.getPath('temp')
-  const appTemp = path.join(sysTemp, 'CherryStudio')
+  const appTemp = path.join(sysTemp, 'HuaTuoStudio')
   // electron-builder `extraResources` output — distinct from appRootResources
   const appExtraResources = process.resourcesPath
   // `resources/` inside asar (bundled assets) — distinct from appExtraResources
   const appRootResources = path.join(app.getAppPath(), 'resources')
 
   return Object.freeze({
-    // -- A. cherry.* — ~/.cherrystudio infrastructure --
-    'cherry.home': CHERRY_HOME,
-    'cherry.bin': path.join(CHERRY_HOME, 'bin'),
-    'cherry.config': path.join(CHERRY_HOME, 'config'),
+    // -- A. huatuo.* — ~/.huatuostudio infrastructure --
+    'huatuo.home': HUATUO_HOME,
+    'huatuo.bin': path.join(HUATUO_HOME, 'bin'),
+    'huatuo.config': path.join(HUATUO_HOME, 'config'),
 
-    // -- B. sys.* — OS directories (prefer app.* or cherry.* for Cherry-owned paths) --
+    // -- B. sys.* — OS directories (prefer app.* or huatuo.* for HuaTuo-owned paths) --
     'sys.home': sysHome,
-    'sys.temp': sysTemp, // OS-wide; prefer app.temp for Cherry-specific temp
+    'sys.temp': sysTemp, // OS-wide; prefer app.temp for HuaTuo-specific temp
     'sys.downloads': getUserSystemPath('downloads', path.join(sysHome, 'Downloads')),
     'sys.documents': getUserSystemPath('documents', path.join(sysHome, 'Documents')),
     'sys.desktop': getUserSystemPath('desktop', path.join(sysHome, 'Desktop')),
-    'sys.appdata': app.getPath('appData'), // OS root; use app.userdata for Cherry-owned
+    'sys.appdata': app.getPath('appData'), // OS root; use app.userdata for HuaTuo-owned
     'sys.appdata.autostart': path.join(app.getPath('appData'), 'autostart'), // Linux only
 
     // -- C. app.* — the Electron application itself --
@@ -85,10 +85,10 @@ export function buildPathRegistry() {
     'app.session': appSession,
     'app.session.cache': path.join(appSession, 'Cache'), // Chromium cache Directory
     'app.extra_resources': appExtraResources, // electron-builder extraResources output root
-    'app.temp': appTemp, // Cherry-specific temp under sys.temp
-    'app.userdata': appUserData, // Electron per-app data dir (Cherry-owned)
+    'app.temp': appTemp, // HuaTuo-specific temp under sys.temp
+    'app.userdata': appUserData, // Electron per-app data dir (HuaTuo-owned)
     'app.userdata.data': appUserDataData,
-    'app.database.file': path.join(appUserDataData, 'cherrystudio.sqlite'),
+    'app.database.file': path.join(appUserDataData, 'huatuostudio.sqlite'),
     // Dev: relative to __dirname; packaged: shipped via extraResources
     'app.database.migrations': app.isPackaged
       ? path.join(appExtraResources, 'migrations/sqlite-drizzle')
@@ -117,23 +117,23 @@ export function buildPathRegistry() {
     'feature.binary.data.isolated.appdata': path.join(appUserDataToolchainMise, 'appdata'),
 
     // MCP
-    'feature.mcp': path.join(CHERRY_HOME, 'mcp'),
-    'feature.mcp.oauth': path.join(CHERRY_HOME, 'config', 'mcp', 'oauth'),
+    'feature.mcp': path.join(HUATUO_HOME, 'mcp'),
+    'feature.mcp.oauth': path.join(HUATUO_HOME, 'config', 'mcp', 'oauth'),
     'feature.mcp.workspace': path.join(appUserDataData, 'Workspace'),
     // MCP memory server's knowledge-graph JSON for the built-in MCP server
-    'feature.mcp.memory_file': path.join(CHERRY_HOME, 'config', 'memory.json'),
+    'feature.mcp.memory_file': path.join(HUATUO_HOME, 'config', 'memory.json'),
 
     // Copilot token
-    'feature.copilot.token_file': path.join(CHERRY_HOME, 'config', '.copilot_token'),
+    'feature.copilot.token_file': path.join(HUATUO_HOME, 'config', '.copilot_token'),
 
     // Trace
-    'feature.trace': path.join(CHERRY_HOME, 'trace'),
+    'feature.trace': path.join(HUATUO_HOME, 'trace'),
 
     // OVMS (OpenVINO Model Server)
-    'feature.ovms': path.join(CHERRY_HOME, 'ovms'),
-    'feature.ovms.ovms': path.join(CHERRY_HOME, 'ovms', 'ovms'),
-    'feature.ovms.patch': path.join(CHERRY_HOME, 'ovms', 'patch'),
-    'feature.ovms.ovocr': path.join(CHERRY_HOME, 'ovms', 'ovocr'),
+    'feature.ovms': path.join(HUATUO_HOME, 'ovms'),
+    'feature.ovms.ovms': path.join(HUATUO_HOME, 'ovms', 'ovms'),
+    'feature.ovms.patch': path.join(HUATUO_HOME, 'ovms', 'patch'),
+    'feature.ovms.ovocr': path.join(HUATUO_HOME, 'ovms', 'ovocr'),
 
     // Agents
     'feature.agents.skills.builtin': path.join(appRootResources, 'skills'), // bundled skill templates (read-only)
@@ -149,7 +149,7 @@ export function buildPathRegistry() {
     'feature.agents.assistant.manifest.file': path.join(
       appRootResources,
       'builtin-agents',
-      'cherry-assistant',
+      'huatuo-assistant',
       'product-manifest.json'
     ),
 
@@ -179,11 +179,11 @@ export function buildPathRegistry() {
     // Stored in the profile it authorizes for reset.
     'feature.data_reset.marker_file': path.join(appUserData, 'data-reset.pending.json'),
 
-    // Protocol deep-link (Linux .desktop entry for cherrystudio:// scheme)
+    // Protocol deep-link (Linux .desktop entry for huatuostudio:// scheme)
     'feature.protocol.desktop_entries': path.join(os.homedir(), '.local', 'share', 'applications'),
 
     // CLI tools (code-cli) bun global install root ($BUN_INSTALL/install/global)
-    'feature.cli.install_global': path.join(CHERRY_HOME, 'install', 'global'),
+    'feature.cli.install_global': path.join(HUATUO_HOME, 'install', 'global'),
 
     // Feature-owned temp dirs (all under app.temp)
     'feature.backup.temp': path.join(appTemp, 'backup'),
@@ -196,7 +196,7 @@ export function buildPathRegistry() {
     // unique sub-directory under here.
     'feature.files.tempcopy.temp': path.join(appTemp, 'files-tempcopy'),
 
-    // -- E. external.* — third-party tool paths (Cherry reads/writes, does NOT own) --
+    // -- E. external.* — third-party tool paths (HuaTuo reads/writes, does NOT own) --
     'external.openclaw.config': path.join(os.homedir(), '.openclaw'),
     // Nested ternary (not object literal) to satisfy file-level ESLint constraint
     'external.obsidian.config_file': isWin

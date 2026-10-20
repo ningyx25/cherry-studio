@@ -19,7 +19,7 @@
  * replaces. Having both this hook and the old budget-stop active would
  * double-compact, so budgetStop is removed in the same change.
  */
-import { compactModelMessages, resolveCompressionOutputTokens } from '@cherrystudio/ai-core'
+import { compactModelMessages, resolveCompressionOutputTokens } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import { isAgentSessionTopic } from '@main/ai/agentSession/topic'
 import {
@@ -138,7 +138,7 @@ export const inLoopCompactionFeature: RequestFeature = {
     if (!compressor) return {}
     const model = compressor.languageModel
     // A budget against a known window is the whole point of compaction, but
-    // `contextWindow` is optional on `Model` (custom / v1-imported / CherryAI
+    // `contextWindow` is optional on `Model` (custom / v1-imported / HuaTuoAI
     // rows can omit it). Casting it made `trigger`/`keepBudget` `NaN`, and
     // `estimate <= NaN` is false, so the hook fired on EVERY step. With no
     // window, contribute no hook at all.

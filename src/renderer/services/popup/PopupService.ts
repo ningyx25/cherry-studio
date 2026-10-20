@@ -1,4 +1,4 @@
-import { DIALOG_UNMOUNT_DELAY_MS } from '@cherrystudio/ui/utils'
+import { DIALOG_UNMOUNT_DELAY_MS } from '@huatuostudio/ui/utils'
 import { loggerService } from '@logger'
 
 import type { ComponentPopupEntry, ConfirmPopupProps, ConfirmPopupType, PopupComponent, PopupEntry } from './types'

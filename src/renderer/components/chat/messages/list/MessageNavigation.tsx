@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
+import { Button, Tooltip } from '@huatuostudio/ui'
 import { useTimer } from '@renderer/hooks/useTimer'
 import { ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, X } from 'lucide-react'
 import type { ComponentPropsWithoutRef, FC, RefObject } from 'react'

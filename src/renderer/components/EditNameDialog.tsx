@@ -8,7 +8,7 @@ import {
   FieldError,
   Input,
   Label
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import type { FormEvent, KeyboardEvent } from 'react'
 import { useEffect, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'

@@ -2,8 +2,8 @@ import {
   EmptyState as UIEmptyState,
   type EmptyStatePreset,
   type EmptyStateProps as UIEmptyStateProps
-} from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+} from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { ComponentType, ReactNode } from 'react'
 
 type EmptyStateIcon = ComponentType<{ size?: number; className?: string; strokeWidth?: number }>

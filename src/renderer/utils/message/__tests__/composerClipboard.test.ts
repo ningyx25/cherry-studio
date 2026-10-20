@@ -75,7 +75,7 @@ describe('composer clipboard', () => {
     const fragmentText = createComposerClipboardFragment([{ type: 'token', token, fallbackText: token.label }])
     const fragment = readComposerClipboardFragment(fragmentText)
 
-    expect(COMPOSER_CLIPBOARD_FRAGMENT_MIME).toBe('web application/x-cherry-composer-fragment+json')
+    expect(COMPOSER_CLIPBOARD_FRAGMENT_MIME).toBe('web application/x-huatuo-composer-fragment+json')
     expect(fragment?.segments).toEqual([
       {
         type: 'token',
@@ -403,7 +403,7 @@ describe('composer clipboard', () => {
         type: 'text',
         text: 'Use the pdf skill. Ask docs',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             composer: {
               version: 1,
               tokens: [
@@ -464,7 +464,7 @@ describe('composer clipboard', () => {
         type: 'text',
         text: `Read ${folderPath} now`,
         providerMetadata: {
-          cherry: {
+          huatuo: {
             composer: {
               version: 1,
               tokens: [
@@ -506,7 +506,7 @@ describe('composer clipboard', () => {
         type: 'text',
         text: ' open',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             composer: {
               version: 1,
               tokens: [
@@ -536,7 +536,7 @@ describe('composer clipboard', () => {
         mediaType: 'application/pdf',
         url: 'file:///Users/example/private/report.pdf',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             fileTokenSourceId: 'source-report'
           }
         }
@@ -578,7 +578,7 @@ describe('composer clipboard', () => {
         type: 'text',
         text: ' open',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             composer: {
               version: 1,
               tokens: [
@@ -607,7 +607,7 @@ describe('composer clipboard', () => {
         mediaType: 'application/pdf',
         url: 'file:///C:/Users/example/private/report.pdf',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             fileTokenSourceId: 'source-report-win'
           }
         }
@@ -634,7 +634,7 @@ describe('composer clipboard', () => {
         type: 'text',
         text: ' open',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             composer: {
               version: 1,
               tokens: [
@@ -663,7 +663,7 @@ describe('composer clipboard', () => {
         mediaType: 'application/pdf',
         url: 'file:///Users/example/private/report.pdf',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             fileTokenSourceId: 'source-part'
           }
         }
@@ -703,7 +703,7 @@ describe('composer clipboard', () => {
             type: 'text',
             text: 'Use the pdf skill. hello',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [

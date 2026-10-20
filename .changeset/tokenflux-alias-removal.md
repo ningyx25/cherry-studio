@@ -1,5 +1,5 @@
 ---
-'@cherrystudio/ai-core': patch
+'@huatuostudio/ai-core': patch
 ---
 
 Drop the stale `'tokenflux'` alias from `OpenRouterExtension` in

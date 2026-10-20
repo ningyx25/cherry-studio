@@ -5,7 +5,7 @@ import {
   InputGroupInput,
   InputGroupText,
   InputGroupTextarea
-} from '@cherrystudio/ui/components/primitives/input-group'
+} from '@huatuostudio/ui/components/primitives/input-group'
 import type { Meta, StoryObj } from '@storybook/react'
 import {
   AtSign,

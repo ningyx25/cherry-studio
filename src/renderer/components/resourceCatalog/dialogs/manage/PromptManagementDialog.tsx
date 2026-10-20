@@ -1,3 +1,4 @@
+import { useQuery } from '@data/hooks/useDataApi'
 import {
   Alert,
   Button,
@@ -9,8 +10,7 @@ import {
   EmptyState,
   Input,
   Skeleton
-} from '@cherrystudio/ui'
-import { useQuery } from '@data/hooks/useDataApi'
+} from '@huatuostudio/ui'
 import { usePromptMutations, usePromptMutationsById } from '@renderer/hooks/resourceCatalog'
 import { toast } from '@renderer/services/toast'
 import { formatErrorMessageWithPrefix } from '@renderer/utils/error'

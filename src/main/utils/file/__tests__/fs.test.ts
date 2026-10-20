@@ -36,7 +36,7 @@ import {
 describe('stat', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -67,7 +67,7 @@ describe('stat', () => {
 describe('exists', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -91,7 +91,7 @@ describe('exists', () => {
 describe('probeReadable', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -143,7 +143,7 @@ describe('shouldSilenceFsyncDirError', () => {
 describe('isSameFile', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -193,7 +193,7 @@ describe('isSameFile', () => {
 describe('read (text)', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -221,7 +221,7 @@ describe('read (text)', () => {
 describe('read (base64)', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -240,7 +240,7 @@ describe('read (base64)', () => {
 describe('read (binary)', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -260,7 +260,7 @@ describe('read (binary)', () => {
 describe('readChunk', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -349,7 +349,7 @@ describe('readChunk', () => {
 describe('hash', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -405,7 +405,7 @@ describe('hash', () => {
 describe('atomicWriteFile', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -486,7 +486,7 @@ describe('atomicWriteFile', () => {
 describe('PreparedAtomicWrite', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-prepared-write-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-prepared-write-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -573,7 +573,7 @@ describe('PreparedAtomicWrite', () => {
 describe('atomicWriteIfUnchanged', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -645,7 +645,7 @@ describe('atomicWriteIfUnchanged', () => {
 describe('write', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -670,7 +670,7 @@ describe('write', () => {
 describe('copy', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -737,7 +737,7 @@ describe('copy', () => {
 describe('move', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -767,7 +767,7 @@ describe('move', () => {
 describe('remove', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -789,7 +789,7 @@ describe('remove', () => {
 describe('mkdir / ensureDir / removeDir', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -831,7 +831,7 @@ describe('download', () => {
   let routes: Map<string, { status: number; body: Uint8Array | string; type?: string }>
 
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
     routes = new Map()
     const http = await import('node:http')
     server = http.createServer((req, res) => {
@@ -875,7 +875,7 @@ describe('download', () => {
 describe('createAtomicWriteStream', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fs-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fs-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })

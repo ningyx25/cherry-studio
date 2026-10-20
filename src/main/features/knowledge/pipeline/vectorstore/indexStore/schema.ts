@@ -4,7 +4,7 @@ import type { SqliteExecutor } from './types'
  * Per-base knowledge `index.sqlite` schema (7-table material model).
  *
  * This is the schema for the per-knowledge-base index database located at
- * `KnowledgeBase/{baseId}/.cherry/index.sqlite` — a SEPARATE file per base,
+ * `KnowledgeBase/{baseId}/.huatuo/index.sqlite` — a SEPARATE file per base,
  * created fresh at runtime. It is NOT the main app DB and is intentionally
  * NOT managed by drizzle-kit (whose schema glob `src/main/data/db/schemas/**`
  * targets the main DB migration chain). See knowledge-technical-design.md §4.
@@ -109,7 +109,7 @@ export const KNOWLEDGE_INDEX_SCHEMA_STATEMENTS: readonly string[] = [
     FOREIGN KEY (current_content_hash) REFERENCES content(content_hash),
     CHECK (relative_path <> ''),
     CHECK (relative_path NOT LIKE '/%'),
-    CHECK (relative_path <> '.cherry' AND relative_path NOT LIKE '.cherry/%')
+    CHECK (relative_path <> '.huatuo' AND relative_path NOT LIKE '.huatuo/%')
   )`,
   `CREATE INDEX IF NOT EXISTS material_content_idx ON material(current_content_hash)`,
 

@@ -28,7 +28,7 @@ describe('internal/content/hash', () => {
 
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-hashtest-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-hashtest-'))
     onFsEventCalls = []
     deps = {
       fileEntryService,

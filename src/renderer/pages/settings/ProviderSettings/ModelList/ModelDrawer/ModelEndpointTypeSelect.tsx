@@ -1,4 +1,4 @@
-import { Combobox, type ComboboxOption } from '@cherrystudio/ui'
+import { Combobox, type ComboboxOption } from '@huatuostudio/ui'
 import { drawerClasses } from '@renderer/pages/settings/ProviderSettings/primitives/ProviderSettingsPrimitives'
 import { cn } from '@renderer/utils/style'
 import { useTranslation } from 'react-i18next'

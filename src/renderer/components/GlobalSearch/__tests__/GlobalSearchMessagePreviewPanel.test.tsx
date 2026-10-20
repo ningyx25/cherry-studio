@@ -26,7 +26,7 @@ const mocks = vi.hoisted(() => ({
 }))
 const flatItemsCache = vi.hoisted(() => new WeakMap<any[], Map<string, any[]>>())
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, type = 'button', ...props }: any) => (
     <button type={type} {...props}>
       {children}

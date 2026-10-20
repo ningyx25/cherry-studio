@@ -62,7 +62,7 @@ describe('buildGrokCliRequestHeaders', () => {
       { accessToken: 'tok', modelId: 'grok-cli/grok-build' }
     )
     expect(headers.get('Authorization')).toBe('Bearer tok')
-    expect(headers.get('x-grok-client-identifier')).toBe('cherry-studio')
+    expect(headers.get('x-grok-client-identifier')).toBe('huatuo-studio')
     expect(headers.get('x-xai-token-auth')).toBe('xai-grok-cli')
     expect(headers.get('x-grok-model-override')).toBe('grok-build')
     expect(headers.get('content-type')).toBe('application/json')

@@ -63,7 +63,7 @@ describe('entryCleanup', () => {
     hasPendingRestoreMock.mockReturnValue(false)
     MockMainDbServiceUtils.setDb(dbh.db)
     MockMainCacheServiceUtils.resetMocks()
-    filesDir = await mkdtemp(path.join(tmpdir(), 'cherry-fm-entrycleanup-'))
+    filesDir = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-entrycleanup-'))
     vi.mocked(application.getPath).mockImplementation((key: string, filename?: string) => {
       if (key === 'feature.files.data') {
         return filename ? path.join(filesDir, filename) : filesDir
@@ -279,7 +279,7 @@ describe('entryCleanup', () => {
 
   it('reclaims external auto entries DB-only, leaving the on-disk file untouched', async () => {
     const id = nthId(6)
-    const externalDir = await mkdtemp(path.join(tmpdir(), 'cherry-fm-entrycleanup-external-'))
+    const externalDir = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-entrycleanup-external-'))
     const realFile = path.join(externalDir, 'user-file.txt')
     await writeFile(realFile, 'user data')
     const externalPath = canonicalizeFilePath(AbsoluteFilePathSchema.parse(realFile))

@@ -230,7 +230,7 @@ describe('runFileSweep (FS-level)', () => {
 
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
-    filesDir = await mkdtemp(path.join(tmpdir(), 'cherry-fm-sweep-'))
+    filesDir = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-sweep-'))
     vi.mocked(application.getPath).mockImplementation((key: string, filename?: string) => {
       if (key === 'feature.files.data') {
         return filename ? path.join(filesDir, filename) : filesDir
@@ -592,7 +592,7 @@ describe('runFileSweep (FS-level)', () => {
     // boot — data loss the user did not consent to. Pin the contract here.
     const trashedId = '019606a0-0000-7000-8000-0000000fa2ed' as FileEntryId
     const trashedPath = path.join(filesDir, `${trashedId}.txt`)
-    // 1) Create the entry as if a Cherry-owned write committed,
+    // 1) Create the entry as if a HuaTuo-owned write committed,
     fileEntryService.create({
       id: trashedId,
       origin: 'internal',

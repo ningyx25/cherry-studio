@@ -1,4 +1,4 @@
-import type { EntityToolOutputCodec } from '@cherrystudio/ai-core'
+import type { EntityToolOutputCodec } from '@huatuostudio/ai-core'
 import type { Assistant } from '@shared/data/types/assistant'
 import type { WebToolRoutes } from '@shared/utils/provider'
 import type { Tool } from 'ai'

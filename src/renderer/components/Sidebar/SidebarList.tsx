@@ -1,4 +1,4 @@
-import { MenuItem } from '@cherrystudio/ui'
+import { MenuItem } from '@huatuostudio/ui'
 import { CommandContextMenu } from '@renderer/components/command'
 import type { ReactNode } from 'react'
 

@@ -1,5 +1,5 @@
 import { classNames } from '@renderer/utils/style'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import {
   type FC,
   memo,
@@ -33,7 +33,7 @@ interface MessageLineProps {
   /** Parts for every message outside the mutable streaming tail. Passing this
    * snapshot instead of reading PartsContext here keeps the rail out of the
    * streaming render path — only the live preview leaf subscribes to chunks. */
-  historyPartsByMessageId: Record<string, CherryMessagePart[]>
+  historyPartsByMessageId: Record<string, HuaTuoMessagePart[]>
   /** Messages that must read their current parts from PartsContext. */
   liveMessageIds: readonly string[]
   scrollToMessageId?: (messageId: string) => void
@@ -71,7 +71,7 @@ const RAIL_TICK_PITCH_PX = 10
 const RAIL_FADE_PX = 44
 /** With fewer turns there is nothing worth anchoring — the rail stays hidden. */
 const RAIL_MIN_TURNS = 5
-const EMPTY_MESSAGE_PARTS: CherryMessagePart[] = []
+const EMPTY_MESSAGE_PARTS: HuaTuoMessagePart[] = []
 
 const tickTransitionClassName =
   'transition-[width,height,background-color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] [will-change:width]'
@@ -421,7 +421,7 @@ const MessageAnchorLine = memo(function MessageAnchorLine({
 })
 
 interface AnchorPreviewProps {
-  historyPartsByMessageId: Record<string, CherryMessagePart[]>
+  historyPartsByMessageId: Record<string, HuaTuoMessagePart[]>
   liveMessageIdSet: ReadonlySet<string>
 }
 
@@ -472,7 +472,7 @@ const MessagePreview = memo(function MessagePreview({
   parts,
   className
 }: {
-  parts: CherryMessagePart[]
+  parts: HuaTuoMessagePart[]
   className: string
 }) {
   const preview = getTextPreview(parts)
@@ -480,7 +480,7 @@ const MessagePreview = memo(function MessagePreview({
   return <div className={className}>{preview}</div>
 })
 
-function getTextPreview(parts: CherryMessagePart[]): string {
+function getTextPreview(parts: HuaTuoMessagePart[]): string {
   let preview = ''
 
   for (const part of parts) {

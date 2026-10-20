@@ -517,7 +517,7 @@ describe('listModels — Radeon Cloud source header', () => {
     const radeonCall = aiSdkGetFromApiMock.mock.calls[0][0] as { url: string; headers: Record<string, string> }
     const otherCall = aiSdkGetFromApiMock.mock.calls[1][0] as { url: string; headers: Record<string, string> }
     expect(radeonCall.url).toBe('https://developer.amd.com.cn/radeon/api/v1/models')
-    expect(radeonCall.headers['X-Source']).toBe('cherry-studio')
+    expect(radeonCall.headers['X-Source']).toBe('huatuo-studio')
     expect(otherCall.headers).not.toHaveProperty('X-Source')
   })
 })

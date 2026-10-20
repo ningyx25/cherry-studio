@@ -1,5 +1,5 @@
-import { Checkbox, Input, Popover, PopoverContent, PopoverTrigger } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Checkbox, Input, Popover, PopoverContent, PopoverTrigger } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { loggerService } from '@logger'
 import { CommandContextMenu, type CommandContextMenuExtraItem } from '@renderer/components/command'
 import { type NodeViewProps, NodeViewWrapper } from '@tiptap/react'

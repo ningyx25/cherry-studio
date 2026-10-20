@@ -1,4 +1,4 @@
-import { Button, error as showErrorToast, success as showSuccessToast } from '@cherrystudio/ui'
+import { Button, error as showErrorToast, success as showSuccessToast } from '@huatuostudio/ui'
 import { loggerService } from '@renderer/services/LoggerService'
 import { Download } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useMigrationActions } from '../hooks/useMigrationProgress'
 
-const SUPPORT_EMAIL = 'support@cherry-ai.com'
+const SUPPORT_EMAIL = 'support@huatuo.ai'
 const logger = loggerService.withContext('MigrationDiagnosticPanel')
 
 type DiagnosticStatus = 'idle' | 'saving' | 'saved_with_logs' | 'saved_without_logs' | 'failed'

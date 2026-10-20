@@ -17,12 +17,12 @@ const logger = loggerService.withContext('Knowledge:PathStorage')
 // disagreeing (e.g. `.xls`, which is processed but not in the app-wide `documentExts`).
 const KNOWLEDGE_FILE_PROCESSING_EXT_SET = new Set<string>(knowledgeFileProcessingExts)
 
-const CHERRY_META_DIR = '.cherry'
+const HUATUO_META_DIR = '.huatuo'
 const VECTOR_STORE_FILE = 'index.sqlite'
 
 /**
  * The single material root inside a base dir. All material bytes live flat under
- * `{baseDir}/raw/`, a sibling of the `.cherry/` control dir (which holds the
+ * `{baseDir}/raw/`, a sibling of the `.huatuo/` control dir (which holds the
  * derived index). A `relativePath` is always relative to this root; byte
  * resolution is `{baseDir}/raw/{relativePath}` (knowledge-technical-design.md §2).
  * Materials are not sub-partitioned by import-action type — the directory layout
@@ -40,12 +40,12 @@ export function getKnowledgeMaterialDir(baseId: string): AbsoluteFilePath {
 }
 
 function getKnowledgeBaseMetaDir(baseId: string): AbsoluteFilePath {
-  return AbsoluteFilePathSchema.parse(path.join(getKnowledgeBaseDir(baseId), CHERRY_META_DIR))
+  return AbsoluteFilePathSchema.parse(path.join(getKnowledgeBaseDir(baseId), HUATUO_META_DIR))
 }
 
 /**
  * The base's index.sqlite path. No `ensureDir` here — `openBetterSqlite3IndexDriver`
- * (BetterSqlite3Driver.ts) already `mkdirSync`s the parent `.cherry/` dir itself before
+ * (BetterSqlite3Driver.ts) already `mkdirSync`s the parent `.huatuo/` dir itself before
  * opening, so a caller that only needs the path (not a guaranteed-existing directory)
  * does not need to duplicate that work.
  */
@@ -306,7 +306,7 @@ export function assertSafeKnowledgeRelativePath(relativePath: string): void {
     throw new Error(`Invalid knowledge relative path: ${relativePath}`)
   }
 
-  if (normalized.startsWith(`${CHERRY_META_DIR}/`) || normalized === CHERRY_META_DIR) {
+  if (normalized.startsWith(`${HUATUO_META_DIR}/`) || normalized === HUATUO_META_DIR) {
     throw new Error(`Knowledge relative path is reserved: ${relativePath}`)
   }
 }

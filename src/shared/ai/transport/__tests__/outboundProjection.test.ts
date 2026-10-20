@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { UIMessageChunk } from 'ai'
 import { describe, expect, it } from 'vitest'
 
@@ -12,14 +12,14 @@ const TOOL_CALL_ID = 'call-1'
 const small = { content: 'x'.repeat(16) }
 const large = { content: 'x'.repeat(DEFER_TOOL_OUTPUT_BYTES + 1) }
 
-function partWith(output: unknown): CherryMessagePart {
+function partWith(output: unknown): HuaTuoMessagePart {
   return {
     type: 'tool-Read',
     toolCallId: TOOL_CALL_ID,
     state: 'output-available',
     input: {},
     output
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
 function chunkWith(output: unknown): UIMessageChunk {

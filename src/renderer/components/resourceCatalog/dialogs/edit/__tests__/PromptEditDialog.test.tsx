@@ -91,7 +91,7 @@ vi.mock('@renderer/components/resourceCatalog/dialogs/components/PromptPolishAct
   )
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: (props: ComponentProps<'button'> & { loading?: boolean; variant?: string; size?: string }) => {
     const { children, type = 'button', ...buttonProps } = props
     delete buttonProps.loading

@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, Input, Tooltip } from '@cherrystudio/ui'
+import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, Input, Tooltip } from '@huatuostudio/ui'
 import EditIcon from '@renderer/components/icons/EditIcon'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { createPopup, popup, type PopupInjectedProps } from '@renderer/services/popup'

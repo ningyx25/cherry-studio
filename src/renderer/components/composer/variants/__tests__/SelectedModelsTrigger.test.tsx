@@ -7,7 +7,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { SelectedModelsTrigger } from '../SelectedModelsTrigger'
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   let currentPopoverOpen = false
 
   return {
@@ -61,7 +61,7 @@ vi.mock('@cherrystudio/ui', () => {
   }
 })
 
-vi.mock('@cherrystudio/ui/lib/utils', () => ({
+vi.mock('@huatuostudio/ui/lib/utils', () => ({
   cn: (...classes: unknown[]) => classes.filter(Boolean).join(' ')
 }))
 

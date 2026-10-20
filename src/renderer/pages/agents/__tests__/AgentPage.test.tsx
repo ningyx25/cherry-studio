@@ -723,12 +723,12 @@ describe('AgentPage', () => {
   })
 
   it('consumes a prepared feedback session once and skips the normal resume path', async () => {
-    // Opening must not depend on Cherry Assistant already being present in the renderer's stale Agent list.
+    // Opening must not depend on HuaTuo Assistant already being present in the renderer's stale Agent list.
     agentPageMocks.agents = []
     const previousSession = {
       ...agentPageMocks.persistedSession,
       id: 'session-previous',
-      agentId: 'cherry-assistant',
+      agentId: 'huatuo-assistant',
       name: '',
       workspaceId: undefined,
       workspace: { type: AGENT_WORKSPACE_TYPE.SYSTEM }
@@ -736,7 +736,7 @@ describe('AgentPage', () => {
     const feedbackSession = {
       ...agentPageMocks.persistedSession,
       id: 'session-feedback',
-      agentId: 'cherry-assistant',
+      agentId: 'huatuo-assistant',
       workspaceId: undefined,
       workspace: { type: AGENT_WORKSPACE_TYPE.SYSTEM }
     }

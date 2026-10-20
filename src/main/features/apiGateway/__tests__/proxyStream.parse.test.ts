@@ -23,7 +23,7 @@ const {
   mockExtractProviderOptions: vi.fn(),
   captured: {
     opts: undefined as
-      | { uniqueModelId?: string; listener?: StreamListener; contextOwner?: 'cherry' | 'caller' }
+      | { uniqueModelId?: string; listener?: StreamListener; contextOwner?: 'huatuo' | 'caller' }
       | undefined
   }
 }))
@@ -161,10 +161,10 @@ describe('processMessage model-id parsing', () => {
     expect(mockStreamPrompt).not.toHaveBeenCalled()
   })
 
-  it('rejects the managed CherryAI default model', async () => {
+  it('rejects the managed HuaTuoAI default model', async () => {
     await expect(
       processMessage({
-        params: { model: 'cherryai:qwen', messages: [] } as any,
+        params: { model: 'huatuoai:qwen', messages: [] } as any,
         inputFormat: 'openai',
         outputFormat: 'openai'
       })

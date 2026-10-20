@@ -36,7 +36,7 @@ describe('FileManager v2 IPC handler registration', () => {
 
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-ipc-v2-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-ipc-v2-'))
     internalRoot = path.join(tmp, 'files-internal')
     await mkdir(internalRoot, { recursive: true })
     vi.mocked(application.getPath).mockImplementation((key: string, filename?: string) => {

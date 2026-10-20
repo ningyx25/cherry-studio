@@ -1,5 +1,5 @@
-import { InfoTooltip, Switch } from '@cherrystudio/ui'
 import { useMultiplePreferences } from '@data/hooks/usePreference'
+import { InfoTooltip, Switch } from '@huatuostudio/ui'
 import {
   SettingDivider,
   SettingGroup,

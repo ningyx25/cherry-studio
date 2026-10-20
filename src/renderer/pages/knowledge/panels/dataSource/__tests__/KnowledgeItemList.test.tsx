@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 import KnowledgeItemList from '../KnowledgeItemList'
 import { createFileItem, createNoteItem } from './testUtils'
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Checkbox: ({
     checked,
     onCheckedChange,

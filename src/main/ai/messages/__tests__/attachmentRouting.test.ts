@@ -1,5 +1,5 @@
 import type { NativeFileSupport } from '@main/ai/runtime/aiSdk/params/nativeFileSupport'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import type { UIMessage } from 'ai'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -32,20 +32,20 @@ import { toModelMessages } from '../messageRules'
 const NONE: NativeFileSupport = { image: false, pdf: false, audio: false, video: false }
 const ALL: NativeFileSupport = { image: true, pdf: true, audio: true, video: true }
 
-function userMessage(parts: CherryMessagePart[]): CherryUIMessage {
-  return { id: 'm1', role: 'user', parts } as CherryUIMessage
+function userMessage(parts: HuaTuoMessagePart[]): HuaTuoUIMessage {
+  return { id: 'm1', role: 'user', parts } as HuaTuoUIMessage
 }
-const fileWithEntry = (id: string, filename: string, mediaType: string): CherryMessagePart =>
+const fileWithEntry = (id: string, filename: string, mediaType: string): HuaTuoMessagePart =>
   ({
     type: 'file',
     url: `file:///x/${filename}`,
     mediaType,
     filename,
-    providerMetadata: { cherry: { fileEntryId: id } }
-  }) as CherryMessagePart
+    providerMetadata: { huatuo: { fileEntryId: id } }
+  }) as HuaTuoMessagePart
 
 const run = (
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   ns: NativeFileSupport,
   opts: { isToolCapable?: boolean; cap?: number } = {}
 ) => {
@@ -110,7 +110,7 @@ describe('prepareChatMessages — routing', () => {
       url: 'file:///x/legacy.png',
       mediaType: 'image/png',
       filename: 'legacy.png'
-    } as CherryMessagePart
+    } as HuaTuoMessagePart
 
     const prepared = await run([fileWithEntry('e1', 'fallback.png', 'image/png'), legacy], NONE)
     const model = await toModelMessages(prepared, { image: false, video: false, audio: false })
@@ -232,7 +232,7 @@ describe('prepareChatMessages — routing', () => {
 
   it('eager-inlines legacy parts without a fileEntryId (no getById)', async () => {
     resolveMock.mockResolvedValueOnce({ type: 'file', url: 'data:inlined', mediaType: 'application/pdf' })
-    const legacy = { type: 'file', url: 'file:///x/legacy.pdf', mediaType: 'application/pdf' } as CherryMessagePart
+    const legacy = { type: 'file', url: 'file:///x/legacy.pdf', mediaType: 'application/pdf' } as HuaTuoMessagePart
     const [out] = await prepareChatMessages([userMessage([legacy])] as UIMessage[], {
       attachments: [],
       nativeSupport: NONE,
@@ -267,7 +267,7 @@ describe('collectFileAttachments', () => {
   })
 
   it('ignores file parts without a fileEntryId', () => {
-    const legacy = { type: 'file', url: 'file:///x/legacy.pdf', mediaType: 'application/pdf' } as CherryMessagePart
+    const legacy = { type: 'file', url: 'file:///x/legacy.pdf', mediaType: 'application/pdf' } as HuaTuoMessagePart
     expect(collectFileAttachments([userMessage([legacy])] as UIMessage[])).toEqual([])
   })
 })

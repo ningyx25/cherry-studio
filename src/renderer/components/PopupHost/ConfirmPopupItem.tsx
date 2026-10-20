@@ -6,8 +6,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+} from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import i18n from '@renderer/i18n/resolver'
 import type { ConfirmPopupEntry, ConfirmPopupProps, ConfirmPopupType } from '@renderer/services/popup'
 import { popupService } from '@renderer/services/popup'

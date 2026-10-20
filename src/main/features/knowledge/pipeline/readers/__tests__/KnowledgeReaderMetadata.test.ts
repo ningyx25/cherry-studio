@@ -36,7 +36,7 @@ vi.mock('@vectorstores/readers/json', () => ({ JSONReader: class MockJSONReader 
 vi.mock('@vectorstores/readers/markdown', () => ({ MarkdownReader: class MockMarkdownReader {} }))
 vi.mock('@vectorstores/readers/pdf', () => ({ PDFReader: class MockPDFReader {} }))
 
-// The URL reader reads its snapshot file verbatim (minus the cherry
+// The URL reader reads its snapshot file verbatim (minus the huatuo
 // frontmatter) instead of going through a vectorstores reader.
 vi.mock('@main/utils/file', async (importOriginal) => ({
   ...(await importOriginal<typeof FsUtils>()),
@@ -78,9 +78,9 @@ describe('knowledge reader metadata', () => {
     })
   })
 
-  it('reads the url snapshot verbatim minus its cherry frontmatter and tags the source', async () => {
+  it('reads the url snapshot verbatim minus its huatuo frontmatter and tags the source', async () => {
     readFileMock.mockResolvedValueOnce(
-      '---\ncherry:\n  type: url-snapshot\n  source: "https://example.com"\n---\n# Page\n\nbody [kept](https://example.com/link)\n'
+      '---\nhuatuo:\n  type: url-snapshot\n  source: "https://example.com"\n---\n# Page\n\nbody [kept](https://example.com/link)\n'
     )
 
     const documents = await loadSnapshotDocuments(

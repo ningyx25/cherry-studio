@@ -1,4 +1,4 @@
-import { DIALOG_UNMOUNT_DELAY_MS } from '@cherrystudio/ui/utils'
+import { DIALOG_UNMOUNT_DELAY_MS } from '@huatuostudio/ui/utils'
 import { loggerService } from '@logger'
 import { useAgent } from '@renderer/hooks/agent/useAgent'
 import { useAgentModelFilter } from '@renderer/hooks/agent/useAgentModelFilter'

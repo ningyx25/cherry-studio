@@ -1,4 +1,4 @@
-import { Alert, Button, Textarea } from '@cherrystudio/ui'
+import { Alert, Button, Textarea } from '@huatuostudio/ui'
 import { SettingGroup, SettingSubtitle } from '@renderer/components/SettingsPrimitives'
 import { useTheme } from '@renderer/hooks/useTheme'
 import { useWebSearchSettings } from '@renderer/hooks/useWebSearch'

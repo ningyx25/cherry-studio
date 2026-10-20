@@ -1,7 +1,7 @@
 {
   "agent": {
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "Built-in HuaTuo Studio advisor. Diagnose issues, guide operations, collect FAQs, submit bugs/feature requests, and search/create Skills"
       }
     },
@@ -15,7 +15,7 @@
   },
   "apiGateway": {
     "docs": {
-      "description": "HTTP API HuaTuo Studio, совместимый с OpenAI, Anthropic и Gemini, а также собственные эндпоинты Cherry (модели, базы знаний)",
+      "description": "HTTP API HuaTuo Studio, совместимый с OpenAI, Anthropic и Gemini, а также собственные эндпоинты HuaTuo (модели, базы знаний)",
       "language_switcher_label": "Язык документации",
       "operations": {
         "chat_completions": "Создаёт ответ чата. Формат запроса и ответа соответствует OpenAI Chat Completions; с `stream: true` вывод передаётся по частям.",
@@ -33,8 +33,8 @@
       },
       "tags": {
         "anthropic": "Эндпоинты, совместимые с Anthropic. Укажите базовый URL этого шлюза в Anthropic SDK, чтобы их использовать.",
-        "cherry": "Собственные эндпоинты HuaTuo Studio: базы знаний, информация о сервисе и проверка состояния.",
         "gemini": "Эндпоинты, совместимые с Gemini; как и в оригинальном API, доступны по пути `/v1beta`.",
+        "huatuo": "Собственные эндпоинты HuaTuo Studio: базы знаний, информация о сервисе и проверка состояния.",
         "openai": "Эндпоинты, совместимые с OpenAI. Укажите базовый URL этого шлюза в OpenAI SDK, чтобы их использовать."
       }
     }

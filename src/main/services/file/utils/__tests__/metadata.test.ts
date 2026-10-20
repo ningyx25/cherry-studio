@@ -15,7 +15,7 @@ const BINARY_SAMPLE = Buffer.from([0x00, 0x01, 0x02, 0xff, 0xfe, 0x00, 0x10])
 describe('getMetadataByPath', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-getmeta-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-getmeta-test-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })

@@ -1,4 +1,4 @@
-import { Button, Input } from '@cherrystudio/ui'
+import { Button, Input } from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import { Search, X } from 'lucide-react'
 import type { ChangeEvent } from 'react'

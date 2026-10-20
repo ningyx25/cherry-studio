@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { CircleCheck, Loader2, XCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 

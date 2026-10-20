@@ -1,15 +1,15 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-function getMetadataRecord(part: CherryMessagePart, field: string): Record<string, unknown> | undefined {
+function getMetadataRecord(part: HuaTuoMessagePart, field: string): Record<string, unknown> | undefined {
   const value = (part as unknown as Record<string, unknown>)[field]
   return isRecord(value) ? value : undefined
 }
 
-function getClaudeCodeMetadata(part: CherryMessagePart): Record<string, unknown> | undefined {
+function getClaudeCodeMetadata(part: HuaTuoMessagePart): Record<string, unknown> | undefined {
   for (const field of ['providerMetadata', 'callProviderMetadata', 'resultProviderMetadata']) {
     const metadata = getMetadataRecord(part, field)
     const claudeCode = metadata?.['claude-code']
@@ -18,7 +18,7 @@ function getClaudeCodeMetadata(part: CherryMessagePart): Record<string, unknown>
   return undefined
 }
 
-export function getPartParentToolCallId(part: CherryMessagePart): string | undefined {
+export function getPartParentToolCallId(part: HuaTuoMessagePart): string | undefined {
   const direct = (part as unknown as { parentToolUseId?: unknown }).parentToolUseId
   if (typeof direct === 'string' && direct) return direct
 
@@ -27,7 +27,7 @@ export function getPartParentToolCallId(part: CherryMessagePart): string | undef
   return typeof parentToolCallId === 'string' && parentToolCallId ? parentToolCallId : undefined
 }
 
-export function hasPartParentToolCallId(part: CherryMessagePart): boolean {
+export function hasPartParentToolCallId(part: HuaTuoMessagePart): boolean {
   return !!getPartParentToolCallId(part)
 }
 
@@ -45,7 +45,7 @@ function stripParentFields(metadata: Record<string, unknown>): Record<string, un
   }
 }
 
-export function stripPartParentToolMetadata(part: CherryMessagePart): CherryMessagePart {
+export function stripPartParentToolMetadata(part: HuaTuoMessagePart): HuaTuoMessagePart {
   const source = part as unknown as Record<string, unknown>
   let next: Record<string, unknown> | undefined
 
@@ -61,5 +61,5 @@ export function stripPartParentToolMetadata(part: CherryMessagePart): CherryMess
     next[field] = stripParentFields(metadata)
   }
 
-  return (next ?? source) as unknown as CherryMessagePart
+  return (next ?? source) as unknown as HuaTuoMessagePart
 }

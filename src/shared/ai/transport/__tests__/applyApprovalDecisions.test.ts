@@ -1,10 +1,10 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { applyApprovalDecisions } from '../applyApprovalDecisions'
 import type { ApprovalDecision } from '../stream'
 
-function toolPart(overrides: Record<string, unknown> = {}): CherryMessagePart {
+function toolPart(overrides: Record<string, unknown> = {}): HuaTuoMessagePart {
   return {
     type: 'tool-fetch_url',
     toolCallId: 'call-1',
@@ -12,12 +12,12 @@ function toolPart(overrides: Record<string, unknown> = {}): CherryMessagePart {
     input: { url: 'https://example.com' },
     approval: { id: 'ap-1' },
     ...overrides
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
-const textPart = { type: 'text', text: 'hello' } as unknown as CherryMessagePart
+const textPart = { type: 'text', text: 'hello' } as unknown as HuaTuoMessagePart
 
-function approvalState(part: CherryMessagePart) {
+function approvalState(part: HuaTuoMessagePart) {
   return part as unknown as { state: string; approval?: { id: string; approved?: boolean; reason?: string } }
 }
 
@@ -102,7 +102,7 @@ describe('applyApprovalDecisions', () => {
         },
         approval: { id: 'approval-1' }
       }
-    ] as unknown as CherryMessagePart[]
+    ] as unknown as HuaTuoMessagePart[]
 
     const updated = applyApprovalDecisions(parts, [
       {

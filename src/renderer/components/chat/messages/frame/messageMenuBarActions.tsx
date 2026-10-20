@@ -17,7 +17,7 @@ import { captureScrollableAsBlob, captureScrollableAsDataUrl } from '@renderer/u
 import { removeTrailingDoubleSpaces } from '@renderer/utils/markdown'
 import { createComposerRichClipboardContentFromParts } from '@renderer/utils/message/composerClipboard'
 import { getTranslationFromParts } from '@renderer/utils/message/partsHelpers'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { TranslateLanguage } from '@shared/data/types/translate'
 import dayjs from 'dayjs'
 import type { TFunction } from 'i18next'
@@ -52,7 +52,7 @@ import {
 export interface MessageMenuBarActionContext {
   actions: MessageListActions
   message: MessageListItem
-  messageParts: CherryMessagePart[]
+  messageParts: HuaTuoMessagePart[]
   messageForExport: MessageExportView
   messageContainerRef: RefObject<HTMLDivElement>
   mainTextContent: string

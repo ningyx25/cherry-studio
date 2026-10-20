@@ -1,5 +1,5 @@
-import { Tooltip } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Tooltip } from '@huatuostudio/ui'
 import { ipcApi, useIpcOn } from '@renderer/ipc'
 import { isLinux, isWin } from '@renderer/utils/platform'
 import { Minus, Square, X } from 'lucide-react'

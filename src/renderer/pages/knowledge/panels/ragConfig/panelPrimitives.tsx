@@ -1,5 +1,5 @@
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Slider, Tooltip } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Slider, Tooltip } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { KnowledgeSelectOption } from '@renderer/pages/knowledge/types'
 import { Info } from 'lucide-react'
 import type { ReactNode } from 'react'

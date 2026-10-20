@@ -1,6 +1,6 @@
 import type { ProviderOptions } from '@ai-sdk/provider-utils'
-import type { AiPlugin } from '@cherrystudio/ai-core'
-import type { StringKeys } from '@cherrystudio/ai-core/provider'
+import type { AiPlugin } from '@huatuostudio/ai-core'
+import type { StringKeys } from '@huatuostudio/ai-core/provider'
 import type {
   Experimental_DownloadFunction as DownloadFunction,
   ModelMessage,

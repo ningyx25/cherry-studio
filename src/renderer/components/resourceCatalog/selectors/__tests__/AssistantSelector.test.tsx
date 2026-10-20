@@ -1,5 +1,5 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
-import { DIALOG_UNMOUNT_DELAY_MS } from '@cherrystudio/ui/utils'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
+import { DIALOG_UNMOUNT_DELAY_MS } from '@huatuostudio/ui/utils'
 import type * as ModelSelectorModule from '@renderer/components/ModelSelector'
 import type * as UseModelModule from '@renderer/hooks/useModel'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -58,8 +58,8 @@ vi.mock('@renderer/components/ModelSelector', async (importOriginal) => ({
   )
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
   return actual
 })
 

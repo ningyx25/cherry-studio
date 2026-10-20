@@ -35,9 +35,12 @@ export interface UseVoiceInputResult {
 }
 
 /**
- * Records microphone audio and transcribes it through the configured
- * speech-to-text model (`ai.audio.transcribe` IPC). Recording state is local;
- * the transcript is delivered via `onTranscript`.
+ * Turn-based dictation: one turn is exactly one `MediaRecorder` session ended
+ * by `stop()` (or the auto-stop cap), sent as one `ai.audio.transcribe` request
+ * through the configured speech-to-text model, whose transcript is delivered
+ * once via `onTranscript`. The turn then ends — no auto-restart, no streaming
+ * partials, and never auto-send: the user edits/inserts then submits manually.
+ * Recording state is local to this hook.
  */
 export function useVoiceInput({
   providerId,

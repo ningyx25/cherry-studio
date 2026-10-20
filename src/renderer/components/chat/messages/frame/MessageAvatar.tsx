@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Avatar, AvatarFallback, AvatarImage } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import EmojiIcon from '@renderer/components/EmojiIcon'
 import { isEmoji } from '@renderer/utils/naming'
 import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react'

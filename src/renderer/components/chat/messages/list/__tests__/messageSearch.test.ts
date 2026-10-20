@@ -1,13 +1,13 @@
 import { findTextMatches } from '@renderer/utils/contentSearch'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import type { MessageListItem } from '../../types'
 import { computeMessageSearchMatches } from '../messageSearch'
 
-const textPart = (text: string): CherryMessagePart => ({ type: 'text', text }) as CherryMessagePart
-const toolPart = (): CherryMessagePart =>
-  ({ type: 'dynamic-tool', toolCallId: 'read', toolName: 'Read', state: 'output-available' }) as CherryMessagePart
+const textPart = (text: string): HuaTuoMessagePart => ({ type: 'text', text }) as HuaTuoMessagePart
+const toolPart = (): HuaTuoMessagePart =>
+  ({ type: 'dynamic-tool', toolCallId: 'read', toolName: 'Read', state: 'output-available' }) as HuaTuoMessagePart
 
 const message = (
   id: string,
@@ -110,7 +110,7 @@ describe('computeMessageSearchMatches', () => {
       type: 'text',
       text: 'hidden apple',
       providerMetadata: { 'claude-code': { parentToolCallId: 'parent' } }
-    } as CherryMessagePart
+    } as HuaTuoMessagePart
     const messages = [message('a1', 'assistant')]
     const parts = { a1: [nestedToolText, textPart('visible apple')] }
 

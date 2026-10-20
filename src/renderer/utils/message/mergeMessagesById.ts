@@ -1,8 +1,8 @@
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 
-export function mergeMessagesById(...sources: CherryUIMessage[][]): CherryUIMessage[] {
+export function mergeMessagesById(...sources: HuaTuoUIMessage[][]): HuaTuoUIMessage[] {
   const order: string[] = []
-  const byId = new Map<string, CherryUIMessage>()
+  const byId = new Map<string, HuaTuoUIMessage>()
 
   for (const messages of sources) {
     for (const message of messages) {

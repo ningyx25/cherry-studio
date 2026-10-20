@@ -1,4 +1,4 @@
-import { DIALOG_UNMOUNT_DELAY_MS } from '@cherrystudio/ui/utils'
+import { DIALOG_UNMOUNT_DELAY_MS } from '@huatuostudio/ui/utils'
 import { MigrationIpcChannels } from '@shared/data/migration/v2/types'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import type { ButtonHTMLAttributes, ReactElement, ReactNode } from 'react'
@@ -62,7 +62,7 @@ vi.mock('react-i18next', () => ({
   })
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react')
   const DialogContext = React.createContext({
     onOpenChange: Function.prototype as (open: boolean) => void,
@@ -469,7 +469,7 @@ describe('MigrationApp', () => {
       migrators: [],
       overallProgress: 0,
       stage: 'introduction',
-      dataLocation: '/Volumes/Data/CherryStudio'
+      dataLocation: '/Volumes/Data/HuaTuoStudio'
     }
 
     render(<MigrationApp />)

@@ -1,4 +1,4 @@
-import { definePlugin } from '@cherrystudio/ai-core'
+import { definePlugin } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import type { LanguageModelMiddleware } from 'ai'
 

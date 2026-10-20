@@ -145,7 +145,7 @@ export const Interactive: Story = {
     const [items, setItems] = useState([
       'Apple',
       'Banana',
-      'Cherry',
+      'HuaTuo',
       'Date',
       'Elderberry',
       'Fig',

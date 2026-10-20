@@ -1,4 +1,4 @@
-import { Input, Tooltip } from '@cherrystudio/ui'
+import { Input, Tooltip } from '@huatuostudio/ui'
 import i18n from '@renderer/i18n/resolver'
 import { Search, X } from 'lucide-react'
 import { motion } from 'motion/react'

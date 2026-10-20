@@ -47,13 +47,13 @@ import type { DbType } from '@data/db/types'
 import { loggerService } from '@logger'
 import type { FileMetadata } from '@shared/data/types/legacyFile'
 import type {
-  CherryMessagePart,
   CitationReference,
   CitationType,
   ContentReference,
   DataUIPart,
   DynamicToolUIPart,
   FileUIPart,
+  HuaTuoMessagePart,
   MessageData,
   MessageSnapshot,
   MessageStats,
@@ -62,8 +62,8 @@ import type {
   SerializedErrorData,
   TextUIPart
 } from '@shared/data/types/message'
-import type { CherryDataPartTypes, CherryToolMeta } from '@shared/data/types/uiParts'
-import { createClearContextPart, withCherryMeta } from '@shared/data/types/uiParts'
+import type { HuaTuoDataPartTypes, HuaTuoToolMeta } from '@shared/data/types/uiParts'
+import { createClearContextPart, withHuaTuoMeta } from '@shared/data/types/uiParts'
 import { AbsoluteFilePathSchema, type Base64String } from '@shared/types/file'
 import type { SourceUrlUIPart } from 'ai'
 import mime from 'mime'
@@ -546,11 +546,11 @@ export async function transformMessage(
   // responded to a user message can be derived from sibling response messages'
   // modelId + siblingsGroupId, making stored mentions redundant.
 
-  // Merge citations into the first TextUIPart's providerMetadata.cherry.references
+  // Merge citations into the first TextUIPart's providerMetadata.huatuo.references
   if (citationReferences.length > 0) {
     const textPartIndex = parts.findIndex((p): p is TextUIPart => p.type === 'text')
     if (textPartIndex >= 0) {
-      parts[textPartIndex] = withCherryMeta(parts[textPartIndex] as TextUIPart, {
+      parts[textPartIndex] = withHuaTuoMeta(parts[textPartIndex] as TextUIPart, {
         references: citationReferences
       })
     }
@@ -762,15 +762,15 @@ export function estimateLegacyRequestCount(blocks: readonly OldBlock[]): number 
  * | Old Block      | New Part                | Notes                                    |
  * |----------------|-------------------------|------------------------------------------|
  * | main_text      | TextUIPart         | content → text, references in metadata   |
- * | thinking       | ReasoningUIPart    | thinkingMs in providerMetadata.cherry     |
+ * | thinking       | ReasoningUIPart    | thinkingMs in providerMetadata.huatuo     |
  * | tool           | DynamicToolUIPart         | dynamic-tool with output-available state  |
  * | image          | FileUIPart         | fileId resolved to file:// URL            |
  * | file           | FileUIPart         | fileId resolved to file:// URL            |
- * | error          | DataUIPart<CherryDataPartTypes>         | data-error with name/message              |
- * | translation    | DataUIPart<CherryDataPartTypes>         | data-translation                          |
- * | video          | DataUIPart<CherryDataPartTypes>         | data-video                                |
- * | compact        | DataUIPart<CherryDataPartTypes>         | data-compact                              |
- * | code           | DataUIPart<CherryDataPartTypes>         | data-code                                 |
+ * | error          | DataUIPart<HuaTuoDataPartTypes>         | data-error with name/message              |
+ * | translation    | DataUIPart<HuaTuoDataPartTypes>         | data-translation                          |
+ * | video          | DataUIPart<HuaTuoDataPartTypes>         | data-video                                |
+ * | compact        | DataUIPart<HuaTuoDataPartTypes>         | data-compact                              |
+ * | code           | DataUIPart<HuaTuoDataPartTypes>         | data-code                                 |
  * | citation (web) | SourceUrlUIPart         | Each web result → source-url part          |
  * | citation (kb)  | (merged into TextPart)  | Knowledge/memory → providerMetadata refs  |
  * | unknown        | (skipped)               | Placeholder blocks are dropped            |
@@ -779,11 +779,11 @@ export async function transformBlocksToParts(
   oldBlocks: OldBlock[],
   deps?: ChatMappingDeps
 ): Promise<{
-  parts: CherryMessagePart[]
+  parts: HuaTuoMessagePart[]
   citationReferences: ContentReference[]
   searchableText: string
 }> {
-  const parts: CherryMessagePart[] = []
+  const parts: HuaTuoMessagePart[] = []
   const citationReferences: ContentReference[] = []
   const searchableTexts: string[] = []
 
@@ -823,8 +823,8 @@ async function transformSingleBlockToPart(
   oldBlock: OldBlock,
   deps?: ChatMappingDeps
 ): Promise<{
-  part: CherryMessagePart | null
-  extraParts: CherryMessagePart[] | null
+  part: HuaTuoMessagePart | null
+  extraParts: HuaTuoMessagePart[] | null
   citations: ContentReference[] | null
   searchableText: string | null
 }> {
@@ -846,7 +846,7 @@ async function transformSingleBlockToPart(
         text: block.content,
         state: 'done'
       }
-      const part = withCherryMeta(basePart, { thinkingMs: block.thinking_millsec })
+      const part = withHuaTuoMeta(basePart, { thinkingMs: block.thinking_millsec })
       return { part, extraParts: null, citations: null, searchableText: block.content }
     }
 
@@ -865,7 +865,7 @@ async function transformSingleBlockToPart(
       const rawToolType = raw?.tool?.type
       const toolType =
         rawToolType === 'mcp' || rawToolType === 'builtin' || rawToolType === 'provider' ? rawToolType : undefined
-      const toolMetadata: CherryToolMeta['tool'] | undefined = raw?.tool
+      const toolMetadata: HuaTuoToolMeta['tool'] | undefined = raw?.tool
         ? {
             ...(toolType ? { type: toolType } : {}),
             ...(raw.tool.serverId ? { serverId: raw.tool.serverId } : {}),
@@ -874,7 +874,7 @@ async function transformSingleBlockToPart(
         : undefined
       const callProviderMetadata = raw?.tool
         ? {
-            cherry: {
+            huatuo: {
               tool: {
                 ...(toolType ? { type: toolType } : {}),
                 ...(raw.tool.name ? { name: raw.tool.name } : {}),
@@ -899,7 +899,7 @@ async function transformSingleBlockToPart(
         : { ...base, state: 'output-available', output }
       const part =
         toolMetadata && Object.keys(toolMetadata).length > 0
-          ? withCherryMeta(partWithoutMeta, { tool: toolMetadata })
+          ? withHuaTuoMeta(partWithoutMeta, { tool: toolMetadata })
           : partWithoutMeta
 
       return { part, extraParts: null, citations: null, searchableText: null }
@@ -921,12 +921,12 @@ async function transformSingleBlockToPart(
         url: block.file.path ? `file://${block.file.path}` : '',
         ...(block.file.origin_name ? { filename: block.file.origin_name } : {})
       }
-      const part = block.file.id ? withCherryMeta(basePart, { fileEntryId: block.file.id }) : basePart
+      const part = block.file.id ? withHuaTuoMeta(basePart, { fileEntryId: block.file.id }) : basePart
       return { part, extraParts: null, citations: null, searchableText: null }
     }
 
     case 'error': {
-      const part: DataUIPart<CherryDataPartTypes> = {
+      const part: DataUIPart<HuaTuoDataPartTypes> = {
         type: 'data-error',
         data: {
           name: oldBlock.error?.name ?? null,
@@ -938,7 +938,7 @@ async function transformSingleBlockToPart(
 
     case 'translation': {
       const block = oldBlock as OldTranslationBlock
-      const part: DataUIPart<CherryDataPartTypes> = {
+      const part: DataUIPart<HuaTuoDataPartTypes> = {
         type: 'data-translation',
         data: {
           content: block.content,
@@ -952,7 +952,7 @@ async function transformSingleBlockToPart(
 
     case 'video': {
       const block = oldBlock as OldVideoBlock
-      const part: DataUIPart<CherryDataPartTypes> = {
+      const part: DataUIPart<HuaTuoDataPartTypes> = {
         type: 'data-video',
         data: {
           ...(block.url ? { url: block.url } : {}),
@@ -964,7 +964,7 @@ async function transformSingleBlockToPart(
 
     case 'compact': {
       const block = oldBlock as OldCompactBlock
-      const part: DataUIPart<CherryDataPartTypes> = {
+      const part: DataUIPart<HuaTuoDataPartTypes> = {
         type: 'data-compact',
         data: {
           content: block.content,
@@ -976,7 +976,7 @@ async function transformSingleBlockToPart(
 
     case 'code': {
       const block = oldBlock as OldCodeBlock
-      const part: DataUIPart<CherryDataPartTypes> = {
+      const part: DataUIPart<HuaTuoDataPartTypes> = {
         type: 'data-code',
         data: {
           content: block.content,
@@ -1074,7 +1074,7 @@ async function promoteBase64ToFileEntry(
       url: `file://${physicalPath}`,
       filename: ext ? `${MIGRATED_IMAGE_NAME}.${ext}` : MIGRATED_IMAGE_NAME
     }
-    return withCherryMeta(basePart, { fileEntryId: id })
+    return withHuaTuoMeta(basePart, { fileEntryId: id })
   } catch (error) {
     if (physicalWritten) {
       // Best-effort: clean up the file we just wrote so we don't leave
@@ -1122,7 +1122,7 @@ async function collectImageFileParts(block: OldImageBlock, deps?: ChatMappingDep
       url: block.file.path ? `file://${block.file.path}` : '',
       ...(block.file.origin_name ? { filename: block.file.origin_name } : {})
     }
-    parts.push(block.file.id ? withCherryMeta(basePart, { fileEntryId: block.file.id }) : basePart)
+    parts.push(block.file.id ? withHuaTuoMeta(basePart, { fileEntryId: block.file.id }) : basePart)
   } else if (block.url) {
     // (2)+(3) URL-only image (no disk file).
     if (isBase64DataUrl(block.url)) {
@@ -1176,8 +1176,8 @@ async function collectImageFileParts(block: OldImageBlock, deps?: ChatMappingDep
  * Web search results that have a URL are converted to AI SDK's native
  * SourceUrlUIPart, which useChat can render directly.
  */
-function extractSourceUrlParts(citationBlock: OldCitationBlock): CherryMessagePart[] {
-  const parts: CherryMessagePart[] = []
+function extractSourceUrlParts(citationBlock: OldCitationBlock): HuaTuoMessagePart[] {
+  const parts: HuaTuoMessagePart[] = []
 
   if (!citationBlock.response?.results) return parts
 

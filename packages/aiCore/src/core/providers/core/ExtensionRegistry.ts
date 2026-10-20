@@ -19,7 +19,7 @@ import { ProviderCreationError } from './utils'
  *
  * @example
  * ```typescript
- * import { extensionRegistry } from '@cherrystudio/ai-core/provider'
+ * import { extensionRegistry } from '@huatuostudio/ai-core/provider'
  * import { OpenAIExtension } from './extensions/openai'
  *
  * // 注册 extension
@@ -428,7 +428,7 @@ export class ExtensionRegistry {
 
     // 2. Aggregator fallback: 从 model.provider 段解析真实 provider
     //    e.g., "aihubmix.google" → try "google" → found via google extension
-    //    e.g., "cherryin.gemini" → try "gemini" → found via alias → google extension
+    //    e.g., "huatuoin.gemini" → try "gemini" → found via alias → google extension
     if (typeof modelProvider === 'string') {
       const segments = modelProvider.split('.')
       for (let i = segments.length - 1; i >= 0; i--) {

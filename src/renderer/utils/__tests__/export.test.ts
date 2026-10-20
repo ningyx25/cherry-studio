@@ -211,7 +211,7 @@ describe('export', () => {
             type: 'text',
             text: 'Use the pdf skill. hello',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [

@@ -10,7 +10,7 @@ import {
   TabsList,
   TabsTrigger,
   Textarea
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { useImportAssistantMutation } from '@renderer/hooks/resourceCatalog'
 import { toast } from '@renderer/services/toast'
 import { AssistantTransferError, parseAssistantImportContent } from '@renderer/utils/assistantTransfer'

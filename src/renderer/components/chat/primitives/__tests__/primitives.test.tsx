@@ -17,7 +17,7 @@ type MockProps = Record<string, unknown> & {
   type?: string
 }
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
 
   return {

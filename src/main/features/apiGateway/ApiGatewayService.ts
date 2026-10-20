@@ -12,16 +12,16 @@ import { v4 as uuidv4 } from 'uuid'
 import { ApiGateway } from './server'
 
 const logger = loggerService.withContext('ApiGatewayService')
-const AGENT_SESSION_ID_HEADER = 'x-cherry-agent-session-id'
-const INTERNAL_USAGE_TOKEN_HEADER = 'x-cherry-internal-usage-token'
+const AGENT_SESSION_ID_HEADER = 'x-huatuo-agent-session-id'
+const INTERNAL_USAGE_TOKEN_HEADER = 'x-huatuo-internal-usage-token'
 
 @Injectable('ApiGatewayService')
 @ServicePhase(Phase.WhenReady)
 export class ApiGatewayService extends BaseService implements Activatable {
   private apiGateway: ApiGateway | null = null
-  /** Process-local proof that a gateway request originated from Cherry's agent runtime. */
+  /** Process-local proof that a gateway request originated from HuaTuo's agent runtime. */
   private readonly internalUsageToken = uuidv4()
-  /** Never persisted or exposed through the public API; authenticates Cherry-internal gateway metadata. */
+  /** Never persisted or exposed through the public API; authenticates HuaTuo-internal gateway metadata. */
   private readonly internalRequestToken = uuidv4()
   /** Latest desired running state — the `enabled` preference, or the boot auto-start decision. */
   private desiredEnabled = false
@@ -186,7 +186,7 @@ export class ApiGatewayService extends BaseService implements Activatable {
   }
 
   /**
-   * Headers injected only into the Claude Agent SDK subprocess that Cherry
+   * Headers injected only into the Claude Agent SDK subprocess that HuaTuo
    * launches for this session. They let the HTTP gateway retain per-provider
    * request records while attaching them to the owning agent.
    */
@@ -197,7 +197,7 @@ export class ApiGatewayService extends BaseService implements Activatable {
     }
   }
 
-  /** Process-local proof that the request came from a Cherry-launched SDK subprocess. */
+  /** Process-local proof that the request came from a HuaTuo-launched SDK subprocess. */
   isInternalAgentRequest(headers: Headers): boolean {
     return headers.get(INTERNAL_USAGE_TOKEN_HEADER) === this.internalUsageToken
   }

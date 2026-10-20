@@ -1,4 +1,4 @@
-import type * as CherryUi from '@cherrystudio/ui'
+import type * as HuaTuoUi from '@huatuostudio/ui'
 import type { NormalToolResponse } from '@renderer/types/mcpTool'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { parse as parsePartialJson } from 'partial-json'
@@ -63,8 +63,8 @@ vi.mock('react-i18next', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoUi>()
   return {
     ...actual,
     Tooltip: ({ children, content }: { children: React.ReactNode; content?: React.ReactNode }) => (
@@ -893,14 +893,14 @@ describe('AgentToolRenderer', () => {
         id: 'meta-tool-invoke',
         tool: { id: 'tool_invoke', name: 'tool_invoke', description: 'Invoke a tool', type: 'provider' },
         status: 'error',
-        arguments: { name: 'mcp__CherryPython__pythonExecute', params: { code: 'print(1)' } },
+        arguments: { name: 'mcp__HuaTuoPython__pythonExecute', params: { code: 'print(1)' } },
         response: { isError: true, content: [{ type: 'text', text: 'boom' }] }
       })
 
       render(<MessageTool toolResponse={toolResponse} />)
 
       // Outer header names the inner tool (raw mcp__ form).
-      expect(screen.getByText('tool_invoke · mcp__CherryPython__pythonExecute')).toBeInTheDocument()
+      expect(screen.getByText('tool_invoke · mcp__HuaTuoPython__pythonExecute')).toBeInTheDocument()
 
       fireEvent.click(screen.getByRole('button'))
 
@@ -908,7 +908,7 @@ describe('AgentToolRenderer', () => {
       expect(await screen.findByText('code')).toBeInTheDocument()
       expect(screen.getByText('print(1)')).toBeInTheDocument()
       // No nested inner tool card (its header would format the name as `Server:tool`).
-      expect(screen.queryByText(/CherryPython:pythonExecute/)).toBeNull()
+      expect(screen.queryByText(/HuaTuoPython:pythonExecute/)).toBeNull()
     })
   })
 

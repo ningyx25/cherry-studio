@@ -1,4 +1,4 @@
-import { Box, Center, ColFlex, Flex, RowFlex, SpaceBetweenRowFlex } from '@cherrystudio/ui'
+import { Box, Center, ColFlex, Flex, RowFlex, SpaceBetweenRowFlex } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof Flex> = {

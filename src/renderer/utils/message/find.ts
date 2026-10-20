@@ -8,17 +8,17 @@
 import type { Citation } from '@renderer/types/message'
 import type { ExportableMessage } from '@renderer/types/messageExport'
 import { convertReferencesToCitations } from '@renderer/utils/partsToBlocks'
-import type { CherryMessagePart, ContentReference } from '@shared/data/types/message'
+import type { ContentReference, HuaTuoMessagePart } from '@shared/data/types/message'
 import type { CodePartData, ErrorPartData, TranslationPartData } from '@shared/data/types/uiParts'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 
 import { toExportableCitations } from './citations'
 
-function getParts(message: ExportableMessage): CherryMessagePart[] {
+function getParts(message: ExportableMessage): HuaTuoMessagePart[] {
   return message.parts ?? []
 }
 
-function getDataPart<T>(part: CherryMessagePart): Partial<T> | undefined {
+function getDataPart<T>(part: HuaTuoMessagePart): Partial<T> | undefined {
   if ('data' in part && part.data && typeof part.data === 'object') {
     return part.data as Partial<T>
   }
@@ -37,7 +37,7 @@ function formatErrorPart(data: Partial<ErrorPartData> | undefined): string {
   return [data.name, data.code, data.message].filter(Boolean).join('\n')
 }
 
-function getRenderableTextContent(part: CherryMessagePart): string {
+function getRenderableTextContent(part: HuaTuoMessagePart): string {
   switch (part.type) {
     case 'text':
       return part.text ?? ''
@@ -55,9 +55,9 @@ function getRenderableTextContent(part: CherryMessagePart): string {
 // Auxiliary part types whose text belongs in a full export but must NOT steer
 // the topic-naming / summary prompt — error dumps and raw translations would
 // pollute the generated title.
-const NAMING_EXCLUDED_PART_TYPES = new Set<CherryMessagePart['type']>(['data-error', 'data-translation'])
+const NAMING_EXCLUDED_PART_TYPES = new Set<HuaTuoMessagePart['type']>(['data-error', 'data-translation'])
 
-function collectText(message: ExportableMessage, excludedTypes?: ReadonlySet<CherryMessagePart['type']>): string {
+function collectText(message: ExportableMessage, excludedTypes?: ReadonlySet<HuaTuoMessagePart['type']>): string {
   return getParts(message)
     .filter((part) => !excludedTypes?.has(part.type))
     .map(getRenderableTextContent)
@@ -81,14 +81,14 @@ export const getNamingTextContent = (message: ExportableMessage): string =>
 
 export const getThinkingContent = (message: ExportableMessage): string => {
   return getParts(message)
-    .filter((p): p is Extract<CherryMessagePart, { type: 'reasoning' }> => p.type === 'reasoning')
+    .filter((p): p is Extract<HuaTuoMessagePart, { type: 'reasoning' }> => p.type === 'reasoning')
     .map((p) => p.text ?? '')
     .filter((t) => t.trim().length > 0)
     .join('\n\n')
 }
 
 export const getCitationContent = (message: ExportableMessage): string => {
-  // V2 stores citations on text parts via `providerMetadata.cherry.references`
+  // V2 stores citations on text parts via `providerMetadata.huatuo.references`
   // (not as separate `data-citation` parts). Walk text parts and format each
   // citation-category reference into `[N] [title](url)` — same shape v1's
   // `formatCitationsFromBlock` produced. Non-web reference categories are
@@ -96,7 +96,7 @@ export const getCitationContent = (message: ExportableMessage): string => {
   const lines: string[] = []
   for (const part of getParts(message)) {
     if (part.type !== 'text') continue
-    const refs = (readCherryMeta(part)?.references ?? []) as Array<{
+    const refs = (readHuaTuoMeta(part)?.references ?? []) as Array<{
       category?: string
       number?: number
       title?: string
@@ -128,7 +128,7 @@ const formatCitationLines = (citations: Citation[]): string =>
 /**
  * Export / copy view of a message whose citations come from its own tool results.
  *
- * These carry no `providerMetadata.cherry.references`: the model writes `[cite:id]`
+ * These carry no `providerMetadata.huatuo.references`: the model writes `[cite:id]`
  * markers straight into the text (see `./citations`). Both halves therefore have to
  * be derived here — the text with each marker rewritten to a plain `[N]`, and the
  * matching sources list, which {@link getCitationContent} cannot produce.
@@ -147,7 +147,7 @@ export const getToolCitationExport = (
   // it returns '' for migrated messages that do render legacy citations.
   const rendersLegacyCitations = getParts(message).some((part) => {
     if (part.type !== 'text') return false
-    const references = readCherryMeta(part)?.references as ContentReference[] | undefined
+    const references = readHuaTuoMeta(part)?.references as ContentReference[] | undefined
     return !!references?.length && convertReferencesToCitations(references).length > 0
   })
   if (rendersLegacyCitations) return { content, citation: '' }

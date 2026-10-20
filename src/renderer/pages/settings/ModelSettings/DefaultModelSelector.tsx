@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, Button } from '@cherrystudio/ui'
-import { useIcon } from '@cherrystudio/ui/icons'
+import { Avatar, AvatarFallback, Button } from '@huatuostudio/ui'
+import { useIcon } from '@huatuostudio/ui/icons'
 import { getProviderDisplayName, ModelSelector } from '@renderer/components/ModelSelector'
 import { getModelLogoRef } from '@renderer/utils/model'
 import { cn } from '@renderer/utils/style'

@@ -17,7 +17,7 @@ vi.mock('react-i18next', async (importOriginal) => {
   }
 })
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<object>()
 
   return {
@@ -36,7 +36,7 @@ vi.mock('@cherrystudio/ui', async (importOriginal) => {
   }
 })
 
-vi.mock('@cherrystudio/ui/icons', () => ({
+vi.mock('@huatuostudio/ui/icons', () => ({
   useIcon: () => ({
     Avatar: ({ size, shape }: { size: number; shape: string }) => (
       <span data-testid="model-icon" data-size={size} data-shape={shape} />

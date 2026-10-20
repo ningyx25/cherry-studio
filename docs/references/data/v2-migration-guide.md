@@ -71,9 +71,9 @@ src/main/data/migration/v2/
 ## Core Contracts
 
 - `core/MigrationEngine.ts` coordinates all migrators in order, surfaces progress to the UI, and uses `app_state.key = 'migration_v2_status'` as the only durable migration marker. It clears new-schema tables before running and aborts on validation or global foreign-key failure.
-- `core/MigrationPaths.ts` defines `MigrationPaths` (a frozen object of pre-computed paths) and `resolveMigrationPaths()` which detects v1 legacy userData directories from `~/.cherrystudio/config/config.json`. Called once at the migration gate entry, before engine initialization. All migration code uses these paths instead of `app.getPath()` — see the **Path safety** convention below.
+- `core/MigrationPaths.ts` defines `MigrationPaths` (a frozen object of pre-computed paths) and `resolveMigrationPaths()` which detects v1 legacy userData directories from `~/.huatuostudio/config/config.json`. Called once at the migration gate entry, before engine initialization. All migration code uses these paths instead of `app.getPath()` — see the **Path safety** convention below.
 - `core/MigrationContext.ts` builds the shared context passed to every migrator:
-  - `sources`: `ConfigManager` (ElectronStore), `ReduxStateReader` (per-category Redux Persist export files), `DexieFileReader` (JSON exports), `LegacyHomeConfigReader` (v1 `~/.cherrystudio/config/config.json` for the config-file migration path used by `BootConfigMigrator`)
+  - `sources`: `ConfigManager` (ElectronStore), `ReduxStateReader` (per-category Redux Persist export files), `DexieFileReader` (JSON exports), `LegacyHomeConfigReader` (v1 `~/.huatuostudio/config/config.json` for the config-file migration path used by `BootConfigMigrator`)
   - `db`: current SQLite connection
   - `paths`: `MigrationPaths` — pre-computed filesystem paths; migrators that need file paths use `ctx.paths` instead of `app.getPath()`
   - `sharedData`: `Map` for passing cross-cutting info between migrators
@@ -92,7 +92,7 @@ src/main/data/migration/v2/
   - `PreferencesMigrator` (implemented): maps ElectronStore + Redux settings to the `preference` table using `mappings/PreferencesMappings.ts`.
   - `ChatMigrator` (implemented): migrates topics and messages from Dexie to SQLite. See [`README-ChatMigrator.md`](../../../src/main/data/migration/v2/migrators/README-ChatMigrator.md).
   - `AiUsageRecordMigrator` (implemented): projects usage-bearing migrated chat and agent-session messages into the best-effort AI usage read model. See [`README-AiUsageRecordMigrator.md`](../../../src/main/data/migration/v2/migrators/README-AiUsageRecordMigrator.md).
-  - `BootConfigMigrator` (implemented, file-target): migrates early-boot settings into the file-based `bootConfigService` (`~/.cherrystudio/boot-config.json`) rather than a SQLite table. Reads from Redux (`disableHardwareAcceleration`) and from the v1 home config file (`~/.cherrystudio/config/config.json`'s `appDataPath` → `app.user_data_path`) via a `'configfile'` source kind. See [`README-BootConfigMigrator.md`](../../../src/main/data/migration/v2/migrators/README-BootConfigMigrator.md).
+  - `BootConfigMigrator` (implemented, file-target): migrates early-boot settings into the file-based `bootConfigService` (`~/.huatuostudio/boot-config.json`) rather than a SQLite table. Reads from Redux (`disableHardwareAcceleration`) and from the v1 home config file (`~/.huatuostudio/config/config.json`'s `appDataPath` → `app.user_data_path`) via a `'configfile'` source kind. See [`README-BootConfigMigrator.md`](../../../src/main/data/migration/v2/migrators/README-BootConfigMigrator.md).
   - `AssistantMigrator`, `KnowledgeMigrator` (placeholders): scaffolding and TODO notes for future tables.
 - Conventions:
   - All logging goes through `loggerService` with a migrator-specific context.
@@ -111,7 +111,7 @@ src/main/data/migration/v2/
 - `utils/ReduxStateReader.ts`: safe on-demand accessor for categorized Redux Persist export files with dot-path lookup.
 - `utils/DexieFileReader.ts`: reads exported Dexie JSON tables; can stream large tables.
 - `utils/JsonStreamReader.ts`: streaming reader with batching, counting, and sampling helpers for very large arrays.
-- `utils/LegacyHomeConfigReader.ts`: synchronously reads the v1 `~/.cherrystudio/config/config.json` file and normalizes its `appDataPath` field (both the legacy string shape and the current `{ executablePath, dataPath }[]` shape) into a `Record<executablePath, dataPath> | null`. Used exclusively by `BootConfigMigrator`'s `'configfile'` source.
+- `utils/LegacyHomeConfigReader.ts`: synchronously reads the v1 `~/.huatuostudio/config/config.json` file and normalizes its `appDataPath` field (both the legacy string shape and the current `{ executablePath, dataPath }[]` shape) into a `Record<executablePath, dataPath> | null`. Used exclusively by `BootConfigMigrator`'s `'configfile'` source.
 
 ## Window & IPC Integration
 

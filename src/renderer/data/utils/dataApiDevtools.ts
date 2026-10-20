@@ -45,7 +45,7 @@ type DataApiDevtoolsEventPatch = Partial<DataApiDevtoolsEvent> & Pick<DataApiDev
 
 declare global {
   interface Window {
-    __CHERRY_DATA_API_DEVTOOLS__?: DataApiDevtoolsGlobal
+    __HUATUO_DATA_API_DEVTOOLS__?: DataApiDevtoolsGlobal
   }
 }
 
@@ -224,9 +224,9 @@ function serializeError(error: unknown): DataApiDevtoolsEvent['error'] {
 }
 
 function installGlobal(): void {
-  if (!isEnabled() || window.__CHERRY_DATA_API_DEVTOOLS__) return
+  if (!isEnabled() || window.__HUATUO_DATA_API_DEVTOOLS__) return
 
-  window.__CHERRY_DATA_API_DEVTOOLS__ = {
+  window.__HUATUO_DATA_API_DEVTOOLS__ = {
     snapshot: snapshotEvents,
     snapshotSummary: snapshotSummaryEvents,
     getEvent,
@@ -335,7 +335,7 @@ export const dataApiDevtoolsTesting = {
     options = { ...DEFAULT_OPTIONS }
     clearEvents()
     if (typeof window !== 'undefined') {
-      delete window.__CHERRY_DATA_API_DEVTOOLS__
+      delete window.__HUATUO_DATA_API_DEVTOOLS__
     }
   }
 }

@@ -137,7 +137,7 @@ export function buildApp({ host = '127.0.0.1', port = 23333 }: BuildAppOptions =
         timestamp: new Date().toISOString(),
         version: process.env.npm_package_version || '1.0.0'
       }),
-      { detail: { tags: [DOC_TAGS.cherry], summary: 'Health', description: DOC_DESCRIPTIONS.health } }
+      { detail: { tags: [DOC_TAGS.huatuo], summary: 'Health', description: DOC_DESCRIPTIONS.health } }
     )
     // Public API information.
     .get(
@@ -157,7 +157,7 @@ export function buildApp({ host = '127.0.0.1', port = 23333 }: BuildAppOptions =
           knowledge_search: 'POST /v1/knowledge-bases/search'
         }
       }),
-      { detail: { tags: [DOC_TAGS.cherry], summary: 'API Info', description: DOC_DESCRIPTIONS.info } }
+      { detail: { tags: [DOC_TAGS.huatuo], summary: 'API Info', description: DOC_DESCRIPTIONS.info } }
     )
     .use(webuiRoutes)
     // Gemini routes carry their own self-contained (`local`) auth guard and are

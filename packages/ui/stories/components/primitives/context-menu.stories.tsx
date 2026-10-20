@@ -14,7 +14,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Cloud, Copy, Edit, Folder, Mail, Settings, Trash2, User } from 'lucide-react'
 import * as React from 'react'
@@ -413,7 +413,7 @@ export const AssistantMenu: Story = {
             Assistant Icon
           </ContextMenuSubTrigger>
           <ContextMenuSubContent>
-            <ContextMenuItem>🍒 Cherry</ContextMenuItem>
+            <ContextMenuItem>🍒 HuaTuo</ContextMenuItem>
             <ContextMenuItem>🤖 Robot</ContextMenuItem>
             <ContextMenuItem>✨ Star</ContextMenuItem>
           </ContextMenuSubContent>

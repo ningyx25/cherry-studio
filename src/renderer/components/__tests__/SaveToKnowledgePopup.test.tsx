@@ -113,7 +113,7 @@ vi.mock('@renderer/components/KnowledgeBaseSelector', () => ({
   )
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, loading, ...props }: React.ComponentProps<'button'> & { loading?: boolean }) => (
     <button type="button" {...props}>
       {loading ? 'loading' : children}

@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 
 import type { FileAttachmentRef } from '@main/ai/messages/attachmentTypes'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import type { UIMessage } from 'ai'
 
 export function createAssistantFileAttachmentHandle(fileEntryId: string): string {
@@ -15,7 +15,7 @@ export function collectAssistantFileAttachments(messages: UIMessage[] | undefine
   for (const message of messages ?? []) {
     for (const part of message.parts ?? []) {
       if (part.type !== 'file') continue
-      const fileEntryId = readCherryMeta(part)?.fileEntryId
+      const fileEntryId = readHuaTuoMeta(part)?.fileEntryId
       if (!fileEntryId || attachments.has(fileEntryId)) continue
 
       attachments.set(fileEntryId, {

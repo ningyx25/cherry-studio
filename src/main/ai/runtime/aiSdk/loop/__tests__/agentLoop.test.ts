@@ -16,7 +16,7 @@ const TEST_USAGE = {
   outputTokenDetails: {}
 }
 
-vi.mock('@cherrystudio/ai-core', () => ({
+vi.mock('@huatuostudio/ai-core', () => ({
   createAgent: (...args: unknown[]) => mockCreateAgent(...args)
 }))
 

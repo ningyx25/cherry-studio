@@ -6,7 +6,7 @@ import type { CSSProperties } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 // Resolve only `openai` to a recognizable stand-in icon; everything else is unknown.
-vi.mock('@cherrystudio/ui/icons', () => {
+vi.mock('@huatuostudio/ui/icons', () => {
   const BrandIcon = ({ style, variant }: { style?: CSSProperties; variant?: string }) => (
     <span data-testid="brand-icon" data-variant={variant} style={style} />
   )

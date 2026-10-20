@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, RadioGroup, RadioGroupItem } from '@cherrystudio/ui'
+import { Button, Checkbox, Input, RadioGroup, RadioGroupItem } from '@huatuostudio/ui'
 import type { QuestionnaireQuestion } from '@shared/questionnaire/types'
 import { useTranslation } from 'react-i18next'
 

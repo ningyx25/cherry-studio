@@ -1,5 +1,5 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
-import { StreamingMarkdown } from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
+import { StreamingMarkdown } from '@huatuostudio/ui'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
   ))
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => importOriginal<typeof CherryStudioUi>())
+vi.mock('@huatuostudio/ui', async (importOriginal) => importOriginal<typeof HuaTuoStudioUi>())
 vi.mock('../CodeBlock', () => ({ default: mocks.CodeBlock }))
 
 const EMPTY_CITATIONS = new Map()

@@ -11,9 +11,9 @@ describe('parseJSONC - JSON with Comments Parser', () => {
     })
 
     it('should parse nested JSON objects', () => {
-      const content = '{"provider": {"name": "cherry", "npm": "@ai-sdk/openai"}}'
+      const content = '{"provider": {"name": "huatuo", "npm": "@ai-sdk/openai"}}'
       const result = parseJSONC(content)
-      expect(result).toEqual({ provider: { name: 'cherry', npm: '@ai-sdk/openai' } })
+      expect(result).toEqual({ provider: { name: 'huatuo', npm: '@ai-sdk/openai' } })
     })
 
     it('should parse JSON arrays', () => {
@@ -103,7 +103,7 @@ describe('getFunctionalKeys - Filter Non-Functional Keys', () => {
   it('should filter out $schema key', () => {
     const obj = {
       $schema: 'https://opencode.ai/config.json',
-      provider: { 'Cherry-Studio': { name: 'test' } },
+      provider: { 'HuaTuo-Studio': { name: 'test' } },
       model: 'test-model'
     }
     const result = getFunctionalKeys(obj)

@@ -12,12 +12,12 @@ describe('selectCustomBodyParameters', () => {
       selectCustomBodyParameters(
         {
           openai: 'invalid-namespace-value',
-          cherryin: false,
+          huatuoin: false,
           enable_search: true,
           custom_snake_case: { nested: 'value' }
         },
         { openai: {} },
-        'cherryin'
+        'huatuoin'
       )
     ).toEqual({
       enable_search: true,

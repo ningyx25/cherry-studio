@@ -2,7 +2,7 @@
  * Tests for BootConfigMigrator.
  *
  * Focuses on the 'configfile' source branch added for migrating v1
- * ~/.cherrystudio/config/config.json → boot-config's `app.user_data_path`,
+ * ~/.huatuostudio/config/config.json → boot-config's `app.user_data_path`,
  * plus a regression test covering the existing redux source.
  */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -181,8 +181,8 @@ describe('BootConfigMigrator', () => {
     // would miss its own migrated directory. The migrator must MERGE, keeping
     // existing (pinned) entries.
     const CURRENT_EXE = '/Applications/HuaTuo Studio.app/Contents/MacOS/HuaTuo Studio'
-    const OLD_EXE = '/Applications/CherryStudio.app/Contents/MacOS/CherryStudio'
-    const RECOVERED_DIR = '/Volumes/Ext/CherryData'
+    const OLD_EXE = '/Applications/HuaTuoStudio.app/Contents/MacOS/HuaTuoStudio'
+    const RECOVERED_DIR = '/Volumes/Ext/HuaTuoData'
 
     it('merges the legacy record with an existing entry keyed by a different exe', async () => {
       // Seed the preboot pin (current exe → recovered dir).

@@ -16,7 +16,7 @@ import { v7 as uuidv7 } from 'uuid'
 import type { AiStreamRequest } from '../../types'
 import { PersistenceListener } from '../listeners/PersistenceListener'
 import { TemporaryChatBackend } from '../persistence/backends/TemporaryChatBackend'
-import type { CherryUIMessage, StreamListener } from '../types'
+import type { HuaTuoUIMessage, StreamListener } from '../types'
 import type { ChatContextProvider, DispatchContext, PreparedDispatch } from './ChatContextProvider'
 import type { MainDispatchRequest } from './dispatch'
 import { resolveAssistantModelId, resolveModels } from './modelResolution'
@@ -93,7 +93,7 @@ export class TemporaryChatContextProvider implements ChatContextProvider {
     })
 
     const prior = temporaryChatService.listMessages(req.topicId)
-    const history: CherryUIMessage[] = prior.map((m) => ({
+    const history: HuaTuoUIMessage[] = prior.map((m) => ({
       id: m.id,
       role: toContentRole(m.role),
       parts: m.data.parts ?? []

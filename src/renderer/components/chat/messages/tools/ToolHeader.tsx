@@ -1,4 +1,4 @@
-import { Flex, Tooltip } from '@cherrystudio/ui'
+import { Flex, Tooltip } from '@huatuostudio/ui'
 import type { McpToolResponse, NormalToolResponse } from '@renderer/types/mcpTool'
 import type { McpTool } from '@renderer/types/tool'
 import { PROVIDER_WEB_SEARCH_TOOL_NAME } from '@shared/ai/builtinTools'

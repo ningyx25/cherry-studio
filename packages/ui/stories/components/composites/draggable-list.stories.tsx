@@ -1,4 +1,4 @@
-import { DraggableList } from '@cherrystudio/ui'
+import { DraggableList } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { GripVertical } from 'lucide-react'
 import { useState } from 'react'

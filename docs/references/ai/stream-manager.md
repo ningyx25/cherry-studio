@@ -264,12 +264,12 @@ One listener + four backends:
 interface PersistenceBackend {
   readonly kind: string   // "sqlite" | "temp" | "agents-db" | "translation"
   persistAssistant(input: {
-    finalMessage?: CherryUIMessage
+    finalMessage?: HuaTuoUIMessage
     status: 'success' | 'paused' | 'error'
     modelId?: UniqueModelId
     runtimeStats?: MessageRuntimeStatsInput
   }): Promise<void>
-  afterPersist?(finalMessage: CherryUIMessage): Promise<void>
+  afterPersist?(finalMessage: HuaTuoUIMessage): Promise<void>
 }
 ```
 
@@ -316,7 +316,7 @@ interface StreamExecution {
   buffer: StreamChunkPayload[]
   droppedChunks: number
 
-  finalMessage?: CherryUIMessage
+  finalMessage?: HuaTuoUIMessage
 
   // Set the moment a `tool-approval-request` chunk arrives, cleared on
   // response. Read by `resolveTerminalStatus` to surface
@@ -436,7 +436,7 @@ class AiStreamManager {
     streamId: string                                       // doubles as topicId
     uniqueModelId: UniqueModelId
     prompt?: string
-    messages?: CherryUIMessage[]
+    messages?: HuaTuoUIMessage[]
     listener: StreamListener | StreamListener[]
   }): SendResult
 
@@ -825,7 +825,7 @@ interface PreparedDispatch {
   listeners: StreamListener[]   // subscriber + per-execution PersistenceListener(s)
   userMessageId?: string
   pendingSteerUserMessageId?: string   // persistent steer branch only; marks the dispatch enqueue-only
-  reservedMessages?: CherryUIMessage[] // user/assistant skeletons created for this dispatch
+  reservedMessages?: HuaTuoUIMessage[] // user/assistant skeletons created for this dispatch
   siblingsGroupId?: number
   isMultiModel: boolean
   lifecycle?: StreamLifecycle

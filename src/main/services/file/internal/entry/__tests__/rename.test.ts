@@ -28,7 +28,7 @@ describe('internal/entry/rename', () => {
 
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-renametest-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-renametest-'))
     filesDir = path.join(tmp, 'Files')
     const { mkdir } = await import('node:fs/promises')
     await mkdir(filesDir, { recursive: true })

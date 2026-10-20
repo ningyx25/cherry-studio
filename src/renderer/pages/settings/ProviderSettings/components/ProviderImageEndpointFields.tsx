@@ -1,4 +1,4 @@
-import { Field, FieldError, FieldLabel, Input } from '@cherrystudio/ui'
+import { Field, FieldError, FieldLabel, Input } from '@huatuostudio/ui'
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 

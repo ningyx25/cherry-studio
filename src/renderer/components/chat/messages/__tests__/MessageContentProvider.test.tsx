@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
@@ -15,7 +15,7 @@ describe('MessageContentProvider', () => {
     createdAt: '2026-01-01T00:00:00.000Z',
     status: 'success'
   }
-  const partsByMessageId: Record<string, CherryMessagePart[]> = {
+  const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
     [message.id]: [{ type: 'text', text: 'standalone content' }]
   }
 

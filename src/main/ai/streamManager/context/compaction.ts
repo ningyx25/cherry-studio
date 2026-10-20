@@ -1,9 +1,9 @@
-import { ContextPrompts } from '@cherrystudio/ai-core'
+import { ContextPrompts } from '@huatuostudio/ai-core'
 import { estimateTokenCount } from 'tokenx'
 
 /**
- * Lightweight row view for compaction. Built from a raw cherry `Message`
- * (id, role, data.parts, compactionSummary). Kept separate from `CherryUIMessage`
+ * Lightweight row view for compaction. Built from a raw huatuo `Message`
+ * (id, role, data.parts, compactionSummary). Kept separate from `HuaTuoUIMessage`
  * so the helpers are pure and trivially testable.
  */
 export interface CompactionRow {

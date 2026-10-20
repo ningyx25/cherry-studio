@@ -1,5 +1,5 @@
-import { NormalTooltip, Tooltip, TooltipContent, TooltipProvider, TooltipRoot, TooltipTrigger } from '@cherrystudio/ui'
-import { Button } from '@cherrystudio/ui'
+import { NormalTooltip, Tooltip, TooltipContent, TooltipProvider, TooltipRoot, TooltipTrigger } from '@huatuostudio/ui'
+import { Button } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Info } from 'lucide-react'
 

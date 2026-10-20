@@ -14,7 +14,7 @@ import { buildEditorUrl } from '@renderer/utils/editor'
 import { parseFileTypes } from '@renderer/utils/file'
 import { safeOpen } from '@renderer/utils/file/safeOpen'
 import type { FileHandle } from '@shared/data/types/file'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { AbsoluteFilePathSchema } from '@shared/types/file'
 import { createFileEntryHandle, createFilePathHandle, toSafeFileUrl } from '@shared/utils/file'
 import dayjs from 'dayjs'
@@ -39,7 +39,7 @@ type MessageLeafActions = Pick<
 type MessageLeafState = Pick<MessageListState, 'getFileView' | 'isToolAutoApproved' | 'externalCodeEditors'>
 
 interface MessageLeafCapabilitiesParams {
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   streamingLayers?: MessageStreamingLayers
 }
 
@@ -47,7 +47,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-function isMcpToolPart(part: CherryMessagePart): boolean {
+function isMcpToolPart(part: HuaTuoMessagePart): boolean {
   const partType = (part as { type?: string }).type
   if (partType === 'dynamic-tool') return true
   if (!partType?.startsWith('tool-')) return false
@@ -58,8 +58,8 @@ function isMcpToolPart(part: CherryMessagePart): boolean {
   if (outputMetadata?.type === 'mcp') return true
 
   const providerMetadata = isRecord(record.providerMetadata) ? record.providerMetadata : undefined
-  const cherry = isRecord(providerMetadata?.cherry) ? providerMetadata.cherry : undefined
-  const tool = isRecord(cherry?.tool) ? cherry.tool : undefined
+  const huatuo = isRecord(providerMetadata?.huatuo) ? providerMetadata.huatuo : undefined
+  const tool = isRecord(huatuo?.tool) ? huatuo.tool : undefined
   return tool?.type === 'mcp'
 }
 

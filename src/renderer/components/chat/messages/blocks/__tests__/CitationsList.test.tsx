@@ -14,7 +14,7 @@ vi.mock('../../MessageListProvider', () => ({
   useOptionalMessageListActions: () => mocks.messageListActions
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, onClick, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
     <button type="button" onClick={onClick} {...props}>
       {children}

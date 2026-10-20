@@ -33,7 +33,7 @@ vi.mock('@renderer/components/icons/FallbackFavicon', () => ({
   )
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
   const PopoverContext = React.createContext<{
     open: boolean

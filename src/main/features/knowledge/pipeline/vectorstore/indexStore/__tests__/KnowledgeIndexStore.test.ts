@@ -540,11 +540,11 @@ describe('KnowledgeIndexStore', () => {
     // The index MUST be populated before the reshuffle, or it cannot expose the bug.
     store.rebuildMaterial('m1', buildInput('alpha apple body', [[0, 16]], 'a.md'))
     store.rebuildMaterial('m2', buildInput('bravo banana body', [[0, 17]], 'b.md'))
-    store.rebuildMaterial('m3', buildInput('charlie cherry body', [[0, 19]], 'c.md'))
+    store.rebuildMaterial('m3', buildInput('charlie huatuo body', [[0, 19]], 'c.md'))
     store.rebuildMaterial('m4', buildInput('delta date body', [[0, 15]], 'd.md'))
     // Delete a middle material to leave a rowid hole — the precondition the reshuffle needs.
     await store.deleteMaterials(['m2'])
-    expect(await ftsMatchCount('cherry')).toBe(1)
+    expect(await ftsMatchCount('huatuo')).toBe(1)
 
     // Reshuffle the implicit rowid exactly as a table rebuild / VACUUM does: copy the table (new
     // contiguous rowids, dropping the hole) while carrying fts_rowid verbatim, then re-assert the
@@ -559,7 +559,7 @@ describe('KnowledgeIndexStore', () => {
     // fts_rowid was copied through the rebuild, so the index stays aligned: the reliable check passes
     // and the survivors resolve to the right materials (a rowid-keyed index would return wrong/empty).
     expect(ftsIntegrityCheck()).toBeDefined()
-    expect(store.search({ queryText: 'cherry', mode: 'bm25', topK: 10 }).map((h) => h.materialId)).toEqual(['m3'])
+    expect(store.search({ queryText: 'huatuo', mode: 'bm25', topK: 10 }).map((h) => h.materialId)).toEqual(['m3'])
     expect(store.search({ queryText: 'date', mode: 'bm25', topK: 10 }).map((h) => h.materialId)).toEqual(['m4'])
     // The reshuffle reassigned implicit rowids while leaving fts_rowid untouched and unique.
     expect(await count('search_text')).toBe(3)
@@ -586,12 +586,12 @@ describe('KnowledgeIndexStore', () => {
     // delete trigger that failed to tombstone it would surface the old content under the new row.
     store.rebuildMaterial('m1', buildInput('alpha apple body', [[0, 16]], 'a.md'))
     store.rebuildMaterial('m2', buildInput('bravo banana body', [[0, 17]], 'b.md'))
-    store.rebuildMaterial('m3', buildInput('charlie cherry body', [[0, 19]], 'c.md'))
+    store.rebuildMaterial('m3', buildInput('charlie huatuo body', [[0, 19]], 'c.md'))
 
     // m3 holds the current MAX fts_rowid. Delete it to free that rowid.
     const maxBefore = Number(driver.execute(`SELECT MAX(fts_rowid) AS m FROM search_text`).rows[0].m)
     await store.deleteMaterials(['m3'])
-    expect(await ftsMatchCount('cherry')).toBe(0)
+    expect(await ftsMatchCount('huatuo')).toBe(0)
 
     // The next insert's MAX(fts_rowid)+1 reuses the value m3 just vacated.
     store.rebuildMaterial('m4', buildInput('delta dragon body', [[0, 17]], 'd.md'))
@@ -603,7 +603,7 @@ describe('KnowledgeIndexStore', () => {
     // The reused rowid resolves to m4 (not stale m3 content), the deleted term stays gone, and the
     // external-content index is consistent under the reliable detector.
     expect(store.search({ queryText: 'dragon', mode: 'bm25', topK: 10 }).map((h) => h.materialId)).toEqual(['m4'])
-    expect(await ftsMatchCount('cherry')).toBe(0)
+    expect(await ftsMatchCount('huatuo')).toBe(0)
     expect(ftsIntegrityCheck()).toBeDefined()
   })
 

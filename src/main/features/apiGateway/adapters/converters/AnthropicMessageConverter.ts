@@ -14,7 +14,7 @@ import type {
   Tool as AnthropicTool,
   ToolResultBlockParam
 } from '@anthropic-ai/sdk/resources/messages'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import type { DynamicToolUIPart, FileUIPart, JSONValue, ReasoningUIPart, TextUIPart, ToolSet } from 'ai'
@@ -138,16 +138,16 @@ export class AnthropicMessageConverter implements IMessageConverter<MessageCreat
   }
 
   /**
-   * Convert Anthropic MessageCreateParams to AI SDK `CherryUIMessage[]`.
+   * Convert Anthropic MessageCreateParams to AI SDK `HuaTuoUIMessage[]`.
    *
    * The leading system prompt is emitted as a `role: 'system'` UIMessage —
    * `convertToModelMessages` (run by main) lifts that to the SDK `system`.
    * Tool calls become `dynamic-tool` parts; a matching tool_result in a later
    * message upgrades the part to `output-available` so history stays coherent.
    */
-  toUIMessages(params: MessageCreateParams): CherryUIMessage[] {
+  toUIMessages(params: MessageCreateParams): HuaTuoUIMessage[] {
     this.prepareToolNames(params.tools)
-    const messages: CherryUIMessage[] = []
+    const messages: HuaTuoUIMessage[] = []
 
     // System message
     if (params.system) {
@@ -191,7 +191,7 @@ export class AnthropicMessageConverter implements IMessageConverter<MessageCreat
       }
       if (!Array.isArray(msg.content)) continue
 
-      const parts: CherryUIMessage['parts'] = []
+      const parts: HuaTuoUIMessage['parts'] = []
 
       for (const block of msg.content) {
         if (block.type === 'text') {

@@ -22,7 +22,7 @@ describe('SearchInput', () => {
     const onChange = vi.fn()
     render(<SearchInput value="" onChange={onChange} />)
 
-    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'cherry' } })
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'huatuo' } })
 
     expect(onChange).toHaveBeenCalledTimes(1)
   })
@@ -31,19 +31,19 @@ describe('SearchInput', () => {
     const { rerender } = render(<SearchInput value="" onChange={() => {}} onClear={() => {}} clearLabel="清除" />)
     expect(screen.queryByRole('button', { name: '清除' })).not.toBeInTheDocument()
 
-    rerender(<SearchInput value="cherry" onChange={() => {}} onClear={() => {}} clearLabel="清除" />)
+    rerender(<SearchInput value="huatuo" onChange={() => {}} onClear={() => {}} clearLabel="清除" />)
     expect(screen.getByRole('button', { name: '清除' })).toBeInTheDocument()
   })
 
   it('hides the clear button when no onClear handler is provided', () => {
-    render(<SearchInput value="cherry" onChange={() => {}} />)
+    render(<SearchInput value="huatuo" onChange={() => {}} />)
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
   it('invokes onClear when the clear button is clicked', () => {
     const onClear = vi.fn()
-    render(<SearchInput value="cherry" onChange={() => {}} onClear={onClear} clearLabel="清除" />)
+    render(<SearchInput value="huatuo" onChange={() => {}} onClear={onClear} clearLabel="清除" />)
 
     fireEvent.click(screen.getByRole('button', { name: '清除' }))
 
@@ -51,20 +51,20 @@ describe('SearchInput', () => {
   })
 
   it('disables the input and the clear button when disabled', () => {
-    render(<SearchInput value="cherry" onChange={() => {}} onClear={() => {}} clearLabel="清除" disabled />)
+    render(<SearchInput value="huatuo" onChange={() => {}} onClear={() => {}} clearLabel="清除" disabled />)
 
     expect(screen.getByRole('searchbox')).toBeDisabled()
     expect(screen.getByRole('button', { name: '清除' })).toBeDisabled()
   })
 
   it('supports a custom clear button label', () => {
-    render(<SearchInput value="cherry" onChange={() => {}} onClear={() => {}} clearLabel="清除" />)
+    render(<SearchInput value="huatuo" onChange={() => {}} onClear={() => {}} clearLabel="清除" />)
 
     expect(screen.getByRole('button', { name: '清除' })).toBeInTheDocument()
   })
 
   it('renders the clear action as a square icon button', () => {
-    render(<SearchInput value="cherry" onChange={() => {}} onClear={() => {}} clearLabel="清除" />)
+    render(<SearchInput value="huatuo" onChange={() => {}} onClear={() => {}} clearLabel="清除" />)
 
     expect(screen.getByRole('button', { name: '清除' })).toHaveClass('size-6', 'min-h-0')
   })

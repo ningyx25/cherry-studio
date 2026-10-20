@@ -9,25 +9,25 @@ import { setupTestDatabase } from '@test-helpers/db'
 import { eq } from 'drizzle-orm'
 import { describe, expect, it, vi } from 'vitest'
 
-// Stub the registry loader with CherryIN plus a future `my-relay` preset.
-// `google-generate-content` is deliberately present for CherryIN but ABSENT
+// Stub the registry loader with HuaTuoIN plus a future `my-relay` preset.
+// `google-generate-content` is deliberately present for HuaTuoIN but ABSENT
 // from the persisted rows below — modelling an install seeded before the
 // registry gained that endpoint (#17096). `my-relay` models a later registry
 // id collision with an already-persisted fully custom provider.
-vi.mock('@cherrystudio/provider-registry/node', () => {
+vi.mock('@huatuostudio/provider-registry/node', () => {
   class RegistryLoader {
     loadProviders() {
       return [
         {
-          id: 'cherryin',
+          id: 'huatuoin',
           endpointConfigs: {
             'openai-chat-completions': {
-              adapterFamily: 'cherryin',
+              adapterFamily: 'huatuoin',
               baseUrl: 'https://open.cherryin.net',
               modelsApiUrls: { default: 'https://open.cherryin.net/v1/models' }
             },
-            'openai-responses': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' },
-            'google-generate-content': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' }
+            'openai-responses': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
+            'google-generate-content': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' }
           },
           defaultChatEndpoint: 'openai-chat-completions',
           apiFeatures: { serviceTier: false },
@@ -70,38 +70,38 @@ describe('ProviderService read-time registry merge (#17096)', () => {
     // Stale seed: only openai-chat persisted; google-generate-content added to
     // the registry after this row was seeded.
     await dbh.db.insert(userProviderTable).values({
-      providerId: 'cherryin',
-      presetProviderId: 'cherryin',
-      name: 'CherryIN',
+      providerId: 'huatuoin',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIN',
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: {
           baseUrl: 'https://open.cherryin.net',
-          adapterFamily: 'cherryin'
+          adapterFamily: 'huatuoin'
         }
       },
       orderKey: 'a0'
     })
 
-    const provider = providerService.getByProviderId('cherryin')
+    const provider = providerService.getByProviderId('huatuoin')
 
     expect(provider.endpointConfigs?.[ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]).toEqual({
-      adapterFamily: 'cherryin',
+      adapterFamily: 'huatuoin',
       baseUrl: 'https://open.cherryin.net'
     })
     expect(provider.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_RESPONSES]).toEqual({
-      adapterFamily: 'cherryin',
+      adapterFamily: 'huatuoin',
       baseUrl: 'https://open.cherryin.net'
     })
     // End to end: the resolver no longer falls through to openai-compatible.
     expect(resolveAiSdkProviderId(provider, ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT)).not.toBe('openai-compatible')
-    expect(resolveAiSdkProviderId(provider, ENDPOINT_TYPE.OPENAI_RESPONSES)).toBe('cherryin')
+    expect(resolveAiSdkProviderId(provider, ENDPOINT_TYPE.OPENAI_RESPONSES)).toBe('huatuoin')
   })
 
   it('keeps the user-owned baseUrl while refreshing registry-owned fields', async () => {
     await dbh.db.insert(userProviderTable).values({
-      providerId: 'cherryin',
-      presetProviderId: 'cherryin',
-      name: 'CherryIN',
+      providerId: 'huatuoin',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIN',
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: {
           baseUrl: 'https://proxy.corp.example/v1', // user override
@@ -111,11 +111,11 @@ describe('ProviderService read-time registry merge (#17096)', () => {
       orderKey: 'a0'
     })
 
-    const config = providerService.getByProviderId('cherryin').endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]
+    const config = providerService.getByProviderId('huatuoin').endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]
 
     expect(config).toEqual({
       baseUrl: 'https://proxy.corp.example/v1', // row wins
-      adapterFamily: 'cherryin', // registry wins
+      adapterFamily: 'huatuoin', // registry wins
       modelsApiUrls: { default: 'https://open.cherryin.net/v1/models' } // registry wins
     })
   })
@@ -154,13 +154,13 @@ describe('ProviderService read-time registry merge (#17096)', () => {
 
   it('resolves registry-owned request metadata when the row stores no delta', async () => {
     await dbh.db.insert(userProviderTable).values({
-      providerId: 'cherryin',
-      presetProviderId: 'cherryin',
-      name: 'CherryIN',
+      providerId: 'huatuoin',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIN',
       orderKey: 'a0'
     })
 
-    const provider = providerService.getByProviderId('cherryin')
+    const provider = providerService.getByProviderId('huatuoin')
 
     // Registry baseline over app defaults; nothing frozen in the row.
     expect(provider.apiFeatures.serviceTier).toBe(false)
@@ -170,20 +170,20 @@ describe('ProviderService read-time registry merge (#17096)', () => {
 
   it('persists apiFeatures as a delta: single-key PATCH merges, baseline echoes vanish', async () => {
     await dbh.db.insert(userProviderTable).values({
-      providerId: 'cherryin',
-      presetProviderId: 'cherryin',
-      name: 'CherryIN',
+      providerId: 'huatuoin',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIN',
       orderKey: 'a0'
     })
 
     // Toggle one flag away from the baseline (registry says serviceTier: false).
-    providerService.update('cherryin', { apiFeatures: { serviceTier: true } })
-    let [row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'cherryin'))
+    providerService.update('huatuoin', { apiFeatures: { serviceTier: true } })
+    let [row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'huatuoin'))
     expect(row.apiFeatures).toEqual({ serviceTier: true })
-    expect(providerService.getByProviderId('cherryin').apiFeatures.serviceTier).toBe(true)
+    expect(providerService.getByProviderId('huatuoin').apiFeatures.serviceTier).toBe(true)
 
     // A full-snapshot echo that matches the baseline reduces the row to null.
-    providerService.update('cherryin', {
+    providerService.update('huatuoin', {
       apiFeatures: {
         arrayContent: true,
         streamOptions: true,
@@ -192,85 +192,85 @@ describe('ProviderService read-time registry merge (#17096)', () => {
         verbosity: false
       }
     })
-    ;[row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'cherryin'))
+    ;[row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'huatuoin'))
     expect(row.apiFeatures).toBeNull()
   })
 
   it('drops a defaultChatEndpoint echo that matches the registry baseline', async () => {
     await dbh.db.insert(userProviderTable).values({
-      providerId: 'cherryin',
-      presetProviderId: 'cherryin',
-      name: 'CherryIN',
+      providerId: 'huatuoin',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIN',
       orderKey: 'a0'
     })
 
     // The provider editor echoes the current runtime endpoint while renaming.
     // That baseline value must not become a stored override.
-    providerService.update('cherryin', {
-      name: 'Renamed CherryIN',
+    providerService.update('huatuoin', {
+      name: 'Renamed HuaTuoIN',
       defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS
     })
-    let [row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'cherryin'))
+    let [row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'huatuoin'))
     expect(row.defaultChatEndpoint).toBeNull()
 
     // A real user override persists, then disappears again when reset to the
     // registry baseline.
-    providerService.update('cherryin', {
+    providerService.update('huatuoin', {
       defaultChatEndpoint: ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT
     })
-    ;[row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'cherryin'))
+    ;[row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'huatuoin'))
     expect(row.defaultChatEndpoint).toBe(ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT)
 
-    providerService.update('cherryin', {
+    providerService.update('huatuoin', {
       defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS
     })
-    ;[row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'cherryin'))
+    ;[row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'huatuoin'))
     expect(row.defaultChatEndpoint).toBeNull()
   })
 
   it('drops endpoint baseUrls that match the registry default on write', async () => {
     await dbh.db.insert(userProviderTable).values({
-      providerId: 'cherryin',
-      presetProviderId: 'cherryin',
-      name: 'CherryIN',
+      providerId: 'huatuoin',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIN',
       orderKey: 'a0'
     })
 
     // Renderer echo of the merged snapshot: one registry-default baseUrl, one
     // genuine user override.
-    providerService.update('cherryin', {
+    providerService.update('huatuoin', {
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://open.cherryin.net' },
         [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]: { baseUrl: 'https://proxy.corp.example' }
       }
     })
 
-    const [row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'cherryin'))
+    const [row] = await dbh.db.select().from(userProviderTable).where(eq(userProviderTable.providerId, 'huatuoin'))
     expect(row.endpointConfigs).toEqual({
       [ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]: { baseUrl: 'https://proxy.corp.example' }
     })
     // The runtime still sees both endpoints — the dropped one from the registry.
-    const runtime = providerService.getByProviderId('cherryin')
+    const runtime = providerService.getByProviderId('huatuoin')
     expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]?.baseUrl).toBe('https://open.cherryin.net')
     expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.GOOGLE_GENERATE_CONTENT]?.baseUrl).toBe('https://proxy.corp.example')
   })
 
   it('strips legacy registry-only fields before merging', async () => {
     await dbh.db.insert(userProviderTable).values({
-      providerId: 'cherryin',
-      presetProviderId: 'cherryin',
-      name: 'CherryIN',
+      providerId: 'huatuoin',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIN',
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: {
           baseUrl: 'https://open.cherryin.net',
-          adapterFamily: 'cherryin',
+          adapterFamily: 'huatuoin',
           reasoningFormatType: 'openai-responses'
         }
       } as never,
       orderKey: 'a0'
     })
 
-    const config = providerService.getByProviderId('cherryin').endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]
+    const config = providerService.getByProviderId('huatuoin').endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]
     expect(config).not.toHaveProperty('reasoningFormatType')
   })
 })

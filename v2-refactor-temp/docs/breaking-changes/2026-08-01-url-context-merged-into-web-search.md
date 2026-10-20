@@ -17,7 +17,7 @@ search toggle.
 
 Users who previously enabled URL context without web search will find that one
 button missing; enabling web search now also lets supported models read URLs
-from the prompt. Which side executes (provider-native vs Cherry's own tools)
+from the prompt. Which side executes (provider-native vs HuaTuo's own tools)
 is still chosen automatically per model/provider.
 
 ## What the user should do

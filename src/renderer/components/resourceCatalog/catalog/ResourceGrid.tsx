@@ -19,7 +19,7 @@ import {
   Input,
   Scrollbar,
   Skeleton
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import CollapsibleSearchBar from '@renderer/components/CollapsibleSearchBar'
 import { CreateGroupDialog } from '@renderer/components/CreateGroupDialog'

@@ -3,7 +3,7 @@
 The renderer-side counterpart of Main's `pipeStreamLoop`. Both sides
 use the **same pure assembler** —
 [AI SDK's `readUIMessageStream`](https://ai-sdk.dev/docs/reference/ai-sdk-ui/read-ui-message-stream) —
-to turn the chunk stream into a `CherryUIMessage`. Main writes the
+to turn the chunk stream into a `HuaTuoUIMessage`. Main writes the
 result to disk; the renderer paints it onto the chat surface as an
 overlay above the SWR-backed history.
 
@@ -124,7 +124,7 @@ stream"). A fresh reader per turn structurally cannot pollute.
 ### The seed rule (continue-safe)
 
 ```ts
-function pickSeed(uiMessages, anchorMessageId): CherryUIMessage | undefined {
+function pickSeed(uiMessages, anchorMessageId): HuaTuoUIMessage | undefined {
   if (!anchorMessageId) return undefined
   const found = uiMessages.find((m) => m.id === anchorMessageId)
   if (!found) return { id: anchorMessageId, role: 'assistant', parts: [] }

@@ -1,7 +1,7 @@
 /**
  * Dexie database exporter for migration.
  *
- * Exports the legacy v1 `CherryStudio` IndexedDB tables to JSON files for the
+ * Exports the legacy v1 `HuaTuoStudio` IndexedDB tables to JSON files for the
  * Main process to read. The database is opened in Dexie "dynamic mode" (no
  * schema declared) so the migration window no longer depends on the deprecated
  * `@renderer/databases` schema module: `db.tables` is reflected from whatever
@@ -15,7 +15,7 @@ import { clampSurrogateBoundary } from '@shared/utils/text'
 import { Dexie, type IndexableType } from 'dexie'
 
 /** Legacy v1 IndexedDB database name. */
-const DEXIE_DB_NAME = 'CherryStudio'
+const DEXIE_DB_NAME = 'HuaTuoStudio'
 const DEXIE_EXPORT_PAGE_SIZE = 100
 const DEXIE_EXPORT_CHUNK_CHAR_LIMIT = 1024 * 1024
 

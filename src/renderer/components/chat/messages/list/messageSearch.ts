@@ -1,7 +1,7 @@
 /** Coarse data matching for loaded messages outside the virtualized DOM. */
 import { findTextMatches } from '@renderer/utils/contentSearch'
 import { markdownToPlainText } from '@renderer/utils/markdown'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 
 import { type PartEntry, projectCompletedMessageParts } from '../blocks/messagePartLayouts'
 import { hasPartParentToolCallId } from '../tools/toolParentMetadata'
@@ -14,7 +14,7 @@ interface MessageSearchDocument {
   partId: string
   role: MessageListItem['role']
   text: string
-  sourcePart: CherryMessagePart
+  sourcePart: HuaTuoMessagePart
 }
 
 export interface MessageTextSearchMatch {
@@ -59,7 +59,7 @@ interface CachedSearchText {
 const partMatchCache = new WeakMap<object, CachedPartMatches>()
 const searchTextCache = new WeakMap<object, CachedSearchText>()
 
-function getPartSearchText(part: Extract<CherryMessagePart, { type: 'text' }>, renderAsMarkdown: boolean): string {
+function getPartSearchText(part: Extract<HuaTuoMessagePart, { type: 'text' }>, renderAsMarkdown: boolean): string {
   const source = part.text ?? ''
   const cached = searchTextCache.get(part as object)
   if (cached?.source === source && cached.renderAsMarkdown === renderAsMarkdown) return cached.text
@@ -69,13 +69,13 @@ function getPartSearchText(part: Extract<CherryMessagePart, { type: 'text' }>, r
   return text
 }
 
-function getTopLevelPartEntries(parts: readonly CherryMessagePart[]): PartEntry[] {
+function getTopLevelPartEntries(parts: readonly HuaTuoMessagePart[]): PartEntry[] {
   return parts.flatMap((part, index) => (hasPartParentToolCallId(part) ? [] : [{ part, index }]))
 }
 
 function projectMessageSearchDocuments(
   messages: readonly MessageListItem[],
-  partsByMessageId: Readonly<Record<string, CherryMessagePart[]>>,
+  partsByMessageId: Readonly<Record<string, HuaTuoMessagePart[]>>,
   options: MessageSearchOptions
 ): MessageSearchDocument[] {
   return messages.flatMap((message) => {
@@ -119,7 +119,7 @@ function getMatchCount(
 
 export function computeMessageSearchMatches(
   messages: readonly MessageListItem[],
-  partsByMessageId: Readonly<Record<string, CherryMessagePart[]>>,
+  partsByMessageId: Readonly<Record<string, HuaTuoMessagePart[]>>,
   searchText: string,
   options: MessageSearchOptions
 ): MessageSearchMatch[] {

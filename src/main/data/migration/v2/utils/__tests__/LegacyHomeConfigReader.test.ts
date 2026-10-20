@@ -9,7 +9,7 @@ vi.mock('node:fs', async () => {
 
 const mockFs = vi.mocked(fs)
 
-const CONFIG_PATH = '/mock/home/.cherrystudio/config/config.json'
+const CONFIG_PATH = '/mock/home/.huatuostudio/config/config.json'
 // tests/main.setup.ts mocks app.getPath() to only handle 'userData' / 'temp' /
 // 'logs' explicitly; everything else (including 'exe') falls through to '/mock/unknown'.
 const MOCK_EXE = '/mock/unknown'

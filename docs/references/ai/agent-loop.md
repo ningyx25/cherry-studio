@@ -2,7 +2,7 @@
 
 ## What it is
 
-`Agent` (`src/main/ai/runtime/aiSdk/Agent.ts`) wraps `@cherrystudio/ai-core`'s
+`Agent` (`src/main/ai/runtime/aiSdk/Agent.ts`) wraps `@huatuostudio/ai-core`'s
 `createAgent(...).stream()` (built on the AI SDK's `ToolLoopAgent`) with a
 `composeHooks` pipeline that folds N
 independent hook contributors (per-feature plugins, AiService analytics,

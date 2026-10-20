@@ -1,5 +1,5 @@
-import { Tooltip } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Tooltip } from '@huatuostudio/ui'
 import ActionIconButton from '@renderer/components/ActionIconButton'
 import NarrowLayout from '@renderer/components/chat/layout/NarrowLayout'
 import { cn } from '@renderer/utils/style'

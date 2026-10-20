@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import { ENDPOINT_TYPE } from '@shared/data/types/model'
 import { useId } from 'react'
@@ -25,7 +25,7 @@ interface ModelPurposeFieldsProps {
   onChatEndpointTypeChange: (endpointType: ModelChatEndpointType) => void
 }
 
-const PURPOSES: ModelPurpose[] = ['chat', 'image-generation', 'image-edit']
+const PURPOSES: ModelPurpose[] = ['chat', 'image-generation', 'image-edit', 'transcription']
 
 const ENDPOINT_LABEL_KEYS: Record<ModelChatEndpointType, string> = {
   [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: 'settings.provider.more_endpoints.openai_chat',
@@ -46,6 +46,10 @@ const PURPOSE_LABEL_KEYS: Record<ModelPurpose, { label: string; description: str
   'image-edit': {
     label: 'settings.models.add.purpose.image_edit.label',
     description: 'settings.models.add.purpose.image_edit.description'
+  },
+  transcription: {
+    label: 'settings.models.add.purpose.transcription.label',
+    description: 'settings.models.add.purpose.transcription.description'
   }
 }
 

@@ -14,7 +14,7 @@ import type { MigrationContext } from '../core/MigrationContext'
 const logger = loggerService.withContext('remapAgentPrefixIds')
 
 function migrationUuid(kind: 'agent' | 'session', legacyId: string): string {
-  return uuidv5(`cherry-studio:v2:${kind}:${legacyId}`, uuidv5.URL)
+  return uuidv5(`huatuo-studio:v2:${kind}:${legacyId}`, uuidv5.URL)
 }
 
 /**
@@ -72,7 +72,7 @@ export function remapAgentPrefixIds(db: MigrationContext['db']): AgentPrefixIdRe
       .select({ id: agentTable.id })
       .from(agentTable)
       .where(
-        sql`${agentTable.id} GLOB 'agent_*' OR ${agentTable.id} = 'cherry-claw-default' OR ${agentTable.id} = 'cherry-assistant-default'`
+        sql`${agentTable.id} GLOB 'agent_*' OR ${agentTable.id} = 'huatuo-claw-default' OR ${agentTable.id} = 'huatuo-assistant-default'`
       )
       .all()
 

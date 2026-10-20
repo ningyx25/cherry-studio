@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { PopupHost } from '@renderer/components/PopupHost'
 import { POPUP_EXIT_MS, popupService } from '@renderer/services/popup'
 import { toast } from '@renderer/services/toast'
@@ -83,8 +83,8 @@ vi.mock('@renderer/components/Scrollbar', () => ({
 // so opt this file out of the globally installed popup mock (tests/renderer.setup.ts).
 vi.mock('@renderer/services/popup', async (importOriginal) => await importOriginal())
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
 
   return {
     ...actual,

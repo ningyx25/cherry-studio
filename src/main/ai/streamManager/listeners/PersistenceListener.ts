@@ -7,8 +7,8 @@
 import { loggerService } from '@logger'
 import { serializeError } from '@main/ai/utils/serializeError'
 import type {
-  CherryMessagePart,
-  CherryUIMessage,
+  HuaTuoMessagePart,
+  HuaTuoUIMessage,
   MessageRuntimeStatsInput,
   MessageRuntimeTiming
 } from '@shared/data/types/message'
@@ -80,7 +80,7 @@ export class PersistenceListener implements StreamListener {
   }
 
   private async persistAssistant(
-    finalMessage: CherryUIMessage | undefined,
+    finalMessage: HuaTuoUIMessage | undefined,
     status: 'success' | 'paused' | 'error',
     runtimeTiming: MessageRuntimeTiming | undefined
   ): Promise<void> {
@@ -99,7 +99,7 @@ export class PersistenceListener implements StreamListener {
     const finalMessageForPersistence = finalMessage
       ? {
           ...finalMessage,
-          parts: finalizeInterruptedParts(dropEmptyContentParts(finalMessage.parts as CherryMessagePart[]), status)
+          parts: finalizeInterruptedParts(dropEmptyContentParts(finalMessage.parts as HuaTuoMessagePart[]), status)
         }
       : finalMessage
     const contextTokens = finalMessageForPersistence?.metadata?.stats?.contextTokens
@@ -157,13 +157,13 @@ export class PersistenceListener implements StreamListener {
 }
 
 /** Returns a synthetic message when the stream errored before producing chunks. */
-function mergeErrorIntoMessage(base: CherryUIMessage | undefined, error: SerializedError): CherryUIMessage {
-  const baseParts = (base?.parts ?? []) as CherryMessagePart[]
-  const errorPart: CherryMessagePart = { type: 'data-error', data: { ...error } }
+function mergeErrorIntoMessage(base: HuaTuoUIMessage | undefined, error: SerializedError): HuaTuoUIMessage {
+  const baseParts = (base?.parts ?? []) as HuaTuoMessagePart[]
+  const errorPart: HuaTuoMessagePart = { type: 'data-error', data: { ...error } }
   return {
     id: base?.id ?? crypto.randomUUID(),
     role: 'assistant',
     parts: [...baseParts, errorPart],
     ...(base?.metadata ? { metadata: base.metadata } : {})
-  } as CherryUIMessage
+  } as HuaTuoUIMessage
 }

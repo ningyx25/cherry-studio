@@ -10,7 +10,7 @@ const config: S3Config = {
   bucket: 'backups',
   accessKeyId: 'access-key',
   secretAccessKey: 'secret-key',
-  root: '/cherry-studio/test/',
+  root: '/huatuo-studio/test/',
   autoSync: false,
   syncInterval: 0,
   maxBackups: 0
@@ -21,8 +21,8 @@ describe('S3Storage', () => {
     const storage = new S3Storage(config)
     const send = vi.fn().mockResolvedValue({
       Contents: [
-        { Key: 'cherry-studio/test/backup.zip', Size: 1 },
-        { Key: 'cherry-studio/test/nested/backup.zip', Size: 2 }
+        { Key: 'huatuo-studio/test/backup.zip', Size: 1 },
+        { Key: 'huatuo-studio/test/nested/backup.zip', Size: 2 }
       ]
     })
     Object.assign(storage, { client: { send } })
@@ -33,7 +33,7 @@ describe('S3Storage', () => {
     ])
 
     expect(send.mock.calls[0][0]).toBeInstanceOf(ListObjectsV2Command)
-    expect(send.mock.calls[0][0].input.Prefix).toBe('cherry-studio/test/')
+    expect(send.mock.calls[0][0].input.Prefix).toBe('huatuo-studio/test/')
   })
 
   it('only deletes the root-scoped key and propagates failures', async () => {
@@ -47,6 +47,6 @@ describe('S3Storage', () => {
     expect(send).toHaveBeenCalledOnce()
     const command = send.mock.calls[0][0]
     expect(command).toBeInstanceOf(DeleteObjectCommand)
-    expect(command.input).toEqual({ Bucket: 'backups', Key: 'cherry-studio/test/backup.zip' })
+    expect(command.input).toEqual({ Bucket: 'backups', Key: 'huatuo-studio/test/backup.zip' })
   })
 })

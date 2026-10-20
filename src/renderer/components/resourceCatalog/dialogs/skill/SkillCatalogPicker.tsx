@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Switch
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { ResourceCatalogSearchInput } from '@renderer/components/resourceCatalog/ResourceCatalogSearchInput'
 import type { InstalledSkill } from '@shared/data/types/agent'
 import { ChevronDown, FolderSearch, Import, Plus, Search, Sparkles } from 'lucide-react'

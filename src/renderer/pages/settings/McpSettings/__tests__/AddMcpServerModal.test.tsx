@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
   patch: vi.fn().mockResolvedValue(undefined)
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
 
   return {

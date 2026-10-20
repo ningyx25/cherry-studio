@@ -1,4 +1,4 @@
-import * as Textarea from '@cherrystudio/ui/components/primitives/textarea'
+import * as Textarea from '@huatuostudio/ui/components/primitives/textarea'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

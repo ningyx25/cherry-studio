@@ -56,7 +56,7 @@ function readAgentTaskJobInputTemplate(value: unknown): AgentTaskJobInputTemplat
 
 /**
  * Sole command owner for agent scheduled tasks — the renderer (IpcApi
- * `ai.agent.task.*`) and MCP (`cherryAutonomyTools`) both mutate through this
+ * `ai.agent.task.*`) and MCP (`huatuoAutonomyTools`) both mutate through this
  * service; reads stay on `AgentTaskService` / DataApi. Owns the composition of
  * JobManager's transactional schedule primitives with the channel-subscription
  * writes: mutate inside one `withWriteTx`, then sync the timer on the

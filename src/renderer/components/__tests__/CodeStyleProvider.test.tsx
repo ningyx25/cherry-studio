@@ -1,15 +1,15 @@
-import type * as codeEditorUtils from '@cherrystudio/ui/components/composites/code-editor/utils'
+import type * as codeEditorUtils from '@huatuostudio/ui/components/composites/code-editor/utils'
 import { CodeStyleProvider } from '@renderer/components/CodeStyleProvider'
 import { useCodeStyle } from '@renderer/hooks/useCodeStyle'
 import { MockUsePreferenceUtils } from '@test-mocks/renderer/usePreference'
 import { render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-// Override the global lightweight '@cherrystudio/ui' stand-in with the real theme
+// Override the global lightweight '@huatuostudio/ui' stand-in with the real theme
 // utils — this test locks the provider + theme-resolution behavior end-to-end.
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const utils = await vi.importActual<typeof codeEditorUtils>(
-    '@cherrystudio/ui/components/composites/code-editor/utils'
+    '@huatuostudio/ui/components/composites/code-editor/utils'
   )
   return {
     getCmThemeNames: utils.getCmThemeNames,

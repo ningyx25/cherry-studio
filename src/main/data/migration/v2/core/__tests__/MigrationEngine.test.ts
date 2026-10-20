@@ -34,8 +34,8 @@ vi.mock('../MigrationDbService', () => ({
 
 const mockPaths: MigrationPaths = {
   userData: '/tmp/test-userdata',
-  cherryHome: '/tmp/test-cherryhome',
-  databaseFile: '/tmp/test-userdata/Data/cherrystudio.sqlite',
+  huatuoHome: '/tmp/test-huatuohome',
+  databaseFile: '/tmp/test-userdata/Data/huatuostudio.sqlite',
   knowledgeBaseDir: '/tmp/test-userdata/Data/KnowledgeBase',
   filesDataDir: '/tmp/test-userdata/Data/Files',
   versionLogFile: '/tmp/test-userdata/version.log',
@@ -52,7 +52,7 @@ const mockPaths: MigrationPaths = {
   migrationDexieExportDir: '/tmp/test-userdata/migration_temp/dexie_export',
   migrationLocalStorageExportDir: '/tmp/test-userdata/migration_temp/localstorage_export',
   migrationLocalStorageExportFile: '/tmp/test-userdata/migration_temp/localstorage_export/localStorage.json',
-  legacyConfigFile: '/tmp/test-cherryhome/config/config.json',
+  legacyConfigFile: '/tmp/test-huatuohome/config/config.json',
   migrationsFolder: '/tmp/test-migrations'
 }
 

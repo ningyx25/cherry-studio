@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // The in-memory filesystem exercises the reset marker protocol without disk I/O.
 
-const USER_DATA = '/mock/home/appdata/CherryStudio'
-const APP_TEMP = '/mock/tmp/CherryStudio'
+const USER_DATA = '/mock/home/appdata/HuaTuoStudio'
+const APP_TEMP = '/mock/tmp/HuaTuoStudio'
 const MARKER_FILE = `${USER_DATA}/data-reset.pending.json`
 const MARKER_ASIDE = `${USER_DATA}/data-reset.pending.invalid`
 
@@ -51,10 +51,10 @@ type FsControl = {
 let fsCtl: FsControl
 
 const DEFAULT_LISTING = [
-  // Cherry user state
-  'cherrystudio.sqlite',
-  'cherrystudio.sqlite-wal',
-  'cherrystudio.sqlite-shm',
+  // HuaTuo user state
+  'huatuostudio.sqlite',
+  'huatuostudio.sqlite-wal',
+  'huatuostudio.sqlite-shm',
   'Data',
   'Data.restore',
   'IndexedDB.restore',
@@ -87,15 +87,15 @@ const DEFAULT_LISTING = [
   '.pi',
   'holiday-photos',
   // User file with a database-like name
-  'cherrystudio.sqlite-personal-backup',
+  'huatuostudio.sqlite-personal-backup',
   // Marker removed after the wipe commits
   'data-reset.pending.json'
 ]
 
 const EXPECTED_WIPED = [
-  'cherrystudio.sqlite',
-  'cherrystudio.sqlite-wal',
-  'cherrystudio.sqlite-shm',
+  'huatuostudio.sqlite',
+  'huatuostudio.sqlite-wal',
+  'huatuostudio.sqlite-shm',
   'Data',
   'Data.restore',
   'IndexedDB.restore',
@@ -127,7 +127,7 @@ const EXPECTED_KEPT = [
   'migration_temp',
   '.pi',
   'holiday-photos',
-  'cherrystudio.sqlite-personal-backup',
+  'huatuostudio.sqlite-personal-backup',
   'data-reset.pending.json'
 ]
 
@@ -354,7 +354,7 @@ describe('runDataReset', () => {
 
   it("boots normally when no marker file exists in this userData (a sibling instance's marker lives in its own userData and is invisible here)", async () => {
     stubAll(null)
-    fsCtl.files.set('/mock/other/CherryStudioDev/data-reset.pending.json', JSON.stringify(pendingMarker()))
+    fsCtl.files.set('/mock/other/HuaTuoStudioDev/data-reset.pending.json', JSON.stringify(pendingMarker()))
     await runReset()
 
     expect(rmSyncMock).not.toHaveBeenCalled()
@@ -467,12 +467,12 @@ describe('runDataReset', () => {
 
   it('records the canonical physical path with the arming write', async () => {
     stubAll(pendingMarker())
-    realpathNativeMock.mockImplementation(() => '/mock/physical/CherryStudio')
-    seedMarker(pendingMarker({ canonicalPath: '/mock/physical/CherryStudio' }))
+    realpathNativeMock.mockImplementation(() => '/mock/physical/HuaTuoStudio')
+    seedMarker(pendingMarker({ canonicalPath: '/mock/physical/HuaTuoStudio' }))
     await runReset()
 
     expect(fsCtl.commits[0]).toMatchObject({
-      canonicalPath: '/mock/physical/CherryStudio',
+      canonicalPath: '/mock/physical/HuaTuoStudio',
       attempts: 1
     })
   })

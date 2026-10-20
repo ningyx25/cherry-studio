@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@cherrystudio/ui'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@huatuostudio/ui'
 import { NutstorePathSelector } from '@renderer/components/NutstorePathSelector'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'
 import { useTranslation } from 'react-i18next'

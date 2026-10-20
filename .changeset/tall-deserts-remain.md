@@ -1,5 +1,5 @@
 ---
-"@cherrystudio/ui": patch
+"@huatuostudio/ui": patch
 ---
 
 implement tooltip

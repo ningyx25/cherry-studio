@@ -1,11 +1,11 @@
 import type { MessageExportView } from '@renderer/types/messageExport'
 import { createPartsByMessageId, exportViewToUIMessage } from '@renderer/utils/message/exportView'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { useEffect, useMemo, useState } from 'react'
 
 interface UseMessageImageCaptureMessagesOptions<TMessage> {
   loadMessages: () => Promise<TMessage[]>
-  mapMessage?: (message: TMessage) => CherryUIMessage
+  mapMessage?: (message: TMessage) => HuaTuoUIMessage
   onError: (error: unknown) => void
 }
 
@@ -14,10 +14,10 @@ export function useMessageImageCaptureMessages<TMessage = MessageExportView>({
   mapMessage,
   onError
 }: UseMessageImageCaptureMessagesOptions<TMessage>): {
-  messages: CherryUIMessage[] | null
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  messages: HuaTuoUIMessage[] | null
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 } {
-  const [messages, setMessages] = useState<CherryUIMessage[] | null>(null)
+  const [messages, setMessages] = useState<HuaTuoUIMessage[] | null>(null)
 
   const toUIMessage = useMemo(
     () => mapMessage ?? ((message: TMessage) => exportViewToUIMessage(message as MessageExportView)),

@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 
-import { CHERRY_NODE_PROXY_BYPASS_RULES_ENV, CHERRY_NODE_PROXY_RULES_ENV } from '@main/services/proxy/proxyEnv'
+import { HUATUO_NODE_PROXY_BYPASS_RULES_ENV, HUATUO_NODE_PROXY_RULES_ENV } from '@main/services/proxy/proxyEnv'
 
 export type Environment = Readonly<Record<string, string | undefined>>
 
@@ -28,7 +28,7 @@ const AGENT_PROXY_ENDPOINT_NORMALIZED_KEYS = [...new Set(AGENT_PROXY_ENDPOINT_KE
 const AGENT_PROXY_ENDPOINT_NORMALIZED_KEY_SET = new Set(AGENT_PROXY_ENDPOINT_NORMALIZED_KEYS)
 const AGENT_PROXY_ENVIRONMENT_NORMALIZED_KEY_SET = new Set(AGENT_PROXY_ENVIRONMENT_KEYS.map((key) => key.toLowerCase()))
 const AGENT_PROXY_BYPASS_NORMALIZED_KEY_SET = new Set(['no_proxy'])
-const CHERRY_PROXY_MARKER_KEY_SET = new Set([CHERRY_NODE_PROXY_RULES_ENV, CHERRY_NODE_PROXY_BYPASS_RULES_ENV])
+const HUATUO_PROXY_MARKER_KEY_SET = new Set([HUATUO_NODE_PROXY_RULES_ENV, HUATUO_NODE_PROXY_BYPASS_RULES_ENV])
 const LOOPBACK_BYPASS_RULES = ['localhost', '127.0.0.1', '::1', '[::1]'] as const
 
 const isNonEmpty = (value: string | undefined): value is string => typeof value === 'string' && value.trim() !== ''
@@ -83,36 +83,36 @@ const normalizeBypassRules = (environment: Environment, platform: NodeJS.Platfor
   return rules
 }
 
-/** Remove internal metadata only; equal values cannot prove that Cherry owns a shell proxy variable. */
-export const stripInheritedCherryProxyMarkers = (environment: Environment): Record<string, string | undefined> => {
+/** Remove internal metadata only; equal values cannot prove that HuaTuo owns a shell proxy variable. */
+export const stripInheritedHuaTuoProxyMarkers = (environment: Environment): Record<string, string | undefined> => {
   const result = { ...environment }
 
-  delete result[CHERRY_NODE_PROXY_RULES_ENV]
-  delete result[CHERRY_NODE_PROXY_BYPASS_RULES_ENV]
+  delete result[HUATUO_NODE_PROXY_RULES_ENV]
+  delete result[HUATUO_NODE_PROXY_BYPASS_RULES_ENV]
 
   return result
 }
 
-const normalizeCherryProxyMarker = (value: string | undefined): string | undefined => {
+const normalizeHuaTuoProxyMarker = (value: string | undefined): string | undefined => {
   const normalized = value?.trim()
   return normalized ? normalized : undefined
 }
 
-/** Whether a cached shell snapshot carries Cherry proxy metadata that no longer matches the current proxy. */
-export const hasStaleCherryProxyMarkers = (
+/** Whether a cached shell snapshot carries HuaTuo proxy metadata that no longer matches the current proxy. */
+export const hasStaleHuaTuoProxyMarkers = (
   cachedEnvironment: Environment,
   currentProxyEnvironment: Environment
 ): boolean => {
   const hasCachedMarker =
-    cachedEnvironment[CHERRY_NODE_PROXY_RULES_ENV] !== undefined ||
-    cachedEnvironment[CHERRY_NODE_PROXY_BYPASS_RULES_ENV] !== undefined
+    cachedEnvironment[HUATUO_NODE_PROXY_RULES_ENV] !== undefined ||
+    cachedEnvironment[HUATUO_NODE_PROXY_BYPASS_RULES_ENV] !== undefined
   if (!hasCachedMarker) return false
 
   return (
-    normalizeCherryProxyMarker(cachedEnvironment[CHERRY_NODE_PROXY_RULES_ENV]) !==
-      normalizeCherryProxyMarker(currentProxyEnvironment[CHERRY_NODE_PROXY_RULES_ENV]) ||
-    normalizeCherryProxyMarker(cachedEnvironment[CHERRY_NODE_PROXY_BYPASS_RULES_ENV]) !==
-      normalizeCherryProxyMarker(currentProxyEnvironment[CHERRY_NODE_PROXY_BYPASS_RULES_ENV])
+    normalizeHuaTuoProxyMarker(cachedEnvironment[HUATUO_NODE_PROXY_RULES_ENV]) !==
+      normalizeHuaTuoProxyMarker(currentProxyEnvironment[HUATUO_NODE_PROXY_RULES_ENV]) ||
+    normalizeHuaTuoProxyMarker(cachedEnvironment[HUATUO_NODE_PROXY_BYPASS_RULES_ENV]) !==
+      normalizeHuaTuoProxyMarker(currentProxyEnvironment[HUATUO_NODE_PROXY_BYPASS_RULES_ENV])
   )
 }
 
@@ -122,7 +122,7 @@ export const isAgentProxyEnvironmentKey = (key: string, options: AgentProxyEnvir
     platform === 'win32'
       ? AGENT_PROXY_ENVIRONMENT_NORMALIZED_KEY_SET.has(key.toLowerCase())
       : AGENT_PROXY_ENVIRONMENT_KEY_SET.has(key)
-  return isProxyKey || CHERRY_PROXY_MARKER_KEY_SET.has(key.toUpperCase())
+  return isProxyKey || HUATUO_PROXY_MARKER_KEY_SET.has(key.toUpperCase())
 }
 
 export const mergeAgentLoopbackProxyBypass = (

@@ -1,4 +1,4 @@
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const getByIdMock = vi.fn()
@@ -12,12 +12,12 @@ const { TranslationBackend } = await import('../TranslationBackend')
 const MESSAGE_ID = 'msg-123'
 const TARGET = 'zh-cn' as const
 
-function makeFinalMessage(text: string): CherryUIMessage {
+function makeFinalMessage(text: string): HuaTuoUIMessage {
   return {
     id: 'final',
     role: 'assistant',
     parts: [{ type: 'text', text }]
-  } as CherryUIMessage
+  } as HuaTuoUIMessage
 }
 
 beforeEach(() => {
@@ -27,9 +27,9 @@ beforeEach(() => {
 
 describe('TranslationBackend.persistAssistant', () => {
   it('strips any prior data-translation part and appends a fresh one', async () => {
-    const existingParts: CherryMessagePart[] = [
-      { type: 'text', text: 'hello world' } as CherryMessagePart,
-      { type: 'data-translation', data: { content: '旧译文', targetLanguage: 'zh-cn' } } as CherryMessagePart
+    const existingParts: HuaTuoMessagePart[] = [
+      { type: 'text', text: 'hello world' } as HuaTuoMessagePart,
+      { type: 'data-translation', data: { content: '旧译文', targetLanguage: 'zh-cn' } } as HuaTuoMessagePart
     ]
     getByIdMock.mockReturnValue({ id: MESSAGE_ID, data: { parts: existingParts } })
 
@@ -79,7 +79,7 @@ describe('TranslationBackend.persistAssistant', () => {
     const backend = new TranslationBackend({ messageId: MESSAGE_ID, targetLanguage: TARGET })
     backend.persistAssistant({
       status: 'success',
-      finalMessage: { id: 'final', role: 'assistant', parts: [] } as CherryUIMessage
+      finalMessage: { id: 'final', role: 'assistant', parts: [] } as HuaTuoUIMessage
     })
 
     expect(updateMock).not.toHaveBeenCalled()
@@ -98,7 +98,7 @@ describe('TranslationBackend.persistAssistant', () => {
           { type: 'text', text: '第一段' },
           { type: 'text', text: '第二段' }
         ]
-      } as CherryUIMessage
+      } as HuaTuoUIMessage
     })
 
     const [, dto] = updateMock.mock.calls[0]
@@ -106,9 +106,9 @@ describe('TranslationBackend.persistAssistant', () => {
   })
 
   it('preserves non-translation parts when writing back', async () => {
-    const existingParts: CherryMessagePart[] = [
-      { type: 'text', text: 'original assistant reply' } as CherryMessagePart,
-      { type: 'reasoning', text: 'inner thought' } as CherryMessagePart
+    const existingParts: HuaTuoMessagePart[] = [
+      { type: 'text', text: 'original assistant reply' } as HuaTuoMessagePart,
+      { type: 'reasoning', text: 'inner thought' } as HuaTuoMessagePart
     ]
     getByIdMock.mockReturnValue({ id: MESSAGE_ID, data: { parts: existingParts } })
 

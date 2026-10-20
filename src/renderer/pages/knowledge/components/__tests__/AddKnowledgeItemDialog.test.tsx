@@ -54,7 +54,7 @@ vi.mock('@renderer/services/NotesService', () => ({
   projectNotesTree: () => mockProjectNotesTree()
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
 
   const DialogContext = React.createContext<{ onOpenChange: (open: boolean) => void; open: boolean }>({

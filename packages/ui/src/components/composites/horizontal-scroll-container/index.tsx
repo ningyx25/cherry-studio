@@ -1,5 +1,5 @@
 // Original: src/renderer/components/horizontal-scroll-container/index.tsx
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import * as React from 'react'
 

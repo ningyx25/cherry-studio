@@ -1,4 +1,4 @@
-import { Flex, type MarkdownSource } from '@cherrystudio/ui'
+import { Flex, type MarkdownSource } from '@huatuostudio/ui'
 import type { ChatInputTokenKind } from '@renderer/components/composer/chatTokenView'
 import { ComposerToken, type ReadOnlyComposerFileTokenPreview } from '@renderer/components/composer/tokenView'
 import { useSmoothStream } from '@renderer/hooks/useSmoothStream'
@@ -14,7 +14,7 @@ import {
 import { readComposerFileTokenIdSuffix } from '@renderer/utils/message/composerFileTokenSource'
 import { getDisplayComposerTokens } from '@renderer/utils/message/composerTokens'
 import type { CitationReferenceView } from '@renderer/utils/partsToBlocks'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { createUniqueModelId } from '@shared/data/types/model'
 import type { ComposerMessageSnapshot, ComposerMessageToken } from '@shared/data/types/uiParts'
 import { ChevronDown, Code2 } from 'lucide-react'
@@ -38,7 +38,7 @@ interface Props {
   messageCitations?: MessageCitations
   toolCitationProjection?: ResolvedCitationMarkers
   mentions?: Model[]
-  role: CherryUIMessage['role']
+  role: HuaTuoUIMessage['role']
   composer?: ComposerMessageSnapshot
   readOnlyFilePreviews?: ReadonlyMap<string, ReadOnlyComposerFileTokenPreview>
   userContentExpanded?: boolean

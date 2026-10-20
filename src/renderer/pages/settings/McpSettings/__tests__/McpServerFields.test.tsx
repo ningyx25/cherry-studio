@@ -46,11 +46,11 @@ describe('toMcpServerFields', () => {
 
 describe('resolveMcpConfigTransportType', () => {
   it('exposes stdio configuration for the online-package built-in server', () => {
-    expect(resolveMcpConfigTransportType('inMemory', '@cherry/mcp-auto-install')).toBe('stdio')
+    expect(resolveMcpConfigTransportType('inMemory', '@huatuo/mcp-auto-install')).toBe('stdio')
   })
 
   it('keeps other built-in servers on the in-memory configuration', () => {
-    expect(resolveMcpConfigTransportType('inMemory', '@cherry/memory')).toBe('inMemory')
+    expect(resolveMcpConfigTransportType('inMemory', '@huatuo/memory')).toBe('inMemory')
   })
 })
 
@@ -58,7 +58,7 @@ describe('resolveMcpConfigInstallSource', () => {
   it('preserves the built-in identity of a legacy auto-install server', () => {
     expect(
       resolveMcpConfigInstallSource({
-        name: '@cherry/mcp-auto-install',
+        name: '@huatuo/mcp-auto-install',
         type: 'inMemory'
       })
     ).toBe('builtin')
@@ -78,7 +78,7 @@ describe('buildMcpSchema', () => {
   it('requires the command used by the online-package built-in server', () => {
     const result = buildMcpSchema((key) => key).safeParse(
       stdioFormValues({
-        name: '@cherry/mcp-auto-install',
+        name: '@huatuo/mcp-auto-install',
         serverType: 'inMemory',
         command: ''
       })

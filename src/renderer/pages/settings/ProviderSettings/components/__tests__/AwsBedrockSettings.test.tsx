@@ -10,7 +10,7 @@ const setInputApiKeyMock = vi.fn()
 const commitInputApiKeyNowMock = vi.fn()
 const radioGroupPropsSpy = vi.fn()
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, onClick, ...props }: any) => (
     <button type="button" onClick={onClick} {...props}>
       {children}

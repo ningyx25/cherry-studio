@@ -34,16 +34,16 @@ vi.mock('@main/core/paths/pathRegistry', async () => {
     ...actual,
     buildPathRegistry: () =>
       Object.freeze({
-        // Cherry-owned directories (eligible for auto-ensure)
+        // HuaTuo-owned directories (eligible for auto-ensure)
         'feature.files.data': '/mock/userData/Data/Files',
         'feature.notes.data': '/mock/userData/Data/Notes',
         'feature.agents.system_workspaces': '/mock/userData/Data/Agents/system',
-        'cherry.bin': '/mock/home/.cherrystudio/bin',
-        // Cherry-owned files (auto-ensure dirname only)
-        'feature.copilot.token_file': '/mock/home/.cherrystudio/config/.copilot_token',
-        'app.database.file': '/mock/userData/Data/cherrystudio.sqlite',
+        'huatuo.bin': '/mock/home/.huatuostudio/bin',
+        // HuaTuo-owned files (auto-ensure dirname only)
+        'feature.copilot.token_file': '/mock/home/.huatuostudio/config/.copilot_token',
+        'app.database.file': '/mock/userData/Data/huatuostudio.sqlite',
         // NO_ENSURE — exact key entries (build artifacts)
-        'app.exe_file': '/mock/install/CherryStudio',
+        'app.exe_file': '/mock/install/HuaTuoStudio',
         'app.extra_resources': '/mock/resources',
         // NO_ENSURE — namespace prefixes
         'external.openclaw.config': '/mock/home/.openclaw',
@@ -141,7 +141,7 @@ describe('Application.getPath', () => {
       // The token file key points to a file; auto-ensure should target
       // its parent directory so the caller can immediately write the file.
       expect(fs.mkdirSync).toHaveBeenCalledTimes(1)
-      expect(fs.mkdirSync).toHaveBeenCalledWith('/mock/home/.cherrystudio/config', { recursive: true })
+      expect(fs.mkdirSync).toHaveBeenCalledWith('/mock/home/.huatuostudio/config', { recursive: true })
     })
 
     it('mkdirs path.dirname(base) for a key whose name ends with ".file"', () => {
@@ -175,10 +175,10 @@ describe('Application.getPath', () => {
       expect(fs.mkdirSync).not.toHaveBeenCalled()
     })
 
-    it('mkdirs cherry-owned keys not in the NO_ENSURE list', () => {
-      app.getPath('cherry.bin')
+    it('mkdirs huatuo-owned keys not in the NO_ENSURE list', () => {
+      app.getPath('huatuo.bin')
       expect(fs.mkdirSync).toHaveBeenCalledTimes(1)
-      expect(fs.mkdirSync).toHaveBeenCalledWith('/mock/home/.cherrystudio/bin', { recursive: true })
+      expect(fs.mkdirSync).toHaveBeenCalledWith('/mock/home/.huatuostudio/bin', { recursive: true })
     })
 
     it('returns the path even when mkdir throws, and caches the failed attempt', () => {

@@ -5,7 +5,6 @@ import { type AppEventSchemas, appRequestSchemas } from './app'
 import { type BackupEventSchemas, backupRequestSchemas } from './backup'
 import { type BinaryEventSchemas, binaryRequestSchemas } from './binary'
 import { type ChannelEventSchemas, channelRequestSchemas } from './channel'
-import { cherryinRequestSchemas } from './cherryin'
 import { citationRequestSchemas } from './citation'
 import { codeCliRequestSchemas } from './codeCli'
 import { diagnosticsRequestSchemas } from './diagnostics'
@@ -44,7 +43,6 @@ export const ipcRequestSchemas = {
   ...backupRequestSchemas,
   ...binaryRequestSchemas,
   ...channelRequestSchemas,
-  ...cherryinRequestSchemas,
   ...citationRequestSchemas,
   ...codeCliRequestSchemas,
   ...diagnosticsRequestSchemas,

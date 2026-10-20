@@ -8,7 +8,7 @@ import {
   SelectValue,
   Switch,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import CopyIcon from '@renderer/components/icons/CopyIcon'
 import { useModelMutations } from '@renderer/hooks/useModel'
 import { useProvider } from '@renderer/hooks/useProvider'
@@ -465,10 +465,12 @@ export default function EditModelDrawer({ providerId, open, model: modelProp, on
                     ...classification,
                     primaryType:
                       nextPurpose === 'chat'
-                        ? classification.primaryType === 'image'
+                        ? classification.primaryType === 'image' || classification.primaryType === null
                           ? ('text' as const)
                           : classification.primaryType
-                        : ('image' as const)
+                        : nextPurpose === 'transcription'
+                          ? null
+                          : ('image' as const)
                   }
                   setPurposeFields(nextPurposeFields)
                   setEndpointTypes(nextPurposeFields.endpointTypes)

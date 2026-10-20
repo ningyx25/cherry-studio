@@ -7,12 +7,12 @@ const PROBE_TIMEOUT = 45_000
 const providerCatalogEvaluated = vi.hoisted(() => vi.fn())
 const modelCatalogEvaluated = vi.hoisted(() => vi.fn())
 
-vi.mock('@cherrystudio/ui/components/icons/providers/catalog', () => {
+vi.mock('@huatuostudio/ui/components/icons/providers/catalog', () => {
   providerCatalogEvaluated()
   return { PROVIDER_ICON_CATALOG: { openai: { colorPrimary: '#000' } } }
 })
 
-vi.mock('@cherrystudio/ui/components/icons/models/catalog', () => {
+vi.mock('@huatuostudio/ui/components/icons/models/catalog', () => {
   modelCatalogEvaluated()
   return { MODEL_ICON_CATALOG: { claude: { colorPrimary: '#000' } } }
 })
@@ -46,9 +46,9 @@ describe('icon catalog lazy boundary', () => {
   )
 
   it(
-    'the @cherrystudio/ui/icons public entry stays catalog-free',
+    'the @huatuostudio/ui/icons public entry stays catalog-free',
     async () => {
-      await import('@cherrystudio/ui/icons')
+      await import('@huatuostudio/ui/icons')
       expect(providerCatalogEvaluated).not.toHaveBeenCalled()
       expect(modelCatalogEvaluated).not.toHaveBeenCalled()
     },
@@ -58,7 +58,7 @@ describe('icon catalog lazy boundary', () => {
   it(
     'positive control: loading the catalog pulls it in',
     async () => {
-      const { loadProviderIconCatalog } = await import('@cherrystudio/ui/icons')
+      const { loadProviderIconCatalog } = await import('@huatuostudio/ui/icons')
       await loadProviderIconCatalog()
       expect(providerCatalogEvaluated).toHaveBeenCalledTimes(1)
     },

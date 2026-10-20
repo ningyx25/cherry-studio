@@ -1,4 +1,4 @@
-import { Slider } from '@cherrystudio/ui/components/primitives/slider'
+import { Slider } from '@huatuostudio/ui/components/primitives/slider'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

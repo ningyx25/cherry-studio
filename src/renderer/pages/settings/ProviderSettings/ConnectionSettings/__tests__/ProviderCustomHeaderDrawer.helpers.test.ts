@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 // The SUT module pulls UI/hook/IPC deps at import time; stub them so the
 // pure helpers can be unit-tested without render machinery.
-vi.mock('@cherrystudio/ui', () => ({}))
+vi.mock('@huatuostudio/ui', () => ({}))
 vi.mock('@logger', () => ({ loggerService: { withContext: () => ({ error: vi.fn() }) } }))
 vi.mock('@renderer/hooks/useProvider', () => ({ useProvider: () => ({}) }))
 vi.mock('@renderer/utils/style', () => ({

@@ -27,7 +27,7 @@
  * industry best practice. Mainstream approaches — Spring/Rails typed exception
  * hierarchies, Prisma's `error.code` switch, NestJS exception filters — each
  * make different trade-offs. This module's specific value is eliminating the
- * "forgot to rethrow" bug class at the type layer, which matters in Cherry
+ * "forgot to rethrow" bug class at the type layer, which matters in HuaTuo
  * Studio's direct-db-access Service pattern where no IoC/AOP framework can
  * catch misses. If future HuaTuo Studio architecture adopts such a framework,
  * revisit whether a typed exception hierarchy is a better fit.

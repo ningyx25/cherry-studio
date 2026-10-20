@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { toast } from '@renderer/services/toast'
 import type { AgentDetail } from '@renderer/types/resourceCatalog'
 import type { Assistant } from '@shared/data/types/assistant'
@@ -94,8 +94,8 @@ vi.mock('@renderer/components/ModelSelector', () => ({
   )
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
   return actual
 })
 
@@ -937,7 +937,7 @@ describe('edit dialogs', () => {
             items: [
               {
                 id: 'mcp-command-only',
-                name: '@cherry/mcp-auto-install',
+                name: '@huatuo/mcp-auto-install',
                 description: 'Installs MCP servers automatically',
                 baseUrl: 'https://mcp.example.com',
                 command: 'npx',
@@ -955,11 +955,11 @@ describe('edit dialogs', () => {
 
     selectTab('MCP')
 
-    expect(await screen.findByText('@cherry/mcp-auto-install')).toBeInTheDocument()
+    expect(await screen.findByText('@huatuo/mcp-auto-install')).toBeInTheDocument()
     expect(screen.queryByText('Installs MCP servers automatically')).not.toBeInTheDocument()
     expect(screen.queryByText('https://mcp.example.com')).not.toBeInTheDocument()
     expect(screen.queryByText('npx')).not.toBeInTheDocument()
-    expect(screen.getByRole('switch', { name: '@cherry/mcp-auto-install' })).toBeInTheDocument()
+    expect(screen.getByRole('switch', { name: '@huatuo/mcp-auto-install' })).toBeInTheDocument()
     expect(screen.getByText('Connected')).toBeInTheDocument()
   })
 

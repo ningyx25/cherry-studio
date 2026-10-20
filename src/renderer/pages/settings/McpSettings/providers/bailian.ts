@@ -42,7 +42,7 @@ export interface BailianServer {
   active: boolean
 }
 
-interface McpServerCherryDetailResponse {
+interface McpServerHuaTuoDetailResponse {
   success: boolean
   message: string
   requestId: string
@@ -92,7 +92,7 @@ async function fetchAllMcpServers(token: string): Promise<BailianServer[]> {
       throw new Error(`Status: ${response.status}`)
     }
 
-    const result: McpServerCherryDetailResponse = await response.json()
+    const result: McpServerHuaTuoDetailResponse = await response.json()
 
     if (!result.success) {
       throw new Error(result.message || 'Fetch failed')

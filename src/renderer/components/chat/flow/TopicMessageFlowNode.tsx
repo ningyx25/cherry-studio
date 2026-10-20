@@ -1,5 +1,5 @@
-import { Popover, PopoverAnchor, PopoverContent } from '@cherrystudio/ui'
 import { useQuery } from '@data/hooks/useDataApi'
+import { Popover, PopoverAnchor, PopoverContent } from '@huatuostudio/ui'
 import MessageContent from '@renderer/components/chat/messages/frame/MessageContent'
 import { MessageContentProvider } from '@renderer/components/chat/messages/MessageContentProvider'
 import { toMessageListItem } from '@renderer/components/chat/messages/utils/messageListItem'

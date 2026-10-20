@@ -17,8 +17,8 @@ import { MessageWebSearchToolTitle } from './webSearch/MessageWebSearch'
 const builtinToolsPrefix = 'builtin_'
 const agentMcpToolsPrefix = 'mcp__'
 const agentTools = new Set<string>(Object.values(AgentToolsType))
-/** cherry-tools that carry short wire names rather than the `mcp__` prefix. */
-const CHERRY_AGENT_TOOL_NAMES = new Set([
+/** huatuo-tools that carry short wire names rather than the `mcp__` prefix. */
+const HUATUO_AGENT_TOOL_NAMES = new Set([
   'web_fetch',
   KB_SEARCH_TOOL_NAME,
   KB_LIST_TOOL_NAME,
@@ -40,7 +40,7 @@ export function chooseTool(toolResponse: NormalToolResponse): React.ReactNode | 
     return <MessageMetaTool toolResponse={toolResponse} />
   }
 
-  // In-process cherry-tools (web/knowledge/memory) carry short wire names, not the `mcp__` prefix.
+  // In-process huatuo-tools (web/knowledge/memory) carry short wire names, not the `mcp__` prefix.
   if (toolName === KB_SEARCH_TOOL_NAME) {
     return <MessageKnowledgeSearchToolTitle toolResponse={toolResponse} />
   }
@@ -48,7 +48,7 @@ export function chooseTool(toolResponse: NormalToolResponse): React.ReactNode | 
     return <MessageWebSearchToolTitle toolResponse={toolResponse} />
   }
   // Short-name tools without a bespoke card render through the standard agent tool-call card.
-  if (CHERRY_AGENT_TOOL_NAMES.has(toolName)) {
+  if (HUATUO_AGENT_TOOL_NAMES.has(toolName)) {
     return <AgentExecutionTimeline toolResponse={toolResponse} />
   }
 

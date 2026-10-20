@@ -5,7 +5,7 @@ This document describes how HuaTuo Studio loads, parses, and merges provider/mod
 ## Architecture Overview
 
 ```
-@cherrystudio/provider-registry (package)
+@huatuostudio/provider-registry (package)
 ├── data/
 │   ├── models.json           Preset models (capabilities, pricing, modalities...)
 │   ├── providers.json        Preset providers (endpoints, apiFeatures, metadata)

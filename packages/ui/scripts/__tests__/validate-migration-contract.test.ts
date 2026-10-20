@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 
 import { parseMigrationRegistry } from '../migration-registry'
-import { CHERRY_PRODUCT_VARIABLE_TOKENS } from '../theme-contract'
+import { HUATUO_PRODUCT_VARIABLE_TOKENS } from '../theme-contract'
 import {
   loadMigrationContractSources,
   type MigrationContractSources,
@@ -156,7 +156,7 @@ describe('validateMigrationContractSources', () => {
       rules: Array<{ source: string; target: string | null; strategy: string }>
     }
 
-    for (const token of CHERRY_PRODUCT_VARIABLE_TOKENS.filter((token) => token !== 'link')) {
+    for (const token of HUATUO_PRODUCT_VARIABLE_TOKENS.filter((token) => token !== 'link')) {
       expect(registry.rules).toContainEqual({
         source: `--cs-${token}`,
         target: `--${token}`,

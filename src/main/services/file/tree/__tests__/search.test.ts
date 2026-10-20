@@ -32,7 +32,7 @@ vi.mock('node:fs', async (importOriginal) => {
 })
 
 // Production resolves ripgrep via BinaryManager (`getBinaryPath('rg')`), which
-// reads cherry.bin / mise shims — neither is populated under vitest. Point it
+// reads huatuo.bin / mise shims — neither is populated under vitest. Point it
 // at the test ripgrep binary so scans spawn a real ripgrep; `existsSync` (mocked
 // above) still governs the "binary not available" branch.
 vi.mock('@main/utils/binaryResolver', async () => {
@@ -77,7 +77,7 @@ const writeMany = async (root: string, count: number, prefix = 'file', ext = '.t
 describe.skipIf(!ripgrepAvailable)('listDirectory (list mode, no searchPattern)', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-search-list-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-search-list-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -138,7 +138,7 @@ describe.skipIf(!ripgrepAvailable)('listDirectory (list mode, no searchPattern)'
 describe.skipIf(!ripgrepAvailable)('listDirectory (search mode, fuzzy + maxEntries)', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-search-search-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-search-search-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -178,7 +178,7 @@ describe.skipIf(!ripgrepAvailable)('listDirectory (search mode, fuzzy + maxEntri
 describe('listDirectory (error paths)', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-search-errors-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-search-errors-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })

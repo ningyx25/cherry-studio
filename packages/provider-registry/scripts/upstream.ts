@@ -1,5 +1,5 @@
 /**
- * Parse upstream catalog entries (models.dev / OpenRouter) into Cherry metadata, with zod.
+ * Parse upstream catalog entries (models.dev / OpenRouter) into HuaTuo metadata, with zod.
  *
  * Why zod: the upstream shapes are loose and change over time. A schema validates each entry
  * (a drifted/garbage entry is skipped, not crashed) and keeps the mapping declarative and typed,
@@ -31,7 +31,7 @@ export const CAP_ORDER = [
 ] as const
 
 /** The metadata subset of a `ModelConfig` we fill from upstream — reuse the schema's field types, don't re-declare. */
-export type CherryMeta = Partial<
+export type HuaTuoMeta = Partial<
   Pick<
     ModelConfig,
     | 'name'
@@ -47,8 +47,8 @@ export type CherryMeta = Partial<
     | 'reasoning'
   >
 >
-type Caps = NonNullable<CherryMeta['capabilities']>[number]
-type Effort = NonNullable<NonNullable<CherryMeta['reasoning']>['supportedEfforts']>[number]
+type Caps = NonNullable<HuaTuoMeta['capabilities']>[number]
+type Effort = NonNullable<NonNullable<HuaTuoMeta['reasoning']>['supportedEfforts']>[number]
 
 const usd = (n?: number) => (n == null ? undefined : { currency: 'USD' as const, perMillionTokens: n })
 const dropUndef = <T extends Record<string, unknown>>(o: T): T =>
@@ -87,7 +87,7 @@ const MdEntry = z
   })
   .loose()
 
-export function parseMdEntry(raw: unknown): CherryMeta | null {
+export function parseMdEntry(raw: unknown): HuaTuoMeta | null {
   const p = MdEntry.safeParse(raw)
   if (!p.success) return null
   const m = p.data
@@ -108,8 +108,8 @@ export function parseMdEntry(raw: unknown): CherryMeta | null {
   // Lossless controls declaration (the source of truth); the legacy pair
   // (supportedEfforts / thinkingTokenLimits) is re-derived from it by the
   // buildModels normalization pass via deriveLegacyReasoningFields.
-  const reasoning: NonNullable<CherryMeta['reasoning']> = {}
-  const controls: NonNullable<NonNullable<CherryMeta['reasoning']>['controls']> = []
+  const reasoning: NonNullable<HuaTuoMeta['reasoning']> = {}
+  const controls: NonNullable<NonNullable<HuaTuoMeta['reasoning']>['controls']> = []
   for (const op of m.reasoning && m.reasoning_options ? m.reasoning_options : []) {
     if (op.type === 'effort' && op.values) {
       const values = op.values.filter((v): v is Effort => VALID_EFFORTS.has(v))
@@ -149,7 +149,7 @@ export function parseMdEntry(raw: unknown): CherryMeta | null {
     openWeights: typeof m.open_weights === 'boolean' ? m.open_weights : undefined,
     family: m.family,
     name: m.name
-  }) as CherryMeta
+  }) as HuaTuoMeta
 }
 
 // ── OpenRouter ───────────────────────────────────────────────────────────────
@@ -227,7 +227,7 @@ export function mergeOpenRouterReasoningContracts(
   }
 }
 
-export function parseOrEntry(raw: unknown): CherryMeta | null {
+export function parseOrEntry(raw: unknown): HuaTuoMeta | null {
   const p = OrEntry.safeParse(raw)
   if (!p.success) return null
   const m = p.data
@@ -254,7 +254,7 @@ export function parseOrEntry(raw: unknown): CherryMeta | null {
     pricing: m.pricing?.prompt
       ? { input: usd(+m.pricing.prompt * 1e6)!, output: usd(+(m.pricing.completion || 0) * 1e6)! }
       : undefined
-  }) as CherryMeta
+  }) as HuaTuoMeta
 }
 
 const OR_IMAGE_PARAM_KEYS = {
@@ -341,8 +341,8 @@ const uniqOrdered = (arr: string[]) => [
   ...arr.filter((x) => !CAP_ORDER.includes(x as any))
 ]
 
-export function mergeMeta(a: CherryMeta, b: CherryMeta): CherryMeta {
-  const out: CherryMeta = { ...a }
+export function mergeMeta(a: HuaTuoMeta, b: HuaTuoMeta): HuaTuoMeta {
+  const out: HuaTuoMeta = { ...a }
   if (b.capabilities)
     out.capabilities = uniqOrdered([...new Set([...(a.capabilities ?? []), ...b.capabilities])]) as Caps[]
   for (const k of ['inputModalities', 'outputModalities'] as const)
@@ -365,7 +365,7 @@ export function mergeMeta(a: CherryMeta, b: CherryMeta): CherryMeta {
   return out
 }
 
-type Controls = NonNullable<NonNullable<CherryMeta['reasoning']>['controls']>
+type Controls = NonNullable<NonNullable<HuaTuoMeta['reasoning']>['controls']>
 
 /**
  * Union reasoning controls per kind across sources (same spirit as the
@@ -399,7 +399,7 @@ function mergeReasoningControls(a: Controls | undefined, b: Controls | undefined
 }
 
 /** maxOutputTokens must not exceed contextWindow (schema invariant). */
-export function finalizeMeta(m: CherryMeta): CherryMeta {
+export function finalizeMeta(m: HuaTuoMeta): HuaTuoMeta {
   if (m.contextWindow && m.maxOutputTokens && m.maxOutputTokens > m.contextWindow) {
     // oxlint-disable-next-line no-unused-vars
     const { maxOutputTokens, ...rest } = m

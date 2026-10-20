@@ -97,7 +97,7 @@ vi.mock('@main/data/services/MessageService', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ai-core', () => ({
+vi.mock('@huatuostudio/ai-core', () => ({
   createAgent: (...args: unknown[]) => mockCreateAgent(...args),
   embedMany: async (...args: unknown[]) => {
     const result = await mockEmbedMany(...args)

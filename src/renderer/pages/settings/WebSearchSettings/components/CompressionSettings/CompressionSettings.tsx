@@ -1,4 +1,4 @@
-import { SegmentedControl } from '@cherrystudio/ui'
+import { SegmentedControl } from '@huatuostudio/ui'
 import { SettingRow, SettingRowTitle } from '@renderer/components/SettingsPrimitives'
 import { useWebSearchSettings } from '@renderer/hooks/useWebSearch'
 import { useWebSearchPersist } from '@renderer/pages/settings/WebSearchSettings/hooks/useWebSearchPersist'

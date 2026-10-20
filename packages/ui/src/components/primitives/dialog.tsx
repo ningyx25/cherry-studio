@@ -1,5 +1,5 @@
-import { cn } from '@cherrystudio/ui/lib/utils'
-import { DIALOG_CLOSE_DURATION_MS } from '@cherrystudio/ui/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
+import { DIALOG_CLOSE_DURATION_MS } from '@huatuostudio/ui/utils'
 import { composeEventHandlers } from '@radix-ui/primitive'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { XIcon } from 'lucide-react'

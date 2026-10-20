@@ -12,8 +12,8 @@
     "noFallthroughCasesInSwitch": true,
     "outDir": "./dist",
     "paths": {
-      "@cherrystudio/ui": ["./src/index.ts"],
-      "@cherrystudio/ui/*": ["./src/*"]
+      "@huatuostudio/ui": ["./src/index.ts"],
+      "@huatuostudio/ui/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "rootDir": ".",

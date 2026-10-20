@@ -17,7 +17,7 @@ import {
 } from '@shared/data/api/schemas/agents'
 import { AgentSessionWorkspaceSourceSchema } from '@shared/data/api/schemas/agentWorkspaces'
 import { JobScheduleNameAtomSchema, TriggerSchema } from '@shared/data/api/schemas/jobs'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { ModelSchema, UniqueModelIdSchema } from '@shared/data/types/model'
 import { ReasoningEffortOptionSchema } from '@shared/types/aiSdk'
 import type { EmbeddingModelUsage, LanguageModelUsage, ModelMessage } from 'ai'
@@ -160,7 +160,7 @@ export const aiRequestSchemas = {
   // Requests are R→M; the produced chunk/done/error events ride the AiEventSchemas block below.
   'ai.stream.open': defineRoute({
     // Discriminated by `trigger`, mirroring AiStreamOpenRequest. `userMessageParts` is opaque
-    // pass-through (main persists it), so its items are `z.custom<CherryMessagePart>()`.
+    // pass-through (main persists it), so its items are `z.custom<HuaTuoMessagePart>()`.
     input: z.intersection(
       z.object({
         topicId: z.string().min(1),
@@ -170,7 +170,7 @@ export const aiRequestSchemas = {
         z.object({
           trigger: z.literal('submit-message'),
           parentAnchorId: z.string().optional(),
-          userMessageParts: z.array(z.custom<CherryMessagePart>()),
+          userMessageParts: z.array(z.custom<HuaTuoMessagePart>()),
           reasoningEffort: ReasoningEffortOptionSchema.optional(),
           fastMode: z.boolean().optional()
         }),

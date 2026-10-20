@@ -180,7 +180,7 @@ vi.mock('pdfjs-dist/web/pdf_viewer.mjs', () => {
   }
 })
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: PropsWithChildren<React.ComponentPropsWithoutRef<'button'>>) => (
     <button type="button" {...props}>
       {children}

@@ -1,4 +1,4 @@
-import { SegmentedControl } from '@cherrystudio/ui'
+import { SegmentedControl } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Code, FileText, LayoutGrid, List, Monitor, Moon, Sun } from 'lucide-react'
 import { useState } from 'react'

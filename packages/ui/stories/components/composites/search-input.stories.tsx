@@ -1,4 +1,4 @@
-import { SearchInput } from '@cherrystudio/ui'
+import { SearchInput } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
@@ -55,7 +55,7 @@ export const WithoutClearButton: Story = {
 export const Disabled: Story = {
   render: () => (
     <div className="w-80">
-      <SearchInput value="cherry studio" disabled onChange={() => {}} onClear={() => {}} clearLabel="Clear search" />
+      <SearchInput value="huatuo studio" disabled onChange={() => {}} onClear={() => {}} clearLabel="Clear search" />
     </div>
   )
 }

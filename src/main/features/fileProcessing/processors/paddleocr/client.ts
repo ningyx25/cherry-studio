@@ -6,7 +6,7 @@ import { net } from 'electron'
 export const PADDLE_MAX_FILE_SIZE = 50 * MB
 
 /** Identifies HuaTuo Studio to the PaddleOCR API gateway (Client-Platform header). */
-export const PADDLE_CLIENT_PLATFORM = 'cherrystudio'
+export const PADDLE_CLIENT_PLATFORM = 'huatuostudio'
 
 type PaddleOcrClientLike = typeof PaddleOCRClientType
 

@@ -110,7 +110,7 @@ export function assertRelocationPaths(
 /**
  * Three protection layers, checked in order:
  *   1. application trees (relocation session root, install, app root, extra
- *      resources, cherry home) — rejected on overlap in either direction;
+ *      resources, huatuo home) — rejected on overlap in either direction;
  *   2. well-known user/system directories (home, appdata, temp, downloads, …)
  *      — rejected on exact match only, so app-specific subdirectories stay
  *      selectable;
@@ -123,7 +123,7 @@ function assertTargetIsNotProtected(target: string, normalizedTarget: string): v
     application.getPath('app.install'),
     application.getPath('app.root'),
     application.getPath('app.extra_resources'),
-    application.getPath('cherry.home')
+    application.getPath('huatuo.home')
   ]
   for (const protectedTree of protectedApplicationTrees) {
     const normalizedProtected = normalizeForCompare(resolveEffectivePath(protectedTree))
@@ -212,8 +212,8 @@ export function relocationArtifactPaths(target: string, taskId: string): { workP
   const parent = path.dirname(target)
   const name = path.basename(target)
   return {
-    workPath: path.join(parent, `.${name}.cherry-relocation-${taskId}-work`),
-    asidePath: path.join(parent, `.${name}.cherry-relocation-${taskId}-aside`)
+    workPath: path.join(parent, `.${name}.huatuo-relocation-${taskId}-work`),
+    asidePath: path.join(parent, `.${name}.huatuo-relocation-${taskId}-aside`)
   }
 }
 

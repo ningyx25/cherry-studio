@@ -24,7 +24,7 @@ src/main/data/migration/v2/
 > **⚠️ WARNING: Not using predefined paths may cause user data loss.**
 >
 > v1 users may have configured a custom userData directory via
-> `~/.cherrystudio/config/config.json`. If migration code calls
+> `~/.huatuostudio/config/config.json`. If migration code calls
 > `app.getPath('userData')` or `new Store()` directly, on the first v2
 > launch it will read from the Electron default path instead of the
 > user's actual data directory — causing migration to be silently
@@ -37,13 +37,13 @@ paths with `path.join()` from scratch inside migration code.
 | Correct ✅ | Wrong ❌ |
 |-----------|---------|
 | `ctx.paths.userData` | `app.getPath('userData')` |
-| `ctx.paths.databaseFile` | `path.join(app.getPath('userData'), 'Data', 'cherrystudio.sqlite')` |
+| `ctx.paths.databaseFile` | `path.join(app.getPath('userData'), 'Data', 'huatuostudio.sqlite')` |
 | `ctx.paths.legacyClaudeConfigDir` | `path.join(ctx.paths.userData, '.claude')` |
 | `ctx.paths.legacyClaudeProjectsDir` | `path.join(ctx.paths.userData, '.claude', 'projects')` |
 | `ctx.paths.claudeConfigDir` | `path.join(ctx.paths.userData, 'Data', 'Agents', '.claude')` |
 | `ctx.paths.claudeProjectsDir` | `path.join(ctx.paths.userData, 'Data', 'Agents', '.claude', 'projects')` |
 | `ctx.paths.knowledgeBaseDir` | `path.join(app.getPath('userData'), 'Data', 'KnowledgeBase')` |
-| `ctx.paths.legacyConfigFile` | `path.join(os.homedir(), '.cherrystudio', 'config', 'config.json')` |
+| `ctx.paths.legacyConfigFile` | `path.join(os.homedir(), '.huatuostudio', 'config', 'config.json')` |
 | `new Store({ cwd: ctx.paths.userData })` | `new Store()` |
 
 `MigrationPaths` is resolved once at the migration gate entry by
@@ -72,7 +72,7 @@ publicly or outside HuaTuo Studio support.
 
 The migration renderer writes selected Redux Persist slices and Dexie records through bounded IPC chunks. Redux
 is handed to main as a directory of category files, and localStorage export is restricted to keys actually owned
-by migration mappings. Do not restore whole-state parsing or include `persist:cherry-studio` in the generic
+by migration mappings. Do not restore whole-state parsing or include `persist:huatuo-studio` in the generic
 localStorage export: either change retains duplicate copies of the same legacy state before migration begins.
 Main owns the exact export paths: `migration:prepare-export` clears the registered staging directories before each
 attempt and returns those paths to renderer. File-write, migration-start, and cleanup code must never accept an

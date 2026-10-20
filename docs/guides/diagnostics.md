@@ -31,7 +31,7 @@ CS_DIAGNOSTICS=1 "./HuaTuo Studio-<version>-<arch>.AppImage"
 
 ### Output
 
-Both dev and packaged runs write to the **app logs directory** (`~/Library/Logs/CherryStudio/` on macOS; `application.getPath('app.logs')`): signals stream into `app.<date>.log`, and the CPU profile lands beside it as `boot-whenReady.cpuprofile`.
+Both dev and packaged runs write to the **app logs directory** (`~/Library/Logs/HuaTuoStudio/` on macOS; `application.getPath('app.logs')`): signals stream into `app.<date>.log`, and the CPU profile lands beside it as `boot-whenReady.cpuprofile`.
 
 ## Signals
 

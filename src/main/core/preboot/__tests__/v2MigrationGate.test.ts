@@ -51,7 +51,7 @@ const getBlockMessageMock = vi.fn()
 const defaultMigrationPaths = {
   userData: '/mock/userData',
   versionLogFile: '/mock/version.log',
-  databaseFile: '/mock/userData/Data/cherrystudio.sqlite'
+  databaseFile: '/mock/userData/Data/huatuostudio.sqlite'
 }
 const defaultResolveResult = {
   paths: defaultMigrationPaths,
@@ -297,7 +297,7 @@ describe('runV2MigrationGate', () => {
       expect(showErrorBoxMock).toHaveBeenCalledTimes(1)
       const [title, message] = showErrorBoxMock.mock.calls[0]
       expect(title).toContain('Database Schema Out of Sync')
-      expect(message).toContain('/mock/userData/Data/cherrystudio.sqlite')
+      expect(message).toContain('/mock/userData/Data/huatuostudio.sqlite')
       expect(appQuitMock).toHaveBeenCalledTimes(1)
     })
 
@@ -340,7 +340,7 @@ describe('runV2MigrationGate', () => {
       expect(message).toContain('DB unavailable')
       // Dev surfaces BOTH possibilities (incompatible data vs migration bug) + the DB path,
       // and explicitly does NOT assert "just delete the DB".
-      expect(message).toContain('/mock/userData/Data/cherrystudio.sqlite')
+      expect(message).toContain('/mock/userData/Data/huatuostudio.sqlite')
       expect(message).toContain('Do NOT just delete the DB')
       expect(appQuitMock).toHaveBeenCalledTimes(1)
     })
@@ -604,7 +604,7 @@ describe('runV2MigrationGate', () => {
         userDataChanged: true,
         inaccessibleLegacyPath: null,
         legacyDataConfirmed: true,
-        dataLocation: '/Volumes/Data/CherryStudio'
+        dataLocation: '/Volumes/Data/HuaTuoStudio'
       })
       needsMigrationMock.mockResolvedValue(true)
       evaluateCandidateVersionMock.mockReturnValue({
@@ -620,7 +620,7 @@ describe('runV2MigrationGate', () => {
       const result = await runV2MigrationGate()
 
       expect(result).toBe('handled')
-      expect(setDataLocationNoticeMock).toHaveBeenCalledWith('/Volumes/Data/CherryStudio')
+      expect(setDataLocationNoticeMock).toHaveBeenCalledWith('/Volumes/Data/HuaTuoStudio')
       expect(registerMigrationIpcHandlersMock).toHaveBeenCalledTimes(1)
     })
 

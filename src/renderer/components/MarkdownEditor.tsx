@@ -1,7 +1,7 @@
-import '@cherrystudio/ui/components/composites/markdown/styles'
+import '@huatuostudio/ui/components/composites/markdown/styles'
 import '@renderer/assets/styles/vendor/katex.css'
 
-import { defaultMarkdownPlugins, Markdown, withMath } from '@cherrystudio/ui'
+import { defaultMarkdownPlugins, Markdown, withMath } from '@huatuostudio/ui'
 import type { FC } from 'react'
 import React, { useEffect, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'

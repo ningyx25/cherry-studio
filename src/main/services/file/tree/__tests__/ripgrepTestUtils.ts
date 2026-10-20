@@ -55,7 +55,7 @@ function systemRipgrepPath(): string | null {
 /**
  * Absolute path to a real ripgrep binary for file-tree tests.
  *
- * Production resolves ripgrep via `getBinaryPath('rg')` (mise shim → cherry.bin),
+ * Production resolves ripgrep via `getBinaryPath('rg')` (mise shim → huatuo.bin),
  * but neither location is populated in unit tests. Tests mock `getBinaryPath`
  * to return this binary so directory scans still spawn real ripgrep.
  */

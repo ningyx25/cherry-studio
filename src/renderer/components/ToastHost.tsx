@@ -1,4 +1,4 @@
-import { ToastViewport } from '@cherrystudio/ui'
+import { ToastViewport } from '@huatuostudio/ui'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 

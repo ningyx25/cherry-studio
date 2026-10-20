@@ -1,5 +1,5 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, Tooltip } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Icon } from '@iconify/react'
 import { loggerService } from '@logger'
 import {
@@ -526,7 +526,7 @@ const InteractiveHtmlPreview = memo(function InteractiveHtmlPreview({
   const contentHeightRef = useRef<number | null>(null)
   const scrollRuntime = useScrollRuntimeBoundary()
   const zoomScale = zoom / 100
-  const [messagePrefix] = useState(() => `__cherry_html_artifact_${crypto.randomUUID()}:`)
+  const [messagePrefix] = useState(() => `__huatuo_html_artifact_${crypto.randomUUID()}:`)
   const src = useMemo(() => {
     const scrollActivationDelay = forwardBoundaryWheel ? SCROLL_ACTIVATION_DELAY_MS : 0
     const bridgeScript = `<script>${getHtmlArtifactBridgeScript(messagePrefix, scrollActivationDelay)}</script>`

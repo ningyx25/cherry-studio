@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@cherrystudio/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@huatuostudio/ui'
 import { SettingGroup } from '@renderer/components/SettingsPrimitives'
 import type { FC } from 'react'
 import { useState } from 'react'

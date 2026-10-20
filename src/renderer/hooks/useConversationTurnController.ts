@@ -3,7 +3,7 @@ import { ipcApi } from '@renderer/ipc'
 import { getStreamBlockedMessage } from '@renderer/services/aiTransport'
 import { toast } from '@renderer/services/toast'
 import type { AiStreamOpenRequest, AiStreamOpenResponse } from '@shared/ai/transport'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 const logger = loggerService.withContext('useConversationTurnController')
@@ -11,7 +11,7 @@ const logger = loggerService.withContext('useConversationTurnController')
 export type ConversationTurnPhase = 'draft' | 'persisting' | 'opening' | 'streaming' | 'ready'
 
 export interface ConversationHistoryAdapter {
-  seedReservedMessages: (messages: CherryUIMessage[]) => Promise<void> | void
+  seedReservedMessages: (messages: HuaTuoUIMessage[]) => Promise<void> | void
   refresh: () => Promise<unknown> | unknown
   rollback: () => Promise<unknown> | unknown
 }

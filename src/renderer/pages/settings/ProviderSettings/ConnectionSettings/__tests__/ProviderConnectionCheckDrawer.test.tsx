@@ -6,7 +6,7 @@ const { showErrorDetailPopupMock } = vi.hoisted(() => ({
   showErrorDetailPopupMock: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react')
 
   return {
@@ -46,7 +46,7 @@ vi.mock('@renderer/utils/model', () => ({
     model?.icon ? { kind: 'provider', key: model.id, meta: { id: model.id, colorPrimary: '#000' }, model } : undefined
 }))
 
-vi.mock('@cherrystudio/ui/icons', () => ({
+vi.mock('@huatuostudio/ui/icons', () => ({
   useIcon: (ref: any) =>
     ref
       ? {

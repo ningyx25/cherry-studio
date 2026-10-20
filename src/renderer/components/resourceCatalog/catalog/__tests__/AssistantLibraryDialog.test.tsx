@@ -69,7 +69,7 @@ vi.mock('@tanstack/react-virtual', () => ({
   useVirtualizer: virtualizerMocks.useVirtualizer
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   let dialogOnOpenChange: ((open: boolean) => void) | undefined
 
   return {

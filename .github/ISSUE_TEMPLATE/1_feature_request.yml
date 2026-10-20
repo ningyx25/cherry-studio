@@ -8,7 +8,7 @@ body:
     attributes:
       value: |
         Thank you for taking the time to submit a feature request!
-        Before submitting this issue, please make sure you have reviewed the [Project Roadmap](https://docs.cherry-ai.com/cherrystudio/planning) and the [Feature Overview](https://docs.cherry-ai.com/cherrystudio/preview).
+        Before submitting this issue, please make sure you have reviewed the [Project Roadmap](https://docs.huatuo.ai/huatuostudio/planning) and the [Feature Overview](https://docs.huatuo.ai/huatuostudio/preview).
 
   - type: checkboxes
     id: checklist
@@ -19,7 +19,7 @@ body:
       options:
         - label: I understand that issues are for reporting problems and requesting features, not for off-topic comments, and I will provide as much detail as possible to help resolve the issue.
           required: true
-        - label: I have checked the pinned issues and searched through the existing [open issues](https://github.com/ningyx25/cherry-studio/issues), [closed issues](https://github.com/ningyx25/cherry-studio/issues?q=is%3Aissue%20state%3Aclosed), and [discussions](https://github.com/ningyx25/cherry-studio/discussions) and did not find a similar suggestion.
+        - label: I have checked the pinned issues and searched through the existing [open issues](https://github.com/huatuostudio/huatuo-studio/issues), [closed issues](https://github.com/huatuostudio/huatuo-studio/issues?q=is%3Aissue%20state%3Aclosed), and [discussions](https://github.com/huatuostudio/huatuo-studio/discussions) and did not find a similar suggestion.
           required: true
         - label: I have provided a short and descriptive title so that developers can quickly understand the issue when browsing the issue list, rather than vague titles like "A suggestion" or "Stuck."
           required: true

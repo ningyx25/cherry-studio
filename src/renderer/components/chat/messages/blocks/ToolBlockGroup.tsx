@@ -1,7 +1,7 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@cherrystudio/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@huatuostudio/ui'
 import { ErrorBoundary } from '@renderer/components/ErrorBoundary'
 import { PROVIDER_WEB_SEARCH_TOOL_NAME } from '@shared/ai/builtinTools'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import {
   Brain,
   CalendarDays,
@@ -43,7 +43,7 @@ function isToolGroupItemCompleted(status: ToolResponseLike['status'] | undefined
 
 // Calculate actual waiting state for a tool item (not depending on hooks).
 // AI-SDK-v6 ToolUIPart state (`approval-requested`) is the sole source of truth.
-function getItemIsWaiting(item: ToolRenderItem, partsMap: Record<string, CherryMessagePart[]> | null): boolean {
+function getItemIsWaiting(item: ToolRenderItem, partsMap: Record<string, HuaTuoMessagePart[]> | null): boolean {
   if (item.toolResponse.status !== 'pending') return false
   return isToolPartAwaitingApproval(partsMap, item.toolResponse.toolCallId)
 }
@@ -51,7 +51,7 @@ function getItemIsWaiting(item: ToolRenderItem, partsMap: Record<string, CherryM
 // Get effective UI status for an item
 function getItemEffectiveStatus(
   item: ToolRenderItem,
-  partsMap: Record<string, CherryMessagePart[]> | null
+  partsMap: Record<string, HuaTuoMessagePart[]> | null
 ): ToolStatus {
   const isWaiting = getItemIsWaiting(item, partsMap)
   return getEffectiveStatus(item.toolResponse?.status, isWaiting)

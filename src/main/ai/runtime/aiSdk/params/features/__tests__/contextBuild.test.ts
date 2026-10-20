@@ -11,7 +11,7 @@ import os from 'node:os'
 import path from 'node:path'
 
 import type { LanguageModelV3Prompt } from '@ai-sdk/provider'
-import { createContextMiddleware, type VFSStorageAdapter } from '@cherrystudio/ai-core'
+import { createContextMiddleware, type VFSStorageAdapter } from '@huatuostudio/ai-core'
 import { MIN_IN_FLIGHT_TRUNCATE_THRESHOLD } from '@main/ai/constants'
 import { DataApiErrorFactory } from '@shared/data/api/errors'
 import { DEFAULT_CONTEXT_SETTINGS } from '@shared/data/types/contextSettings'
@@ -318,7 +318,7 @@ describe('resolveInFlightTruncateThreshold', () => {
   })
 
   // `Model.contextWindow` is `z.number().optional()` — custom / v1-imported /
-  // CherryAI rows really do arrive without it. Multiplying `undefined` yields
+  // HuaTuoAI rows really do arrive without it. Multiplying `undefined` yields
   // `NaN`, and the truncator's `text.length <= NaN` is false for EVERY result,
   // so ordinary tool output would be offloaded as if oversized.
   it.each([[undefined], [0], [Number.NaN], [-1], [Number.POSITIVE_INFINITY]])(

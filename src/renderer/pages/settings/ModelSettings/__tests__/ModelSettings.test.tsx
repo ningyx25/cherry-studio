@@ -15,7 +15,7 @@ const harness = vi.hoisted(() => ({
   selectorFilters: [] as Array<(model: Model) => boolean>
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Avatar: ({ children }: { children: ReactNode }) => <span>{children}</span>,
   AvatarFallback: ({ children }: { children: ReactNode }) => <span>{children}</span>,
   Button: ({ children }: { children: ReactNode }) => <button type="button">{children}</button>,
@@ -25,7 +25,7 @@ vi.mock('@cherrystudio/ui', () => ({
   Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>
 }))
 
-vi.mock('@cherrystudio/ui/icons', () => ({
+vi.mock('@huatuostudio/ui/icons', () => ({
   useIcon: () => undefined
 }))
 
@@ -121,7 +121,7 @@ describe('ModelSettings', () => {
   })
 
   it('forces related models to follow the first visible default selection', async () => {
-    const hiddenModel = createModel('cherryai', 'built-in')
+    const hiddenModel = createModel('huatuoai', 'built-in')
     const selectedModel = createModel('openai', 'gpt-4o')
     harness.defaultModel = hiddenModel
     harness.quickModel = hiddenModel
@@ -129,7 +129,7 @@ describe('ModelSettings', () => {
     render(
       <ModelSettings
         autoFillEmptyModels
-        modelFilter={(model) => model.providerId !== 'cherryai'}
+        modelFilter={(model) => model.providerId !== 'huatuoai'}
         onDefaultModelSelected={harness.onDefaultModelSelected}
         showSettingsButton={false}
       />
@@ -148,7 +148,7 @@ describe('ModelSettings', () => {
     render(
       <ModelSettings
         autoFillEmptyModels
-        modelFilter={(model) => model.providerId !== 'cherryai'}
+        modelFilter={(model) => model.providerId !== 'huatuoai'}
         showSettingsButton={false}
       />
     )
@@ -160,11 +160,11 @@ describe('ModelSettings', () => {
   })
 
   it('combines the onboarding provider filter with non-chat model filtering', () => {
-    render(<ModelSettings modelFilter={(model) => model.providerId !== 'cherryai'} showSettingsButton={false} />)
+    render(<ModelSettings modelFilter={(model) => model.providerId !== 'huatuoai'} showSettingsButton={false} />)
 
     const filter = harness.selectorFilters[0]
     expect(filter(createModel('openai', 'gpt-4o'))).toBe(true)
-    expect(filter(createModel('cherryai', 'qwen'))).toBe(false)
+    expect(filter(createModel('huatuoai', 'qwen'))).toBe(false)
     expect(
       filter({ ...createModel('openai', 'text-embedding-3-small'), capabilities: [MODEL_CAPABILITY.EMBEDDING] })
     ).toBe(false)
@@ -180,6 +180,34 @@ describe('ModelSettings', () => {
         capabilities: [MODEL_CAPABILITY.AUDIO_RECOGNITION],
         inputModalities: ['audio'],
         outputModalities: ['text']
+      })
+    ).toBe(false)
+  })
+
+  it('offers relay/Deepgram-like models that only carry the transcription endpoint', () => {
+    render(<ModelSettings showSettingsButton={false} />)
+
+    // Selector order: default assistant model, quick model, voice-input model.
+    const voiceInputFilter = harness.selectorFilters[2]
+    expect(
+      voiceInputFilter({
+        ...createModel('custom-deepgram', 'nova-3'),
+        endpointTypes: [ENDPOINT_TYPE.OPENAI_AUDIO_TRANSCRIPTION]
+      })
+    ).toBe(true)
+    expect(
+      voiceInputFilter({
+        ...createModel('openai', 'whisper-1'),
+        capabilities: [MODEL_CAPABILITY.AUDIO_RECOGNITION],
+        inputModalities: ['audio'],
+        outputModalities: ['text']
+      })
+    ).toBe(true)
+    expect(voiceInputFilter(createModel('openai', 'gpt-4o'))).toBe(false)
+    expect(
+      voiceInputFilter({
+        ...createModel('custom', 'relay-chat'),
+        endpointTypes: [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]
       })
     ).toBe(false)
   })

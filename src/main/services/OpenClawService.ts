@@ -38,7 +38,7 @@ const openclawConfigDir = () => application.getPath('external.openclaw.config')
 const openclawConfigPath = (): AbsoluteFilePath =>
   AbsoluteFilePathSchema.parse(path.join(openclawConfigDir(), 'openclaw.json'))
 const openclawConfigBakPath = () => path.join(openclawConfigDir(), 'openclaw.json.bak')
-const openclawLegacyConfigPath = () => path.join(openclawConfigDir(), 'openclaw.cherry.json')
+const openclawLegacyConfigPath = () => path.join(openclawConfigDir(), 'openclaw.huatuo.json')
 const DEFAULT_GATEWAY_PORT = 18790
 const OPENCLAW_COMMAND_TIMEOUT_MS = 10000
 const OPENCLAW_COMMAND_CAPTURE_LIMIT_BYTES = 1024 * 1024
@@ -101,8 +101,8 @@ function sanitizeOpenClawDiagnostic(diagnostic: string): string {
     .slice(0, OPENCLAW_DIAGNOSTIC_LIMIT)
 }
 
-function isCherryManagedConfigPath(configPath: string): boolean {
-  return configPath.startsWith('models.providers.cherry-')
+function isHuaTuoManagedConfigPath(configPath: string): boolean {
+  return configPath.startsWith('models.providers.huatuo-')
 }
 
 const PERMISSIVE_CONFIG_SCHEMA: OpenClawConfigSchemaNode = {}
@@ -608,7 +608,7 @@ export class OpenClawService extends BaseService {
       return
     }
 
-    const kind = report.issues.some((issue) => isCherryManagedConfigPath(issue.path))
+    const kind = report.issues.some((issue) => isHuaTuoManagedConfigPath(issue.path))
       ? 'binary_incompatible'
       : 'external_config_invalid'
     const details = this.formatValidationDetails(report.issues)
@@ -1183,14 +1183,14 @@ export class OpenClawService extends BaseService {
         fs.mkdirSync(openclawConfigDir(), { recursive: true })
       }
 
-      // Migrate legacy openclaw.cherry.json → openclaw.json
+      // Migrate legacy openclaw.huatuo.json → openclaw.json
       if (fs.existsSync(openclawLegacyConfigPath())) {
         if (fs.existsSync(openclawConfigPath())) {
           fs.renameSync(openclawConfigPath(), openclawConfigBakPath())
           logger.info('Migrated openclaw.json → openclaw.json.bak')
         }
         fs.renameSync(openclawLegacyConfigPath(), openclawConfigPath())
-        logger.info('Migrated openclaw.cherry.json → openclaw.json')
+        logger.info('Migrated openclaw.huatuo.json → openclaw.json')
       }
 
       // Read existing config. An unparseable file aborts the sync instead of
@@ -1207,10 +1207,10 @@ export class OpenClawService extends BaseService {
       }
 
       // Build provider key
-      const providerKey = `cherry-${provider.id}`
+      const providerKey = `huatuo-${provider.id}`
 
       // Determine the API type based on model, not provider type
-      // Mixed providers (cherryin, aihubmix, etc.) can have both OpenAI and Anthropic endpoints
+      // Mixed providers (huatuoin, aihubmix, etc.) can have both OpenAI and Anthropic endpoints
       const apiType = this.determineApiType(provider, primaryModel)
       const baseUrl = this.getBaseUrlForApiType(provider, apiType)
 
@@ -1239,14 +1239,14 @@ export class OpenClawService extends BaseService {
         apiKey = this.getNoKeyPlaceholder(provider) ?? 'no-key-required'
       }
 
-      // Remove inactive Cherry-generated providers. On the selected provider, retain only
-      // hand-edited fields supported by the live OpenClaw schema; Cherry-owned identity,
+      // Remove inactive HuaTuo-generated providers. On the selected provider, retain only
+      // hand-edited fields supported by the live OpenClaw schema; HuaTuo-owned identity,
       // endpoint, credential, and model-name fields are always regenerated below.
       const providerSchemaPath = ['models', 'providers', '*']
       const modelSchemaPath = [...providerSchemaPath, 'models', '[]']
       const providers = config.models?.providers ?? {}
       const externalProviders = Object.fromEntries(
-        Object.entries(providers).filter(([key]) => !key.startsWith('cherry-'))
+        Object.entries(providers).filter(([key]) => !key.startsWith('huatuo-'))
       )
       const existingProvider = providers[providerKey]
       const existingModelMap = new Map((existingProvider?.models ?? []).map((model) => [model.id, model]))
@@ -1323,7 +1323,7 @@ export class OpenClawService extends BaseService {
 
       const serialized = JSON.stringify(config, null, 2)
       const candidatePath = AbsoluteFilePathSchema.parse(
-        path.join(openclawConfigDir(), `openclaw.json.cherry-candidate-${crypto.randomUUID()}`)
+        path.join(openclawConfigDir(), `openclaw.json.huatuo-candidate-${crypto.randomUUID()}`)
       )
       try {
         await atomicWriteFile(candidatePath, serialized, { mode: OPENCLAW_CONFIG_FILE_MODE })
@@ -1383,7 +1383,7 @@ export class OpenClawService extends BaseService {
 
   /**
    * Determine the API type based on model and provider
-   * This supports mixed providers (cherryin, aihubmix, new-api, etc.) that have both OpenAI and Anthropic endpoints
+   * This supports mixed providers (huatuoin, aihubmix, new-api, etc.) that have both OpenAI and Anthropic endpoints
    *
    * Priority order:
    * 1. Provider type (anthropic, vertex-anthropic always use Anthropic API)

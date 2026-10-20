@@ -18,7 +18,7 @@ and nothing else. The tree below is the target; the *landed* note marks what exi
 `main` today, everything else is *planned* and arrives in later carves:
 
 - **Presentation** (`primitives/`, `tokens/`) — *landed.* Stateless, themed through
-  `@cherrystudio/ui`. No business logic, no data access; everything arrives through props.
+  `@huatuostudio/ui`. No business logic, no data access; everything arrives through props.
 - **View state** (React contexts such as `layout/`) — *landed.* Small, self-contained
   pieces of *interface* state (layout mode, viewport insets, navbar visibility). Never
   holds business or persisted data.

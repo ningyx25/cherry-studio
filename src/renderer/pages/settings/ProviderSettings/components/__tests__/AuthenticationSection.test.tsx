@@ -11,7 +11,7 @@ const providerConnectionCheckDrawerPropsSpy = vi.fn()
 const providerSpecificSettingsPropsSpy = vi.fn()
 const openConnectionCheckMock = vi.fn()
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const actual = await importOriginal<object>()
 
   return {

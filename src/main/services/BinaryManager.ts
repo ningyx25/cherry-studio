@@ -111,11 +111,11 @@ function parseInstallUrl(value: string, setting: string): string | undefined {
   return url.toString().replace(/\/$/, '')
 }
 
-// Ambient PIP_INDEX_URL comes from the user's login shell, not Cherry's install
+// Ambient PIP_INDEX_URL comes from the user's login shell, not HuaTuo's install
 // settings. A non-HTTP value there (e.g. a `file://` index) must not abort the
 // whole isolated-env build and brick every mise operation with a misleading
 // "pip index" error — it is left to pass through unchanged, exactly as an ambient
-// NPM_CONFIG_REGISTRY is. Only Cherry's own explicit setting is strictly
+// NPM_CONFIG_REGISTRY is. Only HuaTuo's own explicit setting is strictly
 // validated (parseInstallUrl throws to surface the user's own misconfiguration).
 function parseAmbientUrl(value: string | undefined, setting: string): string | undefined {
   if (!value) return undefined
@@ -175,7 +175,7 @@ export type ManagedCliInventoryEntry = {
 type FixedToolDefinition = { name: string; tool: string }
 type MiseInstallEntry = { version?: string; active?: boolean; install_path?: string }
 
-// Code-owned catalog of the fixed tools Cherry ships: every Dependencies preset
+// Code-owned catalog of the fixed tools HuaTuo ships: every Dependencies preset
 // executable and every Code CLI executable mapped to its canonical mise recipe.
 // Derived from the two preset sources so their names and recipes stay the single
 // source of truth. Fixed definitions carry no requestedVersion — a version pin is
@@ -314,7 +314,7 @@ export class BinaryManager extends BaseService {
   }
 
   /**
-   * Probe which user-facing predefined tools have a bundled copy in cherry.bin.
+   * Probe which user-facing predefined tools have a bundled copy in huatuo.bin.
    *
    * Bundled tools (bun, uv, rg) ship inside the app and are extracted at boot.
    * The UI uses this to distinguish "available (bundled)" from "managed"
@@ -325,7 +325,7 @@ export class BinaryManager extends BaseService {
    * bundled or hasn't been extracted yet.
    */
   private probeBundled(): Record<string, string | null> {
-    const binDir = application.getPath('cherry.bin')
+    const binDir = application.getPath('huatuo.bin')
     const result: Record<string, string | null> = {}
     // Skip mise (internal infrastructure). Record every shipped executable so
     // aliases such as uvx resolve through the same bundled boundary as uv.
@@ -339,20 +339,20 @@ export class BinaryManager extends BaseService {
   }
 
   /**
-   * Probe which tools resolve on the user's login-shell PATH outside Cherry's
+   * Probe which tools resolve on the user's login-shell PATH outside HuaTuo's
    * managed and bundled directories.
    */
   private async probeSystem(names: string[]): Promise<Record<string, string>> {
     if (names.length === 0) return {}
     const shellEnv = await getRawShellEnv()
-    const cherryDirs = [application.getPath('cherry.bin'), application.getPath('feature.binary.data')]
+    const huatuoDirs = [application.getPath('huatuo.bin'), application.getPath('feature.binary.data')]
 
     const entries = await Promise.all(
       names.map(async (name): Promise<[string, string] | null> => {
         const resolved = isWin
           ? findExecutable(name, { extensions: ['.exe', '.cmd', '.bat'], env: shellEnv })
           : await findCommandInShellEnv(name, shellEnv)
-        if (!resolved || cherryDirs.some((dir) => isPathWithin(dir, resolved))) return null
+        if (!resolved || huatuoDirs.some((dir) => isPathWithin(dir, resolved))) return null
         return [name, resolved]
       })
     )
@@ -547,7 +547,7 @@ export class BinaryManager extends BaseService {
         : name in bundled
           ? {
               source: 'bundled',
-              path: application.getPath('cherry.bin', getBinaryName(name)),
+              path: application.getPath('huatuo.bin', getBinaryName(name)),
               ...(bundled[name] ? { version: bundled[name] } : {})
             }
           : system[name]
@@ -665,7 +665,7 @@ export class BinaryManager extends BaseService {
   private async extractBundledBinaries(): Promise<void> {
     const platformKey = `${process.platform}-${process.arch}`
     const bundledDir = path.join(application.getPath('app.root.resources.binaries'), platformKey)
-    const binDir = application.getPath('cherry.bin')
+    const binDir = application.getPath('huatuo.bin')
     await fsp.mkdir(binDir, { recursive: true })
 
     for (const tool of BUNDLED_TOOLS) {
@@ -728,9 +728,9 @@ export class BinaryManager extends BaseService {
   private findMiseBin(): string | null {
     const binaryName = getBinaryName('mise')
 
-    const cherryBin = path.join(application.getPath('cherry.bin'), binaryName)
-    if (fs.existsSync(cherryBin)) {
-      return cherryBin
+    const huatuoBin = path.join(application.getPath('huatuo.bin'), binaryName)
+    if (fs.existsSync(huatuoBin)) {
+      return huatuoBin
     }
 
     try {
@@ -776,13 +776,13 @@ export class BinaryManager extends BaseService {
     }
 
     // Opt-in GitHub token: users who hit the 60 req/hr unauthenticated API
-    // limit (shared NATs, CI, Codespaces) can set CHERRY_GITHUB_TOKEN to
+    // limit (shared NATs, CI, Codespaces) can set HUATUO_GITHUB_TOKEN to
     // raise it to 5000 req/hr. We deliberately do NOT pick up the ambient
     // GITHUB_TOKEN / GH_TOKEN to avoid forwarding the user's general shell
     // token into mise without consent.
-    const cherryGhToken = process.env['CHERRY_GITHUB_TOKEN']
-    if (cherryGhToken) {
-      env['GITHUB_TOKEN'] = cherryGhToken
+    const huatuoGhToken = process.env['HUATUO_GITHUB_TOKEN']
+    if (huatuoGhToken) {
+      env['GITHUB_TOKEN'] = huatuoGhToken
     }
     if (installSettings.githubToken) env['GITHUB_TOKEN'] = installSettings.githubToken
 

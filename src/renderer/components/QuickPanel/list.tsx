@@ -1,5 +1,5 @@
-import { Flex } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Flex } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { t } from 'i18next'
 import { Check, ChevronRight } from 'lucide-react'
 import type { ReactNode, Ref } from 'react'

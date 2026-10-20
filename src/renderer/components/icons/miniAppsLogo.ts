@@ -1,10 +1,10 @@
 // [v2] TODO: The legacy app/model/provider PNG/WebP logos were removed by the icon-system
-// overhaul (#12858). Mini-apps map to brand icon refs from @cherrystudio/ui/icons as a
+// overhaul (#12858). Mini-apps map to brand icon refs from @huatuostudio/ui/icons as a
 // stop-gap. A proper design should decouple mini-app icon resolution (e.g. a dedicated
 // registry) rather than hard-coding catalog keys here.
 
-import type { CompoundIcon } from '@cherrystudio/ui'
-import { type IconRef, modelIconRef, providerIconRef, useIcon } from '@cherrystudio/ui/icons'
+import type { CompoundIcon } from '@huatuostudio/ui'
+import { type IconRef, modelIconRef, providerIconRef, useIcon } from '@huatuostudio/ui/icons'
 
 /**
  * Mini-app logo id → exact catalog ref. Keys are compile-time checked against

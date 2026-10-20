@@ -1,19 +1,19 @@
 import { CallToolResultSchema } from '@modelcontextprotocol/sdk/types.js'
 import type { McpToolResponse, NormalToolResponse } from '@renderer/types/mcpTool'
 import { isDeferredToolOutput } from '@shared/ai/transport'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 
 import { buildToolResponseFromPart } from './toolResponse'
 
-const CONFIG_TOOL_NAMES = new Set(['config', 'mcp__cherry-tools__config'])
+const CONFIG_TOOL_NAMES = new Set(['config', 'mcp__huatuo-tools__config'])
 
 type ChannelConfigToolResponse = McpToolResponse | NormalToolResponse
 
 function isChannelConfigTool(toolResponse: ChannelConfigToolResponse): boolean {
   const { tool } = toolResponse
-  const isCherryTools =
-    ('serverId' in tool && tool.serverId === 'cherry-tools') || tool.name === 'mcp__cherry-tools__config'
-  return tool.type === 'mcp' && isCherryTools && CONFIG_TOOL_NAMES.has(tool.name)
+  const isHuaTuoTools =
+    ('serverId' in tool && tool.serverId === 'huatuo-tools') || tool.name === 'mcp__huatuo-tools__config'
+  return tool.type === 'mcp' && isHuaTuoTools && CONFIG_TOOL_NAMES.has(tool.name)
 }
 
 function isChannelAuthQrRequest(toolResponse: ChannelConfigToolResponse): boolean {
@@ -51,7 +51,7 @@ export function isChannelAuthQrToolResponse(
   return getChannelAuthQrResult(toolResponse) !== null
 }
 
-export function isChannelAuthQrPart(part: CherryMessagePart): boolean {
+export function isChannelAuthQrPart(part: HuaTuoMessagePart): boolean {
   const toolResponse = buildToolResponseFromPart(part)
   if (!toolResponse || !isChannelAuthQrRequest(toolResponse)) return false
   return isDeferredToolOutput(toolResponse.response) || getChannelAuthQrResult(toolResponse) !== null

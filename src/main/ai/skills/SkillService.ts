@@ -41,7 +41,7 @@ const CLAUDE_PLUGINS_API = 'https://api.claude-plugins.dev'
 const MAX_EXTRACTED_SIZE = 100 * 1024 * 1024 // 100MB
 const MAX_FILES_COUNT = 1000
 const MAX_FOLDER_NAME_LENGTH = 80
-const SKILLS_PLUGIN_MANIFEST = `${JSON.stringify({ name: 'cherry-studio-skills' }, null, 2)}\n`
+const SKILLS_PLUGIN_MANIFEST = `${JSON.stringify({ name: 'huatuo-studio-skills' }, null, 2)}\n`
 const BUILTIN_VERSION_FILE = '.version'
 
 function isOutsidePath(relativePath: string): boolean {
@@ -417,7 +417,7 @@ export class SkillService {
    * live under `.claude/skills/`. Those entries can be real directories or
    * user-created symlinks to directories.
    *
-   * Cherry-managed skills also appear under `.claude/skills/` as app-owned mirror
+   * HuaTuo-managed skills also appear under `.claude/skills/` as app-owned mirror
    * entries when enabled for Claude SDK discovery, but their source of truth is
    * `agent_global_skill` and they are rendered by `list({ agentId })`. Keep
    * them out of this local-only list.
@@ -531,7 +531,7 @@ export class SkillService {
     const detailUrl = new URL(`https://clawhub.ai/api/v1/skills/${encodeURIComponent(slug)}`)
     detailUrl.searchParams.set('ownerHandle', ownerHandle)
     const detailResp = await net.fetch(detailUrl.toString(), {
-      headers: { 'User-Agent': 'CherryStudio' }
+      headers: { 'User-Agent': 'HuaTuoStudio' }
     })
 
     if (!detailResp.ok) {
@@ -555,7 +555,7 @@ export class SkillService {
     downloadUrl.searchParams.set('slug', slug)
     downloadUrl.searchParams.set('ownerHandle', ownerHandle)
     const downloadResp = await net.fetch(downloadUrl.toString(), {
-      headers: { 'User-Agent': 'CherryStudio' }
+      headers: { 'User-Agent': 'HuaTuoStudio' }
     })
 
     if (!downloadResp.ok) {
@@ -1026,7 +1026,7 @@ export class SkillService {
    * CLAUDE_CONFIG_DIR/skills mirror. The filesystem is the source of truth for
    * user-authored skills; builtins remain owned by the bundled source and are never
    * reclassified from direct filesystem writes. Agents write new skills directly to the
-   * managed library exposed by CHERRY_STUDIO_SKILLS_DIR; reconcile projects that library
+   * managed library exposed by HUATUO_STUDIO_SKILLS_DIR; reconcile projects that library
    * into the catalog and the read-only Claude config mirror.
    *
    * 1. library → DB: adopt newly-present library skills, refresh changed ones, and
@@ -1489,7 +1489,7 @@ export class SkillService {
         await fs.promises.writeFile(path.join(destPath, BUILTIN_VERSION_FILE), appVersion, 'utf-8')
       }
 
-      // Builtin contentHash is the trusted full-directory hash (excluding Cherry's version marker),
+      // Builtin contentHash is the trusted full-directory hash (excluding HuaTuo's version marker),
       // unlike authored skills whose hash tracks SKILL.md metadata changes.
       if (existing && !filesUpdated && existing.contentHash === sourceHash) return false
 

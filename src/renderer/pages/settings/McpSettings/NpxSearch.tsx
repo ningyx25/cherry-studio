@@ -1,5 +1,5 @@
-import { Badge, Button, Center, Flex, Input, RowFlex, Spinner } from '@cherrystudio/ui'
-import logo from '@renderer/assets/images/cherry-text-logo.svg'
+import { Badge, Button, Center, Flex, Input, RowFlex, Spinner } from '@huatuostudio/ui'
+import logo from '@renderer/assets/images/huatuo-text-logo.svg'
 import { useMcpServers } from '@renderer/hooks/useMcpServer'
 import { toast } from '@renderer/services/toast'
 import { getMcpConfigSampleFromReadme } from '@renderer/utils/mcp'

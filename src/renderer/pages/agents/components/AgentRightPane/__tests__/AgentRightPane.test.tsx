@@ -1,7 +1,7 @@
 import type * as ArtifactPanePath from '@renderer/components/chat/panes/artifactPanePath'
 import { useRightPanelState } from '@renderer/components/chat/panes/Shell'
 import type * as ChatPrimitives from '@renderer/components/chat/primitives'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import type { PhysicalFileMetadata } from '@shared/types/file'
 import { TreeDir, TreeDirRoot, TreeFile } from '@shared/utils/file'
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
@@ -75,7 +75,7 @@ vi.mock('../agentRightPaneProjection', async (importActual) => {
   }
 })
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Badge: ({ children }: PropsWithChildren) => <span>{children}</span>,
   Button: ({ children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { children: ReactNode }) => (
     <button type="button" {...props}>
@@ -463,9 +463,9 @@ function renderStatusTasks(tasks: StatusTaskFixture[], { openPanel = true }: { o
           taskType: task.taskType,
           toolUseId: task.toolUseId
         }
-      }) as unknown as CherryMessagePart
+      }) as unknown as HuaTuoMessagePart
   )
-  const messages = [{ id: 'm1', role: 'assistant', parts, metadata: { status: 'pending' } }] as CherryUIMessage[]
+  const messages = [{ id: 'm1', role: 'assistant', parts, metadata: { status: 'pending' } }] as HuaTuoUIMessage[]
 
   render(
     <TestAgentRightPane sessionId="session-a" messages={messages} partsByMessageId={{ m1: parts }}>
@@ -788,8 +788,8 @@ describe('AgentRightPane', () => {
       state: 'output-available',
       input: { prompt: 'Inspect the workspace' },
       output: { $deferredToolResult: deferredToolResult }
-    } as unknown as CherryMessagePart
-    const messages = [{ id: 'm1', role: 'assistant', parts: [flowPart], metadata: {} }] as CherryUIMessage[]
+    } as unknown as HuaTuoMessagePart
+    const messages = [{ id: 'm1', role: 'assistant', parts: [flowPart], metadata: {} }] as HuaTuoUIMessage[]
 
     render(
       <TestAgentRightPane
@@ -956,8 +956,8 @@ describe('AgentRightPane', () => {
       toolName: 'task',
       state: 'input-available',
       input: { prompt: 'Inspect the workspace' }
-    } as unknown as CherryMessagePart
-    const messages = [{ id: 'm1', role: 'assistant', parts: [flowPart], metadata: {} }] as CherryUIMessage[]
+    } as unknown as HuaTuoMessagePart
+    const messages = [{ id: 'm1', role: 'assistant', parts: [flowPart], metadata: {} }] as HuaTuoUIMessage[]
     const { rerender } = render(
       <TestAgentRightPane
         sessionId="session-a"
@@ -1043,8 +1043,8 @@ describe('AgentRightPane', () => {
           usage: { totalTokens: 1200, toolUses: 4, durationMs: 9000 }
         }
       }
-    ] as unknown as CherryMessagePart[]
-    const messages = [{ id: 'm1', role: 'assistant', parts, metadata: { status: 'pending' } }] as CherryUIMessage[]
+    ] as unknown as HuaTuoMessagePart[]
+    const messages = [{ id: 'm1', role: 'assistant', parts, metadata: { status: 'pending' } }] as HuaTuoUIMessage[]
 
     render(
       <TestAgentRightPane sessionId="session-a" messages={messages} partsByMessageId={{ m1: parts }}>
@@ -1171,7 +1171,7 @@ describe('AgentRightPane', () => {
       </TestAgentRightPane>
     )
     const callsAfterMount = useArtifactFileTreeModelMock.mock.calls.length
-    const messages = [{ id: 'm1', role: 'user', parts: [], metadata: {} }] as CherryUIMessage[]
+    const messages = [{ id: 'm1', role: 'user', parts: [], metadata: {} }] as HuaTuoUIMessage[]
 
     rerender(
       <TestAgentRightPane

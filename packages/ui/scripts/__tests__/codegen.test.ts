@@ -8,7 +8,7 @@ import { generateAvatar, generateIconIndex } from '../codegen'
 
 describe('generateAvatar', () => {
   it('renders neutral-background icons at the full avatar size', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'cherry-ui-codegen-'))
+    const dir = mkdtempSync(join(tmpdir(), 'huatuo-ui-codegen-'))
     const outPath = join(dir, 'avatar.tsx')
 
     try {
@@ -21,7 +21,7 @@ describe('generateAvatar', () => {
 
       const content = readFileSync(outPath, 'utf-8')
       expect(content).toMatch(
-        /import \{ Avatar, AvatarFallback \} from '@cherrystudio\/ui\/components\/primitives\/avatar';?\nimport \{ cn \} from '@cherrystudio\/ui\/lib\/utils';?\n\nimport \{ type IconAvatarProps \} from '\.\.\/\.\.\/types';?/
+        /import \{ Avatar, AvatarFallback \} from '@huatuostudio\/ui\/components\/primitives\/avatar';?\nimport \{ cn \} from '@huatuostudio\/ui\/lib\/utils';?\n\nimport \{ type IconAvatarProps \} from '\.\.\/\.\.\/types';?/
       )
       expect(content).toMatch(/<ExampleLight[\s\S]*?style=\{\{ width: size, height: size \}\}/)
       expect(content).not.toContain('size * 0.6')
@@ -33,7 +33,7 @@ describe('generateAvatar', () => {
   })
 
   it('renders full-bleed icons at the full avatar size', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'cherry-ui-codegen-'))
+    const dir = mkdtempSync(join(tmpdir(), 'huatuo-ui-codegen-'))
     const outPath = join(dir, 'avatar.tsx')
 
     try {
@@ -55,7 +55,7 @@ describe('generateAvatar', () => {
   })
 
   it.each(['Hunyuan', 'Kwaipilot', 'Spark'])('renders the selected full-bleed %s icon at full size', (colorName) => {
-    const dir = mkdtempSync(join(tmpdir(), 'cherry-ui-codegen-'))
+    const dir = mkdtempSync(join(tmpdir(), 'huatuo-ui-codegen-'))
     const outPath = join(dir, 'avatar.tsx')
 
     try {
@@ -77,7 +77,7 @@ describe('generateAvatar', () => {
 
 describe('generateIconIndex', () => {
   it('applies text-foreground to currentColor single-source logos', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'cherry-ui-codegen-'))
+    const dir = mkdtempSync(join(tmpdir(), 'huatuo-ui-codegen-'))
     const outPath = join(dir, 'index.tsx')
 
     try {

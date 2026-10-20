@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest'
 import { isAppRendererUrl, validateSender } from '../validateSender'
 
 // A representative packaged app root (asar bundle); the renderer entry lives under it.
-const APP_ROOT = '/Applications/CherryStudio.app/Contents/Resources/app.asar'
+const APP_ROOT = '/Applications/HuaTuoStudio.app/Contents/Resources/app.asar'
 
 describe('isAppRendererUrl', () => {
   it('trusts a packaged app page whose file path is inside the app root', () => {
@@ -17,7 +17,7 @@ describe('isAppRendererUrl', () => {
   })
 
   it('trusts a packaged app page when the launch path reaches the app through a directory link', () => {
-    const fixtureRoot = mkdtempSync(join(tmpdir(), 'cherry-sender-link-'))
+    const fixtureRoot = mkdtempSync(join(tmpdir(), 'huatuo-sender-link-'))
     const realProgramsDir = join(fixtureRoot, 'real-programs')
     const linkedProgramsDir = join(fixtureRoot, 'linked-programs')
     const appRootFromLaunchPath = join(linkedProgramsDir, 'HuaTuo Studio', 'resources', 'app.asar')

@@ -19,8 +19,8 @@ function response(output: unknown): NormalToolResponse {
     id: 'config-call',
     toolCallId: 'config-call',
     tool: {
-      id: 'mcp__cherry-tools__config',
-      name: 'mcp__cherry-tools__config',
+      id: 'mcp__huatuo-tools__config',
+      name: 'mcp__huatuo-tools__config',
       type: 'mcp'
     },
     arguments: { action: 'add_channel', type: 'wechat', name: 'WeChat', auth_mode: 'qr' },

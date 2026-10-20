@@ -610,9 +610,9 @@
     {
       "targetKey": "menu.presentation_mode",
       "type": "PreferenceTypes.MenuPresentationMode",
-      "defaultValue": "cherry",
+      "defaultValue": "huatuo",
       "status": "classified",
-      "description": "Global menu presentation mode: native system menus or Cherry custom menus"
+      "description": "Global menu presentation mode: native system menus or HuaTuo custom menus"
     }
   ]
 }

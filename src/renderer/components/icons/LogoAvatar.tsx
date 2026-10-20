@@ -1,5 +1,5 @@
-import type { CompoundIcon } from '@cherrystudio/ui'
-import { Avatar, AvatarImage } from '@cherrystudio/ui'
+import type { CompoundIcon } from '@huatuostudio/ui'
+import { Avatar, AvatarImage } from '@huatuostudio/ui'
 import type { FC } from 'react'
 
 interface Props {

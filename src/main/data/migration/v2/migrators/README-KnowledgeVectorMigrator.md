@@ -16,7 +16,7 @@ The source reader is initialized by `MigrationContext` with `ctx.paths.knowledge
 ## Target Storage
 
 - Per-base 7-table index store at the migrated base's runtime path:
-  `{knowledgeBaseDir}/{migratedBaseId}/.cherry/index.sqlite`
+  `{knowledgeBaseDir}/{migratedBaseId}/.huatuo/index.sqlite`
 - Built through `createKnowledgeIndexStoreAtPath` — the same factory the runtime
   (`KnowledgeVectorStoreService`) opens its stores with (driver → schema → `ensureIndexMeta` →
   `KnowledgeIndexStore`) — then `KnowledgeIndexStore.rebuildMaterial` per item, so the migrated
@@ -117,7 +117,7 @@ the projection and vectors in ≤500-rowid batches — a 501-chunk item must arr
 ## File-Safety Contract
 
 - The migrator builds each rebuilt store **directly** at its runtime path
-  (`{migratedBaseId}/.cherry/index.sqlite`) — no temp file, no rename. The rename
+  (`{migratedBaseId}/.huatuo/index.sqlite`) — no temp file, no rename. The rename
   was the migration's most fragile step on Windows: a SQLite store opened in WAL
   mode can keep the file locked past `close()`
   (`wal_checkpoint(TRUNCATE)`, `PERSIST_WAL` and multi-second waits do not reliably
@@ -151,7 +151,7 @@ the projection and vectors in ≤500-rowid batches — a 501-chunk item must arr
   snapshot this migrator wrote but never pinned, so a since-dead link is not recoverable.
 - The v1 legacy embedjs DB (`{knowledgeBaseDir}/{legacyBaseId}`) is **never**
   moved or deleted. Each migrated base gets a new uuid, so the rebuilt V2 store
-  lives under a different path (`{migratedBaseId}/.cherry/index.sqlite`) and never
+  lives under a different path (`{migratedBaseId}/.huatuo/index.sqlite`) and never
   collides with the legacy flat path — the legacy source needs no relocation. A
   user who rolls back to v1 after a failed, abandoned, or even successful
   migration keeps a working knowledge base.

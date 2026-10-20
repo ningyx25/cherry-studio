@@ -1,5 +1,5 @@
-import { Flex, InfoTooltip, Input, Switch } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Flex, InfoTooltip, Input, Switch } from '@huatuostudio/ui'
 import CopyButton from '@renderer/components/CopyButton'
 import Selector from '@renderer/components/Selector'
 import {

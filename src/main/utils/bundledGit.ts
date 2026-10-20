@@ -11,7 +11,7 @@ import { toAsarUnpackedPath } from './asar'
  * to git.exe when present, or null (dev on non-Windows, or missing bundle).
  *
  * MinGit is a multi-file tree run in place from resources (not copied into
- * cherry.bin), so this resolves through the asar.unpacked layout in production.
+ * huatuo.bin), so this resolves through the asar.unpacked layout in production.
  */
 export function getBundledGitPath(): string | null {
   if (!isWin) {

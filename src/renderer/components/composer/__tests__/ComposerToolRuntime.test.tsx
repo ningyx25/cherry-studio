@@ -41,7 +41,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Tooltip: ({ children, content, isOpen }: any) => (
     <div
       data-testid="composer-tool-tooltip"

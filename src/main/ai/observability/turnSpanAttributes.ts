@@ -4,7 +4,7 @@ import { parseUniqueModelId, type UniqueModelId } from '@shared/data/types/model
 import { KB } from '@shared/utils/constants'
 import type { UIMessage } from 'ai'
 
-import type { CherryUIMessage } from '../streamManager'
+import type { HuaTuoUIMessage } from '../streamManager'
 
 const logger = loggerService.withContext('turnSpanAttributes')
 
@@ -50,7 +50,7 @@ export function applyTurnInputAttributes(span: Span, info: TurnInputInfo): void 
   }
 }
 
-export function applyTurnOutputAttributes(span: Span, finalMessage: CherryUIMessage): void {
+export function applyTurnOutputAttributes(span: Span, finalMessage: HuaTuoUIMessage): void {
   try {
     const text = partsText(finalMessage.parts)
     if (text) span.setAttribute('outputs', truncate(text, MAX_CONTENT_CHARS))

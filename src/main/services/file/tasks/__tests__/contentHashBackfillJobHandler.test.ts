@@ -50,7 +50,7 @@ describe('contentHashBackfillJobHandler', () => {
 
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-content-hash-backfill-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-content-hash-backfill-'))
     filesDir = path.join(tmp, 'Files')
     await mkdir(filesDir, { recursive: true })
     vi.spyOn(application, 'getPath').mockImplementation((key: string, filename?: string) => {

@@ -17,7 +17,7 @@ describe('assertOutsideManagedStorageMutation', () => {
   let managedRoot: string
 
   beforeEach(async () => {
-    root = await mkdtemp(path.join(tmpdir(), 'cherry-managed-storage-guard-'))
+    root = await mkdtemp(path.join(tmpdir(), 'huatuo-managed-storage-guard-'))
     managedRoot = path.join(root, 'Data', 'Files')
     await mkdir(managedRoot, { recursive: true })
     vi.spyOn(application, 'getPath').mockImplementation((key: string) => {

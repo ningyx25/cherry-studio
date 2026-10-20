@@ -72,7 +72,7 @@ Variants registered today (declared in each provider extension's
 | `openai` | `openai-chat` (the base `openai` is itself the Responses API) |
 | `azure` | `azure-responses`, `azure-anthropic` |
 | `xai` | `xai-responses` |
-| `cherryin` | `cherryin-chat` |
+| `huatuoin` | `huatuoin-chat` |
 
 `ollama` has no registered variant, so an `ollama-chat` endpoint resolves
 to the base `ollama`. Likewise there is **no `openai-responses` variant**
@@ -97,18 +97,18 @@ The builder table (`config.ts`, first match wins):
 | Match | Builder | Notes |
 |---|---|---|
 | `id === copilot` | `buildCopilotConfig` | async — fetches a Copilot token |
-| `id === 'cherryai'` | `buildCherryAIConfig` | |
+| `id === 'huatuoai'` | `buildHuaTuoAIConfig` | |
 | `isOllamaProvider` | `buildOllamaConfig` | |
 | `isAzureOpenAIProvider` | `buildAzureConfig` | returns `azure` / `azure-responses` / `azure-anthropic` (Claude on Azure) |
 | `id === 'bedrock'` | `buildBedrockConfig` | |
 | `id === 'google-vertex'` | `buildVertexConfig` | returns `google-vertex` or `google-vertex-anthropic` for Claude; leaves `baseURL` undefined when no host is configured so the SDK derives the aiplatform host |
-| `provider.id === 'cherryin'` | `buildCherryinConfig` | matches the **provider id**, not the resolved variant — the default chat endpoint resolves to `cherryin-chat`, so an `id === 'cherryin'` check never fires; async — resolves relay base URLs |
+| `provider.id === 'huatuoin'` | `buildHuaTuoInConfig` | matches the **provider id**, not the resolved variant — the default chat endpoint resolves to `huatuoin-chat`, so an `id === 'huatuoin'` check never fires; async — resolves relay base URLs |
 | `id === 'newapi'` | `buildNewApiConfig` | |
 | `id === 'aihubmix'` | `buildAiHubMixConfig` | passes the Chat, Responses, Anthropic, and Gemini URLs independently |
 | `id === 'dmxapi'` | `buildDmxapiConfig` | passes the Chat, Anthropic, and Gemini URLs independently |
 | _(no match)_ | `buildGenericProviderConfig` / `buildOpenAICompatibleConfig` | generic fallback |
 
-Several builders are `async` (Copilot token, CherryIN relay URLs), which is
+Several builders are `async` (Copilot token, HuaTuoIN relay URLs), which is
 why `providerToAiSdkConfig` returns a promise.
 
 ## Custom providers
@@ -128,7 +128,7 @@ All three register through `ProviderExtension.create(...)` with their own
 ## Provider extensions
 
 `src/main/ai/provider/extensions.ts` registers every
-`@ai-sdk/*` package Cherry uses with `ProviderExtension.create`. Each
+`@ai-sdk/*` package HuaTuo uses with `ProviderExtension.create`. Each
 extension declares:
 
 - `name` (the `AppProviderId` for the base)

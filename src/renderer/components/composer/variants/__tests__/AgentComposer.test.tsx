@@ -3363,7 +3363,7 @@ describe('AgentComposer', () => {
               type: 'text',
               text: 'Use the pdf skill.',
               providerMetadata: {
-                cherry: {
+                huatuo: {
                   composer: {
                     version: 1,
                     tokens: [
@@ -3443,7 +3443,7 @@ describe('AgentComposer', () => {
               mediaType: 'text/markdown',
               filename: 'notes.md',
               providerMetadata: {
-                cherry: {
+                huatuo: {
                   fileTokenSourceId: 'source-workspace-file-1'
                 }
               }
@@ -3587,7 +3587,7 @@ describe('AgentComposer', () => {
               mediaType: 'text/markdown',
               filename: 'notes.md',
               providerMetadata: {
-                cherry: {
+                huatuo: {
                   fileTokenSourceId: 'source-workspace-file-1'
                 }
               }
@@ -3669,7 +3669,7 @@ describe('AgentComposer', () => {
               type: 'text',
               text: 'hello',
               providerMetadata: {
-                cherry: {
+                huatuo: {
                   composer: {
                     version: 1,
                     tokens: [
@@ -3692,7 +3692,7 @@ describe('AgentComposer', () => {
               mediaType: 'text/markdown',
               filename: 'notes.md',
               providerMetadata: {
-                cherry: {
+                huatuo: {
                   fileEntryId: 'fe-1',
                   fileTokenSourceId: 'source-file-1'
                 }
@@ -4496,7 +4496,7 @@ describe('AgentComposer', () => {
             id: 'system-workspace-1',
             type: 'system',
             name: 'agent.session.workspace_selector.no_project',
-            path: '/Users/jd/Library/Application Support/CherryStudioDev/Data/Agents/system-workspace-1'
+            path: '/Users/jd/Library/Application Support/HuaTuoStudioDev/Data/Agents/system-workspace-1'
           }
         }}
         sendMessage={mocks.sendMessage}

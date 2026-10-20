@@ -8,26 +8,26 @@
  * never synthesise UIMessages or repeat projection logic.
  */
 
-import type { CherryMessagePart, CherryUIMessage, MessageRuntimeStatsInput } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage, MessageRuntimeStatsInput } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import {
   type AgentTaskEventPartData,
-  type CherryReasoningMeta,
-  readCherryMeta,
-  withCherryMeta
+  type HuaTuoReasoningMeta,
+  readHuaTuoMeta,
+  withHuaTuoMeta
 } from '@shared/data/types/uiParts'
 
 const TERMINAL_TOOL_STATES: ReadonlySet<string> = new Set(['output-available', 'output-error', 'output-denied'])
 
-function isToolPart(part: CherryMessagePart): boolean {
+function isToolPart(part: HuaTuoMessagePart): boolean {
   const t = part.type
   return t.startsWith('tool-') || t === 'dynamic-tool'
 }
 
 export function finalizeInterruptedParts(
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   status: 'success' | 'paused' | 'error'
-): CherryMessagePart[] {
+): HuaTuoMessagePart[] {
   if (status === 'success') return parts
   const interruptionReason = status === 'paused' ? 'Interrupted by user' : 'Stream errored'
   const taskError = status === 'paused' ? interruptionReason : `${interruptionReason} before task completed`
@@ -35,11 +35,11 @@ export function finalizeInterruptedParts(
   return parts.map((part) => {
     if (part.type === 'reasoning') {
       if (part.state === 'streaming') {
-        const cherry = readCherryMeta(part)
-        const startedAt = cherry?.startedAt
-        const thinkingMs = cherry?.thinkingMs
+        const huatuo = readHuaTuoMeta(part)
+        const startedAt = huatuo?.startedAt
+        const thinkingMs = huatuo?.thinkingMs
 
-        let patch: Partial<CherryReasoningMeta> = {}
+        let patch: Partial<HuaTuoReasoningMeta> = {}
         if (typeof startedAt === 'number' && Number.isFinite(startedAt) && !Number.isFinite(thinkingMs)) {
           patch = {
             thinkingMs: Math.max(0, Date.now() - startedAt)
@@ -48,7 +48,7 @@ export function finalizeInterruptedParts(
 
         // TODO(stream-manager-redesign): AI SDK's ReasoningUIPart currently only supports 'streaming' | 'done'.
         // Investigate expanding the state machine with an 'error' terminal state.
-        return withCherryMeta(
+        return withHuaTuoMeta(
           {
             ...part,
             state: 'done'
@@ -60,7 +60,7 @@ export function finalizeInterruptedParts(
     }
 
     if (part.type === 'data-agent-task-event') {
-      const taskPart = part as CherryMessagePart & { data: AgentTaskEventPartData }
+      const taskPart = part as HuaTuoMessagePart & { data: AgentTaskEventPartData }
       if (taskPart.data.status !== 'in_progress') return part
       return {
         ...taskPart,
@@ -69,17 +69,17 @@ export function finalizeInterruptedParts(
           status: 'error',
           error: taskPart.data.error ?? taskError
         }
-      } as CherryMessagePart
+      } as HuaTuoMessagePart
     }
 
     if (!isToolPart(part)) return part
-    const toolPart = part as CherryMessagePart & { state?: string; errorText?: string }
+    const toolPart = part as HuaTuoMessagePart & { state?: string; errorText?: string }
     if (toolPart.state && TERMINAL_TOOL_STATES.has(toolPart.state)) return part
     return {
       ...toolPart,
       state: 'output-error',
       errorText: toolPart.errorText ?? toolError
-    } as CherryMessagePart
+    } as HuaTuoMessagePart
   })
 }
 
@@ -92,7 +92,7 @@ export function finalizeInterruptedParts(
  * Returns the original array by reference when nothing is dropped, so a clean
  * turn keeps a stable identity (matching `finalizeInterruptedParts`).
  */
-export function dropEmptyContentParts(parts: CherryMessagePart[]): CherryMessagePart[] {
+export function dropEmptyContentParts(parts: HuaTuoMessagePart[]): HuaTuoMessagePart[] {
   const filtered = parts.filter((part) => {
     if (part.type !== 'text' && part.type !== 'reasoning') return true
     return part.text.trim().length > 0
@@ -102,7 +102,7 @@ export function dropEmptyContentParts(parts: CherryMessagePart[]): CherryMessage
 
 export interface PersistAssistantInput {
   /** Undefined when the stream errored before producing any chunks. */
-  finalMessage?: CherryUIMessage
+  finalMessage?: HuaTuoUIMessage
   status: 'success' | 'paused' | 'error'
   /** Set when the topic is multi-model. */
   modelId?: UniqueModelId
@@ -130,5 +130,5 @@ export interface PersistenceBackend {
   markTerminalError?(): void
 
   /** Best-effort post-success hook; failures are swallowed by the listener. */
-  afterPersist?(finalMessage: CherryUIMessage): Promise<void>
+  afterPersist?(finalMessage: HuaTuoUIMessage): Promise<void>
 }

@@ -1,4 +1,4 @@
-import { Tooltip } from '@cherrystudio/ui'
+import { Tooltip } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { BackToMainWindowIcon } from '@renderer/components/icons/WindowIcons'
 import NavbarIcon from '@renderer/components/NavbarIcon'

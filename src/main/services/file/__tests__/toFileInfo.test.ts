@@ -18,7 +18,7 @@ describe('toFileInfo', () => {
   let internalRoot: string
 
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-tofileinfo-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-tofileinfo-'))
     internalRoot = path.join(tmp, 'files-internal')
     await mkdir(internalRoot, { recursive: true })
     vi.mocked(application.getPath).mockImplementation((key: string, filename?: string) => {

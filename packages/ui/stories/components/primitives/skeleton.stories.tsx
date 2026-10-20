@@ -1,4 +1,4 @@
-import { Skeleton } from '@cherrystudio/ui'
+import { Skeleton } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof Skeleton> = {

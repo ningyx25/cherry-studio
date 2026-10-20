@@ -1,4 +1,4 @@
-import { Input } from '@cherrystudio/ui'
+import { Input } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Mail, Search, User } from 'lucide-react'
 import { useState } from 'react'
@@ -494,7 +494,7 @@ export const FormExample: Story = {
 export const SearchExample: Story = {
   render: function SearchExample() {
     const [query, setQuery] = useState('')
-    const items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 'Fig', 'Grape']
+    const items = ['Apple', 'Banana', 'HuaTuo', 'Date', 'Elderberry', 'Fig', 'Grape']
     const filtered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()))
 
     return (

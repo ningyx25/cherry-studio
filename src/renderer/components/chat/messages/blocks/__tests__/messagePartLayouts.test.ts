@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -9,7 +9,7 @@ import {
 } from '../messagePartLayouts'
 
 function entries(parts: readonly Record<string, unknown>[]): PartEntry[] {
-  return parts.map((part, index) => ({ part: part as CherryMessagePart, index }))
+  return parts.map((part, index) => ({ part: part as HuaTuoMessagePart, index }))
 }
 
 function indexes(items: readonly PartEntry[]): number[] {
@@ -204,7 +204,7 @@ describe('projectLiveMessageParts', () => {
         {
           type: 'dynamic-tool',
           toolCallId: 'channel-auth',
-          toolName: 'mcp__cherry-tools__config',
+          toolName: 'mcp__huatuo-tools__config',
           state: 'output-available',
           input: { action: 'add_channel', type: 'wechat', auth_mode: 'qr' },
           output: {
@@ -212,7 +212,7 @@ describe('projectLiveMessageParts', () => {
               { type: 'text', text: 'Scan this QR code' },
               { type: 'image', data: 'BASE64', mimeType: 'image/png' }
             ],
-            metadata: { type: 'mcp', serverId: 'cherry-tools', serverName: 'cherry-tools' }
+            metadata: { type: 'mcp', serverId: 'huatuo-tools', serverName: 'huatuo-tools' }
           }
         }
       ])
@@ -455,7 +455,7 @@ describe('projectCompletedMessageParts', () => {
         {
           type: 'dynamic-tool',
           toolCallId: 'channel-auth',
-          toolName: 'mcp__cherry-tools__config',
+          toolName: 'mcp__huatuo-tools__config',
           state: 'output-available',
           input: { action: 'add_channel', type: 'wechat', auth_mode: 'qr' },
           output: {
@@ -463,7 +463,7 @@ describe('projectCompletedMessageParts', () => {
               { type: 'text', text: 'Scan this QR code' },
               { type: 'image', data: 'BASE64', mimeType: 'image/png' }
             ],
-            metadata: { type: 'mcp', serverId: 'cherry-tools', serverName: 'cherry-tools' }
+            metadata: { type: 'mcp', serverId: 'huatuo-tools', serverName: 'huatuo-tools' }
           }
         }
       ])
@@ -480,7 +480,7 @@ describe('projectCompletedMessageParts', () => {
         {
           type: 'dynamic-tool',
           toolCallId: 'channel-auth',
-          toolName: 'mcp__cherry-tools__config',
+          toolName: 'mcp__huatuo-tools__config',
           state: 'output-available',
           input: { action: 'add_channel', type: 'feishu', auth_mode: 'qr' },
           output: {
@@ -545,7 +545,7 @@ describe('projectCompletedMessageParts', () => {
         {
           type: 'dynamic-tool',
           toolCallId: 'report',
-          toolName: 'mcp__cherry__report_artifacts',
+          toolName: 'mcp__huatuo__report_artifacts',
           state: 'output-available'
         },
         { type: 'file', mediaType: 'text/markdown', url: 'file:///report.md' }

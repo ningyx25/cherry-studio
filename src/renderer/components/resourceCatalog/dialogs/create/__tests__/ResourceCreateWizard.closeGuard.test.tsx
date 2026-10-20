@@ -76,11 +76,11 @@ vi.mock('../steps/PersonaStep', () => ({
 }))
 vi.mock('../steps/CapabilityStep', () => ({ CapabilityStep: () => <div /> }))
 
-vi.mock('@cherrystudio/ui/lib/utils', () => ({
+vi.mock('@huatuostudio/ui/lib/utils', () => ({
   cn: (...args: unknown[]) => args.filter(Boolean).join(' ')
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await vi.importActual<typeof ReactModule>('react')
   type TestDialogRef = ((instance: HTMLDivElement | null) => void) | { current: HTMLDivElement | null } | null
 

@@ -16,7 +16,7 @@ vi.mock('@renderer/ipc', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui/lib/utils', () => ({
+vi.mock('@huatuostudio/ui/lib/utils', () => ({
   cn: (...classNames: Array<string | false | null | undefined>) => classNames.filter(Boolean).join(' ')
 }))
 
@@ -57,7 +57,7 @@ vi.mock('../KnowledgeEmbeddingModelSelect', () => ({
   )
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
   const SelectContext = React.createContext<{ onValueChange?: (value: string) => void }>({})
 

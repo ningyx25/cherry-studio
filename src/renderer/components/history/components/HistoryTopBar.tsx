@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import { Trash2, X } from 'lucide-react'
 import { type ReactNode, useState } from 'react'

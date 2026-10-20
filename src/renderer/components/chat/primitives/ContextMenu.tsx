@@ -15,4 +15,4 @@ export {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'

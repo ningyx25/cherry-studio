@@ -7,34 +7,34 @@
  * The function is pure, so it is tested directly with no mocks.
  */
 
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { dropEmptyContentParts, finalizeInterruptedParts } from '../PersistenceBackend'
 
 // AI SDK tool-call UIMessagePart shapes. The non-terminal states the helper
 // targets are anything NOT in {output-available, output-error, output-denied}.
-function inProgressToolPart(state: 'input-streaming' | 'input-available'): CherryMessagePart {
+function inProgressToolPart(state: 'input-streaming' | 'input-available'): HuaTuoMessagePart {
   return {
     type: 'tool-search',
     toolCallId: 'tc-1',
     toolName: 'search',
     state,
     input: { q: 'hello' }
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
-function inProgressDynamicToolPart(): CherryMessagePart {
+function inProgressDynamicToolPart(): HuaTuoMessagePart {
   return {
     type: 'dynamic-tool',
     toolCallId: 'tc-dyn',
     toolName: 'mcp_tool',
     state: 'input-available',
     input: { foo: 'bar' }
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
-const textPart = (text: string): CherryMessagePart => ({ type: 'text', text }) as unknown as CherryMessagePart
+const textPart = (text: string): HuaTuoMessagePart => ({ type: 'text', text }) as unknown as HuaTuoMessagePart
 
 describe('finalizeInterruptedParts', () => {
   afterEach(() => {
@@ -42,7 +42,7 @@ describe('finalizeInterruptedParts', () => {
   })
 
   it('returns parts unchanged (by reference) on success', () => {
-    const parts: CherryMessagePart[] = [textPart('hi'), inProgressToolPart('input-available')]
+    const parts: HuaTuoMessagePart[] = [textPart('hi'), inProgressToolPart('input-available')]
 
     const result = finalizeInterruptedParts(parts, 'success')
 
@@ -52,7 +52,7 @@ describe('finalizeInterruptedParts', () => {
 
   describe("status='paused' (interrupted by user)", () => {
     it('rewrites an in-progress tool part to output-error with the paused reason', () => {
-      const parts: CherryMessagePart[] = [inProgressToolPart('input-available')]
+      const parts: HuaTuoMessagePart[] = [inProgressToolPart('input-available')]
 
       const result = finalizeInterruptedParts(parts, 'paused')
 
@@ -68,7 +68,7 @@ describe('finalizeInterruptedParts', () => {
     })
 
     it('rewrites an in-progress input-streaming tool part too', () => {
-      const parts: CherryMessagePart[] = [inProgressToolPart('input-streaming')]
+      const parts: HuaTuoMessagePart[] = [inProgressToolPart('input-streaming')]
 
       const result = finalizeInterruptedParts(parts, 'paused')
 
@@ -76,7 +76,7 @@ describe('finalizeInterruptedParts', () => {
     })
 
     it('rewrites an in-progress dynamic-tool part', () => {
-      const parts: CherryMessagePart[] = [inProgressDynamicToolPart()]
+      const parts: HuaTuoMessagePart[] = [inProgressDynamicToolPart()]
 
       const result = finalizeInterruptedParts(parts, 'paused')
 
@@ -89,7 +89,7 @@ describe('finalizeInterruptedParts', () => {
 
     it('does not mutate the original part (returns a copy)', () => {
       const original = inProgressToolPart('input-available')
-      const parts: CherryMessagePart[] = [original]
+      const parts: HuaTuoMessagePart[] = [original]
 
       const result = finalizeInterruptedParts(parts, 'paused')
 
@@ -100,7 +100,7 @@ describe('finalizeInterruptedParts', () => {
 
   describe("status='error' (stream errored before tool completed)", () => {
     it('rewrites an in-progress tool part to output-error with the error reason', () => {
-      const parts: CherryMessagePart[] = [inProgressToolPart('input-available')]
+      const parts: HuaTuoMessagePart[] = [inProgressToolPart('input-available')]
 
       const result = finalizeInterruptedParts(parts, 'error')
 
@@ -118,22 +118,22 @@ describe('finalizeInterruptedParts', () => {
       toolName: 'search',
       state: 'output-available',
       output: { hits: 3 }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
     const errored = {
       type: 'tool-search',
       toolCallId: 'err',
       toolName: 'search',
       state: 'output-error',
       errorText: 'tool blew up'
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
     const denied = {
       type: 'tool-fs',
       toolCallId: 'denied',
       toolName: 'fs',
       state: 'output-denied'
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
-    const parts: CherryMessagePart[] = [completed, errored, denied]
+    const parts: HuaTuoMessagePart[] = [completed, errored, denied]
     const result = finalizeInterruptedParts(parts, 'paused')
 
     // identical objects returned by reference — no rewrite of terminal states.
@@ -143,14 +143,14 @@ describe('finalizeInterruptedParts', () => {
   })
 
   it('preserves an existing errorText instead of overwriting with the generic reason', () => {
-    const parts: CherryMessagePart[] = [
+    const parts: HuaTuoMessagePart[] = [
       {
         type: 'tool-search',
         toolCallId: 'x',
         toolName: 'search',
         state: 'input-available',
         errorText: 'earlier diagnostic'
-      } as unknown as CherryMessagePart
+      } as unknown as HuaTuoMessagePart
     ]
 
     const result = finalizeInterruptedParts(parts, 'paused')
@@ -160,8 +160,8 @@ describe('finalizeInterruptedParts', () => {
 
   it('leaves non-tool parts (text/reasoning) untouched while rewriting the tool part', () => {
     const text = textPart('partial answer')
-    const reasoning = { type: 'reasoning', text: 'thinking…' } as unknown as CherryMessagePart
-    const parts: CherryMessagePart[] = [text, reasoning, inProgressToolPart('input-available')]
+    const reasoning = { type: 'reasoning', text: 'thinking…' } as unknown as HuaTuoMessagePart
+    const parts: HuaTuoMessagePart[] = [text, reasoning, inProgressToolPart('input-available')]
 
     const result = finalizeInterruptedParts(parts, 'error')
 
@@ -181,7 +181,7 @@ describe('finalizeInterruptedParts', () => {
         status: 'in_progress',
         title: 'Implementing TTS adapters'
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const result = finalizeInterruptedParts([taskEvent], 'error')
 
@@ -201,11 +201,11 @@ describe('finalizeInterruptedParts', () => {
     const completed = {
       type: 'data-agent-task-event',
       data: { event: 'notification', taskId: 'task-1', status: 'completed' }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
     const pending = {
       type: 'data-agent-task-event',
       data: { event: 'started', taskId: 'task-2', status: 'pending' }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const result = finalizeInterruptedParts([completed, pending], 'error')
 
@@ -222,11 +222,11 @@ describe('finalizeInterruptedParts', () => {
       text: 'thinking...',
       state: 'streaming',
       providerMetadata: {
-        cherry: {
+        huatuo: {
           startedAt
         }
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const result = finalizeInterruptedParts([streamingReasoning], 'paused')
 
@@ -234,8 +234,8 @@ describe('finalizeInterruptedParts', () => {
       type: 'reasoning',
       state: 'done'
     })
-    const cherryMeta = (result[0] as any).providerMetadata?.cherry
-    expect(cherryMeta?.thinkingMs).toBe(5000)
+    const huatuoMeta = (result[0] as any).providerMetadata?.huatuo
+    expect(huatuoMeta?.thinkingMs).toBe(5000)
   })
 
   it('rewrites a streaming reasoning part to done but leaves thinkingMs undefined if startedAt is missing', () => {
@@ -243,7 +243,7 @@ describe('finalizeInterruptedParts', () => {
       type: 'reasoning',
       text: 'thinking...',
       state: 'streaming'
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const result = finalizeInterruptedParts([streamingReasoning], 'paused')
 
@@ -251,13 +251,13 @@ describe('finalizeInterruptedParts', () => {
       type: 'reasoning',
       state: 'done'
     })
-    const cherryMeta = (result[0] as any).providerMetadata?.cherry
-    expect(cherryMeta?.thinkingMs).toBeUndefined()
+    const huatuoMeta = (result[0] as any).providerMetadata?.huatuo
+    expect(huatuoMeta?.thinkingMs).toBeUndefined()
   })
 })
 
-const reasoningPart = (text: string): CherryMessagePart =>
-  ({ type: 'reasoning', text, state: 'done' }) as unknown as CherryMessagePart
+const reasoningPart = (text: string): HuaTuoMessagePart =>
+  ({ type: 'reasoning', text, state: 'done' }) as unknown as HuaTuoMessagePart
 
 describe('dropEmptyContentParts', () => {
   it('drops empty and whitespace-only text parts', () => {
@@ -275,15 +275,15 @@ describe('dropEmptyContentParts', () => {
   })
 
   it('keeps non-text/reasoning parts even when they look empty', () => {
-    const parts: CherryMessagePart[] = [
-      { type: 'data-translation', data: { content: '' } } as unknown as CherryMessagePart,
+    const parts: HuaTuoMessagePart[] = [
+      { type: 'data-translation', data: { content: '' } } as unknown as HuaTuoMessagePart,
       {
         type: 'tool-search',
         toolCallId: 't',
         toolName: 'search',
         state: 'output-available',
         output: {}
-      } as unknown as CherryMessagePart
+      } as unknown as HuaTuoMessagePart
     ]
 
     const result = dropEmptyContentParts(parts)
@@ -292,7 +292,7 @@ describe('dropEmptyContentParts', () => {
   })
 
   it('returns the original array by reference when nothing is dropped', () => {
-    const parts: CherryMessagePart[] = [textPart('hi'), reasoningPart('thinking')]
+    const parts: HuaTuoMessagePart[] = [textPart('hi'), reasoningPart('thinking')]
 
     expect(dropEmptyContentParts(parts)).toBe(parts)
   })

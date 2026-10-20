@@ -108,7 +108,7 @@ RFC §7.2 用 camelCase 记概念方法（`getMetadata`、`createInternalEntry`�
 const meta = await ipcApi.request('file.get_metadata', { kind: 'path', path })   // PhysicalFileMetadata，无 id
 
 // 意图 B：要把文件纳入系统（拿到稳定身份）→ 显式入库，不再靠 get 现造 id
-const entry = await ipcApi.request('file.create_internal_entry', { source: 'path', path })  // Cherry 拷贝
+const entry = await ipcApi.request('file.create_internal_entry', { source: 'path', path })  // HuaTuo 拷贝
 // 或引用外部： ipcApi.request('file.ensure_external_entry', { externalPath: path })
 ```
 
@@ -351,4 +351,4 @@ Notes 的结构性操作把「外部文件树」当模型直接裸操作 `fs`，
 
 - **`select` / `save` 仍返回裸 `string`**（`ipc.ts` 的 `select(...): Promise<string[]>`）。§7.1 描述的"选出的路径喂不进自己的 handle"因此**仍然成立**，只是现在的桥接方式从 `as` 变成了 `AbsoluteFilePathSchema.parse()`——多一次运行时校验，不再是无声强断。
 - **`handle.ts` 两个 TODO 只消化了第一个**：schema 与类型已打通（TODO 1 ✅），`FileHandle` 自身的 brand 尚未加（TODO 2，见 `src/shared/data/types/file.ts:354-355`）。
-- 相关后续：[#17431](https://github.com/ningyx25/cherry-studio/issues/17431)（`AgentWorkspacePathSchema` 的 brand 化）、[#17429](https://github.com/ningyx25/cherry-studio/issues/17429)（分隔符规范化与 brand 洗白）。
+- 相关后续：[#17431](https://github.com/huatuostudio/huatuo-studio/issues/17431)（`AgentWorkspacePathSchema` 的 brand 化）、[#17429](https://github.com/huatuostudio/huatuo-studio/issues/17429)（分隔符规范化与 brand 洗白）。

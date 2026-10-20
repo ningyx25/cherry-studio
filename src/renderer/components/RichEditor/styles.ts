@@ -8,7 +8,7 @@ import {
   useInsertionEffect
 } from 'react'
 
-const STYLE_ID = 'cherry-rich-editor-style-helpers'
+const STYLE_ID = 'huatuo-rich-editor-style-helpers'
 
 const STYLE_CONTENT = `
 @layer app {

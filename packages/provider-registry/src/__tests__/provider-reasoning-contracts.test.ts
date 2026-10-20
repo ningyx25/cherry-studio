@@ -123,15 +123,12 @@ describe('provider reasoning contracts', () => {
   // No provider hand-pins a Gemini dialect any more — it comes from the model's
   // declared `wireDialect`, so a new google-generate-content gateway cannot get
   // it wrong by omission. Coverage lives in reasoning-dialect.test.ts.
-  it.each(['gemini', 'cherryin', 'new-api', 'vertexai'])(
-    'declares no per-model Gemini dialect contract for %s',
-    (providerId) => {
-      const pinned = provider(providerId).overrides?.filter(
-        (entry) => entry.reasoningContracts?.['google-generate-content']
-      )
-      expect(pinned ?? []).toEqual([])
-    }
-  )
+  it.each(['gemini', 'new-api', 'vertexai'])('declares no per-model Gemini dialect contract for %s', (providerId) => {
+    const pinned = provider(providerId).overrides?.filter(
+      (entry) => entry.reasoningContracts?.['google-generate-content']
+    )
+    expect(pinned ?? []).toEqual([])
+  })
 
   it('nests Poe custom reasoning parameters under extra_body', () => {
     expect(

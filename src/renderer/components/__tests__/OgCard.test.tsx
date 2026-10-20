@@ -45,7 +45,7 @@ vi.mock('og-crd', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Skeleton: ({ className }: { className?: string }) => <div data-testid="skeleton" className={className} />
 }))
 

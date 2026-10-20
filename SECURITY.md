@@ -6,7 +6,7 @@ At HuaTuo Studio, we take security seriously and appreciate your efforts to resp
 
 **Please do not create public issues for security-related reports.**
 
-- To report a security issue, please use the GitHub Security Advisories tab to "[Open a draft security advisory](https://github.com/ningyx25/cherry-studio/security/advisories/new)".
+- To report a security issue, please use the GitHub Security Advisories tab to "[Open a draft security advisory](https://github.com/huatuostudio/huatuo-studio/security/advisories/new)".
 - Include a detailed description of the issue, steps to reproduce, potential impact, and any possible mitigations.
 - If applicable, please also attach proof-of-concept code or screenshots.
 
@@ -57,7 +57,7 @@ We greatly appreciate contributions from the security community and strive to re
 ## 🌟 Questions?
 
 For any security-related questions not involving vulnerabilities, please reach out to:  
-**security@cherry-ai.com**
+**security@huatuo.ai**
 
 ---
 

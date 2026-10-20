@@ -34,7 +34,7 @@ vi.mock('react-i18next', () => ({
   })
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   ConfirmDialog: ({
     cancelText,
     confirmLoading,

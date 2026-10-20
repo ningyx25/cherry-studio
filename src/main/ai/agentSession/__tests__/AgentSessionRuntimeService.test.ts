@@ -2029,7 +2029,7 @@ describe('AgentSessionRuntimeService', () => {
         {
           type: 'text-start',
           id: 'subagent-text',
-          providerMetadata: { cherry: { parentToolCallId: 'task-root' } }
+          providerMetadata: { huatuo: { parentToolCallId: 'task-root' } }
         },
         { type: 'text-delta', id: 'subagent-text', delta: 'Found the regression' },
         { type: 'text-end', id: 'subagent-text' }
@@ -2118,7 +2118,7 @@ describe('AgentSessionRuntimeService', () => {
           toolName: 'AskUserQuestion',
           input,
           presentation: 'message',
-          providerMetadata: { cherry: { transport: 'claude-agent' } }
+          providerMetadata: { huatuo: { transport: 'claude-agent' } }
         }
       })
 

@@ -47,7 +47,7 @@ vi.mock('@renderer/utils/platform', () => ({
   isProd: false
 }))
 
-vi.mock('@cherrystudio/ui/icons', () => ({
+vi.mock('@huatuostudio/ui/icons', () => ({
   useIcon: () => undefined
 }))
 

@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Accordion,
   AccordionContent,
@@ -12,8 +13,7 @@ import {
   DialogTitle,
   Form,
   Scrollbar
-} from '@cherrystudio/ui'
-import { zodResolver } from '@hookform/resolvers/zod'
+} from '@huatuostudio/ui'
 import { toast } from '@renderer/services/toast'
 import type { CreateMcpServerDto } from '@shared/data/api/schemas/mcpServers'
 import type { McpServer } from '@shared/data/types/mcpServer'

@@ -1,7 +1,7 @@
 import type { ProviderOptions } from '@ai-sdk/provider-utils'
 import { application } from '@application'
-import type { AiPlugin } from '@cherrystudio/ai-core'
 import { projectRuntimeReasoning, providerRegistryService } from '@data/services/ProviderRegistryService'
+import type { AiPlugin } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import { MAX_TOOL_CALLS, MIN_TOOL_CALLS } from '@main/ai/constants'
 import { resolveKnowledgeBaseScope } from '@main/ai/utils/knowledgeScope'

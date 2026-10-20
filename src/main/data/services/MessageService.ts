@@ -29,8 +29,8 @@ import type { chatMessageRoles } from '@shared/data/types/file'
 import {
   type BranchMessage,
   type BranchMessagesResponse,
-  type CherryMessagePart,
   coerceSearchRole,
+  type HuaTuoMessagePart,
   type Message,
   type MessageData,
   type MessageRuntimeStatsInput,
@@ -42,7 +42,7 @@ import {
   type TreeResponse
 } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
-import { hasClearContextPart, readCherryMeta } from '@shared/data/types/uiParts'
+import { hasClearContextPart, readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { isToolUIPart } from 'ai'
 import { and, eq, inArray, isNull, ne, or, sql } from 'drizzle-orm'
 
@@ -222,7 +222,7 @@ function extractChatMessageFileRefs(data: MessageData | null | undefined): ChatM
   }
   for (const part of data?.parts ?? []) {
     if (part.type === 'file') {
-      add(readCherryMeta(part)?.fileEntryId, 'attachment')
+      add(readHuaTuoMeta(part)?.fileEntryId, 'attachment')
     } else if (isToolUIPart(part) && part.state === 'output-available' && isPersistedToolOutput(part.output)) {
       for (const blob of blobRefsOf(part.output.$persistedToolOutput)) add(blob.fileEntryId, 'tool_output')
     }
@@ -1364,7 +1364,7 @@ export class MessageService {
     anchorId: string,
     decisions: ApprovalDecision[]
   ): {
-    parts: CherryMessagePart[]
+    parts: HuaTuoMessagePart[]
     appliedApprovalIds: string[]
     alreadySettledApprovalIds: string[]
   } | null {

@@ -1,5 +1,5 @@
-import { Button } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 // Direct `Selector/model` path: the `Selector` barrel's nested `export *` isn't
 // resolved by tsgo on main's program (resolves on feat's). Transitional; reverts
 // to the barrel once main converges with feat.

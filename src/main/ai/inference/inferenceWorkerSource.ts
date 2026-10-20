@@ -223,7 +223,7 @@ parentPort.on('message', (msg) => {
     // Must be set before the first lazy require of @huggingface/transformers /
     // ppu-paddle-ocr below (getTransformers/getPpu), both of which transitively
     // require onnxruntime-node — see patches/onnxruntime-node@1.24.3.patch.
-    if (msg.onnxRuntimeBindingPath) process.env.CHERRY_ONNXRUNTIME_BINDING_PATH = msg.onnxRuntimeBindingPath
+    if (msg.onnxRuntimeBindingPath) process.env.HUATUO_ONNXRUNTIME_BINDING_PATH = msg.onnxRuntimeBindingPath
     return
   }
   const run =

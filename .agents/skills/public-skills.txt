@@ -7,5 +7,5 @@ demand-first-review
 gh-create-issue
 gh-pr-review
 vercel-react-best-practices
-cherry-pr-test
-cherry-electron-dev
+huatuo-pr-test
+huatuo-electron-dev

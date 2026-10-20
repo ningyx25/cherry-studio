@@ -1,12 +1,12 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, Tooltip } from '@huatuostudio/ui'
 import type { QuickPanelInputAdapter } from '@renderer/components/QuickPanel'
 import { useVoiceInput } from '@renderer/hooks/useVoiceInput'
 import { toast } from '@renderer/services/toast'
 import { cn } from '@renderer/utils/style'
 import { parseUniqueModelId, type UniqueModelId } from '@shared/data/types/model'
 import { useNavigate } from '@tanstack/react-router'
-import { Loader2, Mic } from 'lucide-react'
+import { Keyboard, Loader2, Mic } from 'lucide-react'
 import type { FC } from 'react'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,13 +18,15 @@ interface Props {
 }
 
 /**
- * Microphone dictation button that sits next to the send action. Deliberately
- * NOT a pinnable composer tool: it renders unconditionally in every composer
- * (chat and agent session) and cannot be removed from the toolbar.
+ * Input-mode switch button that sits next to the send action: typing ⇄ voice.
+ * Deliberately NOT a pinnable composer tool — it renders unconditionally in
+ * every composer (chat and agent session) and cannot be removed from the toolbar.
  *
- * The transcript is inserted at the editor cursor; the recording itself is
- * owned by {@link useVoiceInput} and transcribed through the
- * `feature.voice_input.model_id` speech-to-text model in main.
+ * One click switches from typing to voice mode and starts a dictation turn
+ * (mic icon); a second click ends the turn — the recording is transcribed as a
+ * whole through the `feature.voice_input.model_id` speech-to-text model in main
+ * and the transcript is inserted at the editor cursor, then the composer returns
+ * to typing mode (keyboard icon). Recording itself is owned by {@link useVoiceInput}.
  */
 export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
   const { t } = useTranslation()
@@ -58,7 +60,11 @@ export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
   )
 
   const voice = useVoiceInput({ providerId, modelId, onTranscript: handleTranscript, onError: handleError })
-  const { toggle, supported, isRecording, isTranscribing } = voice
+  const { supported, isRecording, isTranscribing } = voice
+
+  // The button IS the mode switch: voice mode is active for the whole turn —
+  // while recording and while the finished audio is being transcribed.
+  const voiceModeActive = isRecording || isTranscribing
 
   const onClick = useCallback(() => {
     if (noModel) {
@@ -66,8 +72,8 @@ export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
       void navigate({ to: '/settings/model' })
       return
     }
-    toggle()
-  }, [navigate, noModel, t, toggle])
+    voice.toggle()
+  }, [navigate, noModel, t, voice])
 
   const label = isRecording ? t('chat.input.voice_input.stop') : t('chat.input.voice_input.label')
   const tooltip = !supported
@@ -76,7 +82,9 @@ export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
       ? t('chat.input.voice_input.no_model')
       : isTranscribing
         ? t('chat.input.voice_input.transcribing')
-        : label
+        : voiceModeActive
+          ? t('chat.input.voice_input.stop')
+          : t('chat.input.voice_input.switch_hint')
 
   return (
     <Tooltip content={tooltip} placement="top">
@@ -85,13 +93,19 @@ export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
         variant="ghost"
         size="icon-sm"
         data-ui="chat.composer.action.voice-input"
-        data-active={isRecording || undefined}
+        data-active={voiceModeActive || undefined}
         className={cn(COMPOSER_SEND_ACCESSORY_BUTTON_CLASS, isRecording && 'animate-pulse text-error!')}
         aria-label={label}
-        aria-pressed={isRecording}
+        aria-pressed={voiceModeActive}
         disabled={isTranscribing || !supported}
         onClick={onClick}>
-        {isTranscribing ? <Loader2 className="animate-spin" aria-hidden /> : <Mic aria-hidden />}
+        {isTranscribing ? (
+          <Loader2 className="animate-spin" aria-hidden />
+        ) : voiceModeActive ? (
+          <Keyboard aria-hidden />
+        ) : (
+          <Mic aria-hidden />
+        )}
       </Button>
     </Tooltip>
   )

@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { isToolUIPart } from 'ai'
 
 import type { ApprovalDecision } from './stream'
@@ -16,9 +16,9 @@ import type { ApprovalDecision } from './stream'
  * even when no parts change, to keep callers copy-on-write.
  */
 export function applyApprovalDecisions(
-  parts: readonly CherryMessagePart[],
+  parts: readonly HuaTuoMessagePart[],
   decisions: readonly ApprovalDecision[]
-): CherryMessagePart[] {
+): HuaTuoMessagePart[] {
   if (decisions.length === 0) return [...parts]
   const byApprovalId = new Map<string, ApprovalDecision>()
   for (const d of decisions) byApprovalId.set(d.approvalId, d)
@@ -39,6 +39,6 @@ export function applyApprovalDecisions(
         approved: decision.approved,
         ...(decision.reason !== undefined ? { reason: decision.reason } : {})
       }
-    } as CherryMessagePart
+    } as HuaTuoMessagePart
   })
 }

@@ -46,11 +46,11 @@ vi.mock('@logger', () => ({
 const createMcpToolResponse = (overrides: Partial<McpToolResponse> = {}): McpToolResponse => ({
   id: 'call-1',
   tool: {
-    id: 'CherryBrowser__execute',
+    id: 'HuaTuoBrowser__execute',
     name: 'execute',
     type: 'mcp',
-    serverId: 'CherryBrowser',
-    serverName: 'CherryBrowser',
+    serverId: 'HuaTuoBrowser',
+    serverName: 'HuaTuoBrowser',
     inputSchema: { type: 'object', properties: {}, required: [] }
   },
   arguments: { url: 'https://example.com' },
@@ -95,7 +95,7 @@ describe('MessageMcpTool', () => {
     const { container } = render(<MessageMcpTool toolResponse={createMcpToolResponse({ status: 'pending' })} />)
 
     // Header still identifies the tool.
-    expect(container.textContent).toContain('CherryBrowser : execute')
+    expect(container.textContent).toContain('HuaTuoBrowser : execute')
     // The v1 destructive abort button is gone.
     expect(container.textContent).not.toContain('chat.input.pause')
     // Only the collapse header is interactive — no separate actions-bar controls.
@@ -116,7 +116,7 @@ describe('MessageMcpTool', () => {
     )
 
     const copyButton = screen.getByRole('button', { name: 'common.copy' })
-    const triggerButton = screen.getByRole('button', { name: /CherryBrowser : execute/ })
+    const triggerButton = screen.getByRole('button', { name: /HuaTuoBrowser : execute/ })
 
     expect(copyButton.tagName).toBe('BUTTON')
     expect(triggerButton).not.toContainElement(copyButton)
@@ -151,7 +151,7 @@ describe('MessageMcpTool', () => {
       />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: /CherryBrowser : execute/ }))
+    fireEvent.click(screen.getByRole('button', { name: /HuaTuoBrowser : execute/ }))
 
     await waitFor(() => {
       expect(container.textContent).toContain('"status": "ready"')

@@ -1,4 +1,4 @@
-import { ButtonGroup } from '@cherrystudio/ui'
+import { ButtonGroup } from '@huatuostudio/ui'
 import React, { memo } from 'react'
 
 import { modelListClasses } from '../primitives/ProviderSettingsPrimitives'

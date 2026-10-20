@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { act, renderHook } from '@testing-library/react'
 import type { ReactElement } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -16,7 +16,7 @@ const askUserQuestionInput = {
   ]
 }
 
-function makePermissionPart(overrides: Partial<Record<string, unknown>> = {}): CherryMessagePart {
+function makePermissionPart(overrides: Partial<Record<string, unknown>> = {}): HuaTuoMessagePart {
   return {
     type: 'tool-Read',
     toolName: 'Read',
@@ -31,10 +31,10 @@ function makePermissionPart(overrides: Partial<Record<string, unknown>> = {}): C
       }
     },
     ...overrides
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
-function makeAskUserQuestionPart(overrides: Partial<Record<string, unknown>> = {}): CherryMessagePart {
+function makeAskUserQuestionPart(overrides: Partial<Record<string, unknown>> = {}): HuaTuoMessagePart {
   return makePermissionPart({
     type: 'dynamic-tool',
     toolName: 'AskUserQuestion',

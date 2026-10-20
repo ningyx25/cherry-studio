@@ -29,7 +29,7 @@ const mocks = vi.hoisted(() => ({
   sidebarFavorites: [{ type: 'app', id: 'pop-science' }] as SidebarFavoriteItem[]
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   ConfirmDialog: ({ open }: { open?: boolean }) => (open ? <div role="dialog" /> : null)
 }))
 

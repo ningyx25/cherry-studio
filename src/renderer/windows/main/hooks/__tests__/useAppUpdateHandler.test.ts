@@ -64,7 +64,7 @@ import { useAppUpdateHandler } from '../useAppUpdateHandler'
 const releaseInfo: UpdateInfo = {
   version: '2.1.0',
   files: [],
-  path: 'Cherry-Studio.dmg',
+  path: 'HuaTuo-Studio.dmg',
   sha512: 'checksum',
   releaseDate: '2026-07-30T00:00:00.000Z'
 }

@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input } from '@cherrystudio/ui'
+import { Button, Checkbox, Input } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import type { MessageToolApprovalInput } from '@renderer/components/chat/messages/types'
 import { toast } from '@renderer/services/toast'

@@ -121,8 +121,8 @@ describe('knowledge index schema', () => {
       expect(() => insertMaterial('m1', '/abs/paper.md')).toThrow()
     })
 
-    it('rejects a reserved .cherry relative_path', () => {
-      expect(() => insertMaterial('m1', '.cherry/index.sqlite')).toThrow()
+    it('rejects a reserved .huatuo relative_path', () => {
+      expect(() => insertMaterial('m1', '.huatuo/index.sqlite')).toThrow()
     })
 
     it('enforces unique relative_path', () => {

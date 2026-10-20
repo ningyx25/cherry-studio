@@ -1,4 +1,4 @@
-import { Button, Popover, PopoverAnchor, PopoverContent, ReorderableList, Switch, Tooltip } from '@cherrystudio/ui'
+import { Button, Popover, PopoverAnchor, PopoverContent, ReorderableList, Switch, Tooltip } from '@huatuostudio/ui'
 import {
   useComposerToolLauncherController,
   useComposerToolLauncherVersion

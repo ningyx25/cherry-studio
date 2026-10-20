@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@cherrystudio/ui'
+import { Avatar, AvatarFallback, AvatarImage } from '@huatuostudio/ui'
 import { useChatBottomOverlayInset } from '@renderer/components/chat/layout/ChatViewportInsetContext'
 import EmojiIcon from '@renderer/components/EmojiIcon'
 import { isEmoji } from '@renderer/utils/naming'

@@ -1,5 +1,5 @@
-import { Button } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import CodeViewer from '@renderer/components/CodeViewer'
 import ContentPopup from '@renderer/components/popups/ContentPopup'
 import { useCodeStyle } from '@renderer/hooks/useCodeStyle'

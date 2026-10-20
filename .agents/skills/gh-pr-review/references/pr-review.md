@@ -10,7 +10,7 @@ is critical for review accuracy.
 |------|---------|
 | `code-checklist.md` | Code review checklist |
 | `doc-checklist.md` | Document review checklist |
-| `cherry-review-guidance.md` | Cherry Studio project-specific review boundaries and reference routing |
+| `huatuo-review-guidance.md` | HuaTuo Studio project-specific review boundaries and reference routing |
 | `judgment-matrix.md` | Worth-fixing criteria and special rules |
 | `checklist-evolution.md` | Checklist update flow and rules |
 
@@ -116,8 +116,8 @@ signal. Do not replace CI with local lint, test, or format runs.
 2. Read `PR_BODY` to understand the stated motivation. Verify the
    implementation actually achieves what the author describes.
 3. Apply `code-checklist.md` to code files and `doc-checklist.md` to
-   documentation files. Apply `cherry-review-guidance.md` to code, mixed,
-   Cherry architecture documentation, and project-skill changes, loading only
+   documentation files. Apply `huatuo-review-guidance.md` to code, mixed,
+   HuaTuo architecture documentation, and project-skill changes, loading only
    the internal references it routes to for the changed areas. For React
    component changes, also consult `vercel-react-best-practices` for detailed
    performance patterns. Use `judgment-matrix.md` to decide whether each issue

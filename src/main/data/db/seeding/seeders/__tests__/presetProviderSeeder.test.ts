@@ -14,7 +14,7 @@ import { setupTestDatabase } from '@test-helpers/db'
 import { describe, expect, it, vi } from 'vitest'
 
 // Fake registry providers — two preset providers: 'openai' and 'anthropic'.
-vi.mock('@cherrystudio/provider-registry/node', () => {
+vi.mock('@huatuostudio/provider-registry/node', () => {
   class RegistryLoader {
     loadProviders() {
       return [
@@ -52,7 +52,7 @@ describe('PresetProviderSeeder.run — insert-only behavior', () => {
     expect(ids).toContain('azure-openai')
     expect(ids).toContain('vertexai')
     expect(ids).toContain('aws-bedrock')
-    expect(ids).not.toContain('cherryai')
+    expect(ids).not.toContain('huatuoai')
   })
 
   it('seeds only user-editable auth scaffolding; connection config stays registry-resolved', async () => {
@@ -92,7 +92,7 @@ describe('PresetProviderSeeder.run — insert-only behavior', () => {
 
     const ids = rows.map((r) => r.providerId)
     expect(ids).toContain('anthropic')
-    expect(ids).not.toContain('cherryai')
+    expect(ids).not.toContain('huatuoai')
   })
 
   it('never seeds endpointConfigs — registry connection config resolves at read time', async () => {

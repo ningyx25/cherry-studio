@@ -1,4 +1,4 @@
-import { Input, Label, RadioGroup, RadioGroupItem, RowFlex } from '@cherrystudio/ui'
+import { Input, Label, RadioGroup, RadioGroupItem, RowFlex } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { useProvider, useProviderAuthConfig } from '@renderer/hooks/useProvider'
 import { toast } from '@renderer/services/toast'

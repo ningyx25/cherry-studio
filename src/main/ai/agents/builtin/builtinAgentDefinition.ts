@@ -8,11 +8,11 @@ import path from 'path'
 const logger = loggerService.withContext('BuiltinAgentDefinition')
 
 const TEMPLATE_NAME_BY_ROLE: Record<string, string> = {
-  assistant: 'cherry-assistant'
+  assistant: 'huatuo-assistant'
 }
 
 // No `description` here: the builtin agent's display/search description is owned by i18n
-// (`agent.builtin.cherry_assistant.description`), not the bundle — a bundle copy would be a
+// (`agent.builtin.huatuo_assistant.description`), not the bundle — a bundle copy would be a
 // drift-prone second source of truth.
 export interface BuiltinAgentDefinition {
   name?: string

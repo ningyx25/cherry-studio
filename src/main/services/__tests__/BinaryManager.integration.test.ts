@@ -34,7 +34,7 @@ describeFakeMise('BinaryManager fake-mise integration', () => {
   beforeEach(() => {
     MockMainCacheServiceUtils.resetMocks()
     MockMainPreferenceServiceUtils.resetMocks()
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cherry-fake-mise-'))
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'huatuo-fake-mise-'))
     misePath = path.join(tempDir, 'mise')
     const binDir = path.join(tempDir, 'bin')
     fs.mkdirSync(binDir)

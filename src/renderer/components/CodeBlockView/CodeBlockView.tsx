@@ -1,5 +1,5 @@
-import { CodeEditor, type CodeEditorHandles } from '@cherrystudio/ui'
 import { useMultiplePreferences, usePreference } from '@data/hooks/usePreference'
+import { CodeEditor, type CodeEditorHandles } from '@huatuostudio/ui'
 import { Icon } from '@iconify/react'
 import { loggerService } from '@logger'
 import type { ActionTool } from '@renderer/components/ActionTools'

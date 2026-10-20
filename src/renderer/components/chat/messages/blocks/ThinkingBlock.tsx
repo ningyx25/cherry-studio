@@ -1,4 +1,4 @@
-import { type MarkdownSource } from '@cherrystudio/ui'
+import { type MarkdownSource } from '@huatuostudio/ui'
 import { type CSSProperties, memo, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import BeatLoader from 'react-spinners/BeatLoader'

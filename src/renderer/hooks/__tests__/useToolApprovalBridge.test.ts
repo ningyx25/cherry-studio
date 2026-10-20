@@ -1,5 +1,5 @@
 import type { MessageToolApprovalMatch } from '@renderer/components/chat/messages/types'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -18,7 +18,7 @@ vi.mock('@renderer/ipc', () => ({
   }
 }))
 
-function makeApprovalPart(overrides: Partial<Record<string, unknown>> = {}): CherryMessagePart {
+function makeApprovalPart(overrides: Partial<Record<string, unknown>> = {}): HuaTuoMessagePart {
   return {
     type: 'tool-CustomTool',
     toolName: 'CustomTool',
@@ -27,7 +27,7 @@ function makeApprovalPart(overrides: Partial<Record<string, unknown>> = {}): Che
     input: { command: 'pnpm test' },
     approval: { id: 'approval-1' },
     ...overrides
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
 function makeApprovalMatch(): MessageToolApprovalMatch {

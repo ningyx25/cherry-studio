@@ -1,4 +1,4 @@
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import type { SerializedError } from '@shared/types/error'
 import type { UIMessageChunk } from 'ai'
@@ -138,7 +138,7 @@ describe('IpcChatTransport', () => {
     trigger: 'submit-message' as const,
     chatId: topicId,
     messageId: undefined,
-    messages: [] as CherryUIMessage[],
+    messages: [] as HuaTuoUIMessage[],
     abortSignal: undefined
   }
 

@@ -29,7 +29,7 @@ export interface InProcessUsageContext {
 }
 
 /** Identifies which layer owns history shaping for an in-process AI request. */
-export type ContextOwner = 'cherry' | 'caller'
+export type ContextOwner = 'huatuo' | 'caller'
 
 /**
  * First-class per-request overrides for callers that have no assistant to derive
@@ -72,8 +72,8 @@ export interface AiBaseRequest {
   knowledgeBaseIds?: string[]
   requestOptions?: AiTransportOptions
   /**
-   * Main-internal context ownership. Omitted means Cherry-managed; caller-owned
-   * requests bypass Cherry's history truncation, pruning, and compaction.
+   * Main-internal context ownership. Omitted means HuaTuo-managed; caller-owned
+   * requests bypass HuaTuo's history truncation, pruning, and compaction.
    * This field is intentionally absent from renderer IPC schemas.
    */
   contextOwner?: ContextOwner

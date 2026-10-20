@@ -1,5 +1,5 @@
-import { Button } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { type CommandContextMenuExtraItem, CommandPopupMenu } from '@renderer/components/command'
 import { MoreHorizontal } from 'lucide-react'
 import { useTranslation } from 'react-i18next'

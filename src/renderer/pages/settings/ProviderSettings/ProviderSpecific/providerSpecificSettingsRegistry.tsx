@@ -7,7 +7,6 @@ import type { ReactNode } from 'react'
 
 import type { useProviderMeta } from '../hooks/providerSetting/useProviderMeta'
 import AwsBedrockSettings from './AwsBedrockSettings'
-import CherryInOauth from './CherryInOauth'
 import ClaudeCodeSettings from './ClaudeCodeSettings'
 import DmxapiSettings from './DmxapiSettings'
 import GithubCopilotSettings from './GithubCopilotSettings'
@@ -43,11 +42,6 @@ export const PROVIDER_SPECIFIC_SETTINGS_REGISTRY: Record<ProviderSpecificPlaceme
       key: 'oauth',
       when: ({ provider }) => isProviderSupportAuth(provider),
       render: (providerId) => <ProviderOauth providerId={providerId} />
-    },
-    {
-      key: 'cherryin-oauth',
-      when: ({ meta }) => meta.isCherryIN,
-      render: (providerId) => <CherryInOauth providerId={providerId} />
     },
     {
       key: 'ovms-settings',

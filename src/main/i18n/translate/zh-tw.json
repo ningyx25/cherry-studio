@@ -1,7 +1,7 @@
 {
   "agent": {
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "HuaTuo Studio 內建使用顧問。診斷問題、引導操作、收錄 FAQ、提交 Bug/需求、搜尋和建立 Skills"
       }
     },
@@ -15,7 +15,7 @@
   },
   "apiGateway": {
     "docs": {
-      "description": "與 OpenAI、Anthropic、Gemini 相容的 HuaTuo Studio HTTP API，另含 Cherry 專有介面（模型、知識庫）",
+      "description": "與 OpenAI、Anthropic、Gemini 相容的 HuaTuo Studio HTTP API，另含 HuaTuo 專有介面（模型、知識庫）",
       "language_switcher_label": "文件語言",
       "operations": {
         "chat_completions": "建立一次對話補全。請求與回應格式與 OpenAI Chat Completions 一致；設定 `stream: true` 可串流輸出。",
@@ -33,8 +33,8 @@
       },
       "tags": {
         "anthropic": "相容 Anthropic 的介面。將 Anthropic SDK 的 base URL 指向本閘道即可使用。",
-        "cherry": "HuaTuo Studio 自有介面：知識庫、服務資訊與健康檢查。",
         "gemini": "相容 Gemini 的介面，與上游一樣掛在 `/v1beta` 之下。",
+        "huatuo": "HuaTuo Studio 自有介面：知識庫、服務資訊與健康檢查。",
         "openai": "相容 OpenAI 的介面。將 OpenAI SDK 的 base URL 指向本閘道即可使用。"
       }
     }

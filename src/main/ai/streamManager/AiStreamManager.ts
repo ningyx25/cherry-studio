@@ -17,7 +17,7 @@ import type {
   AiStreamOpenResponse
 } from '@shared/ai/transport'
 import { shouldDeferToolOutput } from '@shared/ai/transport'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { MessageRuntimeSpan, MessageRuntimeTiming } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import type { ReasoningEffortOption } from '@shared/types/aiSdk'
@@ -39,7 +39,7 @@ import { projectStreamChunkPayloadForRenderer, projectStreamMessageForRenderer }
 import type {
   ActiveStream,
   AiStreamManagerConfig,
-  CherryUIMessage,
+  HuaTuoUIMessage,
   StreamChunkPayload,
   StreamDoneResult,
   StreamErrorResult,
@@ -131,7 +131,7 @@ export interface ExecutionSnapshot {
   readonly bufferedChunkCount: number
   readonly droppedChunks: number
   readonly siblingsGroupId?: number
-  readonly finalMessage?: CherryUIMessage
+  readonly finalMessage?: HuaTuoUIMessage
   readonly timings: TransportTimings
 }
 
@@ -172,12 +172,12 @@ function errorFromStreamChunk(errorText: string): SerializedError {
  * `data-*` parts never reach the model, so adding them cannot perturb the
  * prompt bytes the provider caches.
  */
-function withCompactionAnchors(message: CherryUIMessage, exec: StreamExecution): CherryUIMessage {
+function withCompactionAnchors(message: HuaTuoUIMessage, exec: StreamExecution): HuaTuoUIMessage {
   const anchors = exec.compactionAnchors
   if (!anchors?.length) return message
   const parts = [...message.parts]
   for (const anchor of anchors) {
-    const part: CherryMessagePart = { type: 'data-compaction-anchor', id: anchor.id, data: anchor.data }
+    const part: HuaTuoMessagePart = { type: 'data-compaction-anchor', id: anchor.id, data: anchor.data }
     // Narrow on `type` before reading `id` — only data parts carry one.
     const at = parts.findIndex((p) => p.type === 'data-compaction-anchor' && p.id === anchor.id)
     if (at >= 0) parts[at] = part
@@ -186,21 +186,21 @@ function withCompactionAnchors(message: CherryUIMessage, exec: StreamExecution):
   return { ...message, parts }
 }
 
-function ensureTerminalFinalMessage(exec: StreamExecution): CherryUIMessage {
+function ensureTerminalFinalMessage(exec: StreamExecution): HuaTuoUIMessage {
   if (exec.finalMessage) return withCompactionAnchors(exec.finalMessage, exec)
 
   const finalMessage = {
     id: exec.anchorMessageId ?? randomUUID(),
     role: 'assistant',
     parts: []
-  } as CherryUIMessage
+  } as HuaTuoUIMessage
   exec.finalMessage = finalMessage
   return finalMessage
 }
 
 function toolNameFromApprovalChunk(chunk: UIMessageChunk): string | undefined {
-  const metadata = (chunk as { providerMetadata?: { cherry?: { toolName?: unknown } } }).providerMetadata
-  return typeof metadata?.cherry?.toolName === 'string' ? metadata.cherry.toolName : undefined
+  const metadata = (chunk as { providerMetadata?: { huatuo?: { toolName?: unknown } } }).providerMetadata
+  return typeof metadata?.huatuo?.toolName === 'string' ? metadata.huatuo.toolName : undefined
 }
 
 /**
@@ -630,11 +630,11 @@ export class AiStreamManager extends BaseService {
     streamId: string
     uniqueModelId: UniqueModelId
     prompt?: string
-    messages?: CherryUIMessage[]
+    messages?: HuaTuoUIMessage[]
     listener: StreamListener | StreamListener[]
     /** Per-request overrides (sampling/tools/providerOptions) for assistant-less callers (API gateway). */
     callOverrides?: CallOverrides
-    /** Which layer owns history shaping; omitted means Cherry-managed. */
+    /** Which layer owns history shaping; omitted means HuaTuo-managed. */
     contextOwner?: ContextOwner
     /** Explicit reasoning selection; 'none' disables thinking when the model's wire profile supports off. */
     reasoningEffort?: ReasoningEffortOption
@@ -643,7 +643,7 @@ export class AiStreamManager extends BaseService {
     /** In-process agent correlation for gateway-owned provider-request records. */
     usageContext?: InProcessUsageContext
   }): SendResult {
-    const messages: CherryUIMessage[] =
+    const messages: HuaTuoUIMessage[] =
       input.messages && input.messages.length > 0
         ? input.messages
         : [{ id: 'prompt-user', role: 'user', parts: [{ type: 'text', text: input.prompt ?? '' }] }]
@@ -1329,8 +1329,8 @@ export class AiStreamManager extends BaseService {
       // backwards-compat convenience pointing at the first iteration; both
       // are undefined-safe when the stream errored before any execution
       // accumulated content.
-      const finalMessages: Partial<Record<UniqueModelId, CherryUIMessage>> = {}
-      let firstFinalMessage: CherryUIMessage | undefined
+      const finalMessages: Partial<Record<UniqueModelId, HuaTuoUIMessage>> = {}
+      let firstFinalMessage: HuaTuoUIMessage | undefined
       for (const exec of stream.executions.values()) {
         if (!exec.finalMessage) continue
         const finalMessage = projectStreamMessageForRenderer(req.topicId, exec.finalMessage)
@@ -1493,8 +1493,8 @@ export class AiStreamManager extends BaseService {
     // assistant message; without seeding, `readUIMessageStream`'s
     // `getToolInvocation` throws and silently halts the accumulator.
     const lastIncoming = request.messages?.at(-1)
-    const accumulatorSeed: CherryUIMessage | undefined =
-      lastIncoming?.role === 'assistant' ? (lastIncoming as CherryUIMessage) : undefined
+    const accumulatorSeed: HuaTuoUIMessage | undefined =
+      lastIncoming?.role === 'assistant' ? (lastIncoming as HuaTuoUIMessage) : undefined
 
     const result = await pipeStreamLoop(stream, signal, {
       onChunk: (chunk) => {

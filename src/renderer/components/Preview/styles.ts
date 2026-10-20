@@ -1,4 +1,4 @@
-import { Flex } from '@cherrystudio/ui'
+import { Flex } from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import React from 'react'
 

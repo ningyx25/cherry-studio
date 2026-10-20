@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog } from '@cherrystudio/ui'
+import { Button, ConfirmDialog } from '@huatuostudio/ui'
 import { patientLabel } from '@renderer/utils/questionnaire'
 import type { QuestionnaireSession } from '@shared/data/api/schemas/questionnaires'
 import type { QuestionnaireAnswers, QuestionnaireDefinition } from '@shared/questionnaire/types'

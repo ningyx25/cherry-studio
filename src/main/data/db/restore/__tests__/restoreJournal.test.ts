@@ -42,7 +42,7 @@ function stagedJournal(): RestoreJournal {
     state: 'staged',
     db: {
       promote: 'restore-staging/restore-0001/work.sqlite',
-      aside: 'cherrystudio.sqlite.pre-restore-restore-0001',
+      aside: 'huatuostudio.sqlite.pre-restore-restore-0001',
       fingerprint: 'ab'.repeat(32),
       chain: [
         { folderMillis: 1730000000000, hash: 'hash-one' },

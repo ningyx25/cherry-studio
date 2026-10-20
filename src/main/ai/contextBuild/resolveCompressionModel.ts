@@ -1,5 +1,5 @@
 /**
- * Resolve a Cherry-side compression-model selector (`<providerId>::<modelId>`
+ * Resolve a HuaTuo-side compression-model selector (`<providerId>::<modelId>`
  * UniqueModelId) into a `LanguageModelV3` via the SAME path the agent uses:
  * Provider+Model rows (DataApi) → `providerToAiSdkConfig` → `createExecutor`
  * → `executor.languageModel(modelId)`.
@@ -8,7 +8,7 @@
  * null as "compression off" so a misconfigured model never breaks the chat.
  */
 import type { LanguageModelV3 } from '@ai-sdk/provider'
-import { createExecutor } from '@cherrystudio/ai-core'
+import { createExecutor } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import { providerToAiSdkConfig } from '@main/ai/provider/config'
 import { modelService } from '@main/data/services/ModelService'

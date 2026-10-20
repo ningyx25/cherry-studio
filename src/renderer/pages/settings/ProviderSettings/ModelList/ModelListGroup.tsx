@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
+import { Button, Tooltip } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { toast } from '@renderer/services/toast'
 import { cn } from '@renderer/utils/style'

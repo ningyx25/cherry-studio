@@ -1,4 +1,4 @@
-import { extensionRegistry } from '@cherrystudio/ai-core/provider'
+import { extensionRegistry } from '@huatuostudio/ai-core/provider'
 import { ENDPOINT_TYPE, type Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 

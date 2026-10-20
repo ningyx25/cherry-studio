@@ -97,12 +97,12 @@ export function generateAvatar(opts: {
   const sf = project.createSourceFile('avatar.tsx', '', { overwrite: true })
 
   sf.addImportDeclaration({
-    moduleSpecifier: '@cherrystudio/ui/components/primitives/avatar',
+    moduleSpecifier: '@huatuostudio/ui/components/primitives/avatar',
     namedImports: ['Avatar', 'AvatarFallback']
   })
 
   sf.addImportDeclaration({
-    moduleSpecifier: '@cherrystudio/ui/lib/utils',
+    moduleSpecifier: '@huatuostudio/ui/lib/utils',
     namedImports: ['cn']
   })
 

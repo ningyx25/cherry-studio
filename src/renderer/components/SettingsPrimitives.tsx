@@ -1,4 +1,4 @@
-import { Divider as SettingDivider } from '@cherrystudio/ui'
+import { Divider as SettingDivider } from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import type { ThemeMode } from '@shared/data/preference/preferenceTypes'
 import React from 'react'

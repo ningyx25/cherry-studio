@@ -50,7 +50,7 @@ vi.mock('@application', () => ({ application: { get: vi.fn() } }))
 vi.mock('../LoopbackCallbackTransport', () => ({ LoopbackCallbackTransport: vi.fn(() => h.transportMock) }))
 vi.mock('../DeepLinkCallbackTransport', () => ({ DeepLinkCallbackTransport: vi.fn(() => h.deepLinkTransportMock) }))
 
-// codex = OAuth-only loopback (clear disables); cherryin = deep-link with a
+// codex = OAuth-only loopback (clear disables); huatuoin = deep-link with a
 // manual API-key fallback (clear must NOT disable). Both share the fake client.
 vi.mock('../providerDefinitions', () => ({
   oauthProviderDefinitions: {
@@ -65,9 +65,9 @@ vi.mock('../providerDefinitions', () => ({
       createClient: () => h.clientMock,
       extractAccountId: () => null
     },
-    cherryin: {
-      providerId: 'cherryin',
-      clientId: 'cherryin-client',
+    huatuoin: {
+      providerId: 'huatuoin',
+      clientId: 'huatuoin-client',
       transport: { type: 'deep-link', config: { redirectUri: 'app://cb' } },
       createClient: () => h.clientMock,
       afterPersistTokens: (tokenData: unknown, context: unknown) => h.afterPersistMock(tokenData, context)
@@ -138,11 +138,11 @@ describe('OAuthRuntimeService', () => {
 
   // B1: the same terminal clear for a provider with a manual key must keep it enabled.
   it('clears but does NOT disable a provider that can hold a manual API key', async () => {
-    seedOAuth('cherryin', { accessToken: 'old', refreshToken: 'r', expiresAt: PAST() })
+    seedOAuth('huatuoin', { accessToken: 'old', refreshToken: 'r', expiresAt: PAST() })
     h.refreshMock.mockRejectedValue(new OAuthHttpError('bad', 400, '{}'))
 
-    expect(await service.getValidAccessToken('cherryin')).toBeNull()
-    const stored = h.providerStore.get('cherryin')
+    expect(await service.getValidAccessToken('huatuoin')).toBeNull()
+    const stored = h.providerStore.get('huatuoin')
     expect(stored?.authConfig).toEqual({ type: 'api-key' })
     expect(stored?.isEnabled).toBeUndefined()
   })
@@ -299,11 +299,11 @@ describe('OAuthRuntimeService', () => {
     expect(doFetch).toHaveBeenCalledTimes(1)
   })
 
-  // CherryIN path: still 401 after the forced-refresh retry → onUnauthorized fires
+  // HuaTuoIN path: still 401 after the forced-refresh retry → onUnauthorized fires
   // once with the final response, and the 401 is returned (not thrown) for the
   // caller to surface. `context` is accepted and threaded into token refresh.
   it('authenticatedFetch reports a persistent 401 to onUnauthorized and returns it', async () => {
-    seedOAuth('cherryin', { accessToken: 'tok', refreshToken: 'r', expiresAt: FUTURE(), accountId: null })
+    seedOAuth('huatuoin', { accessToken: 'tok', refreshToken: 'r', expiresAt: FUTURE(), accountId: null })
     h.refreshMock.mockResolvedValue({ access_token: 'tok2', refresh_token: 'r2', expires_in: 3600 })
 
     const doFetch = vi
@@ -313,7 +313,7 @@ describe('OAuthRuntimeService', () => {
     const onUnauthorized = vi.fn()
 
     const res = await service.authenticatedFetch(
-      'cherryin',
+      'huatuoin',
       () => ({ input: 'http://example/api', init: {} }),
       doFetch,
       {
@@ -328,15 +328,15 @@ describe('OAuthRuntimeService', () => {
     expect(onUnauthorized).toHaveBeenCalledTimes(1)
   })
 
-  // B1 via logout: codex disables, cherryin stays enabled.
+  // B1 via logout: codex disables, huatuoin stays enabled.
   it('logout disables an OAuth-only provider but not one with a manual key', async () => {
     seedOAuth('codex', { accessToken: 'tok' })
     await service.logout('codex')
     expect(h.providerStore.get('codex')?.isEnabled).toBe(false)
 
-    seedOAuth('cherryin', { accessToken: 'tok' })
-    await service.logout('cherryin')
-    expect(h.providerStore.get('cherryin')?.isEnabled).toBeUndefined()
+    seedOAuth('huatuoin', { accessToken: 'tok' })
+    await service.logout('huatuoin')
+    expect(h.providerStore.get('huatuoin')?.isEnabled).toBeUndefined()
   })
 
   // The loopback happy path: exchange the code, persist tokens, enable the
@@ -361,7 +361,7 @@ describe('OAuthRuntimeService', () => {
   })
 
   it('handleDeepLinkCallback exchanges, persists, and notifies the initiator', async () => {
-    await service.startDeepLinkFlow('win-1', 'cherryin', {})
+    await service.startDeepLinkFlow('win-1', 'huatuoin', {})
     h.deepLinkTransportMock.consumeCallback.mockReturnValue({
       code: 'c',
       codeVerifier: 'v',
@@ -373,13 +373,13 @@ describe('OAuthRuntimeService', () => {
 
     await service.handleDeepLinkCallback(new URL('app://cb?state=st&code=c'))
 
-    expect(h.providerStore.get('cherryin')?.authConfig).toMatchObject({ accessToken: 'at' })
-    expect(h.providerServiceMock.update).toHaveBeenCalledWith('cherryin', { isEnabled: true })
+    expect(h.providerStore.get('huatuoin')?.authConfig).toMatchObject({ accessToken: 'at' })
+    expect(h.providerServiceMock.update).toHaveBeenCalledWith('huatuoin', { isEnabled: true })
     expect(h.deepLinkTransportMock.sendConsumedResult).toHaveBeenCalledWith('st', 'win-1', { apiKeys: '' })
   })
 
   it('handleDeepLinkCallback reports an exchange failure to the initiator', async () => {
-    await service.startDeepLinkFlow('win-1', 'cherryin', {})
+    await service.startDeepLinkFlow('win-1', 'huatuoin', {})
     h.deepLinkTransportMock.consumeCallback.mockReturnValue({
       code: 'c',
       codeVerifier: 'v',
@@ -398,7 +398,7 @@ describe('OAuthRuntimeService', () => {
   // callback), which also deletes the pending flow. The initiator window id is
   // read BEFORE consume, so the initiator is still notified of the failure.
   it('notifies the initiator when the callback is a denied/error redirect', async () => {
-    await service.startDeepLinkFlow('win-1', 'cherryin', {})
+    await service.startDeepLinkFlow('win-1', 'huatuoin', {})
     h.deepLinkTransportMock.consumeCallback.mockImplementation(() => {
       throw new Error('User denied access')
     })
@@ -411,11 +411,11 @@ describe('OAuthRuntimeService', () => {
     })
   })
 
-  // M1: the post-persist side effect (CherryIN's API-key fetch) runs AFTER the
+  // M1: the post-persist side effect (HuaTuoIN's API-key fetch) runs AFTER the
   // token is stored, so a transient failure there keeps the minted token rather
   // than discarding it and forcing the user through the whole flow again.
   it('keeps the persisted token when the post-persist side effect fails', async () => {
-    await service.startDeepLinkFlow('win-1', 'cherryin', {})
+    await service.startDeepLinkFlow('win-1', 'huatuoin', {})
     h.deepLinkTransportMock.consumeCallback.mockReturnValue({
       code: 'c',
       codeVerifier: 'v',
@@ -428,7 +428,7 @@ describe('OAuthRuntimeService', () => {
 
     await service.handleDeepLinkCallback(new URL('app://cb?state=st&code=c'))
 
-    expect(h.providerStore.get('cherryin')?.authConfig).toMatchObject({ accessToken: 'at' })
+    expect(h.providerStore.get('huatuoin')?.authConfig).toMatchObject({ accessToken: 'at' })
     expect(h.deepLinkTransportMock.sendConsumedResult).toHaveBeenCalledWith('st', 'win-1', { error: 'key fetch 503' })
   })
 })

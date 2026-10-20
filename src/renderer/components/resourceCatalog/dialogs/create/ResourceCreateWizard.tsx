@@ -1,5 +1,5 @@
-import { Button, Dialog, DialogContent, DialogTitle, Form, Scrollbar } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, Dialog, DialogContent, DialogTitle, Form, Scrollbar } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { useDefaultModel } from '@renderer/hooks/useModel'
 import type { Model, UniqueModelId } from '@shared/data/types/model'
 import { Check } from 'lucide-react'

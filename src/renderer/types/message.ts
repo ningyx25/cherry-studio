@@ -1,6 +1,6 @@
-import type OpenAI from '@cherrystudio/openai'
 import type { GroundingMetadata } from '@google/genai'
 import type { McpServer } from '@shared/data/types/mcpServer'
+import type OpenAI from 'openai'
 
 import type { FileMetadata } from './file'
 import type { GenerateImageResponse } from './image'

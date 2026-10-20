@@ -1,4 +1,4 @@
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { useEffect, useRef } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -57,7 +57,7 @@ describe('useChatWithHistory', () => {
   const sendMessage = vi.fn()
   const regenerate = vi.fn()
   const originalApi = window.api as any
-  const refreshedMessages = [{ id: 'user-1', role: 'user', parts: [] }] as unknown as CherryUIMessage[]
+  const refreshedMessages = [{ id: 'user-1', role: 'user', parts: [] }] as unknown as HuaTuoUIMessage[]
 
   /**
    * Per-topic status map the stubbed `useTopicStreamStatus` reads from.
@@ -89,7 +89,7 @@ describe('useChatWithHistory', () => {
     regenerate.mockClear()
 
     mockUseChat.mockReturnValue({
-      messages: [] as CherryUIMessage[],
+      messages: [] as HuaTuoUIMessage[],
       setMessages,
       stop,
       status: 'ready',
@@ -187,7 +187,7 @@ describe('useChatWithHistory', () => {
     const refresh = vi.fn().mockResolvedValue(refreshedMessages)
     let sdkStatus = 'ready'
     mockUseChat.mockImplementation(() => ({
-      messages: [] as CherryUIMessage[],
+      messages: [] as HuaTuoUIMessage[],
       setMessages,
       stop,
       status: sdkStatus,
@@ -212,7 +212,7 @@ describe('useChatWithHistory', () => {
     let resolveTopicOneRefresh!: () => void
     const topicOneRefresh = vi.fn(
       () =>
-        new Promise<CherryUIMessage[]>((resolve) => {
+        new Promise<HuaTuoUIMessage[]>((resolve) => {
           resolveTopicOneRefresh = () => resolve(refreshedMessages)
         })
     )
@@ -220,7 +220,7 @@ describe('useChatWithHistory', () => {
     const resumeTopicOne = vi.fn<() => Promise<void>>().mockResolvedValue(undefined)
     const resumeTopicTwo = vi.fn<() => Promise<void>>().mockResolvedValue(undefined)
     mockUseChat.mockImplementation(({ chat }: { chat: { id: string } }) => ({
-      messages: [] as CherryUIMessage[],
+      messages: [] as HuaTuoUIMessage[],
       setMessages,
       stop,
       status: 'ready',
@@ -231,7 +231,7 @@ describe('useChatWithHistory', () => {
     }))
 
     const { rerender } = renderHook(
-      ({ topicId, refresh }: { topicId: string; refresh: () => Promise<CherryUIMessage[]> }) =>
+      ({ topicId, refresh }: { topicId: string; refresh: () => Promise<HuaTuoUIMessage[]> }) =>
         useChatWithHistory(topicId, [], refresh),
       { initialProps: { topicId: 'topic-1', refresh: topicOneRefresh } }
     )
@@ -255,7 +255,7 @@ describe('useChatWithHistory', () => {
     let resolveFirstTopicRefresh!: () => void
     const topicOneRefresh = vi.fn(
       () =>
-        new Promise<CherryUIMessage[]>((resolve) => {
+        new Promise<HuaTuoUIMessage[]>((resolve) => {
           resolveFirstTopicRefresh = () => resolve(refreshedMessages)
         })
     )
@@ -263,7 +263,7 @@ describe('useChatWithHistory', () => {
     const resumeTopicOne = vi.fn<() => Promise<void>>().mockResolvedValue(undefined)
     const resumeTopicTwo = vi.fn<() => Promise<void>>().mockResolvedValue(undefined)
     mockUseChat.mockImplementation(({ chat }: { chat: { id: string } }) => ({
-      messages: [] as CherryUIMessage[],
+      messages: [] as HuaTuoUIMessage[],
       setMessages,
       stop,
       status: chat.id === 'topic-2' ? 'streaming' : 'ready',
@@ -274,7 +274,7 @@ describe('useChatWithHistory', () => {
     }))
 
     const { rerender } = renderHook(
-      ({ topicId, refresh }: { topicId: string; refresh: () => Promise<CherryUIMessage[]> }) =>
+      ({ topicId, refresh }: { topicId: string; refresh: () => Promise<HuaTuoUIMessage[]> }) =>
         useChatWithHistory(topicId, [], refresh),
       { initialProps: { topicId: 'topic-1', refresh: topicOneRefresh } }
     )

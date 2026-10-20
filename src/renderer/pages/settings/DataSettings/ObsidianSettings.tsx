@@ -1,3 +1,4 @@
+import { usePreference } from '@data/hooks/usePreference'
 import {
   EmptyState,
   RowFlex,
@@ -7,8 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
   Spinner
-} from '@cherrystudio/ui'
-import { usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import {
   SettingDivider,

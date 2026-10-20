@@ -22,7 +22,7 @@ describe('UnknownToolRenderer', () => {
   it('renders inline MCP image content blocks as data URLs alongside the text', () => {
     render(
       <Harness
-        toolName="mcp__cherry-tools__generate_image"
+        toolName="mcp__huatuo-tools__generate_image"
         output={{
           content: [
             { type: 'text', text: 'Generated 1 image(s)' },
@@ -39,7 +39,7 @@ describe('UnknownToolRenderer', () => {
   it('shows text only when the MCP result carries no image content', () => {
     render(
       <Harness
-        toolName="mcp__cherry-tools__generate_image"
+        toolName="mcp__huatuo-tools__generate_image"
         output={{ content: [{ type: 'text', text: 'No painting model is configured.' }] }}
       />
     )

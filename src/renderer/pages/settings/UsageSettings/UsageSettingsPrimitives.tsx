@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, HoverCard, HoverCardContent, HoverCardTrigger, Skeleton } from '@cherrystudio/ui'
-import { resolveProviderIconRef, useIcon } from '@cherrystudio/ui/icons'
+import { Avatar, AvatarFallback, HoverCard, HoverCardContent, HoverCardTrigger, Skeleton } from '@huatuostudio/ui'
+import { resolveProviderIconRef, useIcon } from '@huatuostudio/ui/icons'
 import EmojiIcon from '@renderer/components/EmojiIcon'
 import { ProviderAvatarPrimitive } from '@renderer/components/ProviderAvatar'
 import { SettingsContentColumn } from '@renderer/components/SettingsPrimitives'

@@ -1,4 +1,4 @@
-import { resolveProviderIconRef, useIcon } from '@cherrystudio/ui/icons'
+import { resolveProviderIconRef, useIcon } from '@huatuostudio/ui/icons'
 import { getIconDisplayConfig, type IconDisplayContext } from '@renderer/components/icons/iconDisplayConfig'
 import { ProviderAvatarPrimitive } from '@renderer/components/ProviderAvatar'
 import type { Provider } from '@shared/data/types/provider'

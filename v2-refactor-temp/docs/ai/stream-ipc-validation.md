@@ -48,7 +48,7 @@ rather than inventing one:
 1. **Author zod schemas for the transport request types**, co-located beside the types
    (`shared/ai/transport/stream.schema.ts` and `main/ai/types/requests.schema.ts`), and **derive
    the TS types from them** (`export type AiStreamOpenRequest = z.infer<typeof …Schema>`) so type
-   and validator can't drift. Use the existing `CherryMessagePart` / `UniqueModelId` schemas where
+   and validator can't drift. Use the existing `HuaTuoMessagePart` / `UniqueModelId` schemas where
    they already exist; add field bounds:
    - `topicId`: non-empty; accept the `agent-session:<id>` / topic-id shapes (a refinement, not a
      bare `uuid()` — topic ids aren't all UUIDs).

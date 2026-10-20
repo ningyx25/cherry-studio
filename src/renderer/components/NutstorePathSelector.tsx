@@ -1,4 +1,4 @@
-import { Button, Input, RowFlex } from '@cherrystudio/ui'
+import { Button, Input, RowFlex } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { FolderIcon as NutstoreFolderIcon } from '@renderer/components/icons/NutstoreIcons'
 import { popup } from '@renderer/services/popup'

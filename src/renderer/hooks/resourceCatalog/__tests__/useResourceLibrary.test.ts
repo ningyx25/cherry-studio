@@ -42,7 +42,7 @@ vi.mock('@renderer/hooks/useGroups', () => ({
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => (key === 'agent.builtin.cherry_assistant.description' ? 'Advisor 诊断 helper' : key)
+    t: (key: string) => (key === 'agent.builtin.huatuo_assistant.description' ? 'Advisor 诊断 helper' : key)
   })
 }))
 
@@ -171,7 +171,7 @@ describe('useResourceLibrary', () => {
       listResult([
         {
           ...agentListItem,
-          name: 'Cherry Assistant',
+          name: 'HuaTuo Assistant',
           configuration: { builtin_role: 'assistant' },
           model: null
         }
@@ -189,7 +189,7 @@ describe('useResourceLibrary', () => {
       listResult([
         {
           ...agentListItem,
-          name: 'Cherry Assistant',
+          name: 'HuaTuo Assistant',
           configuration: { builtin_role: 'assistant' },
           model: null
         }
@@ -225,7 +225,7 @@ describe('useResourceLibrary', () => {
       listResult([
         {
           ...skillListItem,
-          author: 'CherryStudio',
+          author: 'HuaTuoStudio',
           sourceTags: ['metadata-only']
         }
       ])

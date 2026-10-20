@@ -1,5 +1,5 @@
-import { type AiPlugin, generateText as aiCoreGenerateText } from '@cherrystudio/ai-core'
-import type { StringKeys } from '@cherrystudio/ai-core/provider'
+import { type AiPlugin, generateText as aiCoreGenerateText } from '@huatuostudio/ai-core'
+import type { StringKeys } from '@huatuostudio/ai-core/provider'
 import { loggerService } from '@logger'
 import {
   InvalidToolInputError,

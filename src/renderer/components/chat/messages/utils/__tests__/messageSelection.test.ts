@@ -2,7 +2,7 @@ import {
   COMPOSER_CLIPBOARD_FRAGMENT_MIME,
   readComposerClipboardFragment
 } from '@renderer/utils/message/composerClipboard'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import type { MessageListItem } from '../../types'
@@ -31,7 +31,7 @@ describe('messageSelection', () => {
 
   it('creates export views with parts in visible message order', () => {
     const messages = [createMessage('a', 'user'), createMessage('b')]
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
       a: [{ type: 'text', text: 'prompt' }],
       b: [{ type: 'text', text: 'reply' }]
     }
@@ -45,7 +45,7 @@ describe('messageSelection', () => {
 
   it('copies selected message text in visible message order', () => {
     const messages = [createMessage('a'), createMessage('b')]
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
       a: [{ type: 'text', text: 'first' }],
       b: [{ type: 'text', text: 'second' }]
     }
@@ -55,13 +55,13 @@ describe('messageSelection', () => {
 
   it('copies composer skill tokens as pasteable markers instead of hidden prompt text', () => {
     const messages = [createMessage('a', 'user')]
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
       a: [
         {
           type: 'text',
           text: 'Use the pdf skill. hello',
           providerMetadata: {
-            cherry: {
+            huatuo: {
               composer: {
                 version: 1,
                 tokens: [
@@ -86,13 +86,13 @@ describe('messageSelection', () => {
 
   it('copies composer knowledge tokens as pasteable id markers', () => {
     const messages = [createMessage('a', 'user')]
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
       a: [
         {
           type: 'text',
           text: 'hello',
           providerMetadata: {
-            cherry: {
+            huatuo: {
               composer: {
                 version: 1,
                 tokens: [
@@ -117,13 +117,13 @@ describe('messageSelection', () => {
   it('copies quote token messages with the underlying quote text intact', () => {
     const messages = [createMessage('a', 'user')]
     const quotedPromptText = '<blockquote>\n\nSelected message text\n</blockquote>'
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
       a: [
         {
           type: 'text',
           text: `${quotedPromptText} Reply`,
           providerMetadata: {
-            cherry: {
+            huatuo: {
               composer: {
                 version: 1,
                 tokens: [
@@ -149,13 +149,13 @@ describe('messageSelection', () => {
 
   it('creates rich clipboard content for selected composer token messages in visible order', () => {
     const messages = [createMessage('a', 'user'), createMessage('b', 'user')]
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
       a: [
         {
           type: 'text',
           text: 'Use the pdf skill. first',
           providerMetadata: {
-            cherry: {
+            huatuo: {
               composer: {
                 version: 1,
                 tokens: [
@@ -197,7 +197,7 @@ describe('messageSelection', () => {
 
   it('does not create rich clipboard content when selected messages have no composer tokens', () => {
     const messages = [createMessage('a', 'user')]
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
       a: [{ type: 'text', text: 'plain' }]
     }
 

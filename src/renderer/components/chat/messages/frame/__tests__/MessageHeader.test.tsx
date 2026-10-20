@@ -9,7 +9,7 @@ const providerState = vi.hoisted(() => ({
   selection: undefined as { isMultiSelectMode: boolean; selectedMessageIds: string[] } | undefined
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Avatar: ({ children, className }: { children?: ReactNode; className?: string }) => (
     <div className={className}>{children}</div>
   ),

@@ -33,7 +33,7 @@ describe('AgentWorkspaceService', () => {
   })
 
   function workspacePath(...segments: string[]) {
-    return path.join('/tmp', 'cherry-workspace-service', ...segments)
+    return path.join('/tmp', 'huatuo-workspace-service', ...segments)
   }
 
   async function findOrCreateWorkspace(rawPath: string, options: { name?: string } = {}) {
@@ -171,7 +171,7 @@ describe('AgentWorkspaceService', () => {
   })
 
   it('creates system workspace rows without creating the backing directory', async () => {
-    const root = await mkdtemp(path.join(tmpdir(), 'cherry-system-workspace-'))
+    const root = await mkdtemp(path.join(tmpdir(), 'huatuo-system-workspace-'))
     tempRoots.push(root)
     vi.spyOn(application, 'getPath').mockImplementation((key: string, filename?: string) => {
       if (key === 'feature.agents.system_workspaces') {

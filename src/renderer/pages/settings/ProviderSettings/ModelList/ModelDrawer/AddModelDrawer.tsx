@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@cherrystudio/ui'
+import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@huatuostudio/ui'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

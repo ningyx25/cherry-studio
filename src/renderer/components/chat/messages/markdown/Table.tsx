@@ -1,4 +1,4 @@
-import { Tooltip, useMarkdownBlockContext } from '@cherrystudio/ui'
+import { Tooltip, useMarkdownBlockContext } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import CopyIcon from '@renderer/components/icons/CopyIcon'
 import { useTemporaryValue } from '@renderer/hooks/useTemporaryValue'

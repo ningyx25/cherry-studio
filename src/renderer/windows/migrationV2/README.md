@@ -24,7 +24,7 @@ src/renderer/windows/migrationV2/
    - The completion `Migration time` is measured in this window from the first visible `migration` stage update to the received `completed` update.
    - `useMigrationActions` wraps IPC invokes for start, retry, cancel, restart, and skip.
 4. Exporters:
-   - `ReduxExporter` scans the Redux Persist payload in `localStorage` (`persist:cherry-studio`) and writes only migration-owned slices to separate files in bounded chunks.
+   - `ReduxExporter` scans the Redux Persist payload in `localStorage` (`persist:huatuo-studio`) and writes only migration-owned slices to separate files in bounded chunks.
    - `DexieExporter` reads Dexie tables in primary-key pages and sends bounded JSON-array chunks via IPC (`migration:write-export-file`), so main can assemble the files on disk without direct browser access or whole-table renderer strings.
 5. Components render the per-migrator list (`MigratorProgressList`), skip/close dialogs, window controls, and completion confetti used by the wizard.
 
@@ -46,7 +46,7 @@ dialog, preventing overlapping overlays and focus restoration from the closing d
 The diagnostic panel warns that application logs may contain sensitive data and must not be shared publicly or
 outside HuaTuo Studio support. Saving never uploads or attaches the bundle; metadata-only fallback is disclosed
 when logs cannot be included. After a successful local-only save, the only support actions reveal the file and
-copy `support@cherry-ai.com`; no mail client or prefilled email is provided. The V1 dialog also opens
+copy `support@huatuo.ai`; no mail client or prefilled email is provided. The V1 dialog also opens
 only when selected from More options. The window runs on the `simplest` preload (no shell access), so the
 download button asks main to open the page, passing the wizard's current language;
 `MigrationIpcHandler` owns the URL table and maps that language to a regional site with the same `zh` test

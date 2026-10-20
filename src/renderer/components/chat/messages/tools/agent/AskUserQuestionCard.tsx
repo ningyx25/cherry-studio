@@ -1,4 +1,4 @@
-import { Badge, Button } from '@cherrystudio/ui'
+import { Badge, Button } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import type { NormalToolResponse } from '@renderer/types/mcpTool'
 import { CheckCircle2, ChevronLeft, ChevronRight, HelpCircle } from 'lucide-react'

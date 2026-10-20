@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { Model } from '@shared/data/types/model'
 import type { ReactNode } from 'react'
 import { createContext, use, useCallback, useMemo, useRef, useState } from 'react'
@@ -7,7 +7,7 @@ import type { MessageListItem } from '../messages/types'
 
 export interface EditingMessageSnapshot {
   message: MessageListItem
-  parts: CherryMessagePart[]
+  parts: HuaTuoMessagePart[]
   lockedMentionedModels?: Model[]
   editingSessionId: number
 }
@@ -17,7 +17,7 @@ interface MessageEditingContextType {
   editingMessage: EditingMessageSnapshot | null
   startEditing: (
     message: MessageListItem,
-    parts: CherryMessagePart[],
+    parts: HuaTuoMessagePart[],
     options?: { lockedMentionedModels?: Model[] }
   ) => void
   cancelEditing: () => void
@@ -32,7 +32,7 @@ export function MessageEditingProvider({ children }: { children: ReactNode }) {
   const editingSessionIdRef = useRef(0)
 
   const startEditing = useCallback(
-    (message: MessageListItem, parts: CherryMessagePart[], options?: { lockedMentionedModels?: Model[] }) => {
+    (message: MessageListItem, parts: HuaTuoMessagePart[], options?: { lockedMentionedModels?: Model[] }) => {
       editingSessionIdRef.current += 1
       setEditingMessage({
         message,

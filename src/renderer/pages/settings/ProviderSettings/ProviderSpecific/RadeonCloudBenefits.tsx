@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ProviderHelpLink } from '../primitives/ProviderSettingsPrimitives'
 
-const TOKEN_FACTORY_URL = 'https://developer.amd.com.cn/radeon/tokenfactory?source=cherry-studio'
+const TOKEN_FACTORY_URL = 'https://developer.amd.com.cn/radeon/tokenfactory?source=huatuo-studio'
 
 export default function RadeonCloudBenefits() {
   const { t } = useTranslation()

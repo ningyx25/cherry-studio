@@ -1,5 +1,5 @@
 // Original: src/renderer/components/ellipsis/index.tsx
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { HTMLAttributes } from 'react'
 
 type Props = {

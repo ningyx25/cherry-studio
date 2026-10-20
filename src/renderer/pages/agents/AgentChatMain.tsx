@@ -2,7 +2,7 @@ import type { MessageStreamingLayers, MessageToolApprovalInput } from '@renderer
 import type { ConversationComposerPlacement } from '@renderer/components/composer/ConversationComposerStage'
 import type { GetAgentResponse } from '@renderer/types/agent'
 import type { Citation } from '@renderer/types/message'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import type { ComponentProps } from 'react'
 
 import { useAgentRightPaneActions } from './components/AgentRightPane'
@@ -13,9 +13,9 @@ interface AgentChatMainProps {
   sessionMessagesEnabled: boolean
   agentId?: string
   sessionId: string
-  messages: CherryUIMessage[]
+  messages: HuaTuoUIMessage[]
   activeAgent: GetAgentResponse | undefined
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   streamingLayers: MessageStreamingLayers
   optimisticAskUserQuestionInputsByToolCallId: Record<string, unknown>
   isLoading: boolean

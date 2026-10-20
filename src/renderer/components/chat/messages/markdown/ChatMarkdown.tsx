@@ -1,6 +1,6 @@
-import '@cherrystudio/ui/components/composites/markdown/styles'
+import '@huatuostudio/ui/components/composites/markdown/styles'
 
-import { Markdown, type MarkdownSource, StreamingMarkdown, withChatPlugins } from '@cherrystudio/ui'
+import { Markdown, type MarkdownSource, StreamingMarkdown, withChatPlugins } from '@huatuostudio/ui'
 import { useMessageRenderConfig } from '@renderer/components/chat/messages/MessageListProvider'
 import type { Citation } from '@renderer/types/message'
 import { removeSvgEmptyLines } from '@renderer/utils/formats'

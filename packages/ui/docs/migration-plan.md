@@ -28,8 +28,8 @@ This document outlines the detailed plan for migrating HuaTuo Studio from antd +
 ## Usage Example
 
 ```typescript
-// Import components from @cherrystudio/ui
-import { Spinner, DividerWithText, InfoTooltip } from '@cherrystudio/ui'
+// Import components from @huatuostudio/ui
+import { Spinner, DividerWithText, InfoTooltip } from '@huatuostudio/ui'
 
 // Use in components
 function MyComponent() {

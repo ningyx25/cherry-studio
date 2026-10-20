@@ -20,7 +20,7 @@ describe('RadeonCloudBenefits', () => {
     const link = screen.getByRole('link', { name: 'settings.provider.radeon_cloud.benefits.cta' })
     const url = new URL(link.getAttribute('href')!)
     expect(`${url.origin}${url.pathname}`).toBe('https://developer.amd.com.cn/radeon/tokenfactory')
-    expect(Object.fromEntries(url.searchParams)).toEqual({ source: 'cherry-studio' })
+    expect(Object.fromEntries(url.searchParams)).toEqual({ source: 'huatuo-studio' })
     expect(link).toHaveAttribute('target', '_blank')
     expect(link).toHaveAttribute('rel', 'noreferrer')
   })

@@ -19,8 +19,8 @@ import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import type { ProviderV3 } from '@ai-sdk/provider'
 import type { XaiProvider, XaiProviderSettings } from '@ai-sdk/xai'
 import { createXai } from '@ai-sdk/xai'
-import type { CherryInProvider, CherryInProviderSettings } from '@cherrystudio/ai-sdk-provider'
-import { createCherryIn } from '@cherrystudio/ai-sdk-provider'
+import type { HuaTuoInProvider, HuaTuoInProviderSettings } from '@huatuostudio/ai-sdk-provider'
+import { createHuaTuoIn } from '@huatuostudio/ai-sdk-provider'
 import type { OpenRouterProvider, OpenRouterProviderSettings } from '@openrouter/ai-sdk-provider'
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import { customProvider, type LanguageModel } from 'ai'
@@ -123,15 +123,15 @@ const AzureExtension = ProviderExtension.create({
   ] as const
 } as const satisfies ProviderExtensionConfig<AzureOpenAIProviderSettings, AzureOpenAIProvider, 'azure'>)
 
-const CherryInExtension = ProviderExtension.create({
-  name: 'cherryin',
+const HuaTuoInExtension = ProviderExtension.create({
+  name: 'huatuoin',
   supportsImageGeneration: true,
-  create: createCherryIn,
+  create: createHuaTuoIn,
 
   variants: [
     {
       suffix: 'chat',
-      name: 'CherryIN Chat',
+      name: 'HuaTuoIN Chat',
       transform: (provider): ProviderV3 =>
         customProvider({
           fallbackProvider: {
@@ -141,7 +141,7 @@ const CherryInExtension = ProviderExtension.create({
         })
     }
   ] as const
-} as const satisfies ProviderExtensionConfig<CherryInProviderSettings, CherryInProvider, 'cherryin'>)
+} as const satisfies ProviderExtensionConfig<HuaTuoInProviderSettings, HuaTuoInProvider, 'huatuoin'>)
 
 const DeepSeekExtension = ProviderExtension.create({
   name: 'deepseek',
@@ -268,7 +268,7 @@ type CoreExtensions = readonly [
   typeof DeepSeekExtension,
   typeof OpenRouterExtension,
   typeof OpenAICompatibleExtension,
-  typeof CherryInExtension
+  typeof HuaTuoInExtension
 ]
 
 export const coreExtensions: CoreExtensions = [
@@ -280,7 +280,7 @@ export const coreExtensions: CoreExtensions = [
   DeepSeekExtension,
   OpenRouterExtension,
   OpenAICompatibleExtension,
-  CherryInExtension
+  HuaTuoInExtension
 ]
 
 /**

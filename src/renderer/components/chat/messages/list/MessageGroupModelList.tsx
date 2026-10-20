@@ -1,4 +1,4 @@
-import { RowFlex, Scrollbar, SegmentedControl, Tooltip } from '@cherrystudio/ui'
+import { RowFlex, Scrollbar, SegmentedControl, Tooltip } from '@huatuostudio/ui'
 import ModelAvatar from '@renderer/components/Avatar/ModelAvatar'
 import type { FC } from 'react'
 import { memo, useCallback } from 'react'

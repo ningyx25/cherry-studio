@@ -1,6 +1,6 @@
 /**
  * Citation reference helpers — projects `ContentReference[]` (V2 storage
- * format on `text` parts' `providerMetadata.cherry.references`) to the
+ * format on `text` parts' `providerMetadata.huatuo.references`) to the
  * renderer's `Citation` and inline `citationReferences` shapes that
  * `MainTextBlock` / `CitationsList` consume.
  *

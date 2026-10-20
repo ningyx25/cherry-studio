@@ -1,4 +1,4 @@
-import { Input } from '@cherrystudio/ui'
+import { Input } from '@huatuostudio/ui'
 import { useTranslation } from 'react-i18next'
 
 interface UrlSourceContentProps {

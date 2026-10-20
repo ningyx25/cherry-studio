@@ -44,7 +44,7 @@ export const knowledgeRoutes = new Elysia({ prefix: '/knowledge-bases' })
       query: PaginationQuerySchema,
       response: { 200: ListKnowledgeBasesResponseSchema },
       detail: {
-        tags: [DOC_TAGS.cherry],
+        tags: [DOC_TAGS.huatuo],
         summary: 'List Knowledge Bases',
         description: DOC_DESCRIPTIONS.list_knowledge_bases
       }
@@ -142,7 +142,7 @@ export const knowledgeRoutes = new Elysia({ prefix: '/knowledge-bases' })
       body: KnowledgeSearchSchema,
       response: { 200: SearchKnowledgeResponseSchema },
       detail: {
-        tags: [DOC_TAGS.cherry],
+        tags: [DOC_TAGS.huatuo],
         summary: 'Search Knowledge Bases',
         description: DOC_DESCRIPTIONS.search_knowledge_bases
       }
@@ -152,7 +152,7 @@ export const knowledgeRoutes = new Elysia({ prefix: '/knowledge-bases' })
     params: KnowledgeBaseIdParamSchema,
     response: { 200: KnowledgeBaseResponseSchema },
     detail: {
-      tags: [DOC_TAGS.cherry],
+      tags: [DOC_TAGS.huatuo],
       summary: 'Get Knowledge Base',
       description: DOC_DESCRIPTIONS.get_knowledge_base
     }

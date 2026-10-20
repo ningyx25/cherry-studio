@@ -1,5 +1,5 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { ComponentProps, ReactNode } from 'react'
 
 export interface DisclosureProps extends Omit<ComponentProps<'div'>, 'children' | 'title' | 'onToggle'> {

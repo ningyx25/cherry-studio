@@ -75,7 +75,7 @@ function getAgentDescription(description: string, configuration: unknown): strin
   if (description) return description
   if (typeof configuration === 'object' && configuration !== null) {
     if ((configuration as { builtin_role?: unknown }).builtin_role === 'assistant') {
-      return t('agent.builtin.cherry_assistant.description')
+      return t('agent.builtin.huatuo_assistant.description')
     }
   }
   return ''
@@ -87,7 +87,7 @@ function buildAgentSearchPredicate(search: string): SQL {
   const descriptionMatch = sql`${agentsTable.description} LIKE ${pattern} ESCAPE '\\'`
   // The builtin description is an i18n-owned fallback when the database value is blank, so include
   // its localized main-process fallback in SQL rather than limiting search to a renderer page.
-  const builtinDescriptionMatch = sql`${agentsTable.description} = '' AND json_extract(${agentsTable.configuration}, '$.builtin_role') = 'assistant' AND ${t('agent.builtin.cherry_assistant.description')} LIKE ${pattern} ESCAPE '\\'`
+  const builtinDescriptionMatch = sql`${agentsTable.description} = '' AND json_extract(${agentsTable.configuration}, '$.builtin_role') = 'assistant' AND ${t('agent.builtin.huatuo_assistant.description')} LIKE ${pattern} ESCAPE '\\'`
   return or(nameMatch, descriptionMatch, builtinDescriptionMatch)!
 }
 
@@ -155,7 +155,7 @@ function rowToAgent(
     ...clean,
     mcps,
     knowledgeBaseIds,
-    type: (row.type === 'cherry-claw' ? 'claude-code' : row.type) as AgentType,
+    type: (row.type === 'huatuo-claw' ? 'claude-code' : row.type) as AgentType,
     model: (clean.model ?? null) as UniqueModelId | null,
     planModel: clean.planModel as UniqueModelId | undefined,
     smallModel: clean.smallModel as UniqueModelId | undefined,

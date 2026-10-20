@@ -28,7 +28,7 @@ The AI pipeline refactor exposed three v1 data-layer constraints:
    it. There was no row identity for "this directory" — renaming,
    reordering, or reusing a directory across agents meant duplicating
    the string.
-3. **Agent session messages stored `blocks: MessageBlock[]`** — Cherry
+3. **Agent session messages stored `blocks: MessageBlock[]`** — HuaTuo
    v1's custom block model. AI SDK v6 produces `UIMessage.parts`
    directly. Continuing to convert one to the other on every read /
    write meant maintaining a translation layer that has zero v2-side
@@ -268,7 +268,7 @@ Key points:
 ### `ChatMigrator`
 
 The `transformBlocksToParts` helper is shared with `AgentsMigrator`.
-Both produce `CherryMessagePart[]`; no legacy `blocks` survives the
+Both produce `HuaTuoMessagePart[]`; no legacy `blocks` survives the
 migration.
 
 ### `ProviderModelMigrator`
@@ -295,7 +295,7 @@ Replaced hand-written types with Zod-inferred types from `api/schemas/agents.ts`
 ### `src/shared/data/types/message.ts` (rewritten)
 
 Removed the legacy `blocks` field and the type machinery built around
-it. `CherryMessagePart`, `CherryUIMessage`, `Message`,
+it. `HuaTuoMessagePart`, `HuaTuoUIMessage`, `Message`,
 `AssistantMessageStatus` are the v2 vocabulary.
 
 ### `src/shared/data/api/schemas/agentSessions.ts` (new)

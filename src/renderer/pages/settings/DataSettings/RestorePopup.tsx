@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { getRestoreProgressLabelKey } from '@renderer/i18n/label'
 import { restore } from '@renderer/services/BackupService'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'

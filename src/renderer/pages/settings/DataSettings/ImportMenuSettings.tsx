@@ -1,4 +1,4 @@
-import { Button, RowFlex } from '@cherrystudio/ui'
+import { Button, RowFlex } from '@huatuostudio/ui'
 import {
   SettingDivider,
   SettingGroup,

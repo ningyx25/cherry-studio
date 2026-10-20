@@ -1,4 +1,4 @@
-import { FormField, FormItem } from '@cherrystudio/ui'
+import { FormField, FormItem } from '@huatuostudio/ui'
 import { PromptEditorField } from '@renderer/components/PromptEditorField'
 import {
   EDIT_DIALOG_PROMPT_MAX_HEIGHT,

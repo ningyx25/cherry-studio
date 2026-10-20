@@ -51,7 +51,7 @@ vi.mock('@renderer/components/ActionIconButton', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Tooltip: ({ children, content }: React.HTMLAttributes<HTMLDivElement> & { content?: React.ReactNode }) => (
     <div data-testid="tooltip" data-content={String(content)}>
       {children}
@@ -111,19 +111,19 @@ vi.mock('@renderer/utils/model', () => {
 
 vi.mock('@renderer/types', () => {
   const builtinMcpServerNames = {
-    flomo: '@cherry/flomo',
-    mcpAutoInstall: '@cherry/mcp-auto-install',
-    memory: '@cherry/memory',
-    sequentialThinking: '@cherry/sequentialthinking',
-    braveSearch: '@cherry/brave-search',
-    fetch: '@cherry/fetch',
-    filesystem: '@cherry/filesystem',
-    difyKnowledge: '@cherry/dify-knowledge',
-    python: '@cherry/python',
-    didiMCP: '@cherry/didi-mcp',
-    browser: '@cherry/browser',
-    nowledgeMem: '@cherry/nowledge-mem',
-    hub: '@cherry/hub'
+    flomo: '@huatuo/flomo',
+    mcpAutoInstall: '@huatuo/mcp-auto-install',
+    memory: '@huatuo/memory',
+    sequentialThinking: '@huatuo/sequentialthinking',
+    braveSearch: '@huatuo/brave-search',
+    fetch: '@huatuo/fetch',
+    filesystem: '@huatuo/filesystem',
+    difyKnowledge: '@huatuo/dify-knowledge',
+    python: '@huatuo/python',
+    didiMCP: '@huatuo/didi-mcp',
+    browser: '@huatuo/browser',
+    nowledgeMem: '@huatuo/nowledge-mem',
+    hub: '@huatuo/hub'
   }
 
   return {

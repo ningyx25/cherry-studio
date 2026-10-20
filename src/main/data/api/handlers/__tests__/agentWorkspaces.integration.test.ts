@@ -29,7 +29,7 @@ describe('agentWorkspaceHandlers integration', () => {
   })
 
   function workspacePath(name: string): string {
-    return path.join('/tmp', 'cherry-workspace-handler', name)
+    return path.join('/tmp', 'huatuo-workspace-handler', name)
   }
 
   async function createWorkspace(name: string): Promise<AgentWorkspaceEntity> {

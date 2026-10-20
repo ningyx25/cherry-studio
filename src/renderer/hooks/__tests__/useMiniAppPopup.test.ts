@@ -471,7 +471,7 @@ describe('useMiniAppPopup', () => {
         result.current.openSmartMiniApp({
           appId: 'openclaw-dashboard',
           name: 'OpenClaw',
-          url: 'http://127.0.0.1:18790?cherry_navigation_revision=1#token=fresh',
+          url: 'http://127.0.0.1:18790?huatuo_navigation_revision=1#token=fresh',
           logo: 'openclaw'
         })
       })
@@ -479,7 +479,7 @@ describe('useMiniAppPopup', () => {
       const list = getKeepAlive()
       expect(list).toHaveLength(3)
       expect(list.map((app) => app.appId)).toEqual(['first', 'openclaw-dashboard', 'last'])
-      expect(list[1].url).toBe('http://127.0.0.1:18790?cherry_navigation_revision=1#token=fresh')
+      expect(list[1].url).toBe('http://127.0.0.1:18790?huatuo_navigation_revision=1#token=fresh')
       expect(mockSetWebviewLoaded).toHaveBeenCalledWith('openclaw-dashboard', false)
       expect(mockClearWebviewState).not.toHaveBeenCalled()
     })
@@ -487,7 +487,7 @@ describe('useMiniAppPopup', () => {
     it('does not rebuild a cached transient app when its descriptor is unchanged', async () => {
       const cached = createMiniApp('openclaw-dashboard', {
         name: 'OpenClaw',
-        url: 'http://127.0.0.1:18790?cherry_navigation_revision=1#token=fresh',
+        url: 'http://127.0.0.1:18790?huatuo_navigation_revision=1#token=fresh',
         logo: 'openclaw'
       })
       const seeded = [cached]
@@ -498,7 +498,7 @@ describe('useMiniAppPopup', () => {
         result.current.openSmartMiniApp({
           appId: 'openclaw-dashboard',
           name: 'OpenClaw',
-          url: 'http://127.0.0.1:18790?cherry_navigation_revision=1#token=fresh',
+          url: 'http://127.0.0.1:18790?huatuo_navigation_revision=1#token=fresh',
           logo: 'openclaw'
         })
       })
@@ -643,7 +643,7 @@ describe('useMiniAppPopup', () => {
       expect(mockClearWebviewState).toHaveBeenCalledWith('b')
     })
 
-    // Regression for https://github.com/ningyx25/cherry-studio/pull/14049 —
+    // Regression for https://github.com/huatuostudio/huatuo-studio/pull/14049 —
     // before the fix, switching between miniapp tabs that the user had pinned
     // in the AppShell tab bar would still evict them from keep-alive (the
     // hook didn't know about pin status), so the side-bar mini-tab list

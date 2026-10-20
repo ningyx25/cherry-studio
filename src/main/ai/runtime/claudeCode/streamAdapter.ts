@@ -38,7 +38,7 @@ import { loggerService } from '@logger'
 import type { AgentSessionBackgroundTask } from '@shared/ai/agentSessionBackgroundTasks'
 import type { AgentSessionCompactionAnchorData } from '@shared/ai/agentSessionCompaction'
 import { parseFunctionCallToolName } from '@shared/ai/tools/mcpToolName'
-import type { CherryUIMessageChunk, CherryUIMessageMetadata, MessageStats } from '@shared/data/types/message'
+import type { HuaTuoUIMessageChunk, HuaTuoUIMessageMetadata, MessageStats } from '@shared/data/types/message'
 import type { AgentTaskEventPartData } from '@shared/data/types/uiParts'
 import { isMcpContentBlock } from '@shared/utils/mcp'
 
@@ -101,7 +101,7 @@ type ToolStreamState = {
 }
 
 type StreamSink = {
-  enqueue(part: CherryUIMessageChunk): void
+  enqueue(part: HuaTuoUIMessageChunk): void
 }
 
 type StreamContext = {
@@ -161,7 +161,7 @@ type FlowContext = {
 
 export type ClaudeCodeStreamAdapterOptions = {
   modelId: string
-  /** Cherry session id — for logs only; `onSessionId` reports the runtime's own id. */
+  /** HuaTuo session id — for logs only; `onSessionId` reports the runtime's own id. */
   sessionId: string
   streamOptions: Parameters<LanguageModelV3['doStream']>[0]
   sink: StreamSink
@@ -1699,7 +1699,7 @@ export class ClaudeCodeStreamAdapter {
       'claude-code': {
         parentToolCallId: sdkParentToolUseId
       },
-      cherry: {
+      huatuo: {
         transport: 'claude-agent'
       }
     }
@@ -1715,7 +1715,7 @@ export class ClaudeCodeStreamAdapter {
 
     return {
       'claude-code': claudeCode,
-      cherry: {
+      huatuo: {
         transport: 'claude-agent',
         tool: {
           type: state.toolType ?? 'provider',
@@ -1858,7 +1858,7 @@ export class ClaudeCodeStreamAdapter {
     this.onSessionId?.(sessionId)
   }
 
-  private buildMessageMetadata(usage: LanguageModelV3Usage): CherryUIMessageMetadata {
+  private buildMessageMetadata(usage: LanguageModelV3Usage): HuaTuoUIMessageMetadata {
     // Full cumulative snapshot (Claude Code reports final usage once). Provider
     // cost (`total_cost_usd`) is deliberately NOT used here — it is unreliable
     // (session-cumulative / subscription-equivalent). Direct Agent SDK

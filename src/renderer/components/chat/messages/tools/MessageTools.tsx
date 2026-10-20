@@ -19,11 +19,11 @@ interface Props {
 }
 
 /**
- * In-process cherry / agent-memory tools are MCP-typed but have dedicated cards (web search,
+ * In-process huatuo / agent-memory tools are MCP-typed but have dedicated cards (web search,
  * knowledge, memory) — route them through `chooseTool` instead of the generic MCP renderer.
  * Other MCP servers keep the generic card.
  */
-const DEDICATED_AGENT_SERVERS = new Set(['cherry-tools', 'agent-memory'])
+const DEDICATED_AGENT_SERVERS = new Set(['huatuo-tools', 'agent-memory'])
 
 function rendersThroughChooseTool(toolResponse: McpToolResponse | NormalToolResponse): boolean {
   const tool = toolResponse.tool

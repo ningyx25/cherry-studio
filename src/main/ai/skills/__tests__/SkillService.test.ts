@@ -253,7 +253,7 @@ describe('SkillService', () => {
       })
     })
 
-    it('skips Cherry-managed skill symlinks that point to the global skill storage', async () => {
+    it('skips HuaTuo-managed skill symlinks that point to the global skill storage', async () => {
       const skillService = new SkillService()
       const workdir = await createTempDir('skill-local-workdir-')
       const skillsDir = path.join(workdir, '.claude', 'skills')
@@ -357,7 +357,7 @@ describe('SkillService', () => {
         sourcePath: 'large-skill',
         filename: 'large-skill',
         name: 'Large Skill',
-        description: 'Lives outside Cherry',
+        description: 'Lives outside HuaTuo',
         category: 'skills',
         type: 'skill',
         version: '1.0.0',
@@ -632,13 +632,13 @@ describe('SkillService', () => {
 
         expect(result).toBe(installedSkill)
         expect(net.fetch).toHaveBeenNthCalledWith(1, 'https://clawhub.ai/api/v1/skills/code?ownerHandle=ivangdavila', {
-          headers: { 'User-Agent': 'CherryStudio' }
+          headers: { 'User-Agent': 'HuaTuoStudio' }
         })
         expect(net.fetch).toHaveBeenNthCalledWith(
           2,
           'https://clawhub.ai/api/v1/download?slug=code&ownerHandle=ivangdavila',
           {
-            headers: { 'User-Agent': 'CherryStudio' }
+            headers: { 'User-Agent': 'HuaTuoStudio' }
           }
         )
         expect(createTempDirSpy).toHaveBeenCalledWith('clawhub')
@@ -791,7 +791,7 @@ describe('SkillService', () => {
       vi.mocked(parseSkillMetadata).mockResolvedValue({
         name: 'My Builtin',
         description: 'A builtin skill',
-        author: 'cherry',
+        author: 'huatuo',
         tags: ['ai'],
         command: '',
         version: '1.0.0'
@@ -1101,7 +1101,7 @@ describe('SkillService', () => {
       // plugin bridge manifest written
       await expect(
         fs.promises.readFile(path.join(path.dirname(mirrorRoot), '.claude-plugin', 'plugin.json'), 'utf-8')
-      ).resolves.toBe('{\n  "name": "cherry-studio-skills"\n}\n')
+      ).resolves.toBe('{\n  "name": "huatuo-studio-skills"\n}\n')
       // heal: skill-one mirrored
       await expect(fs.promises.access(path.join(mirrorRoot, 'skill-one', 'SKILL.md'))).resolves.toBeUndefined()
       // prune: non-builtin 'gone' removed

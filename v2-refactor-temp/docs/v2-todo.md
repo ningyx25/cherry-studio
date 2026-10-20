@@ -39,8 +39,8 @@ The Redux store has been fully removed: every slice migrated to Cache / Preferen
 
 ## 2. UI-Layer Teardown
 
-Migrate the prohibited libraries antd / styled-components fully to `@cherrystudio/ui` (Tailwind + Shadcn).
-HeroUI is already removed (0 imports); `@cherrystudio/ui` is adopted in ~400 files, and settings / knowledge / library / code / notes / mini-apps pages are essentially clean.
+Migrate the prohibited libraries antd / styled-components fully to `@huatuostudio/ui` (Tailwind + Shadcn).
+HeroUI is already removed (0 imports); `@huatuostudio/ui` is adopted in ~400 files, and settings / knowledge / library / code / notes / mini-apps pages are essentially clean.
 
 - antd and styled-components overlap heavily (~21 files import both); prioritizing the overlapping files clears two items at once.
 - Migrate by area in batches:
@@ -92,7 +92,7 @@ Documented intentional skips (must be called out in release notes):
 | Redux-coupled hooks / main bridge | 6 files (`useStore` / `useSettings` / `useTagsLegacy`, `ReduxService`, etc.) | `usePreference` / `useTags`(v2); `ReduxService` already stubbed |
 | Shared data types | agent / message / provider types (pagination response, citation format, legacy provider flags) | `OffsetPaginationResponse`, `MainTextBlock.references`, etc. |
 | Protocol / message format | `LanFile*` JSON format, web-search accessors | binary frame, `CitationMessageBlock` |
-| Component / service redesign | `CodeEditor`→`@cherrystudio/ui`, `FileManager` (do not extend), `deleteMessageFiles`→`safeDeleteFiles`, etc. | see each annotation |
+| Component / service redesign | `CodeEditor`→`@huatuostudio/ui`, `FileManager` (do not extend), `deleteMessageFiles`→`safeDeleteFiles`, etc. | see each annotation |
 
 Migration-relevant TODO/FIXME (~53 filtered from ~157; the rest are ordinary code notes) — main workstreams:
 

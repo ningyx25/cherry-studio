@@ -7,7 +7,7 @@
  * `useChatWrite()`.
  */
 
-import type { AssistantTurnOptions, CherryMessagePart } from '@shared/data/types/message'
+import type { AssistantTurnOptions, HuaTuoMessagePart } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import { createContext, use } from 'react'
 
@@ -48,7 +48,7 @@ export interface ChatWriteActions {
   deleteMessageGroup: (id: string) => Promise<void>
   pause: () => void
   clearTopicMessages: () => Promise<void>
-  editMessage: (messageId: string, editedParts: CherryMessagePart[]) => Promise<void>
+  editMessage: (messageId: string, editedParts: HuaTuoMessagePart[]) => Promise<void>
   /**
    * Branch a user message: create a sibling with edited parts, make it active,
    * then regenerate the assistant response anchored at that sibling. The source
@@ -56,7 +56,7 @@ export interface ChatWriteActions {
    */
   forkAndResend: (
     messageId: string,
-    editedParts: CherryMessagePart[],
+    editedParts: HuaTuoMessagePart[],
     turnOptions?: AssistantTurnOptions
   ) => Promise<void>
   /**

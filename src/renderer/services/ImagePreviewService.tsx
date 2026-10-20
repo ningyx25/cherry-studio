@@ -3,7 +3,7 @@ import {
   ImagePreviewDialog,
   type ImagePreviewItem,
   type ImagePreviewLabels
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'
 import { toast } from '@renderer/services/toast'

@@ -22,7 +22,7 @@ describe('archiver 8 ZIP round-trip (LegacyBackupManager API contract)', () => {
   let workDir: string
 
   beforeAll(async () => {
-    workDir = await mkdtemp(join(tmpdir(), 'cherry-archiver8-'))
+    workDir = await mkdtemp(join(tmpdir(), 'huatuo-archiver8-'))
   })
 
   afterAll(async () => {

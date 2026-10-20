@@ -240,7 +240,7 @@ const TOOLS = [
     // Bundled as a fallback when the user has no system git (see
     // src/main/utils/bundledGit.ts). Windows-only: macOS/Linux use the system git. Unlike
     // the single-binary tools above it ships its whole tree under <key>/git/,
-    // so it is run in place from resources rather than copied into cherry.bin.
+    // so it is run in place from resources rather than copied into huatuo.bin.
     name: 'mingit',
     version: MINGIT_VERSION,
     versionFile: '.mingit-version',

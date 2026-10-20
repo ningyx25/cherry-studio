@@ -2,7 +2,7 @@
 
 > 更新日期：2026-04-16
 > 范围：`packages/ui`
-> 目的：记录 `@cherrystudio/ui` 当前已识别出的架构问题，作为后续 v2 UI 收口与拆分的依据。
+> 目的：记录 `@huatuostudio/ui` 当前已识别出的架构问题，作为后续 v2 UI 收口与拆分的依据。
 >
 > **状态：历史快照。** 本文保留当时的问题背景，不再作为当前主题架构的事实来源。现行契约请以
 > [`packages/ui/docs/design-token-system.md`](../../../packages/ui/docs/design-token-system.md) 和
@@ -20,7 +20,7 @@
 
 这让它在 monorepo 内部可以继续承担“迁移缓冲区”的角色，但也导致对外边界、发布契约和技术栈约束都不够稳定。
 
-当前最核心的问题不是某一个组件实现有缺陷，而是 `@cherrystudio/ui` 还没有从“内部迁移目录”真正收敛为“边界稳定的 UI 库”。
+当前最核心的问题不是某一个组件实现有缺陷，而是 `@huatuostudio/ui` 还没有从“内部迁移目录”真正收敛为“边界稳定的 UI 库”。
 
 ## 核心问题
 
@@ -48,13 +48,13 @@
 
 结论：
 
-`@cherrystudio/ui` 现在更像“源码别名入口”，而不是“可独立发布的包”。
+`@huatuostudio/ui` 现在更像“源码别名入口”，而不是“可独立发布的包”。
 
 ### 2. 组件库边界仍然混入旧技术栈
 
 虽然 v2 的方向是：
 
-1. `@cherrystudio/ui`
+1. `@huatuostudio/ui`
 2. Tailwind CSS
 3. shadcn / Radix
 
@@ -124,7 +124,7 @@ Renderer 的 `tailwind.css` 只接入共享生成适配器，不再维护第二�
 
 ### 6. 内部实现路径被当成公共依赖使用
 
-包内部大量通过 `@cherrystudio/ui/lib/utils` 引用 `cn` 等内部工具。
+包内部大量通过 `@huatuostudio/ui/lib/utils` 引用 `cn` 等内部工具。
 
 这类自引用在 monorepo 中短期可用，但会带来几个问题：
 
@@ -263,7 +263,7 @@ Renderer 的 `tailwind.css` 只接入共享生成适配器，不再维护第二�
 
 目标：
 
-让 `@cherrystudio/ui` 先成为一个“入口稳定、对外契约清晰”的包。
+让 `@huatuostudio/ui` 先成为一个“入口稳定、对外契约清晰”的包。
 
 主要工作：
 
@@ -345,11 +345,11 @@ Renderer 的 `tailwind.css` 只接入共享生成适配器，不再维护第二�
 
 实际落地约定：
 
-1. 普通业务包默认依赖 `@cherrystudio/ui/styles/theme.css`，并优先使用语义 Tailwind 工具类
+1. 普通业务包默认依赖 `@huatuostudio/ui/styles/theme.css`，并优先使用语义 Tailwind 工具类
 2. 手写 CSS 使用无前缀的官方 Shadcn 或稳定产品变量
 3. `--color-*` 是生成的 Tailwind 适配层，不是运行时消费 API
 4. `--cs-theme-*` 是 runtime override input，只允许主题宿主写入
-5. 只有明确需要 foundation 能力的设计系统配套包才依赖 `@cherrystudio/ui/styles/tokens.css`
+5. 只有明确需要 foundation 能力的设计系统配套包才依赖 `@huatuostudio/ui/styles/tokens.css`
 
 阶段产出：
 
@@ -509,7 +509,7 @@ Renderer 的 `tailwind.css` 只接入共享生成适配器，不再维护第二�
 
 优化完成后，至少应满足以下标准：
 
-1. `@cherrystudio/ui` 的所有公开入口都具备稳定 contract
+1. `@huatuostudio/ui` 的所有公开入口都具备稳定 contract
 2. renderer 不再通过源码路径使用 UI 包
 3. 正式导出组件不再依赖 `antd` / `styled-components`
 4. 主题变量区分出 public contract 和 internal-only contract

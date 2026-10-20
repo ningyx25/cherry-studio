@@ -13,7 +13,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   return {
     Switch: ({ checked, onCheckedChange }: any) => (
       <button type="button" data-checked={checked ? 'true' : 'false'} onClick={() => onCheckedChange(!checked)}>

@@ -1,4 +1,4 @@
-import { createSlugger, extractTextFromNode, Scrollbar } from '@cherrystudio/ui'
+import { createSlugger, extractTextFromNode, Scrollbar } from '@huatuostudio/ui'
 import { scrollIntoView } from '@renderer/utils/dom'
 import type { MultiModelMessageStyle } from '@shared/data/preference/preferenceTypes'
 import type { FC } from 'react'

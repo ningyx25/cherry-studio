@@ -108,8 +108,8 @@ export default defineConfig({
         resolve: {
           alias: {
             '@shared': resolve('src/shared'),
-            '@cherrystudio/provider-registry/node': resolve('packages/provider-registry/src/registry-loader'),
-            '@cherrystudio/provider-registry': resolve('packages/provider-registry/src')
+            '@huatuostudio/provider-registry/node': resolve('packages/provider-registry/src/registry-loader'),
+            '@huatuostudio/provider-registry': resolve('packages/provider-registry/src')
           }
         },
         test: {
@@ -127,8 +127,8 @@ export default defineConfig({
         resolve: {
           alias: {
             '@shared': resolve('src/shared'),
-            '@cherrystudio/provider-registry/node': resolve('packages/provider-registry/src/registry-loader'),
-            '@cherrystudio/provider-registry': resolve('packages/provider-registry/src')
+            '@huatuostudio/provider-registry/node': resolve('packages/provider-registry/src/registry-loader'),
+            '@huatuostudio/provider-registry': resolve('packages/provider-registry/src')
           }
         },
         test: {
@@ -145,7 +145,7 @@ export default defineConfig({
         extends: true,
         resolve: {
           alias: {
-            '@cherrystudio/ui': resolve(__dirname, 'packages/ui/src')
+            '@huatuostudio/ui': resolve(__dirname, 'packages/ui/src')
           }
         },
         test: {

@@ -1,5 +1,5 @@
-import { Button, type RenderRowArgs } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, type RenderRowArgs } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Icon } from '@iconify/react'
 import { CommandContextMenu, type CommandContextMenuExtraItem } from '@renderer/components/command'
 import { getFileIconName } from '@renderer/utils/fileIconName'

@@ -64,7 +64,7 @@ describe('paddleocr client upload', () => {
     expect(form.get('model')).toBe(MODEL)
 
     expect(init.headers?.['Authorization']).toBe(`Bearer ${API_KEY}`)
-    expect(init.headers?.['Client-Platform']).toBe('cherrystudio')
+    expect(init.headers?.['Client-Platform']).toBe('huatuostudio')
   })
 
   it('submits OCR images as multipart/form-data with a file part', async () => {

@@ -1,5 +1,5 @@
-import { Skeleton } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Skeleton } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Loader2 } from 'lucide-react'
 import type { ComponentProps, ReactNode } from 'react'
 

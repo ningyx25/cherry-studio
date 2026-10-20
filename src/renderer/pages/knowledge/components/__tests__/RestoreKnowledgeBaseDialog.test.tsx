@@ -58,7 +58,7 @@ vi.mock('../KnowledgeEmbeddingModelSelect', () => ({
   )
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
   const SelectContext = React.createContext<{ onValueChange?: (value: string) => void }>({})
 

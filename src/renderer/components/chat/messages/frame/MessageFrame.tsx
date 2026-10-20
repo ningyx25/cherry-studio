@@ -1,10 +1,10 @@
-import { Scrollbar } from '@cherrystudio/ui'
+import { Scrollbar } from '@huatuostudio/ui'
 import HorizontalScrollContainer from '@renderer/components/HorizontalScrollContainer'
 import { useTimer } from '@renderer/hooks/useTimer'
 import { scrollIntoView } from '@renderer/utils/dom'
 import { canEditAssistantMessageParts } from '@renderer/utils/message/partsHelpers'
 import { classNames, cn } from '@renderer/utils/style'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { createUniqueModelId, type Model } from '@shared/data/types/model'
 import dayjs from 'dayjs'
 import type { FC } from 'react'
@@ -35,7 +35,7 @@ const USER_MESSAGE_FOOTER_ACTIONS_CLASS =
 
 interface Props {
   message: MessageListItem
-  messageParts?: CherryMessagePart[]
+  messageParts?: HuaTuoMessagePart[]
   index?: number
   total?: number
   hideMenuBar?: boolean

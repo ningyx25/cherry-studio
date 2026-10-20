@@ -1,5 +1,5 @@
-import { Label, RadioGroup, RadioGroupItem } from '@cherrystudio/ui'
-import { Dmxapi } from '@cherrystudio/ui/icons'
+import { Label, RadioGroup, RadioGroupItem } from '@huatuostudio/ui'
+import { Dmxapi } from '@huatuostudio/ui/icons'
 import { useProvider } from '@renderer/hooks/useProvider'
 import { replaceEndpointConfigDomain } from '@renderer/pages/settings/ProviderSettings/utils/providerDisplay'
 import { toast } from '@renderer/services/toast'

@@ -1,4 +1,4 @@
-import { Tooltip } from '@cherrystudio/ui'
+import { Tooltip } from '@huatuostudio/ui'
 import type { ActionTool } from '@renderer/components/ActionTools'
 import { EllipsisVertical } from 'lucide-react'
 import { memo, useMemo, useState } from 'react'

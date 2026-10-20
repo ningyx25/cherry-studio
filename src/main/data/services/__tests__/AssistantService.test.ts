@@ -676,7 +676,7 @@ describe('AssistantDataService', () => {
       try {
         assistantDataService.create({
           name: 'bad-model',
-          modelId: 'cherryai::qwen'
+          modelId: 'huatuoai::qwen'
         })
       } catch (e) {
         err = e
@@ -1148,7 +1148,7 @@ describe('AssistantDataService', () => {
 
       let err: unknown
       try {
-        assistantDataService.update('ast-1', { modelId: 'cherryai::qwen' })
+        assistantDataService.update('ast-1', { modelId: 'huatuoai::qwen' })
       } catch (e) {
         err = e
       }

@@ -1,6 +1,6 @@
-import { Button, Scrollbar } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
 import { useQuery } from '@data/hooks/useDataApi'
+import { Button, Scrollbar } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { ArrowLeft } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'

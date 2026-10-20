@@ -12,7 +12,7 @@ const actionMenuItemMocks = vi.hoisted(() => ({
   actionsToCommandMenuExtraItems: vi.fn(() => [])
 }))
 
-// The native/cherry presentation-mode branching lives in CommandMenus and is its own concern; the
+// The native/huatuo presentation-mode branching lives in CommandMenus and is its own concern; the
 // point of this test is the *mode-independent* wrapper onContextMenu that identifies the clicked row.
 // The mock just renders the children inside a span and we assert the right-click bubbles through it.
 vi.mock('@renderer/components/command', () => ({

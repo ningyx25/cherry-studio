@@ -53,7 +53,7 @@ vi.mock('@renderer/components/tags/Model', () => ({
   ModelTag: () => null
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   HoverCard: ({
     children,
     openDelay,

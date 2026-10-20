@@ -44,7 +44,7 @@ controlled runtime inputs
               ▼
 public semantic contract
   (Shadcn: --background, --primary, ...)
-  (Cherry: --success, --chat-user, ...)
+  (HuaTuo: --success, --chat-user, ...)
               │
               ▼
 Tailwind @theme inline adapter
@@ -181,7 +181,7 @@ Rules:
 - new product variables require addition to the explicit generated allowlist.
 
 All product variables are stable, consumer-backed HuaTuo Studio semantics not covered by Shadcn.
-`CHERRY_PRODUCT_VARIABLE_TOKENS` is the explicit runtime allowlist. Tailwind exposure is a separate concern and
+`HUATUO_PRODUCT_VARIABLE_TOKENS` is the explicit runtime allowlist. Tailwind exposure is a separate concern and
 does not change API stability.
 
 A product semantic should reference an existing foundation or official semantic when that dependency expresses
@@ -197,8 +197,8 @@ Example:
 ```
 
 This is a pattern example rather than a variable in the current contract. TweakCN can change `--primary` without knowing
-the Cherry-specific variable, and a product role authored this way follows it automatically. Product roles that
-must preserve a Cherry-specific appearance may intentionally own mode-aware values instead.
+the HuaTuo-specific variable, and a product role authored this way follows it automatically. Product roles that
+must preserve a HuaTuo-specific appearance may intentionally own mode-aware values instead.
 
 ### 3.5 Tailwind adapter
 
@@ -256,7 +256,7 @@ There are also legitimate internal variables that do not belong in this shared l
 - page layout variables stay in the page or feature stylesheet.
 
 These values are implementation contracts, not product theme semantics. They are not declared by
-`@cherrystudio/ui`, added to `theme-contract.ts`, or mapped through `@theme`. If an app-shell concept becomes a
+`@huatuostudio/ui`, added to `theme-contract.ts`, or mapped through `@theme`. If an app-shell concept becomes a
 cross-package product semantic with real consumers, it must go through the normal stable-token review first.
 
 The retired `--app-*` names in `shadcn-v2.json` are different: they duplicated Shadcn or product semantics and
@@ -366,7 +366,7 @@ surface and foreground form the reusable feedback pair. `destructive` and `error
 styles a dangerous action, while `error` communicates system feedback. They may share palette values without
 sharing semantics.
 
-`CHERRY_PRODUCT_SURFACE_PAIRS` lists only product surfaces with a concrete shared foreground contract. Other
+`HUATUO_PRODUCT_SURFACE_PAIRS` lists only product surfaces with a concrete shared foreground contract. Other
 background roles deliberately keep text ownership with the consuming component until repeated usage proves a
 shared pair. Stable product variables may depend on official Shadcn variables or foundations, but never on
 historical names.
@@ -379,8 +379,8 @@ colors, or platform constants are not automatically product semantics. Exact off
 contract; remaining values stay local to Markdown, RichEditor, Composer, or their other concrete owner. The
 migration registry records the retired names and reports cases that still need contextual review.
 
-The explicit `CHERRY_PRODUCT_VARIABLE_TOKENS` allowlist is the machine-readable source of the complete stable
-product set; only the smaller `CHERRY_PRODUCT_COLOR_TOKENS` subset is exported as Tailwind color utilities. This
+The explicit `HUATUO_PRODUCT_VARIABLE_TOKENS` allowlist is the machine-readable source of the complete stable
+product set; only the smaller `HUATUO_PRODUCT_COLOR_TOKENS` subset is exported as Tailwind color utilities. This
 avoids generating utilities for roles consumed only by custom CSS.
 
 ## 5. Radius contract
@@ -510,7 +510,7 @@ The generated contract must validate that:
 - renderer runtime code can write only registered shared `--cs-theme-*` inputs; owner-local runtime values use `--app-*`;
 - renderer CSS and TypeScript/TSX-authored style strings cannot consume generated `--color-*` adapter variables.
 
-Run `pnpm --filter @cherrystudio/ui theme:check` to validate the canonical graph, committed generated CSS,
+Run `pnpm --filter @huatuostudio/ui theme:check` to validate the canonical graph, committed generated CSS,
 migration registry, and renderer boundary together. `theme:build` is deliberately a pure generator that reads
 only the inputs needed for generated output; governance remains the responsibility of `theme:check`.
 

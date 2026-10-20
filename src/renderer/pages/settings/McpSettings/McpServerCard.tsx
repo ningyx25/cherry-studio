@@ -1,4 +1,4 @@
-import { Alert, Badge, Button, Switch, Tooltip } from '@cherrystudio/ui'
+import { Alert, Badge, Button, Switch, Tooltip } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { ErrorBoundary } from '@renderer/components/ErrorBoundary'
 import DeleteIcon from '@renderer/components/icons/DeleteIcon'

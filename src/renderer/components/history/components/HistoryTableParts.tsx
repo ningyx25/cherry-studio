@@ -1,4 +1,4 @@
-import { Button, Checkbox, RowFlex } from '@cherrystudio/ui'
+import { Button, Checkbox, RowFlex } from '@huatuostudio/ui'
 import { ActionConfirmDialog } from '@renderer/components/chat/actions/ActionConfirmDialog'
 import type { ResolvedAction } from '@renderer/components/chat/actions/actionTypes'
 import { CommandContextMenu, type CommandContextMenuExtraItem } from '@renderer/components/command'

@@ -9,8 +9,8 @@
  * that already pull from `agentParams/`.
  */
 
-import type { StringKeys } from '@cherrystudio/ai-core/provider'
 import type { ResolvedReasoningProfile } from '@data/services/ProviderRegistryService'
+import type { StringKeys } from '@huatuostudio/ai-core/provider'
 import type { CompressionModelDescriptor } from '@main/ai/contextBuild/resolveCompressionModel'
 import type { CompactionSink } from '@shared/ai/compaction'
 import type { EffectiveContextSettings } from '@shared/data/types/contextSettings'

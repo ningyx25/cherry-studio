@@ -1,5 +1,5 @@
-import { type CodeMirrorTheme, getCmThemeByName, getCmThemeNames } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { type CodeMirrorTheme, getCmThemeByName, getCmThemeNames } from '@huatuostudio/ui'
 import { CodeStyleContext } from '@renderer/hooks/useCodeStyle'
 import { useMermaid } from '@renderer/hooks/useMermaid'
 import { useTheme } from '@renderer/hooks/useTheme'

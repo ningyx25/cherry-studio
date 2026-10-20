@@ -44,7 +44,7 @@ describe('toolOutputStore', () => {
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
     MockMainCacheServiceUtils.resetMocks()
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-tool-output-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-tool-output-'))
     internalRoot = path.join(tmp, 'files-internal')
     await mkdir(internalRoot, { recursive: true })
     vi.mocked(application.getPath).mockImplementation((key: string, filename?: string) => {

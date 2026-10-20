@@ -1,6 +1,6 @@
 import { toast } from '@renderer/services/toast'
 import type { NormalToolResponse } from '@renderer/types/mcpTool'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type * as ReactI18next from 'react-i18next'
 import { describe, expect, it, vi } from 'vitest'
@@ -49,7 +49,7 @@ const part = {
   state: 'approval-requested',
   input: { command: 'pnpm test' },
   approval: { id: 'approval-1' }
-} as unknown as CherryMessagePart
+} as unknown as HuaTuoMessagePart
 
 function makeRequest(overrides: Partial<PermissionRequestComposerRequest> = {}): PermissionRequestComposerRequest {
   const toolResponse: NormalToolResponse = {
@@ -176,7 +176,7 @@ describe('PermissionRequestComposer', () => {
             toolCallId: 'write-call-1',
             status: 'pending',
             arguments: {
-              file_path: '/tmp/cherry-approval-long-preview-note.md',
+              file_path: '/tmp/huatuo-approval-long-preview-note.md',
               content: '# Long approval preview\n\nA long document body.'
             },
             tool: {

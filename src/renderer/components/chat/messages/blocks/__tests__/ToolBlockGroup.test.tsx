@@ -183,8 +183,8 @@ const cronDoneItem = {
     id: 'tool-cron',
     toolCallId: 'tool-cron',
     tool: {
-      id: 'mcp__cherry-tools__cron',
-      name: 'mcp__cherry-tools__cron',
+      id: 'mcp__huatuo-tools__cron',
+      name: 'mcp__huatuo-tools__cron',
       type: 'mcp',
       description:
         "Manage scheduled tasks. Use action 'add' to create a job, 'list' to see all jobs, or 'remove' to delete a job."

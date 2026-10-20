@@ -8,7 +8,7 @@
 
 import { useStableStringArray } from '@renderer/hooks/useStableStringArray'
 import type { ActiveExecution } from '@shared/ai/transport'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { useMemo } from 'react'
 
 import type { TranslationOverlayEntry } from '../blocks/MessagePartsContext'
@@ -18,18 +18,18 @@ import { useStableMessagePartsLayers } from './useStableMessagePartsLayers'
 const EMPTY_TRANSLATION_OVERLAY: Record<string, TranslationOverlayEntry> = {}
 
 interface MessageStreamingLayersParams {
-  messages: CherryUIMessage[]
+  messages: HuaTuoUIMessage[]
   /** messageId -> latest streamed parts from the execution overlay. */
-  overlay: Record<string, CherryMessagePart[]>
+  overlay: Record<string, HuaTuoMessagePart[]>
   /** Executions whose anchor rows mark the mutable streaming tail. */
   executions: readonly ActiveExecution[]
   /** Latest assistant snapshot per execution. */
-  liveAssistants: CherryUIMessage[]
+  liveAssistants: HuaTuoUIMessage[]
   translationOverlay?: Record<string, TranslationOverlayEntry>
 }
 
 interface MessageStreamingLayersResult {
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   liveMessageIds: readonly string[]
   streamingLayers: MessageStreamingLayers
 }

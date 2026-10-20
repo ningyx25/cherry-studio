@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('@logger', () => ({
@@ -28,7 +28,7 @@ import { trimOversizedToolOutputs } from '../trimToolOutputs'
 const THRESHOLD = 2_000
 const BIG = Array.from({ length: 200 }, (_, i) => `line ${i + 1} — some longer padding text here`).join('\n')
 
-const toolPart = (output: unknown, overrides: Record<string, unknown> = {}): CherryMessagePart =>
+const toolPart = (output: unknown, overrides: Record<string, unknown> = {}): HuaTuoMessagePart =>
   ({
     type: 'tool-run_cmd',
     toolCallId: 'call-1',
@@ -36,7 +36,7 @@ const toolPart = (output: unknown, overrides: Record<string, unknown> = {}): Che
     input: {},
     output,
     ...overrides
-  }) as unknown as CherryMessagePart
+  }) as unknown as HuaTuoMessagePart
 
 const ENTRY = { id: 'entry-1', origin: 'internal', cleanupPolicy: 'delete_when_unreferenced', ext: 'txt' }
 
@@ -105,7 +105,7 @@ describe('trimOversizedToolOutputs', () => {
       ]
     ],
     ['already deferred', [toolPart({ $deferredToolResult: { topicId: 't', messageId: 'm', toolCallId: 'c' } })]],
-    ['non-tool part', [{ type: 'text', text: BIG } as unknown as CherryMessagePart]]
+    ['non-tool part', [{ type: 'text', text: BIG } as unknown as HuaTuoMessagePart]]
   ])('passes through untouched: %s', async (_label, parts) => {
     const result = await trimOversizedToolOutputs(parts)
     expect(result).toBe(parts)

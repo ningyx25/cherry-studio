@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import type * as TabHooks from '@renderer/hooks/tab'
 import type * as ImageCaptureTargetsHook from '@renderer/hooks/useImageCaptureTargets'
 import { popup } from '@renderer/services/popup'
@@ -11,9 +11,9 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import type { ComponentProps, ReactNode } from 'react'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
   const React = await import('react')
-  const actual = await importOriginal<typeof CherryStudioUi>()
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
   const ContextMenuContext = React.createContext<{ onOpenChange?: (open: boolean) => void }>({})
   const itemHandler = (onSelect: ((event: Event) => void) | undefined, props: Record<string, unknown>) => ({
     ...props,
@@ -3090,7 +3090,7 @@ describe('Sessions', () => {
     expect(toast.success).toHaveBeenCalledWith('Deleted successfully')
   })
 
-  it('deletes only tasks from the built-in Cherry Assistant group', async () => {
+  it('deletes only tasks from the built-in HuaTuo Assistant group', async () => {
     const onActiveAgentDeleted = vi.fn()
     preferenceMocks.values.set('agent.session.display_mode', 'agent')
     agentDataMocks.useAgents.mockReturnValue({
@@ -3098,7 +3098,7 @@ describe('Sessions', () => {
         {
           id: 'agent-a',
           model: 'model-a',
-          name: 'Cherry Assistant',
+          name: 'HuaTuo Assistant',
           configuration: { builtin_role: 'assistant' }
         }
       ],
@@ -3113,7 +3113,7 @@ describe('Sessions', () => {
 
     render(<SessionsForTest onActiveAgentDeleted={onActiveAgentDeleted} />)
 
-    const agentGroup = screen.getByRole('button', { name: 'Cherry Assistant' }).closest('div')
+    const agentGroup = screen.getByRole('button', { name: 'HuaTuo Assistant' }).closest('div')
     expect(agentGroup).not.toBeNull()
     fireEvent.pointerDown(within(agentGroup as HTMLElement).getByRole('button', { name: 'More' }))
     const deleteTasksMenuItem = screen

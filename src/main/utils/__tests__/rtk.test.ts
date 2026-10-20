@@ -44,8 +44,8 @@ vi.mock('@application', () => ({
     get: vi.fn(() => binaryManagerMock),
     getPath: (key: string) => {
       if (key === 'app.root.resources.binaries') return '/app/resources/binaries'
-      if (key === 'cherry.bin') return '/home/testuser/.cherrystudio/bin'
-      if (key === 'feature.binary.data') return '/home/testuser/.config/CherryStudio/Toolchain/mise'
+      if (key === 'huatuo.bin') return '/home/testuser/.huatuostudio/bin'
+      if (key === 'feature.binary.data') return '/home/testuser/.config/HuaTuoStudio/Toolchain/mise'
       return '/app/resources'
     }
   }

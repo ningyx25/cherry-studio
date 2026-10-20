@@ -53,7 +53,7 @@ export class Application {
 
   /**
    * Cache of PathKeys whose directory has already been auto-ensured.
-   * Each Cherry-owned key is `mkdirSync`'d at most once per process —
+   * Each HuaTuo-owned key is `mkdirSync`'d at most once per process —
    * subsequent `getPath()` calls hit this Set and return immediately.
    *
    * NOT cleared on shutdown (paths remain valid for cleanup code that
@@ -701,7 +701,7 @@ export class Application {
    * special-case path source (e.g. `paths/constants.ts` for code that
    * must run before the registry exists).
    *
-   * @param key      Dotted path key (e.g. 'feature.files.data', 'cherry.bin').
+   * @param key      Dotted path key (e.g. 'feature.files.data', 'huatuo.bin').
    *                 Type-checked at compile time against the path registry.
    * @param filename Optional filename to join under the registered root.
    *                 Should be a single relative segment (no absolute path,

@@ -15,7 +15,7 @@ const filesystemManualApprovalTools = ['write', 'edit', 'delete'] as const
 /**
  * User-installable built-in MCP servers shown in the UI.
  *
- * Note: The `hub` server (@cherry/hub) is intentionally excluded because:
+ * Note: The `hub` server (@huatuo/hub) is intentionally excluded because:
  * - It's a meta-server that aggregates all other MCP servers
  * - It's designed for LLM code mode, not direct user interaction
  * - It should be auto-enabled internally when needed, not manually installed
@@ -34,12 +34,12 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
   {
     id: nanoid(),
     name: BuiltinMcpServerNames.mcpAutoInstall,
-    reference: 'https://docs.cherry-ai.com/advanced-basic/mcp/auto-install',
+    reference: 'https://docs.huatuo.ai/advanced-basic/mcp/auto-install',
     type: 'stdio',
     command: 'npx',
     args: ['-y', '@mcpmarket/mcp-auto-install', 'connect', '--json'],
     isActive: false,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
@@ -53,7 +53,7 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
       MEMORY_FILE_PATH: 'YOUR_MEMORY_FILE_PATH'
     },
     shouldConfig: true,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
@@ -62,7 +62,7 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
     name: BuiltinMcpServerNames.sequentialThinking,
     type: 'inMemory',
     isActive: true,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
@@ -75,7 +75,7 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
       BRAVE_API_KEY: 'YOUR_API_KEY'
     },
     shouldConfig: true,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
@@ -84,7 +84,7 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
     name: BuiltinMcpServerNames.fetch,
     type: 'inMemory',
     isActive: true,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
@@ -96,7 +96,7 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
     disabledAutoApproveTools: [...filesystemManualApprovalTools],
     shouldConfig: true,
     isActive: false,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
@@ -109,7 +109,7 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
       DIFY_KEY: 'YOUR_DIFY_KEY'
     },
     shouldConfig: true,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
@@ -118,13 +118,13 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
     name: BuiltinMcpServerNames.python,
     type: 'inMemory',
     isActive: false,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
   {
     id: nanoid(),
-    name: '@cherry/didi-mcp',
+    name: '@huatuo/didi-mcp',
     reference: 'https://mcp.didichuxing.com/',
     type: 'inMemory',
     isActive: false,
@@ -132,7 +132,7 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
       DIDI_API_KEY: 'YOUR_DIDI_API_KEY'
     },
     shouldConfig: true,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },
@@ -141,7 +141,7 @@ export const builtinMcpServers: BuiltinMcpServer[] = [
     name: BuiltinMcpServerNames.browser,
     type: 'inMemory',
     isActive: false,
-    provider: 'CherryAI',
+    provider: 'HuaTuoAI',
     installSource: 'builtin',
     isTrusted: true
   },

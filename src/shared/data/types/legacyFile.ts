@@ -16,8 +16,8 @@
  * Will be removed once the last v1 store is migrated and its KnowledgeMigrator
  * input shape is no longer reachable.
  */
-import type OpenAI from '@cherrystudio/openai'
 import { FILE_TYPE, type FileType, FileTypeSchema } from '@shared/types/file'
+import type OpenAI from 'openai'
 import * as z from 'zod'
 
 export interface FileMetadata {

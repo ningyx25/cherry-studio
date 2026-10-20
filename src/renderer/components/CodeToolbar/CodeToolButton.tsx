@@ -1,4 +1,4 @@
-import { MenuItem, MenuList, Popover, PopoverContent, PopoverTrigger, Tooltip } from '@cherrystudio/ui'
+import { MenuItem, MenuList, Popover, PopoverContent, PopoverTrigger, Tooltip } from '@huatuostudio/ui'
 import type { ActionTool } from '@renderer/components/ActionTools'
 import { memo, useCallback, useMemo, useState } from 'react'
 

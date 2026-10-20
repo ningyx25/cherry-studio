@@ -1,4 +1,4 @@
-import { EmptyState } from '@cherrystudio/ui'
+import { EmptyState } from '@huatuostudio/ui'
 import LoadingIcon from '@renderer/components/icons/LoadingIcon'
 import { DynamicVirtualList } from '@renderer/components/VirtualList'
 import { cn } from '@renderer/utils/style'

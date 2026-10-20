@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import type { McpServer } from '@shared/data/types/mcpServer'
 import { render, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import McpSettings from '../McpSettings'
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => importOriginal<typeof CherryStudioUi>())
+vi.mock('@huatuostudio/ui', async (importOriginal) => importOriginal<typeof HuaTuoStudioUi>())
 
 const mocks = vi.hoisted(() => ({
   confirm: vi.fn().mockResolvedValue(false),

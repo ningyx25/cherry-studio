@@ -1,9 +1,9 @@
-import '@cherrystudio/ui/components/composites/markdown/styles'
+import '@huatuostudio/ui/components/composites/markdown/styles'
 
-import { Button, CodeEditor, type CodeEditorHandles, Field, FieldContent, FieldError, Markdown } from '@cherrystudio/ui'
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { EditorView } from '@codemirror/view'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, CodeEditor, type CodeEditorHandles, Field, FieldContent, FieldError, Markdown } from '@huatuostudio/ui'
 import { tags } from '@lezer/highlight'
 import { useTheme } from '@renderer/hooks/useTheme'
 import { cn } from '@renderer/utils/style'

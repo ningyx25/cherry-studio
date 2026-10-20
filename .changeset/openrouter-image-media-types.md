@@ -1,5 +1,5 @@
 ---
-'@cherrystudio/ai-core': patch
+'@huatuostudio/ai-core': patch
 ---
 
 Preserve OpenRouter image response media types, including SVG output from Recraft vector models.

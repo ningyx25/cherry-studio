@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import {
   SettingDivider,
   SettingGroup,

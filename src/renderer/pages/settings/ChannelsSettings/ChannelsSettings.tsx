@@ -1,4 +1,4 @@
-import { MenuItem, MenuList, PageHeader, RowFlex } from '@cherrystudio/ui'
+import { MenuItem, MenuList, PageHeader, RowFlex } from '@huatuostudio/ui'
 import Scrollbar from '@renderer/components/Scrollbar'
 import {
   settingsSubmenuItemClassName,

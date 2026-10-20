@@ -11,7 +11,7 @@ import {
   ItemMedia,
   ItemSeparator,
   ItemTitle
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Bell, Check, ChevronRight, Cloud, Database, FileText, Settings, Shield } from 'lucide-react'
 

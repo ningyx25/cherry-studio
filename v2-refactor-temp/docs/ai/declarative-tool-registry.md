@@ -4,8 +4,8 @@
 >
 > **Update (PR #16726):** soul mode and its tool gating are gone — `soul_enabled`,
 > `SOUL_MODE_DISALLOWED_TOOLS`, and the PR-7 de-gating items below have landed.
-> The `claw` server was renamed and merged into `cherry-tools`; the autonomy
-> tools' final names are `mcp__cherry-tools__cron/notify/config`. References to
+> The `claw` server was renamed and merged into `huatuo-tools`; the autonomy
+> tools' final names are `mcp__huatuo-tools__cron/notify/config`. References to
 > `claw` / soul gating below are historical context, not current state.
 >
 > **Update (skill-install-visibility-sync):** the `skills` MCP server is now **wired
@@ -28,7 +28,7 @@ The Claude Code agent tool set is **hand-written and duplicated across 3+ drifti
 - `src/renderer/.../tools/agent/types.ts` — `AgentToolsType` (~29 names) + per-tool input/output types (type-only import from `@anthropic-ai/claude-agent-sdk/sdk-tools`).
 - `src/renderer/.../tools/agent/toolRendererRegistry.tsx` + icon/label switches in `ToolHeader.tsx`.
 - `src/shared/ai/claudecode/constants.ts` — `GLOBALLY_DISALLOWED_TOOLS`, `SOUL_MODE_DISALLOWED_TOOLS` (mode-gated, not tool-granular).
-- **In-process MCP servers**, each gated differently in `settingsBuilder.buildMcpServers()`: `cherry-tools` (always), `claw` (cron/notify/config — **soul only**), `agent-memory` (memory — **soul only**), `assistant` (assistant only), `skills` (**wired for every session** — `search_skills` + `install_skill`; see the update at the top).
+- **In-process MCP servers**, each gated differently in `settingsBuilder.buildMcpServers()`: `huatuo-tools` (always), `claw` (cron/notify/config — **soul only**), `agent-memory` (memory — **soul only**), `assistant` (assistant only), `skills` (**wired for every session** — `search_skills` + `install_skill`; see the update at the top).
 
 Goal: **one declarative registry** = single source of truth for policy (main), catalog UI (renderer), and chat rendering (renderer), covering **both SDK-native and in-process MCP tools**, classified **at tool granularity** (no all-or-nothing soul gating; some tools gated by **runtime conditions**). Plus: upgrade the SDK for the Workflow tool, make the toggle a real enable/disable, categorize + i18n the UI.
 
@@ -67,7 +67,7 @@ interface ClaudeToolDescriptorDef {
   labelKey: string; descriptionKey: string // i18n keys
   kind: 'sdk' | 'mcp'
   sdkTyped?: boolean           // kind:'sdk'; false = runtime/experimental, absent from ToolInputSchemas (teams); guard skips
-  mcpServer?: 'cherry-tools' | 'claw' | 'agent-memory' | 'skills'  // kind:'mcp'
+  mcpServer?: 'huatuo-tools' | 'claw' | 'agent-memory' | 'skills'  // kind:'mcp'
   mcpWireName?: string
 }
 export const CLAUDE_TOOL_REGISTRY = { /* … */ } as const satisfies Record<string, ClaudeToolDescriptorDef>
@@ -81,7 +81,7 @@ Approval metadata dropped (decision #4). `AgentToolsType` derived from the regis
 ### Layer 3 — policy & MCP injection (main)
 - `useAgentTools.ts` + `agentTools.ts` source descriptors from the registry.
 - `settingsBuilder.buildToolPermissions()` → `resolveDisallowedTools(agent, ctx)`.
-- `settingsBuilder.buildMcpServers()` injects `cherry-tools` and `agent-memory` for every session; per-tool policy is enforced by `disallowedTools`/hooks, not by mounting/unmounting the server. `skills` is injected for every session too (`search_skills` auto-approved; `install_skill` governed by the SDK permission mode, with a no-responder headless guard).
+- `settingsBuilder.buildMcpServers()` injects `huatuo-tools` and `agent-memory` for every session; per-tool policy is enforced by `disallowedTools`/hooks, not by mounting/unmounting the server. `skills` is injected for every session too (`search_skills` auto-approved; `install_skill` governed by the SDK permission mode, with a no-responder headless guard).
 
 ## Enable/disable model
 
@@ -125,7 +125,7 @@ Approval = `permission_mode` cards + read-only default-safe set. **Round-trip un
 | ToolSearch | orchestration | internal | | |
 | ListMcpResources / ReadMcpResource | orchestration | internal | mcpResource | |
 | Workflow | orchestration | **user** | | |
-| WebSearch / WebFetch (native) | context | disabled | | replaced by cherry |
+| WebSearch / WebFetch (native) | context | disabled | | replaced by huatuo |
 | REPL | shell | disabled | | |
 | CronCreate / CronDelete / CronList | orchestration | disabled | | |
 | ScheduleWakeup / RemoteTrigger / Monitor / PushNotification | orchestration | disabled | | |
@@ -133,15 +133,15 @@ Approval = `permission_mode` cards + read-only default-safe set. **Round-trip un
 ### In-process MCP (`kind:'mcp'`)
 | Tool (wire) | server | category | exposure | note |
 |---|---|---|---|---|
-| web_search / web_fetch | cherry-tools | context | user | replaces native Web* |
-| kb_search | cherry-tools | context | user | |
-| kb_list | cherry-tools | context | internal | |
+| web_search / web_fetch | huatuo-tools | context | user | replaces native Web* |
+| kb_search | huatuo-tools | context | user | |
+| kb_list | huatuo-tools | context | internal | |
 | memory | agent-memory | context | user | cross-session FACT.md/JOURNAL |
 | search_skills | skills | context | internal | read-only marketplace search (auto-approved) |
 | install_skill | skills | context | internal | installs one marketplace skill; follows SDK permission mode + no-responder headless guard |
-| cron | cherry-tools | orchestration | user | app scheduler (≠ SDK Cron*) |
-| notify | cherry-tools | orchestration | user | IM channel push; self-degrades at call time if no channel |
-| config | cherry-tools | orchestration | user | agent self-config (rename/channels) |
+| cron | huatuo-tools | orchestration | user | app scheduler (≠ SDK Cron*) |
+| notify | huatuo-tools | orchestration | user | IM channel push; self-degrades at call time if no channel |
+| config | huatuo-tools | orchestration | user | agent self-config (rename/channels) |
 
 Future: media tools (image gen, audio/video) → `category:'media'`; notes → `category:'context'`.
 
@@ -150,10 +150,10 @@ Future: media tools (image gen, audio/video) → `category:'media'`; notes → `
 - **PR-1 — SDK upgrade 0.3.145 → 0.3.168.** Bump root + 8 native optional deps + verify `asarUnpack`; add new union members' type aliases to `types.ts`. *Verify*: `pnpm typecheck`, app boots, agent runs Bash+Read.
 - **PR-2 — shared registry + policy + CI guard (static exposures only).** `toolRegistry.ts`, `resolveDisallowedTools` (treats `conditional` as `internal` for now — no `ctx` yet), `scripts/check-claude-tools.ts`. Rewire `agentTools.ts`/`useAgentTools.ts`. **Snapshot-assert disallowed set == today** for non-soul agents.
 - **PR-3 — `disabledTools` column + schema + migration.** Existing agents unaffected (empty set).
-- **PR-4 — edit-dialog UI: real enable/disable + category sections + cherry fold-in.** Toggle writes `disabledTools`; group by `category`; one switch per `pairGroup`; show only `exposure==='user'`; drop per-tool approve.
+- **PR-4 — edit-dialog UI: real enable/disable + category sections + huatuo fold-in.** Toggle writes `disabledTools`; group by `category`; one switch per `pairGroup`; show only `exposure==='user'`; drop per-tool approve.
 - **PR-5 — i18n.** `agent.tools.<Key>.label/.description` in en/zh-cn/zh-tw; migrate `getAgentToolLabel`.
 - **PR-6 — render-registry unification + cleanup.** `TOOL_UI_BINDINGS` + registry-driven `ToolHeader`; delete `builtinTools.ts`.
-- **PR-7 — conditional exposure + in-process MCP de-soul-gating.** Introduce the `ctx` predicates (`workspace-has-git` via `.git` stat; `agent-has-channel` via `channelService`); enforce `conditional`. De-soul-gate cherry-tools/agent-memory by injecting them for every session and enforcing per-tool policy through `disallowedTools`/hooks; remove `SOUL_MODE_DISALLOWED_TOOLS` + soul server gates. (`skills` is now wired — see the skill-install-visibility-sync update at the top.) **Behavior change** — explicit before/after, tested.
+- **PR-7 — conditional exposure + in-process MCP de-soul-gating.** Introduce the `ctx` predicates (`workspace-has-git` via `.git` stat; `agent-has-channel` via `channelService`); enforce `conditional`. De-soul-gate huatuo-tools/agent-memory by injecting them for every session and enforcing per-tool policy through `disallowedTools`/hooks; remove `SOUL_MODE_DISALLOWED_TOOLS` + soul server gates. (`skills` is now wired — see the skill-install-visibility-sync update at the top.) **Behavior change** — explicit before/after, tested.
 
 ## Risks
 

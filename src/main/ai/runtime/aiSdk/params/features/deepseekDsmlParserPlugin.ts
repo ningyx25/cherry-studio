@@ -1,5 +1,5 @@
 import type { LanguageModelV3StreamPart } from '@ai-sdk/provider'
-import { definePlugin } from '@cherrystudio/ai-core'
+import { definePlugin } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import { isDeepSeekModel } from '@shared/utils/model'
 import type { LanguageModelMiddleware } from 'ai'

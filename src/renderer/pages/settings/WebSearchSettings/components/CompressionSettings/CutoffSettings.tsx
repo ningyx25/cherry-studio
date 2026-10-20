@@ -1,4 +1,4 @@
-import { InfoTooltip, Input } from '@cherrystudio/ui'
+import { InfoTooltip, Input } from '@huatuostudio/ui'
 import { SettingRow, SettingRowTitle } from '@renderer/components/SettingsPrimitives'
 import { useWebSearchSettings } from '@renderer/hooks/useWebSearch'
 import { useWebSearchPersist } from '@renderer/pages/settings/WebSearchSettings/hooks/useWebSearchPersist'

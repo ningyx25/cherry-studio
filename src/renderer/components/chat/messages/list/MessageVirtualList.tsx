@@ -11,7 +11,7 @@
  * `chatVirtualizerRuntime`. This component is just the JSX integration.
  */
 
-import { Button, Scrollbar, Tooltip } from '@cherrystudio/ui'
+import { Button, Scrollbar, Tooltip } from '@huatuostudio/ui'
 import { ArrowDown } from 'lucide-react'
 import { type ReactNode, type Ref, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'

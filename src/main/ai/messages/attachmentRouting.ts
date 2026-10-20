@@ -32,7 +32,7 @@ import type { NativeFileSupport } from '@main/ai/runtime/aiSdk'
 import { surrogateSafeEnd } from '@main/ai/utils/textPaging'
 import { READ_FILE_PAGE_SIZE } from '@shared/ai/builtinTools'
 import type { FileUIPart } from '@shared/data/types/message'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { FILE_TYPE, type FileType } from '@shared/types/file'
 import { getFileTypeByExt } from '@shared/utils/file'
 import type { UIMessage } from 'ai'
@@ -62,7 +62,7 @@ export function collectFileAttachments(messages: UIMessage[] | undefined): FileA
   for (const message of messages ?? []) {
     for (const part of message.parts ?? []) {
       if (part.type !== 'file') continue
-      const fileEntryId = readCherryMeta(part)?.fileEntryId
+      const fileEntryId = readHuaTuoMeta(part)?.fileEntryId
       if (!fileEntryId) continue
       const displayName = part.filename ?? 'file'
       const handle = uniqueHandle(displayName.trim() || 'file', used)
@@ -162,7 +162,7 @@ async function prepareChatMessage<T extends UIMessage>(message: T, ctx: PrepareC
       continue
     }
 
-    const fileEntryId = readCherryMeta(part)?.fileEntryId
+    const fileEntryId = readHuaTuoMeta(part)?.fileEntryId
     if (!fileEntryId) {
       // Legacy / gateway part — eager materialization, but do not treat an image
       // that bypassed OCR as a deliberate native fallback for a non-vision model.

@@ -1,4 +1,4 @@
-import { Switch } from '@cherrystudio/ui'
+import { Switch } from '@huatuostudio/ui'
 import {
   SettingDivider,
   SettingGroup,

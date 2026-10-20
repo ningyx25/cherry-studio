@@ -8,8 +8,8 @@ import { Dispatcher, EnvHttpProxyAgent, getGlobalDispatcher, setGlobalDispatcher
 import { type NodeProxyLogger, ProxyBypassRuleMatcher } from './bypassRules'
 import {
   buildNodeProxyEnvironment,
-  CHERRY_NODE_PROXY_BYPASS_RULES_ENV,
-  CHERRY_NODE_PROXY_RULES_ENV,
+  HUATUO_NODE_PROXY_BYPASS_RULES_ENV,
+  HUATUO_NODE_PROXY_RULES_ENV,
   type NodeProxyConfig,
   normalizeProxyBypassRules
 } from './proxyEnv'
@@ -104,8 +104,8 @@ export class NodeProxyController {
   }
 
   private setEnvironment(url: string | undefined, normalizedByPassRules: string[]): void {
-    delete process.env[CHERRY_NODE_PROXY_RULES_ENV]
-    delete process.env[CHERRY_NODE_PROXY_BYPASS_RULES_ENV]
+    delete process.env[HUATUO_NODE_PROXY_RULES_ENV]
+    delete process.env[HUATUO_NODE_PROXY_BYPASS_RULES_ENV]
     delete process.env.HTTP_PROXY
     delete process.env.HTTPS_PROXY
     delete process.env.grpc_proxy

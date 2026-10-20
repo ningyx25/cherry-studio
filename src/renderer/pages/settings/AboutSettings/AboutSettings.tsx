@@ -1,3 +1,4 @@
+import { usePreference } from '@data/hooks/usePreference'
 import {
   Badge,
   Button,
@@ -7,8 +8,7 @@ import {
   SegmentedControl,
   Switch,
   Tooltip
-} from '@cherrystudio/ui'
-import { usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import AppLogo from '@renderer/assets/images/logo.png'
 import LogoAvatar from '@renderer/components/icons/LogoAvatar'
 import IndicatorLight from '@renderer/components/IndicatorLight'
@@ -95,7 +95,7 @@ const AboutSettings: FC = () => {
   }
 
   const mailto = async () => {
-    const email = 'support@cherry-ai.com'
+    const email = 'support@huatuo.ai'
     const subject = 'HuaTuo Studio Feedback'
     const version = (await ipcApi.request('app.get_info')).version
     const platform = window.electron.process.platform
@@ -108,15 +108,15 @@ const AboutSettings: FC = () => {
   }
 
   const showEnterprise = async () => {
-    onOpenWebsite('https://enterprise.cherry-ai.com')
+    onOpenWebsite('https://enterprise.huatuo.ai')
   }
 
   const showReleases = async () => {
     const { appPath } = await ipcApi.request('app.get_info')
     openSmartMiniApp({
-      appId: 'cherrystudio-releases',
+      appId: 'huatuostudio-releases',
       name: t('settings.about.releases.title'),
-      url: `file://${appPath}/resources/cherry-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
+      url: `file://${appPath}/resources/huatuo-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
       logo: AppLogo
     })
   }
@@ -192,7 +192,7 @@ const AboutSettings: FC = () => {
     const isChinese = i18n.language.startsWith('zh')
     void ipcApi.request(
       'system.shell.open_website',
-      isChinese ? 'https://docs.cherry-ai.com/' : 'https://docs.cherry-ai.com/docs/en-us'
+      isChinese ? 'https://docs.huatuo.ai/' : 'https://docs.huatuo.ai/docs/en-us'
     )
   }
 
@@ -211,7 +211,7 @@ const AboutSettings: FC = () => {
           <button
             type="button"
             aria-label={t('settings.about.repository')}
-            onClick={() => onOpenWebsite('https://github.com/ningyx25/cherry-studio')}
+            onClick={() => onOpenWebsite('https://github.com/huatuostudio/huatuo-studio')}
             className="inline-flex items-center justify-center rounded-md p-1 text-foreground transition-colors hover:bg-muted">
             <Github className="size-5" />
           </button>
@@ -224,7 +224,7 @@ const AboutSettings: FC = () => {
             <button
               type="button"
               aria-label="HuaTuo Studio"
-              onClick={() => onOpenWebsite('https://github.com/ningyx25/cherry-studio')}
+              onClick={() => onOpenWebsite('https://github.com/huatuostudio/huatuo-studio')}
               className="relative cursor-pointer">
               {appUpdateState.downloading && appUpdateState.downloadProgress > 0 && (
                 <div className="-top-0.5 -left-0.5 pointer-events-none absolute">
@@ -247,7 +247,7 @@ const AboutSettings: FC = () => {
               <button
                 type="button"
                 aria-label={t('settings.about.releases.title')}
-                onClick={() => onOpenWebsite('https://github.com/ningyx25/cherry-studio/releases')}
+                onClick={() => onOpenWebsite('https://github.com/huatuostudio/huatuo-studio/releases')}
                 className="mt-1.5">
                 <Badge className="cursor-pointer rounded-md border-primary/20 bg-primary/10 px-1.5 py-0 text-[11px] text-primary leading-4 transition-colors hover:bg-primary/15">
                   v{version}
@@ -351,7 +351,7 @@ const AboutSettings: FC = () => {
           icon={<Globe className="size-4.5" />}
           title={t('settings.about.website.title')}
           actionLabel={t('settings.about.website.button')}
-          onAction={() => onOpenWebsite('https://cherry-ai.com')}
+          onAction={() => onOpenWebsite('https://huatuo.ai')}
         />
         <Divider className="my-3" />
         <AboutActionRow
@@ -379,7 +379,7 @@ const AboutSettings: FC = () => {
           icon={<Briefcase className="size-4.5" />}
           title={t('settings.about.careers.title')}
           actionLabel={t('settings.about.careers.button')}
-          onAction={() => onOpenWebsite('https://www.cherry-ai.com/careers')}
+          onAction={() => onOpenWebsite('https://www.huatuo.ai/careers')}
         />
         <Divider className="my-3" />
         <AboutActionRow

@@ -6,7 +6,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import type { Group } from '@shared/data/types/group'
 import { Plus, X } from 'lucide-react'

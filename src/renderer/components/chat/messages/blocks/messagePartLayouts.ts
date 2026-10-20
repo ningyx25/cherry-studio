@@ -1,14 +1,14 @@
 import { getDisplayComposerTokens } from '@renderer/utils/message/composerTokens'
 import { REPORT_ARTIFACTS_TOOL_NAME } from '@shared/ai/builtinTools'
-import type { CherryMessagePart } from '@shared/data/types/message'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { getToolName, isToolUIPart } from 'ai'
 
 import { isChannelAuthQrPart } from '../tools/channelConfigTool'
 import { isAskUserQuestionToolName } from '../tools/shared/agentToolTypes'
 
 export interface PartEntry {
-  part: CherryMessagePart
+  part: HuaTuoMessagePart
   index: number
 }
 
@@ -45,20 +45,20 @@ const HIDDEN_PART_TYPES = new Set([
 
 const ASSOCIATED_RESULT_PART_TYPES = new Set(['data-error', 'file', 'data-video'])
 
-export function isHiddenPart(part: CherryMessagePart): boolean {
+export function isHiddenPart(part: HuaTuoMessagePart): boolean {
   return HIDDEN_PART_TYPES.has(part.type)
 }
 
-function isIgnorableEmptyContentPart(part: CherryMessagePart): boolean {
+function isIgnorableEmptyContentPart(part: HuaTuoMessagePart): boolean {
   if (part.type === 'text') return isEmptyContentPart(part)
   if (part.type !== 'reasoning') return false
   return part.state !== 'streaming' && isEmptyContentPart(part)
 }
 
-function hasVisibleComposerToken(part: CherryMessagePart): boolean {
+function hasVisibleComposerToken(part: HuaTuoMessagePart): boolean {
   if (part.type !== 'text') return false
   const text = part.text ?? ''
-  const composer = readCherryMeta(part)?.composer
+  const composer = readHuaTuoMeta(part)?.composer
   if (!composer) return false
 
   return getDisplayComposerTokens(composer).some((token) => {
@@ -68,14 +68,14 @@ function hasVisibleComposerToken(part: CherryMessagePart): boolean {
   })
 }
 
-function isEmptyContentPart(part: CherryMessagePart): boolean {
+function isEmptyContentPart(part: HuaTuoMessagePart): boolean {
   // Narrow on `part.type` itself; an aliased copy would not discriminate the
   // union, which is what previously forced a `part as { text?: string }` cast.
   if (part.type !== 'text' && part.type !== 'reasoning') return false
   return !part.text?.trim() && !hasVisibleComposerToken(part)
 }
 
-function isEllipsisOnlyTextPart(part: CherryMessagePart): boolean {
+function isEllipsisOnlyTextPart(part: HuaTuoMessagePart): boolean {
   if (part.type !== 'text') return false
   return /^(?:\.{3}|…)$/.test(part.text?.trim() ?? '')
 }
@@ -84,7 +84,7 @@ function findAdjacentMeaningfulPart(
   entries: readonly PartEntry[],
   position: number,
   direction: -1 | 1
-): CherryMessagePart | undefined {
+): HuaTuoMessagePart | undefined {
   for (let index = position + direction; index >= 0 && index < entries.length; index += direction) {
     const part = entries[index].part
     if (isHiddenPart(part) || isEmptyContentPart(part) || isEllipsisOnlyTextPart(part)) continue
@@ -93,7 +93,7 @@ function findAdjacentMeaningfulPart(
   return undefined
 }
 
-function isProcessContentPart(part: CherryMessagePart | undefined): boolean {
+function isProcessContentPart(part: HuaTuoMessagePart | undefined): boolean {
   return !!part && (isToolUIPart(part) || part.type === 'reasoning')
 }
 
@@ -117,31 +117,31 @@ function isProcessFillerText(
   return isProcessContentPart(findAdjacentMeaningfulPart(entries, position, -1))
 }
 
-function getPartToolName(part: CherryMessagePart): string {
+function getPartToolName(part: HuaTuoMessagePart): string {
   return isToolUIPart(part) ? getToolName(part).trim() : ''
 }
 
-function isReportToolPart(part: CherryMessagePart): boolean {
+function isReportToolPart(part: HuaTuoMessagePart): boolean {
   if (!isToolUIPart(part)) return false
   const toolName = getPartToolName(part)
   return toolName === REPORT_ARTIFACTS_TOOL_NAME || toolName.endsWith(`__${REPORT_ARTIFACTS_TOOL_NAME}`)
 }
 
-function isAskUserQuestionPart(part: CherryMessagePart): boolean {
+function isAskUserQuestionPart(part: HuaTuoMessagePart): boolean {
   return isToolUIPart(part) && isAskUserQuestionToolName(getPartToolName(part))
 }
 
-function isVisibleReasoningPart(part: CherryMessagePart): boolean {
+function isVisibleReasoningPart(part: HuaTuoMessagePart): boolean {
   if (part.type !== 'reasoning') return false
   return part.state === 'streaming' || isReasoningMessagePart(part)
 }
 
-export function isProcessToolPart(part: CherryMessagePart): boolean {
+export function isProcessToolPart(part: HuaTuoMessagePart): boolean {
   if (!isToolUIPart(part) || isReportToolPart(part)) return false
   return !isAskUserQuestionPart(part) && !isChannelAuthQrPart(part)
 }
 
-function isVisibleProcessPart(part: CherryMessagePart): boolean {
+function isVisibleProcessPart(part: HuaTuoMessagePart): boolean {
   return isVisibleReasoningPart(part) || isProcessToolPart(part)
 }
 
@@ -225,12 +225,12 @@ export function findOpenTextTailIndex(entries: readonly PartEntry[]): number | n
  * the last such part.
  *
  * Switches on `part.type` directly rather than a `Set.has` + string alias:
- * `CherryMessagePart` is a discriminated union, so each `case` narrows `part`
+ * `HuaTuoMessagePart` is a discriminated union, so each `case` narrows `part`
  * and its payload is typed. Testing membership through an aliased
  * `const partType = part.type` never narrows, which is what forced the
  * `part as { text?: string }` / `part as { data?: … }` casts this replaces.
  */
-export function isSubstantiveAnswerPart(part: CherryMessagePart): boolean {
+export function isSubstantiveAnswerPart(part: HuaTuoMessagePart): boolean {
   switch (part.type) {
     // Turn-start / agent-session folds sit on a turn boundary, so they read as a
     // separator and close the process group. An in-loop fold happens BETWEEN
@@ -252,15 +252,15 @@ export function isSubstantiveAnswerPart(part: CherryMessagePart): boolean {
   }
 }
 
-function isAssociatedResultPart(part: CherryMessagePart): boolean {
+function isAssociatedResultPart(part: HuaTuoMessagePart): boolean {
   return ASSOCIATED_RESULT_PART_TYPES.has(part.type)
 }
 
-export function isReasoningMessagePart(part: CherryMessagePart): boolean {
+export function isReasoningMessagePart(part: HuaTuoMessagePart): boolean {
   return part.type === 'reasoning' && !!part.text?.trim()
 }
 
-export function isResultPart(part: CherryMessagePart): boolean {
+export function isResultPart(part: HuaTuoMessagePart): boolean {
   return isSubstantiveAnswerPart(part) || isAssociatedResultPart(part)
 }
 

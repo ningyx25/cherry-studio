@@ -5,8 +5,8 @@ import {
   isComposerClipboardPromptTokenKind,
   isComposerClipboardTokenKind
 } from '@renderer/utils/composerTokenPolicy'
-import type { CherryMessagePart } from '@shared/data/types/message'
-import { type CherryFileMeta, type ComposerMessageToken, readCherryMeta } from '@shared/data/types/uiParts'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
+import { type ComposerMessageToken, type HuaTuoFileMeta, readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { type FileUrlString } from '@shared/types/file'
 import { fileUrlToPath, getFileTypeByExt } from '@shared/utils/file'
 
@@ -21,7 +21,7 @@ import {
 
 const logger = loggerService.withContext('composerClipboard')
 
-export const COMPOSER_CLIPBOARD_FRAGMENT_MIME = 'web application/x-cherry-composer-fragment+json'
+export const COMPOSER_CLIPBOARD_FRAGMENT_MIME = 'web application/x-huatuo-composer-fragment+json'
 
 const COMPOSER_CLIPBOARD_FRAGMENT_VERSION = 1
 const COMPOSER_CLIPBOARD_FRAGMENT_MAX_LENGTH = 250_000
@@ -401,7 +401,7 @@ function getTokenFallbackText(
   return token.promptText ?? token.label
 }
 
-function readMessageFilePayload(part: CherryMessagePart): FileClipboardPayload | undefined {
+function readMessageFilePayload(part: HuaTuoMessagePart): FileClipboardPayload | undefined {
   if ((part as { type?: string }).type !== 'file') return undefined
 
   const filePart = part as {
@@ -409,8 +409,8 @@ function readMessageFilePayload(part: CherryMessagePart): FileClipboardPayload |
     mediaType?: string
     url?: string
   }
-  const cherry = readCherryMeta(part) as CherryFileMeta | undefined
-  const fileTokenSourceId = cherry?.fileTokenSourceId
+  const huatuo = readHuaTuoMeta(part) as HuaTuoFileMeta | undefined
+  const fileTokenSourceId = huatuo?.fileTokenSourceId
   if (!fileTokenSourceId) return undefined
 
   const path = stripFileUrl(filePart.url)
@@ -419,7 +419,7 @@ function readMessageFilePayload(part: CherryMessagePart): FileClipboardPayload |
   const name = filePart.filename || path.split(/[\\/]/).pop() || ''
   const ext = getFileExtensionFromName(name)
   return {
-    id: cherry.fileEntryId ?? fileTokenSourceId,
+    id: huatuo.fileEntryId ?? fileTokenSourceId,
     fileTokenSourceId,
     type: filePart.mediaType?.startsWith('image/') ? FILE_TYPE.IMAGE : getFileTypeByExt(ext),
     ...(ext && { ext }),
@@ -428,7 +428,7 @@ function readMessageFilePayload(part: CherryMessagePart): FileClipboardPayload |
   }
 }
 
-function collectFilePayloadsBySourceId(parts: readonly CherryMessagePart[]): Map<string, FileClipboardPayload> {
+function collectFilePayloadsBySourceId(parts: readonly HuaTuoMessagePart[]): Map<string, FileClipboardPayload> {
   const payloads = new Map<string, FileClipboardPayload>()
 
   for (const part of parts) {
@@ -528,10 +528,10 @@ function projectTokensOverText(
 }
 
 function projectTextPartToClipboardSegments(
-  part: Extract<CherryMessagePart, { type: 'text' }>,
+  part: Extract<HuaTuoMessagePart, { type: 'text' }>,
   filePayloadsBySourceId: ReadonlyMap<string, FileClipboardPayload>
 ): ComposerClipboardProjection {
-  const composer = readCherryMeta(part)?.composer
+  const composer = readHuaTuoMeta(part)?.composer
   if (!composer?.tokens.length) {
     return {
       plainText: part.text,
@@ -548,10 +548,10 @@ function projectTextPartToClipboardSegments(
   return projectTokensOverText(part.text, tokens)
 }
 
-function projectComposerClipboardPartGroup(parts: readonly CherryMessagePart[]): ComposerClipboardProjection {
+function projectComposerClipboardPartGroup(parts: readonly HuaTuoMessagePart[]): ComposerClipboardProjection {
   const filePayloadsBySourceId = collectFilePayloadsBySourceId(parts)
   const projections = parts
-    .filter((part): part is Extract<CherryMessagePart, { type: 'text' }> => part.type === 'text')
+    .filter((part): part is Extract<HuaTuoMessagePart, { type: 'text' }> => part.type === 'text')
     .map((part) => projectTextPartToClipboardSegments(part, filePayloadsBySourceId))
     .filter((projection) => projection.plainText.trim().length > 0)
 
@@ -594,7 +594,7 @@ function createComposerRichClipboardContentFromProjection(
 }
 
 export function createComposerRichClipboardContentFromParts(
-  parts: readonly CherryMessagePart[]
+  parts: readonly HuaTuoMessagePart[]
 ): ComposerRichClipboardContent | null {
   return createComposerRichClipboardContentFromProjection(projectComposerClipboardPartGroup(parts))
 }
@@ -606,7 +606,7 @@ export function createComposerRichClipboardContentFromDraft(
 }
 
 export function createComposerRichClipboardContentFromPartGroups(
-  partGroups: readonly (readonly CherryMessagePart[])[],
+  partGroups: readonly (readonly HuaTuoMessagePart[])[],
   separator: string
 ): ComposerRichClipboardContent | null {
   const projections = partGroups.map(projectComposerClipboardPartGroup).filter((projection) => projection.plainText)

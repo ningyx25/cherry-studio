@@ -8,7 +8,7 @@ import {
   Flex,
   RequiredMark,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import type { McpPrompt } from '@shared/types/mcp'
 import { useTranslation } from 'react-i18next'
 

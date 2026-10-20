@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 import CitationSup from '../CitationSup'
 
-vi.unmock('@cherrystudio/ui')
+vi.unmock('@huatuostudio/ui')
 
 beforeAll(() => {
   globalThis.ResizeObserver = class {

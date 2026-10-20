@@ -1,6 +1,6 @@
-import '@cherrystudio/ui/components/composites/markdown/styles'
+import '@huatuostudio/ui/components/composites/markdown/styles'
 
-import { EmptyState, Markdown, withFullMarkdown } from '@cherrystudio/ui'
+import { EmptyState, Markdown, withFullMarkdown } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import FileText from 'lucide-react/dist/esm/icons/file-text'
 import FileWarning from 'lucide-react/dist/esm/icons/file-warning'

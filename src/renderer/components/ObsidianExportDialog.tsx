@@ -1,3 +1,4 @@
+import { usePreference } from '@data/hooks/usePreference'
 import {
   Alert,
   Button,
@@ -18,8 +19,7 @@ import {
   Switch,
   TreeSelect,
   type TreeSelectOption
-} from '@cherrystudio/ui'
-import { usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import i18n from '@renderer/i18n/resolver'
 import { ipcApi } from '@renderer/ipc'

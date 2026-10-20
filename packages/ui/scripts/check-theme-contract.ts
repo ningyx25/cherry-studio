@@ -13,7 +13,7 @@ const DEFAULT_STYLES_DIR = path.resolve(__dirname, '../src/styles')
 
 export function assertGeneratedThemeCssCurrent(actual: string, expected: string): void {
   if (actual !== expected) {
-    throw new Error('[theme-contract] generated theme.css is stale; run pnpm --filter @cherrystudio/ui theme:build')
+    throw new Error('[theme-contract] generated theme.css is stale; run pnpm --filter @huatuostudio/ui theme:build')
   }
 }
 

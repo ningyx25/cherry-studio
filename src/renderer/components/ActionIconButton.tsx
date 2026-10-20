@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import React, { memo } from 'react'
 

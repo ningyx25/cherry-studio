@@ -178,7 +178,7 @@ describe('ChatMigrator.prepareTopicData', () => {
     m['reservedMessageIds'] = new Set()
     m['blockStats'] = { requested: 0, resolved: 0, messagesWithMissingBlocks: 0, messagesWithEmptyBlocks: 0 }
 
-    const model = { id: 'qwen', name: 'Qwen', provider: 'cherryai', group: '' }
+    const model = { id: 'qwen', name: 'Qwen', provider: 'huatuoai', group: '' }
     const messages = [msg('u1', 'user', ['b1'], { model }), msg('a1', 'assistant', ['b2'], { model })]
 
     const fn = m['prepareTopicData'] as (t: OldTopic, deps?: undefined) => Promise<PreparedTopicData | null>
@@ -191,7 +191,7 @@ describe('ChatMigrator.prepareTopicData', () => {
       id: 'ast-1',
       name: 'My Assistant',
       emoji: '🎯',
-      model: { id: 'qwen', name: 'Qwen', provider: 'cherryai', group: '' }
+      model: { id: 'qwen', name: 'Qwen', provider: 'huatuoai', group: '' }
     })
     // User row: never snapshotted, even though the source message carried a model.
     expect(msgMap.get('u1')?.messageSnapshot).toBeNull()
@@ -966,7 +966,7 @@ describe('ChatMigrator model reference sanitization', () => {
         searchableText: '',
         status: 'success',
         siblingsGroupId: 0,
-        modelId: 'cherryai::qwen',
+        modelId: 'huatuoai::qwen',
         messageSnapshot: null,
         stats: null,
         createdAt: 1,
@@ -1046,7 +1046,7 @@ describe('ChatMigrator.insertStagedTopics chat_message_file_ref backfill', () =>
               type: 'file',
               mediaType: b.type === 'image' ? 'image/png' : 'application/octet-stream',
               url: 'file:///tmp/dummy',
-              ...(b.fileId ? { providerMetadata: { cherry: { fileEntryId: b.fileId } } } : {})
+              ...(b.fileId ? { providerMetadata: { huatuo: { fileEntryId: b.fileId } } } : {})
             } as any
           }
           return { type: 'text', text: b.content ?? 'hello', state: 'done' } as any

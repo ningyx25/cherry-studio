@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogDescription, FieldError, Input, Label } from '@cherrystudio/ui'
+import { Dialog, DialogContent, DialogDescription, FieldError, Input, Label } from '@huatuostudio/ui'
 import { useCloseBeforeAction } from '@renderer/hooks/useCloseBeforeAction'
 import type { RestoreKnowledgeBaseInput } from '@renderer/hooks/useKnowledgeBase'
 import { toast } from '@renderer/services/toast'

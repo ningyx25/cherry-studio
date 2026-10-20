@@ -54,9 +54,9 @@ describe('useProviderEndpoints', () => {
     expect(result.current.providerApiHost).toBe('http://localhost:11434')
   })
 
-  it('keeps the anthropic host input even for cherryin', () => {
+  it('keeps the anthropic host input even for huatuoin', () => {
     const provider = {
-      id: 'cherryin',
+      id: 'huatuoin',
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://api.example.com' },
         [ENDPOINT_TYPE.ANTHROPIC_MESSAGES]: { baseUrl: 'https://anthropic.example.com' }

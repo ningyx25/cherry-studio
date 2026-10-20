@@ -308,9 +308,9 @@ describe('loadKnowledgeItemDocuments', () => {
     })
   })
 
-  it('reads a url item verbatim from its captured snapshot, minus the cherry frontmatter', async () => {
+  it('reads a url item verbatim from its captured snapshot, minus the huatuo frontmatter', async () => {
     readFileMock.mockResolvedValueOnce(
-      '---\ncherry:\n  type: url-snapshot\n  source: "https://example.com"\n---\n# Page\n\nbody\n'
+      '---\nhuatuo:\n  type: url-snapshot\n  source: "https://example.com"\n---\n# Page\n\nbody\n'
     )
     const item = createUrlItem()
     const docs = await loadKnowledgeItemDocuments(item)

@@ -1,6 +1,6 @@
-import type { Button } from '@cherrystudio/ui/components/primitives/button'
-import { buttonVariants } from '@cherrystudio/ui/components/primitives/button'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import type { Button } from '@huatuostudio/ui/components/primitives/button'
+import { buttonVariants } from '@huatuostudio/ui/components/primitives/button'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react'
 import * as React from 'react'
 

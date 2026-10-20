@@ -106,9 +106,9 @@ describe('chooseDirectoryPathPrefix', () => {
     expect(chooseDirectoryPathPrefix(createDirectoryOwner('C:\\'), new Set())).toBe('C')
   })
 
-  it('rejects the reserved .cherry prefix before it can be persisted', () => {
-    expect(() => chooseDirectoryPathPrefix(createDirectoryOwner('/some/path/.cherry'), new Set())).toThrow(
-      'Knowledge relative path is reserved: .cherry'
+  it('rejects the reserved .huatuo prefix before it can be persisted', () => {
+    expect(() => chooseDirectoryPathPrefix(createDirectoryOwner('/some/path/.huatuo'), new Set())).toThrow(
+      'Knowledge relative path is reserved: .huatuo'
     )
   })
 

@@ -60,7 +60,7 @@ const setLocalBackupSyncState = (patch: Partial<RemoteSyncState>) => setBackupSy
 type ManualBackupOptions = { customFileName?: string }
 
 export async function backup(skipBackupFile = false) {
-  const filename = `cherry-studio.${dayjs().format('YYYYMMDDHHmm')}.zip`
+  const filename = `huatuo-studio.${dayjs().format('YYYYMMDDHHmm')}.zip`
   const selectFolder = await window.api.file.selectFolder()
   if (selectFolder) {
     // Use the direct compatibility archive with the selected full or slim resource set.

@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { useCloseBeforeAction } from '@renderer/hooks/useCloseBeforeAction'
 import { DEFAULT_KNOWLEDGE_GROUP_LABEL_KEY } from '@renderer/pages/knowledge/utils/group'
 import { formatErrorMessageWithPrefix } from '@renderer/utils/error'

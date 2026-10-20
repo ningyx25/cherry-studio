@@ -1,4 +1,4 @@
-import { DialogPortalContainerProvider, PortalContainerProvider } from '@cherrystudio/ui'
+import { DialogPortalContainerProvider, PortalContainerProvider } from '@huatuostudio/ui'
 import { RouteErrorFallback } from '@renderer/components/layout/RouteErrorFallback'
 import { TabIdProvider } from '@renderer/components/layout/TabIdProvider'
 import { routeTree } from '@renderer/routeTree.gen'

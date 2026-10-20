@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
 
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { act, fireEvent, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { type ComponentProps, createContext, use } from 'react'
@@ -10,13 +10,13 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { MessageListItem } from '../../types'
 import MessageAnchorLine from '../MessageAnchorLine'
 
-const partsMap: Record<string, CherryMessagePart[]> = {}
+const partsMap: Record<string, HuaTuoMessagePart[]> = {}
 
 /** The real `useMessageParts` is a context read, so a chunk reaches the live
  * preview leaf without the memoized rail re-rendering. Mocking it as a plain
  * map read would lose exactly that, letting a parent re-render masquerade as
  * live-leaf isolation — so the stand-in is a real context too. */
-const LivePartsContext = createContext<Record<string, CherryMessagePart[]>>({})
+const LivePartsContext = createContext<Record<string, HuaTuoMessagePart[]>>({})
 
 vi.mock('../../blocks/MessagePartsContext', () => ({
   useMessageParts: (messageId: string) => use(LivePartsContext)[messageId] ?? []
@@ -63,7 +63,7 @@ function makeTurnMessages(count: number, startIndex = 0): MessageListItem[] {
   return result
 }
 
-const textPart = (text: string): CherryMessagePart => ({ type: 'text', text })
+const textPart = (text: string): HuaTuoMessagePart => ({ type: 'text', text })
 
 /** Wrapper height the geometry helpers report; comfortably above the rail's
  * minimum usable height. Rail viewport = 400 − 2 · 24 (edge margins) = 352. */
@@ -159,7 +159,7 @@ const NO_LIVE_MESSAGE_IDS: readonly string[] = []
  * stands in for the streaming PartsContext the live preview leaf reads. */
 const rail = (
   props: Partial<RailProps> & Pick<RailProps, 'messages'>,
-  liveParts: Record<string, CherryMessagePart[]> = partsMap
+  liveParts: Record<string, HuaTuoMessagePart[]> = partsMap
 ) => (
   <LivePartsContext value={liveParts}>
     <MessageAnchorLine historyPartsByMessageId={partsMap} liveMessageIds={NO_LIVE_MESSAGE_IDS} {...props} />
@@ -357,7 +357,7 @@ describe('MessageAnchorLine', () => {
             return 'Stable question'
           }
         }
-      ] as unknown as CherryMessagePart[]
+      ] as unknown as HuaTuoMessagePart[]
       const historyPartsByMessageId = { 'user-2': historyParts }
       const liveMessageIds = ['assistant-2']
       const railProps = { messages, historyPartsByMessageId, liveMessageIds }
@@ -390,7 +390,7 @@ describe('MessageAnchorLine', () => {
               throw new Error('preview extraction read past its limit')
             }
           }
-        ] as CherryMessagePart[]
+        ] as HuaTuoMessagePart[]
       }
       const view = renderRail({ messages, historyPartsByMessageId })
 

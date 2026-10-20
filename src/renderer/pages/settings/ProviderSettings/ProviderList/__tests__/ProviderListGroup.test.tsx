@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 const reorderableItemsCalls: Provider[][] = []
 const providerAvatarCalls: any[] = []
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   ReorderableList: ({ items }: { items: Provider[] }) => {
     reorderableItemsCalls.push(items)
     return <div data-testid="provider-list-group-inner-list" />

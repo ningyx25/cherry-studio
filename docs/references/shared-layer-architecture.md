@@ -104,7 +104,7 @@ The structural decomposition is **done**: `command`, `file`, `shortcuts`, `exter
 
 | Area | Current | Target |
 |---|---|---|
-| `data/types/` converters/guards — `coerceSearchRole`, `deriveRootSpanId`, `readCherryMeta`/`withCherryMeta`, `knowledge.ts` string helpers | logic living in the `data` type bucket; behavioral tests under `data/types/__tests__/` flag it (§3.1, last paragraph) | open question: route-by-shape would move them to a `utils` location, but schema-derived guards are conventionally co-located — decision deferred |
+| `data/types/` converters/guards — `coerceSearchRole`, `deriveRootSpanId`, `readHuaTuoMeta`/`withHuaTuoMeta`, `knowledge.ts` string helpers | logic living in the `data` type bucket; behavioral tests under `data/types/__tests__/` flag it (§3.1, last paragraph) | open question: route-by-shape would move them to a `utils` location, but schema-derived guards are conventionally co-located — decision deferred |
 | `IpcChannel.ts` | 18 KB v1 channel enum at the root | v1 legacy; folded into `ipc/` as the IpcApi migration retires channels — not part of this governance |
 
 ## 7. Related

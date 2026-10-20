@@ -1,4 +1,4 @@
-import { ConfirmDialog } from '@cherrystudio/ui'
+import { ConfirmDialog } from '@huatuostudio/ui'
 
 import type { ResolvedActionConfirm } from './actionTypes'
 

@@ -1,4 +1,4 @@
-import { Badge } from '@cherrystudio/ui'
+import { Badge } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Check, X } from 'lucide-react'
 

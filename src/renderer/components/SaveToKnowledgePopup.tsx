@@ -9,7 +9,7 @@ import {
   Flex,
   HelpTooltip,
   Label
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { KnowledgeBaseSelector } from '@renderer/components/KnowledgeBaseSelector'
 import CustomTag from '@renderer/components/tags/CustomTag'

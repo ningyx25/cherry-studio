@@ -2,14 +2,13 @@
  * Provider Options Mapper
  *
  * Normalizes reasoning controls from each gateway input dialect, then routes
- * them through the same descriptor-driven builders as Cherry's native chat
+ * them through the same descriptor-driven builders as HuaTuo's native chat
  * path. Native Anthropic and Gemini requests keep a lossless fast path when
  * the target speaks the same dialect.
  */
 
 import type { ProviderOptions } from '@ai-sdk/provider-utils'
 import type { MessageCreateParams } from '@anthropic-ai/sdk/resources/messages'
-import type { ReasoningEffort } from '@cherrystudio/openai/resources'
 import { providerRegistryService } from '@data/services/ProviderRegistryService'
 import { resolveAiSdkProviderId, resolveEffectiveEndpoint, resolveProviderOptionsKey } from '@main/ai/provider/endpoint'
 import { buildResolvedReasoningProviderOptions } from '@main/ai/utils/options'
@@ -18,6 +17,7 @@ import { nearestEffortForBudget } from '@shared/ai/reasoning'
 import { ENDPOINT_TYPE, type Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import { type ReasoningEffortOption, ReasoningEffortOptionSchema } from '@shared/types/aiSdk'
+import type { ReasoningEffort } from 'openai/resources'
 
 // Re-export for use by message converters.
 export type { ReasoningEffort }

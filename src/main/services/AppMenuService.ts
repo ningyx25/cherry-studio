@@ -153,28 +153,28 @@ export class AppMenuService extends BaseService {
             type: 'custom',
             label: appMenu.website,
             click: () => {
-              void shell.openExternal('https://cherry-ai.com')
+              void shell.openExternal('https://huatuo.ai')
             }
           },
           {
             type: 'custom',
             label: appMenu.documentation,
             click: () => {
-              void shell.openExternal('https://cherry-ai.com/docs')
+              void shell.openExternal('https://huatuo.ai/docs')
             }
           },
           {
             type: 'custom',
             label: appMenu.feedback,
             click: () => {
-              void shell.openExternal('https://github.com/ningyx25/cherry-studio/issues/new/choose')
+              void shell.openExternal('https://github.com/huatuostudio/huatuo-studio/issues/new/choose')
             }
           },
           {
             type: 'custom',
             label: appMenu.releases,
             click: () => {
-              void shell.openExternal('https://github.com/ningyx25/cherry-studio/releases')
+              void shell.openExternal('https://github.com/huatuostudio/huatuo-studio/releases')
             }
           }
         ]

@@ -1,5 +1,5 @@
 // Original: src/renderer/components/scrollbar/index.tsx
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { throttle } from 'es-toolkit/compat'
 import * as React from 'react'
 

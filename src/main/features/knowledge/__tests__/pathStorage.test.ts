@@ -79,8 +79,8 @@ describe('pathStorage relative-path safety', () => {
     })
 
     it.each([
-      ['the reserved meta dir', '.cherry'],
-      ['a path under the reserved meta dir', '.cherry/index.sqlite']
+      ['the reserved meta dir', '.huatuo'],
+      ['a path under the reserved meta dir', '.huatuo/index.sqlite']
     ])('rejects %s', (_label, relativePath) => {
       expect(() => getKnowledgeBaseFilePath(BASE_ID, relativePath)).toThrow('Knowledge relative path is reserved')
     })

@@ -1,4 +1,4 @@
-import { PageSidePanel, Scrollbar } from '@cherrystudio/ui'
+import { PageSidePanel, Scrollbar } from '@huatuostudio/ui'
 import { useMessagePlatformActions } from '@renderer/components/chat/messages/hooks/useMessagePlatformActions'
 import type { Citation } from '@renderer/types/message'
 import React, { useCallback } from 'react'

@@ -17,7 +17,7 @@ describe('LocalStorageExporter', () => {
 
   it('exports only migration-owned keys and excludes the Redux persist blob', async () => {
     localStorage.setItem(MIGRATION_LOCAL_STORAGE_KEYS[0], 'true')
-    localStorage.setItem('persist:cherry-studio', 'x'.repeat(1024 * 1024))
+    localStorage.setItem('persist:huatuo-studio', 'x'.repeat(1024 * 1024))
     localStorage.setItem('unrelated', 'secret')
 
     const exporter = new LocalStorageExporter('/export/local')

@@ -14,7 +14,7 @@ const config: StorybookConfig = {
       plugins: [tailwindPlugin()],
       resolve: {
         alias: {
-          '@cherrystudio/ui': resolve('src')
+          '@huatuostudio/ui': resolve('src')
         }
       }
     })

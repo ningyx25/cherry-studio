@@ -1,5 +1,5 @@
-import { Divider as SettingDivider, Switch, Tooltip } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Divider as SettingDivider, Switch, Tooltip } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { SettingRow as BaseSettingRow, SettingRowTitle } from '@renderer/components/SettingsPrimitives'
 import { Info } from 'lucide-react'
 import type { ComponentPropsWithoutRef, ReactNode } from 'react'

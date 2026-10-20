@@ -6,7 +6,7 @@
  *
  * WARNING: Bypassing MigrationPaths and calling `app.getPath('userData')`
  * directly will cause data loss for v1 users who configured a custom
- * userData directory via `~/.cherrystudio/config/config.json`. On the
+ * userData directory via `~/.huatuostudio/config/config.json`. On the
  * first v2 launch, `app.getPath('userData')` returns the Electron default
  * — not the user's actual data directory — because `resolveUserDataLocation()`
  * has not yet migrated the legacy config into boot-config.json.
@@ -16,7 +16,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import { loggerService } from '@logger'
-import { CHERRY_HOME } from '@main/core/paths/constants'
+import { HUATUO_HOME } from '@main/core/paths/constants'
 import { getNormalizedExecutablePath, isUsableDataDir } from '@main/core/preboot/userDataLocation'
 import { bootConfigService } from '@main/data/bootConfig'
 import { app } from 'electron'
@@ -25,7 +25,7 @@ import { evaluateCandidateVersion } from './versionPolicy'
 
 const logger = loggerService.withContext('MigrationPaths')
 
-const DB_NAME = 'cherrystudio.sqlite'
+const DB_NAME = 'huatuostudio.sqlite'
 const MIGRATIONS_BASE_PATH = 'migrations/sqlite-drizzle'
 
 /**
@@ -40,12 +40,12 @@ export interface MigrationPaths {
 
   /** Resolved v1 userData directory (accounts for legacy config.json custom path). */
   readonly userData: string
-  /** ~/.cherrystudio — cherry home directory. */
-  readonly cherryHome: string
+  /** ~/.huatuostudio — huatuo home directory. */
+  readonly huatuoHome: string
 
   // ── Derived from userData (pre-computed, consumers use directly) ──
 
-  /** {userData}/Data/cherrystudio.sqlite */
+  /** {userData}/Data/huatuostudio.sqlite */
   readonly databaseFile: string
   /** {userData}/Data/KnowledgeBase */
   readonly knowledgeBaseDir: string
@@ -80,9 +80,9 @@ export interface MigrationPaths {
   /** {userData}/migration_temp/localstorage_export/localStorage.json. */
   readonly migrationLocalStorageExportFile: string
 
-  // ── Derived from cherryHome ──
+  // ── Derived from huatuoHome ──
 
-  /** {cherryHome}/config/config.json — v1 legacy config file. */
+  /** {huatuoHome}/config/config.json — v1 legacy config file. */
   readonly legacyConfigFile: string
 
   // ── Build-time paths ──
@@ -128,7 +128,7 @@ export interface MigrationPathsResult {
  *   1. Start with the current `app.getPath('userData')` (set by
  *      `resolveUserDataLocation()` in preboot — may be the Electron
  *      default if boot-config.json had no entry).
- *   2. Read `~/.cherrystudio/config/config.json` for a legacy `appDataPath`.
+ *   2. Read `~/.huatuostudio/config/config.json` for a legacy `appDataPath`.
  *   3. If a valid custom path is found and differs from current:
  *      - Call `app.setPath('userData', ...)` so Chromium-level storage
  *        (IndexedDB, localStorage) initializes at the correct location
@@ -155,7 +155,7 @@ export interface MigrationPathsResult {
  *     because other preboot modules and `bootstrap()` depend on it.
  */
 export function resolveMigrationPaths(): MigrationPathsResult {
-  const legacyConfigFile = path.join(CHERRY_HOME, 'config', 'config.json')
+  const legacyConfigFile = path.join(HUATUO_HOME, 'config', 'config.json')
   let currentUserData = app.getPath('userData')
   let userDataChanged = false
   let inaccessibleLegacyPath: string | null = null
@@ -228,7 +228,7 @@ export function resolveMigrationPaths(): MigrationPathsResult {
   const migrationLocalStorageExportDir = path.join(migrationTempDir, 'localstorage_export')
   const paths: MigrationPaths = Object.freeze({
     userData: currentUserData,
-    cherryHome: CHERRY_HOME,
+    huatuoHome: HUATUO_HOME,
     databaseFile: path.join(currentUserData, 'Data', DB_NAME),
     knowledgeBaseDir: path.join(currentUserData, 'Data', 'KnowledgeBase'),
     filesDataDir,
@@ -280,7 +280,7 @@ export interface SelectionProbe {
   isUsableDir(dir: string): boolean
   /** Directory holds recognizable v1 data (version.log / Chromium storage / config keys). */
   hasV1Data(dir: string): boolean
-  /** Directory already holds a non-empty cherrystudio.sqlite (A0 guard). */
+  /** Directory already holds a non-empty huatuostudio.sqlite (A0 guard). */
   hasValidSqlite(dir: string): boolean
   /** Directory's version.log clears the v1→v2 upgrade gate. */
   versionOk(dir: string): boolean
@@ -455,7 +455,7 @@ export function readLegacyEntries(configFile: string, currentExe: string): Legac
 
 function isWindowsPortableExecutable(executablePath: string): boolean {
   const normalized = executablePath.replaceAll('\\', '/')
-  return normalized.slice(normalized.lastIndexOf('/') + 1).toLowerCase() === 'cherry-studio-portable.exe'
+  return normalized.slice(normalized.lastIndexOf('/') + 1).toLowerCase() === 'huatuo-studio-portable.exe'
 }
 
 /**
@@ -482,7 +482,7 @@ function configHasKeys(configFile: string): boolean {
 }
 
 /**
- * Whether a directory already holds a *non-empty* cherrystudio.sqlite. Mirrors
+ * Whether a directory already holds a *non-empty* huatuostudio.sqlite. Mirrors
  * the DB layer's integrity gate (MigrationDbService.ensureDatabaseIntegrity,
  * which unlinks 0-byte files): a leftover 0-byte sqlite must NOT count as
  * V2-ized, or A0 would short-circuit fuzzy recovery only for the DB layer to

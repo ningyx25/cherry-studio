@@ -1,5 +1,5 @@
 ---
-'@cherrystudio/ai-core': patch
+'@huatuostudio/ai-core': patch
 ---
 
 Budget the compaction request itself, and stop masking an empty summary.

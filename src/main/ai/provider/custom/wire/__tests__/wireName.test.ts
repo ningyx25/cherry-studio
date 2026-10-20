@@ -1,4 +1,4 @@
-import { wireName } from '@cherrystudio/provider-registry'
+import { wireName } from '@huatuostudio/provider-registry'
 import type { CanonicalParamKey } from '@shared/data/types/model'
 import { describe, expect, it } from 'vitest'
 

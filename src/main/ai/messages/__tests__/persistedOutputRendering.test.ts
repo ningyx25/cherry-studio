@@ -1,4 +1,4 @@
-import { computeHeadTailExcerpt, Offloader } from '@cherrystudio/ai-core'
+import { computeHeadTailExcerpt, Offloader } from '@huatuostudio/ai-core'
 import type { UIMessage } from 'ai'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 

@@ -1,7 +1,7 @@
 # 上下文构建/压缩运行时测试发现的问题
 
 > 更新日期:2026-08-03(修复状态标注)
-> 测试方式:克隆档案 `CherryStudioCtxTest`(阈值 5000→100000、`context_window` 缩至 16000)+ cherry-electron-dev 实例,真实模型(aihubmix::claude-sonnet-4-6 / gemini::gemini-2.5-flash)驱动长程工具任务。
+> 测试方式:克隆档案 `HuaTuoStudioCtxTest`(阈值 5000→100000、`context_window` 缩至 16000)+ huatuo-electron-dev 实例,真实模型(aihubmix::claude-sonnet-4-6 / gemini::gemini-2.5-flash)驱动长程工具任务。
 > 范围:feat/context-build-truncation 分支 @ `7f0a0fbd34`(其中 #1、#5、#6 为 main 既有问题,与本分支无关)。
 > 已验证正常的部分见 `tool-result-db-trim.md` 文末「实施结论」;此文只记问题。
 
@@ -22,10 +22,10 @@
 **严重度:高(main 既有 bug,建议单独开 issue)**
 
 - **现象**:tool defer 触发(auto 池 > 窗口 10% 等三条件)后,meta 工具进入请求,Anthropic 系端点(实测 aihubmix)返回
-  `tools.N.custom: Example at index 0 is invalid: False schema does not allow "cherry studio latest release". Each example must match the tool's input_schema.`
+  `tools.N.custom: Example at index 0 is invalid: False schema does not allow "huatuo studio latest release". Each example must match the tool's input_schema.`
   整个请求失败;同一请求去掉 MCP(defer 不触发)即成功;换 Gemini 端点(不校验示例)defer 全链路正常(tool_search/tool_invoke 均验证通过)。
 - **根因**:`src/main/ai/tools/adapters/aiSdk/meta/toolInvoke.ts` 的
-  `inputExamples: [{ input: { name: 'web_search', params: { query: 'cherry studio latest release' } } }]`
+  `inputExamples: [{ input: { name: 'web_search', params: { query: 'huatuo studio latest release' } } }]`
   与 `params: z.record(z.string(), z.unknown()).optional()` 经 zod→JSON Schema 序列化后的结果不匹配(子 schema 落成 `false`),Anthropic API 新增的示例校验按 schema 拒绝该 example。
 - **影响面**:Anthropic 家族端点 + auto 池过线(默认 200k 窗口需 ≈20k tokens 的 MCP 工具描述,约几十个工具;小窗口模型更容易)。多 MCP 重度用户会真实命中,且表现为"开了很多 MCP 后 Claude 突然全部请求报错"。
 - **修复方向**(任一):对齐 example 与序列化后的 schema;去掉 `inputExamples`;anthropic provider 侧在发送前丢弃与 schema 不符的 examples。注意 `toolSearch.ts`/`toolInspect.ts` 的 examples 需一并核查。

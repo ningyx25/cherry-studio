@@ -1,4 +1,4 @@
-import { Input, Popover, PopoverAnchor, PopoverContent, PopoverTrigger, Textarea } from '@cherrystudio/ui'
+import { Input, Popover, PopoverAnchor, PopoverContent, PopoverTrigger, Textarea } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { useProvider, useProviderAuthConfig, useProviderMutations } from '@renderer/hooks/useProvider'
 import { toast } from '@renderer/services/toast'

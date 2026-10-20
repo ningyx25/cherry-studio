@@ -1,5 +1,5 @@
-import { Button, InfoTooltip, Input, RowFlex, Switch, WarnTooltip } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, InfoTooltip, Input, RowFlex, Switch, WarnTooltip } from '@huatuostudio/ui'
 import AppLogo from '@renderer/assets/images/logo.png'
 import { S3BackupManager } from '@renderer/components/S3BackupManager'
 import { S3BackupModal, useS3BackupModal } from '@renderer/components/S3Modals'
@@ -57,7 +57,7 @@ const S3Settings: FC = () => {
     openSmartMiniApp({
       appId: 's3-help',
       name: 'S3 Compatible Storage Help',
-      url: 'https://docs.cherry-ai.com/data-settings/s3-compatible',
+      url: 'https://docs.huatuo.ai/data-settings/s3-compatible',
       logo: AppLogo
     })
   }

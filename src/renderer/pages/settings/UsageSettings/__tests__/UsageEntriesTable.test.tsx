@@ -6,7 +6,7 @@ import { render, screen, within } from '@testing-library/react'
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, TableHTMLAttributes, TdHTMLAttributes } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({
     children,
     size,

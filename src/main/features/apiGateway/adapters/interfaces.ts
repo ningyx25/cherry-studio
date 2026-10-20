@@ -8,14 +8,14 @@
  */
 
 import type { ProviderOptions } from '@ai-sdk/provider-utils'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import type { ToolSet, UIMessageChunk } from 'ai'
 
 /**
  * Token usage carried on `message-metadata` UIMessageChunks emitted by main's
- * `AiService.streamText`: the nested `stats` snapshot (Cherry `MessageStats`,
+ * `AiService.streamText`: the nested `stats` snapshot (HuaTuo `MessageStats`,
  * AI SDK v6 names) is the single carrier — the gateway SSE adapters read the
  * input/output totals from it, plus the reasoning breakdown for dialects that
  * expose one (Gemini's `usageMetadata.thoughtsTokenCount`).
@@ -128,7 +128,7 @@ export interface IMessageConverter<TInputParams = unknown> {
    * prompt becomes a leading `{ role: 'system' }` UIMessage — main's pipeline
    * runs `convertToModelMessages`, which lifts that into the SDK `system`.
    */
-  toUIMessages(params: TInputParams): CherryUIMessage[]
+  toUIMessages(params: TInputParams): HuaTuoUIMessage[]
 
   /**
    * Convert input tools to AI SDK `ToolSet`. Tools have NO `execute` (client

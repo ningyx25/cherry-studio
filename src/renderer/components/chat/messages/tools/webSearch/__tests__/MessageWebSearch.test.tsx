@@ -61,9 +61,7 @@ describe('MessageWebSearchToolTitle', () => {
             tool: { id: 'web-search', name: 'web_search', type: 'builtin' },
             status: 'done',
             arguments: { query: 'HuaTuo Studio' },
-            response: [
-              { id: 1, title: 'HuaTuo Studio', url: 'https://www.cherry-ai.com/blog', content: 'HuaTuo Studio' }
-            ]
+            response: [{ id: 1, title: 'HuaTuo Studio', url: 'https://www.huatuo.ai/blog', content: 'HuaTuo Studio' }]
           } as NormalToolResponse
         }
       />
@@ -77,9 +75,9 @@ describe('MessageWebSearchToolTitle', () => {
     fireEvent.click(header)
 
     const link = await screen.findByRole('link')
-    expect(link).toHaveAttribute('href', 'https://www.cherry-ai.com/blog')
-    expect(screen.getByTestId('favicon')).toHaveAttribute('data-hostname', 'www.cherry-ai.com')
-    expect(screen.getByText('cherry-ai.com')).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', 'https://www.huatuo.ai/blog')
+    expect(screen.getByTestId('favicon')).toHaveAttribute('data-hostname', 'www.huatuo.ai')
+    expect(screen.getByText('huatuo.ai')).toBeInTheDocument()
   })
 })
 

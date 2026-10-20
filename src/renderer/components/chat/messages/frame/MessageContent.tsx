@@ -1,4 +1,4 @@
-import { Flex } from '@cherrystudio/ui'
+import { Flex } from '@huatuostudio/ui'
 import { createUniqueModelId } from '@shared/data/types/model'
 import { isEmpty } from 'es-toolkit/compat'
 import React from 'react'

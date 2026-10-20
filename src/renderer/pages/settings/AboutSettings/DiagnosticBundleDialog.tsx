@@ -11,8 +11,8 @@ import {
   Scrollbar,
   SegmentedControl,
   Switch
-} from '@cherrystudio/ui'
-import { DIALOG_CLOSE_DURATION_MS } from '@cherrystudio/ui/utils'
+} from '@huatuostudio/ui'
+import { DIALOG_CLOSE_DURATION_MS } from '@huatuostudio/ui/utils'
 import { ipcApi } from '@renderer/ipc'
 import { loggerService } from '@renderer/services/LoggerService'
 import { toast } from '@renderer/services/toast'
@@ -25,7 +25,7 @@ import { CircleCheck, LoaderCircle } from 'lucide-react'
 import { type FC, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const SUPPORT_EMAIL = 'support@cherry-ai.com'
+const SUPPORT_EMAIL = 'support@huatuo.ai'
 const logger = loggerService.withContext('DiagnosticBundleDialog')
 const RANGE_OPTIONS = [
   { translationKey: 'settings.about.diagnostics.ranges.24h', value: '24h' },

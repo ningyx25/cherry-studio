@@ -6,18 +6,18 @@
  */
 
 import type { ProviderOptions } from '@ai-sdk/provider-utils'
-import type {
-  ChatCompletionAssistantMessageParam,
-  ChatCompletionMessageParam,
-  ChatCompletionUserMessageParam
-} from '@cherrystudio/openai/resources'
-import type { ChatCompletionCreateParamsBase } from '@cherrystudio/openai/resources/chat/completions'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import { parseDataUrl } from '@shared/utils/dataUrl'
 import type { DynamicToolUIPart, FileUIPart, ReasoningUIPart, TextUIPart, ToolSet } from 'ai'
 import { tool, zodSchema } from 'ai'
+import type {
+  ChatCompletionAssistantMessageParam,
+  ChatCompletionMessageParam,
+  ChatCompletionUserMessageParam
+} from 'openai/resources'
+import type { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions'
 
 import type { IMessageConverter, StreamTextOptions } from '../interfaces'
 import { type JsonSchemaLike, jsonSchemaToZod } from './jsonSchemaToZod'
@@ -56,13 +56,13 @@ interface ExtendedAssistantMessage extends ChatCompletionAssistantMessageParam {
  */
 export class OpenAiMessageConverter implements IMessageConverter<ExtendedChatCompletionCreateParams> {
   /**
-   * Convert OpenAI ChatCompletionCreateParams to AI SDK `CherryUIMessage[]`.
+   * Convert OpenAI ChatCompletionCreateParams to AI SDK `HuaTuoUIMessage[]`.
    *
    * Tool results (OpenAI `role: 'tool'` messages) are folded into the matching
    * assistant `dynamic-tool` part so `convertToModelMessages` reconstructs the
    * call/result pair coherently.
    */
-  toUIMessages(params: ExtendedChatCompletionCreateParams): CherryUIMessage[] {
+  toUIMessages(params: ExtendedChatCompletionCreateParams): HuaTuoUIMessage[] {
     // tool_call_id → name (from assistant tool_calls) and → result output.
     const toolCallIdToName = new Map<string, string>()
     const toolResultOutputs = new Map<string, string>()
@@ -81,7 +81,7 @@ export class OpenAiMessageConverter implements IMessageConverter<ExtendedChatCom
       }
     }
 
-    const messages: CherryUIMessage[] = []
+    const messages: HuaTuoUIMessage[] = []
     for (const msg of params.messages) {
       const converted = this.convertMessage(msg, toolResultOutputs)
       if (converted) messages.push(converted)
@@ -95,7 +95,7 @@ export class OpenAiMessageConverter implements IMessageConverter<ExtendedChatCom
   private convertMessage(
     msg: ChatCompletionMessageParam,
     toolResultOutputs: Map<string, string>
-  ): CherryUIMessage | null {
+  ): HuaTuoUIMessage | null {
     switch (msg.role) {
       // `developer` is the renamed instruction role for newer/o-series models; same
       // semantics as `system`, so map it identically rather than dropping it.
@@ -113,7 +113,7 @@ export class OpenAiMessageConverter implements IMessageConverter<ExtendedChatCom
     }
   }
 
-  private convertSystemMessage(msg: ChatCompletionMessageParam): CherryUIMessage | null {
+  private convertSystemMessage(msg: ChatCompletionMessageParam): HuaTuoUIMessage | null {
     if (msg.role !== 'system' && msg.role !== 'developer') return null
 
     let text = ''
@@ -129,14 +129,14 @@ export class OpenAiMessageConverter implements IMessageConverter<ExtendedChatCom
     return { id: nextUIMessageId(), role: 'system', parts: [{ type: 'text', text }] }
   }
 
-  private convertUserMessage(msg: ChatCompletionUserMessageParam): CherryUIMessage | null {
+  private convertUserMessage(msg: ChatCompletionUserMessageParam): HuaTuoUIMessage | null {
     if (typeof msg.content === 'string') {
       if (!msg.content) return null
       return { id: nextUIMessageId(), role: 'user', parts: [{ type: 'text', text: msg.content }] }
     }
 
     if (Array.isArray(msg.content)) {
-      const parts: CherryUIMessage['parts'] = []
+      const parts: HuaTuoUIMessage['parts'] = []
       for (const part of msg.content) {
         if (part.type === 'text') {
           const p: TextUIPart = { type: 'text', text: part.text }
@@ -159,8 +159,8 @@ export class OpenAiMessageConverter implements IMessageConverter<ExtendedChatCom
   private convertAssistantMessage(
     msg: ExtendedAssistantMessage,
     toolResultOutputs: Map<string, string>
-  ): CherryUIMessage | null {
-    const parts: CherryUIMessage['parts'] = []
+  ): HuaTuoUIMessage | null {
+    const parts: HuaTuoUIMessage['parts'] = []
 
     // reasoning_content (DeepSeek-style thinking)
     if (msg.reasoning_content) {

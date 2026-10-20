@@ -1,4 +1,4 @@
-import { Button, Flex, Input } from '@cherrystudio/ui'
+import { Button, Flex, Input } from '@huatuostudio/ui'
 import { useTheme } from '@renderer/hooks/useTheme'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'

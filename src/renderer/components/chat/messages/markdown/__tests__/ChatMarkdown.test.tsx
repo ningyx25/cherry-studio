@@ -9,7 +9,7 @@ const mocks = vi.hoisted(() => ({
   streamingMarkdown: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Markdown: (props: { children: string; remarkPlugins?: unknown[] }) => {
     mocks.markdown(props)
     return <div data-testid="static-markdown">{props.children}</div>

@@ -27,7 +27,7 @@ Architecture: [`docs/references/ai/ipc-transport.md`](../../../docs/references/a
 
 ### `IpcChatTransport`
 
-`ChatTransport<CherryUIMessage>` implementation. Two methods:
+`ChatTransport<HuaTuoUIMessage>` implementation. Two methods:
 
 - `sendMessages({ trigger, chatId, messages, ... })` — packages
   `AiStreamOpenRequest`, dispatches via `streamDispatchCoordinator`.

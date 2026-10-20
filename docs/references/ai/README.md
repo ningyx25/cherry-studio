@@ -109,7 +109,7 @@ src/main/ai/
    registered driver can own the concrete agent runtime.
 6. `pipeStreamLoop` tees the chunk stream: one branch broadcasts to listeners
    (WebContents / SSE / channel-adapter / persistence), one branch runs
-   `readUIMessageStream` to accumulate a `CherryUIMessage` snapshot.
+   `readUIMessageStream` to accumulate a `HuaTuoUIMessage` snapshot.
 7. On terminal (done / error / aborted / paused-for-approval), listeners get
    a typed terminal callback. `PersistenceListener` writes the final
    message via the appropriate `PersistenceBackend`.
@@ -137,8 +137,8 @@ src/main/ai/
 - [Service Lifecycle](../lifecycle/README.md) — `AiService` extends `BaseService`
 - [Data Layer](../data/README.md) — `MessageService`, `ModelService`,
   `ProviderService` (called from main-side AI code)
-- [Messaging](../messaging/message-system.md) — `CherryMessagePart`,
-  `CherryUIMessage`, parts model
+- [Messaging](../messaging/message-system.md) — `HuaTuoMessagePart`,
+  `HuaTuoUIMessage`, parts model
 - [Window Manager](../window-manager/README.md) — `WebContentsListener`
   attaches to whatever windows are open
 

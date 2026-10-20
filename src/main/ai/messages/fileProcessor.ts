@@ -1,8 +1,8 @@
 /**
  * Main-process file reader for AI message parts.
  *
- * Cherry's v2 messages reference file bytes by either:
- *   - `providerMetadata.cherry.fileEntryId` (preferred; path-resilient,
+ * HuaTuo's v2 messages reference file bytes by either:
+ *   - `providerMetadata.huatuo.fileEntryId` (preferred; path-resilient,
  *     written by v1→v2 migrator and future producer-side rework), or
  *   - `FileUIPart.url = file://${absolutePath}` (legacy / external files;
  *     still produced by renderer attachment flows today)
@@ -21,7 +21,7 @@ import { application } from '@application'
 import { loggerService } from '@logger'
 import { read as fsRead } from '@main/utils/file'
 import type { FileUIPart } from '@shared/data/types/message'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { AbsoluteFilePathSchema } from '@shared/types/file'
 
 const logger = loggerService.withContext('ai:fileProcessor')
@@ -73,7 +73,7 @@ async function fileUrlToDataUrl(fileUrl: string) {
  * need to change.
  */
 export async function materializeNativeFilePart(part: FileUIPart): Promise<FileUIPart | null> {
-  const fileEntryId = readCherryMeta(part)?.fileEntryId
+  const fileEntryId = readHuaTuoMeta(part)?.fileEntryId
   if (fileEntryId) {
     const inlined = await fileEntryIdToDataUrl(fileEntryId)
     if (inlined) return { ...part, ...inlined }

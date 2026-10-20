@@ -7,7 +7,7 @@ const useProviderMock = vi.fn()
 const updateProviderMock = vi.fn()
 const syncProviderModelsMock = vi.fn()
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react')
 
   return {

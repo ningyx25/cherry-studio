@@ -8,7 +8,7 @@ import {
   PopoverAnchor,
   PopoverContent,
   PopoverTrigger
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Check, CopyPlus, Edit, Trash2, UserPen } from 'lucide-react'
 
@@ -60,11 +60,11 @@ export const WithForm: Story = {
           <div className="grid gap-3">
             <div className="grid grid-cols-3 items-center gap-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue="Cherry" className="col-span-2 h-8" />
+              <Input id="name" defaultValue="HuaTuo" className="col-span-2 h-8" />
             </div>
             <div className="grid grid-cols-3 items-center gap-2">
               <Label htmlFor="handle">Handle</Label>
-              <Input id="handle" defaultValue="@cherry" className="col-span-2 h-8" />
+              <Input id="handle" defaultValue="@huatuo" className="col-span-2 h-8" />
             </div>
           </div>
         </div>

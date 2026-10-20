@@ -9,7 +9,7 @@ import { createDirectoryTree, type DirectoryTreeBuilder } from '../builder'
 import { tryTestRipgrepPath } from './ripgrepTestUtils'
 
 // Production resolves ripgrep via BinaryManager (`getBinaryPath('rg')`), which
-// reads cherry.bin / mise shims — neither is populated under vitest. Point it
+// reads huatuo.bin / mise shims — neither is populated under vitest. Point it
 // at the test ripgrep binary so the underlying directory scan spawns a real ripgrep.
 vi.mock('@main/utils/binaryResolver', async () => {
   const { tryTestRipgrepPath: tryPath } = await import('./ripgrepTestUtils')
@@ -48,7 +48,7 @@ const waitForEvent = (
 describe.skipIf(!ripgrepAvailable)('createDirectoryTree — initial scan', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-tree-scan-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-tree-scan-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })
@@ -180,7 +180,7 @@ describe.skipIf(!ripgrepAvailable)('createDirectoryTree — initial scan', () =>
 describe.skipIf(!ripgrepAvailable)('createDirectoryTree — watcher mutations', () => {
   let tmp: string
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-tree-watch-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-tree-watch-'))
   })
   afterEach(async () => {
     await rm(tmp, { recursive: true, force: true })

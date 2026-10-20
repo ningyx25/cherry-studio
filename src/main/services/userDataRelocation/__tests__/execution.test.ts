@@ -44,7 +44,7 @@ vi.mock('@application', () => ({
     getPath: (key: string, filename?: string) => {
       let root: unknown
       if (key === 'app.install') root = relocationState.installPath
-      else if (key === 'cherry.home') root = relocationState.cherryHome
+      else if (key === 'huatuo.home') root = relocationState.huatuoHome
       else if (key in relocationState) root = relocationState[key]
       else root = path.join(String(relocationState.protectedRoot), key.replaceAll('.', '-'))
       return filename ? path.join(String(root), filename) : root
@@ -93,7 +93,7 @@ vi.mock('electron', () => ({
 const roots: string[] = []
 
 function makeRoot(): string {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cherry-relocation-'))
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'huatuo-relocation-'))
   roots.push(root)
   return root
 }
@@ -139,7 +139,7 @@ beforeEach(async () => {
   const appTemp = makeRoot()
   relocationState = {
     installPath: makeRoot(),
-    cherryHome: makeRoot(),
+    huatuoHome: makeRoot(),
     protectedRoot: makeRoot(),
     'app.temp': appTemp,
     'app.userdata': null,
@@ -237,7 +237,7 @@ describe('userDataRelocation execution', () => {
     const root = makeRoot()
     const source = path.join(root, 'source')
     const target = path.join(source, 'target')
-    const workPath = path.join(source, `.target.cherry-relocation-${TASK_ID}-work`)
+    const workPath = path.join(source, `.target.huatuo-relocation-${TASK_ID}-work`)
     fs.mkdirSync(source)
     fs.mkdirSync(workPath)
     fs.writeFileSync(path.join(workPath, 'partial.txt'), 'keep')
@@ -374,7 +374,7 @@ describe('userDataRelocation execution', () => {
 
     expect(symlinkMock).toHaveBeenCalledWith(
       path.join(fs.realpathSync(target), 'real'),
-      path.join(root, `.target.cherry-relocation-${TASK_ID}-work`, 'payload', 'relative-link'),
+      path.join(root, `.target.huatuo-relocation-${TASK_ID}-work`, 'payload', 'relative-link'),
       'junction'
     )
     expectCommitted(target)
@@ -501,7 +501,7 @@ describe('userDataRelocation execution', () => {
     await expect(runUserDataRelocation()).resolves.toBe('handled')
 
     expect(fs.readFileSync(path.join(target, 'data.txt'), 'utf8')).toBe('data')
-    expect(fs.existsSync(path.join(target, '.cherry-relocation-owner.json'))).toBe(false)
+    expect(fs.existsSync(path.join(target, '.huatuo-relocation-owner.json'))).toBe(false)
     expectCommitted(target, { '/other/exe': '/other/data' })
   })
 
@@ -635,13 +635,13 @@ describe('userDataRelocation execution', () => {
     const root = makeRoot()
     const source = path.join(root, 'source')
     const target = path.join(root, 'target')
-    const work = path.join(root, `.target.cherry-relocation-${TASK_ID}-work`)
+    const work = path.join(root, `.target.huatuo-relocation-${TASK_ID}-work`)
     fs.mkdirSync(source)
     fs.writeFileSync(path.join(source, 'data.txt'), 'data')
     fs.mkdirSync(work)
     fs.writeFileSync(
-      path.join(work, '.cherry-relocation-owner.json'),
-      JSON.stringify({ kind: 'cherry-studio-user-data-relocation', taskId: TASK_ID })
+      path.join(work, '.huatuo-relocation-owner.json'),
+      JSON.stringify({ kind: 'huatuo-studio-user-data-relocation', taskId: TASK_ID })
     )
     fs.writeFileSync(path.join(work, 'partial.txt'), 'partial')
     relocationState['app.userdata'] = source
@@ -659,13 +659,13 @@ describe('userDataRelocation execution', () => {
     const root = makeRoot()
     const source = path.join(root, 'source')
     const target = path.join(root, 'target')
-    const aside = path.join(root, `.target.cherry-relocation-${TASK_ID}-aside`)
+    const aside = path.join(root, `.target.huatuo-relocation-${TASK_ID}-aside`)
     fs.mkdirSync(source)
     fs.writeFileSync(path.join(source, 'data.txt'), 'fresh')
     fs.mkdirSync(target)
     fs.writeFileSync(
-      path.join(target, '.cherry-relocation-owner.json'),
-      JSON.stringify({ kind: 'cherry-studio-user-data-relocation', taskId: TASK_ID })
+      path.join(target, '.huatuo-relocation-owner.json'),
+      JSON.stringify({ kind: 'huatuo-studio-user-data-relocation', taskId: TASK_ID })
     )
     fs.writeFileSync(path.join(target, 'stale-promoted.txt'), 'stale')
     fs.mkdirSync(aside)
@@ -685,7 +685,7 @@ describe('userDataRelocation execution', () => {
     const root = makeRoot()
     const source = path.join(root, 'source')
     const target = path.join(root, 'target')
-    const aside = path.join(root, `.target.cherry-relocation-${TASK_ID}-aside`)
+    const aside = path.join(root, `.target.huatuo-relocation-${TASK_ID}-aside`)
     fs.mkdirSync(source)
     fs.mkdirSync(target)
     fs.mkdirSync(aside)

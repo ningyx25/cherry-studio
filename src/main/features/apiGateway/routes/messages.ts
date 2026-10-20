@@ -1,6 +1,6 @@
 import type { MessageCreateParams } from '@anthropic-ai/sdk/resources'
 import { application } from '@application'
-import { CHERRY_FAST_MODE_HEADER, CHERRY_INTERNAL_REQUEST_TOKEN_HEADER } from '@main/ai/constants'
+import { HUATUO_FAST_MODE_HEADER, HUATUO_INTERNAL_REQUEST_TOKEN_HEADER } from '@main/ai/constants'
 import { Elysia } from 'elysia'
 import { approximateTokenSize } from 'tokenx'
 
@@ -105,12 +105,12 @@ export const messagesRoutes = new Elysia({ prefix: '/messages' })
     ({ body, request, headers }) => {
       const isInternalRequest = application
         .get('ApiGatewayService')
-        .isInternalRequestToken(headers[CHERRY_INTERNAL_REQUEST_TOKEN_HEADER.toLowerCase()])
+        .isInternalRequestToken(headers[HUATUO_INTERNAL_REQUEST_TOKEN_HEADER.toLowerCase()])
       return processMessage({
         params: body,
         inputFormat: 'anthropic',
         outputFormat: 'anthropic',
-        fastMode: isInternalRequest && headers[CHERRY_FAST_MODE_HEADER.toLowerCase()] === 'true',
+        fastMode: isInternalRequest && headers[HUATUO_FAST_MODE_HEADER.toLowerCase()] === 'true',
         signal: request.signal,
         requestHeaders: request.headers
       })

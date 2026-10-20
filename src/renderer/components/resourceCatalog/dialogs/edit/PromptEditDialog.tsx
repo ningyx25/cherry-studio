@@ -7,7 +7,7 @@ import {
   DialogTitle,
   Input,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { BracesVariableIcon } from '@renderer/components/icons/BracesVariableIcon'
 import PromptEditorField, { type PromptEditorFieldHandles } from '@renderer/components/PromptEditorField'
 import { PromptPolishActions } from '@renderer/components/resourceCatalog/dialogs/components/PromptPolishActions'

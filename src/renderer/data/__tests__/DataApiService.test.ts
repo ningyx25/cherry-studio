@@ -43,7 +43,7 @@ async function createService(options: { capturePayloads?: boolean } = {}) {
   const { DataApiService } = await import('../DataApiService')
   const service = new DataApiService()
   if (options.capturePayloads) {
-    window.__CHERRY_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
+    window.__HUATUO_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
   }
   return service
 }
@@ -51,7 +51,7 @@ async function createService(options: { capturePayloads?: boolean } = {}) {
 describe('DataApiService devtools instrumentation', () => {
   it('records a successful request with truncated request and response previews', async () => {
     const service = await createService({ capturePayloads: true })
-    expect(window.__CHERRY_DATA_API_DEVTOOLS__).toBeDefined()
+    expect(window.__HUATUO_DATA_API_DEVTOOLS__).toBeDefined()
     request.mockImplementationOnce(async (req) => ({
       id: req.id,
       status: 200,
@@ -79,7 +79,7 @@ describe('DataApiService devtools instrumentation', () => {
     })
 
     expect(result).toEqual({ ok: true, token: 'response-token' })
-    const events = window.__CHERRY_DATA_API_DEVTOOLS__?.snapshot() ?? []
+    const events = window.__HUATUO_DATA_API_DEVTOOLS__?.snapshot() ?? []
     expect(events).toHaveLength(1)
     expect(events[0]).toMatchObject({
       state: 'success',
@@ -139,7 +139,7 @@ describe('DataApiService devtools instrumentation', () => {
 
     await expect(service.get('/providers' as any)).rejects.toThrow('Invalid provider')
 
-    const events = window.__CHERRY_DATA_API_DEVTOOLS__?.snapshot() ?? []
+    const events = window.__HUATUO_DATA_API_DEVTOOLS__?.snapshot() ?? []
     expect(events).toHaveLength(1)
     expect(events[0]).toMatchObject({
       state: 'error',
@@ -174,7 +174,7 @@ describe('DataApiService devtools instrumentation', () => {
 
     await expect(service.get('/providers' as any)).rejects.toThrow('Invalid provider token=secret')
 
-    const events = window.__CHERRY_DATA_API_DEVTOOLS__?.snapshot() ?? []
+    const events = window.__HUATUO_DATA_API_DEVTOOLS__?.snapshot() ?? []
     expect(events).toHaveLength(1)
     expect(events[0]).toMatchObject({
       state: 'error',
@@ -208,7 +208,7 @@ describe('DataApiService devtools instrumentation', () => {
 
     await expect(service.get('/providers' as any)).resolves.toEqual({ ok: true })
 
-    const events = window.__CHERRY_DATA_API_DEVTOOLS__?.snapshot() ?? []
+    const events = window.__HUATUO_DATA_API_DEVTOOLS__?.snapshot() ?? []
     expect(events.map((event) => event.state)).toEqual(['retry', 'success'])
     expect(events[0]).toMatchObject({
       state: 'retry',
@@ -238,6 +238,6 @@ describe('DataApiService devtools instrumentation', () => {
     const service = await createService()
 
     await expect(service.get('/providers' as any)).resolves.toEqual({ ok: true })
-    expect(window.__CHERRY_DATA_API_DEVTOOLS__).toBeUndefined()
+    expect(window.__HUATUO_DATA_API_DEVTOOLS__).toBeUndefined()
   })
 })

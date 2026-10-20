@@ -1,5 +1,5 @@
-import { Checkbox } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Checkbox } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { DynamicVirtualList } from '@renderer/components/VirtualList'
 import { KNOWLEDGE_ITEMS_PAGE_SIZE } from '@renderer/hooks/useKnowledgeItems'
 import type { KnowledgeItem } from '@shared/data/types/knowledge'

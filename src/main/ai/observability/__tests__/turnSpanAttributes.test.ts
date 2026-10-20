@@ -68,7 +68,7 @@ describe('applyTurnOutputAttributes', () => {
         { type: 'text', text: 'answer' },
         { type: 'dynamic-tool' }
       ]
-      // biome-ignore lint/suspicious/noExplicitAny: minimal CherryUIMessage fixture
+      // biome-ignore lint/suspicious/noExplicitAny: minimal HuaTuoUIMessage fixture
     } as any)
 
     expect(attributes.outputs).toBe('the answer')

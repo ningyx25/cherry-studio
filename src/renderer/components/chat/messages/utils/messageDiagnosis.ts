@@ -1,6 +1,6 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { DiagnosisResult } from '@shared/data/types/uiParts'
-import { withCherryMeta } from '@shared/data/types/uiParts'
+import { withHuaTuoMeta } from '@shared/data/types/uiParts'
 
 const MESSAGE_PART_ID_PATTERN = /^(.+)-(?:part|block)-(\d+)$/
 
@@ -12,16 +12,16 @@ export function parseMessagePartId(partId: string): { messageId: string; partInd
 }
 
 export function withMessagePartDiagnosis(
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   partIndex: number,
   diagnosis: DiagnosisResult
-): CherryMessagePart[] | null {
+): HuaTuoMessagePart[] | null {
   if (partIndex < 0 || partIndex >= parts.length) return null
 
   // The switch-narrowing at the call site can't reach here, so narrow to the
-  // data-error part shape `withCherryMeta` type-checks the `diagnosis` field against.
-  const target = parts[partIndex] as Extract<CherryMessagePart, { type: 'data-error' }>
-  const updatedPart = withCherryMeta(target, { diagnosis })
+  // data-error part shape `withHuaTuoMeta` type-checks the `diagnosis` field against.
+  const target = parts[partIndex] as Extract<HuaTuoMessagePart, { type: 'data-error' }>
+  const updatedPart = withHuaTuoMeta(target, { diagnosis })
 
   return parts.map((part, index) => (index === partIndex ? updatedPart : part))
 }

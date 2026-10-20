@@ -1,4 +1,3 @@
-import type { ProtoProviderModelOverride } from '@cherrystudio/provider-registry'
 import { applyUserOverlay, type UserModelOverlay } from '@data/services/ModelService'
 import {
   applyCapabilityOverride,
@@ -6,10 +5,11 @@ import {
   mergePresetModel,
   resolveReasoningProfileFromRegistry
 } from '@data/services/ProviderRegistryService'
+import type { ProtoProviderModelOverride } from '@huatuostudio/provider-registry'
 import { describe, expect, it } from 'vitest'
 
 // Use string literals matching the actual enum values to avoid
-// importing @cherrystudio/provider-registry just for the constants.
+// importing @huatuostudio/provider-registry just for the constants.
 const CAPABILITY = {
   FUNCTION_CALL: 'function-call',
   IMAGE_RECOGNITION: 'image-recognition',

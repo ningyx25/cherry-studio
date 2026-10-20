@@ -79,9 +79,9 @@ const EXCLUDED_DIRS = new Set([
 
 // ─── Ripgrep binary + execution ────────────────────────────────────────────
 
-// Ripgrep is a BinaryManager-managed tool: bundled into `cherry.bin` at boot
+// Ripgrep is a BinaryManager-managed tool: bundled into `huatuo.bin` at boot
 // and overridable by a mise-installed copy. `getBinaryPath('rg')` resolves
-// that single source of truth (mise shim → cherry.bin); a bare `rg` fallback
+// that single source of truth (mise shim → huatuo.bin); a bare `rg` fallback
 // fails the existsSync check below, surfacing as "binary not available".
 async function resolveRipgrepBinary(): Promise<string | null> {
   const binaryPath = await getBinaryPath('rg')

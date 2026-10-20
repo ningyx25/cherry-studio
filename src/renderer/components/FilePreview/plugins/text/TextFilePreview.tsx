@@ -1,4 +1,4 @@
-import { EmptyState } from '@cherrystudio/ui'
+import { EmptyState } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import CodeViewer from '@renderer/components/CodeViewer'
 import { getLanguageByFilePath } from '@renderer/utils/codeLanguage'

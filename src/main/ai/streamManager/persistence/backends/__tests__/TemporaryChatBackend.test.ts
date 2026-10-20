@@ -1,4 +1,4 @@
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const appendAssistantMessageMock = vi.fn()
@@ -24,7 +24,7 @@ describe('TemporaryChatBackend.persistAssistant', () => {
         role: 'assistant',
         parts: [{ type: 'text', text: 'yo' }],
         metadata: {}
-      } as unknown as CherryUIMessage,
+      } as unknown as HuaTuoUIMessage,
       status: 'success',
       modelId: 'openai::gpt-4o',
       runtimeStats: { runtimeTiming }

@@ -488,7 +488,7 @@
         {
           "originalKey": "nutstorePath",
           "type": "string",
-          "defaultValue": "/cherry-studio",
+          "defaultValue": "/huatuo-studio",
           "status": "classified",
           "category": "preferences",
           "targetKey": "data.backup.nutstore.path"
@@ -1462,7 +1462,7 @@
         {
           "originalKey": "webdavPath",
           "type": "string",
-          "defaultValue": "/cherry-studio",
+          "defaultValue": "/huatuo-studio",
           "status": "classified",
           "category": "preferences",
           "targetKey": "data.backup.webdav.path"
@@ -3414,11 +3414,11 @@
       ]
     },
     "localStorage": {
-      "persist:cherry-studio": [
+      "persist:huatuo-studio": [
         {
-          "originalKey": "persist:cherry-studio",
+          "originalKey": "persist:huatuo-studio",
           "type": "string",
-          "defaultValue": "data.localStorage['persist:cherry-studio']",
+          "defaultValue": "data.localStorage['persist:huatuo-studio']",
           "status": "pending",
           "category": null,
           "targetKey": null

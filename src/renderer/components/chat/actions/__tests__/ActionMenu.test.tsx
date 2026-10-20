@@ -7,7 +7,7 @@ import { ActionConfirmDialog } from '../ActionConfirmDialog'
 import { ActionMenu } from '../ActionMenu'
 import type { ResolvedAction } from '../actionTypes'
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
   const itemHandler = (onSelect: ((event: any) => void) | undefined, props: Record<string, unknown>) => ({
     ...props,

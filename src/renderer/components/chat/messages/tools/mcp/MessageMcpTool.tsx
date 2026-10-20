@@ -1,4 +1,4 @@
-import { CircularProgress, Flex, Tooltip } from '@cherrystudio/ui'
+import { CircularProgress, Flex, Tooltip } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { CallToolResultSchema } from '@modelcontextprotocol/sdk/types.js'
 import { useCodeStyle } from '@renderer/hooks/useCodeStyle'

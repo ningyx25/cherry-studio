@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@cherrystudio/ui'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@huatuostudio/ui'
 import { SettingRow, SettingRowTitle } from '@renderer/components/SettingsPrimitives'
 import { useTranslation } from 'react-i18next'
 

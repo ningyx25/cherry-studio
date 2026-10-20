@@ -1,4 +1,4 @@
-export const V1_CUSTOM_CSS_MARKER = '/* cherry-studio:custom-css:v1 */'
+export const V1_CUSTOM_CSS_MARKER = '/* huatuo-studio:custom-css:v1 */'
 
 /**
  * Preserve non-empty v1 CSS losslessly while marking it as unsafe to inject

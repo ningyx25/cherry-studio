@@ -99,7 +99,7 @@ keeps only `ShortcutPreferenceKey` + `ResolvedShortcut`.
 | `CommandProvider` | one window‑level `keydown` dispatcher + the handler stack (`useCommandHandler`, `useCommandRuntime`) |
 | `ContextKeyProvider` | window‑local context keys (`useCommandContextKey`) |
 | `presentation.tsx` | `CommandShortcut`, `CommandTooltip`, `CommandButton`, `useResolvedCommand` |
-| `menus.tsx` | `CommandContextMenu` — renders Cherry UI or a native popup based on `menu.presentation_mode` |
+| `menus.tsx` | `CommandContextMenu` — renders HuaTuo UI or a native popup based on `menu.presentation_mode` |
 
 Mount `<ContextKeyProvider><CommandProvider>` once per renderer window — every
 window root mounts it: `windows/main/MainApp.tsx` and `windows/subWindow/SubWindowApp.tsx`.
@@ -109,7 +109,7 @@ window root mounts it: `windows/main/MainApp.tsx` and `windows/subWindow/SubWind
 - `shortcut.<commandId>` — `PreferenceShortcutType` (`{ binding, enabled }`), the
   editable binding per command. Generated through the data‑classify pipeline (see
   [command-usage.md](./command-usage.md#adding-a-command)).
-- `menu.presentation_mode` — `'cherry' | 'native'`. Read by `CommandProvider`
+- `menu.presentation_mode` — `'huatuo' | 'native'`. Read by `CommandProvider`
   to choose the menu renderer. There is no settings UI for it yet (planned); it
   currently defaults via the preference schema.
 

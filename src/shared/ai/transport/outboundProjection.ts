@@ -3,7 +3,7 @@
  * paths share one {@link deferToolOutput} call so the policy cannot drift between them.
  */
 
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { UIMessageChunk } from 'ai'
 import { isToolUIPart } from 'ai'
 
@@ -12,10 +12,10 @@ import { envelopeDisplayExcerpt, isPersistedToolOutput } from './persistedToolOu
 
 /** Projects a stored or finalized message part. Returns the same object when nothing changed. */
 export function projectMessagePartForRenderer(
-  part: CherryMessagePart,
+  part: HuaTuoMessagePart,
   topicId: string,
   messageId: string
-): CherryMessagePart {
+): HuaTuoMessagePart {
   if (!isToolUIPart(part) || part.state !== 'output-available') return part
 
   // A persisted excerpt rides the same deferred-reference transport — the
@@ -41,11 +41,11 @@ export function projectMessagePartForRenderer(
 
 /** Projects every part of a message. Returns the same array when nothing changed. */
 export function projectMessagePartsForRenderer(
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   topicId: string,
   messageId: string
-): CherryMessagePart[] {
-  let projected: CherryMessagePart[] | undefined
+): HuaTuoMessagePart[] {
+  let projected: HuaTuoMessagePart[] | undefined
   for (let index = 0; index < parts.length; index += 1) {
     const part = projectMessagePartForRenderer(parts[index], topicId, messageId)
     if (part === parts[index]) continue

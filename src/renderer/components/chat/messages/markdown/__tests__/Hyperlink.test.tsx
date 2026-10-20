@@ -27,7 +27,7 @@ vi.mock('@renderer/hooks/useMetaDataParser', () => ({
   useMetaDataParser: mocks.useMetaDataParser
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react')
 
   return {

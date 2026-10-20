@@ -1,5 +1,5 @@
-import { Button, RowFlex } from '@cherrystudio/ui'
-import { resolveProviderIconRef, useIcon } from '@cherrystudio/ui/icons'
+import { Button, RowFlex } from '@huatuostudio/ui'
+import { resolveProviderIconRef, useIcon } from '@huatuostudio/ui/icons'
 import OauthButton from '@renderer/components/Oauth/OauthButton'
 import { useProvider } from '@renderer/hooks/useProvider'
 import { getProviderLabelKey } from '@renderer/i18n/label'
@@ -40,7 +40,7 @@ const ProviderOauth: FC<Props> = ({ providerId }) => {
     />
   )
 
-  // Logged-out: align with the CherryIN account card (bordered shell + one row:
+  // Logged-out: align with the HuaTuoIN account card (bordered shell + one row:
   // avatar/name/description on the left, login button on the right).
   if (!hasApiKeys(provider)) {
     return (
@@ -60,7 +60,7 @@ const ProviderOauth: FC<Props> = ({ providerId }) => {
                 <div className={oauthCardClasses.loggedInEmail}>{serviceDescription}</div>
               </div>
             </div>
-            {/* className="" clears OauthButton's hard-coded `rounded-full` so the emphasis variant's own radius/size matches the CherryIN login button */}
+            {/* className="" clears OauthButton's hard-coded `rounded-full` so the emphasis variant's own radius/size matches the HuaTuoIN login button */}
             <OauthButton provider={{ id: provider.id }} onSuccess={setApiKey} variant="emphasis" className="" />
           </div>
         </div>

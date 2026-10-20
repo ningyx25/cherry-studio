@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { buildToolResponseFromPart } from '../toolResponse'
@@ -21,7 +21,7 @@ describe('toolResponse adapter', () => {
           type: 'mcp'
         }
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response).toBeTruthy()
@@ -45,9 +45,9 @@ describe('toolResponse adapter', () => {
       input: { query: 'HuaTuo Studio' },
       output: {
         content: results,
-        metadata: { serverName: 'cherry-tools', serverId: 'cherry-tools', type: 'mcp' }
+        metadata: { serverName: 'huatuo-tools', serverId: 'huatuo-tools', type: 'mcp' }
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response?.response).toEqual(results)
@@ -60,7 +60,7 @@ describe('toolResponse adapter', () => {
     ]
     const output = {
       content,
-      metadata: { serverName: 'cherry-tools', serverId: 'cherry-tools', type: 'mcp' }
+      metadata: { serverName: 'huatuo-tools', serverId: 'huatuo-tools', type: 'mcp' }
     }
     const part = {
       type: 'dynamic-tool',
@@ -69,32 +69,32 @@ describe('toolResponse adapter', () => {
       state: 'output-available',
       input: {},
       output
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response?.response).toBe(output)
   })
 
-  it('parses the cherry-tools wire name into server + tool (no metadata path)', () => {
+  it('parses the huatuo-tools wire name into server + tool (no metadata path)', () => {
     // Real production shape (from the agent_session_message table): a dynamic-tool part whose
-    // toolName is the full `mcp__cherry-tools__web_search`, with NO output metadata. The single-
-    // underscore wire name splits cleanly on the last `__` into server `cherry-tools` / tool
+    // toolName is the full `mcp__huatuo-tools__web_search`, with NO output metadata. The single-
+    // underscore wire name splits cleanly on the last `__` into server `huatuo-tools` / tool
     // `web_search`.
     const part = {
       type: 'dynamic-tool',
-      toolCallId: 'call-cherry',
-      toolName: 'mcp__cherry-tools__web_search',
+      toolCallId: 'call-huatuo',
+      toolName: 'mcp__huatuo-tools__web_search',
       state: 'output-available',
       input: { query: 'latest news' },
       output: { content: '[]' }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response).toBeTruthy()
     if (!response) throw new Error('Expected tool response')
     expect(response.tool.type).toBe('mcp')
     expect(response.tool.name).toBe('web_search')
-    expect((response.tool as any).serverId).toBe('cherry-tools')
+    expect((response.tool as any).serverId).toBe('huatuo-tools')
   })
 
   it('keeps a successful tool_invoke as a meta (non-mcp) tool despite leaked inner result metadata', () => {
@@ -109,7 +109,7 @@ describe('toolResponse adapter', () => {
         content: 'ok',
         metadata: { serverName: 'duckduckgo', serverId: 'dd-server', type: 'mcp' }
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response).toBeTruthy()
@@ -127,7 +127,7 @@ describe('toolResponse adapter', () => {
       toolName: 'search_docs',
       state: 'output-error',
       errorText: 'failed'
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response?.status).toBe('error')
@@ -142,7 +142,7 @@ describe('toolResponse adapter', () => {
       toolCallId: 'call-3',
       state: 'input-available',
       input: { file_path: '/tmp/a.ts' }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response?.status).toBe('invoking')
@@ -164,7 +164,7 @@ describe('toolResponse adapter', () => {
           parentToolCallId: null
         }
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response?.status).toBe('pending')
@@ -180,7 +180,7 @@ describe('toolResponse adapter', () => {
       input: {},
       output: { action: { type: 'search' } },
       providerExecuted: true
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response?.tool.type).toBe('provider')
@@ -195,7 +195,7 @@ describe('toolResponse adapter', () => {
       state: 'output-available',
       input: { query: 'desktop clients' },
       output: 'ok'
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response?.status).toBe('done')
@@ -216,7 +216,7 @@ describe('toolResponse adapter', () => {
           parentToolCallId: null
         }
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response).toBeTruthy()
@@ -227,7 +227,7 @@ describe('toolResponse adapter', () => {
     expect((response.tool as any).serverName).toBe('8171b5f3-c666-4ead-b2ab-bb9ac244af57')
   })
 
-  it('uses migrated cherry tool metadata from callProviderMetadata before name fallbacks', () => {
+  it('uses migrated huatuo tool metadata from callProviderMetadata before name fallbacks', () => {
     const part = {
       type: 'dynamic-tool',
       toolName: 'WebSearch',
@@ -236,7 +236,7 @@ describe('toolResponse adapter', () => {
       input: { query: 'desktop clients' },
       output: 'ok',
       callProviderMetadata: {
-        cherry: {
+        huatuo: {
           tool: {
             type: 'mcp',
             name: 'search_docs',
@@ -246,7 +246,7 @@ describe('toolResponse adapter', () => {
           }
         }
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response).toBeTruthy()
@@ -271,7 +271,7 @@ describe('toolResponse adapter', () => {
           parentToolCallId: 'parent-call'
         }
       }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     const response = buildToolResponseFromPart(part)
     expect(response?.parentToolUseId).toBe('parent-call')
@@ -284,7 +284,7 @@ describe('toolResponse adapter', () => {
       state: 'approval-requested',
       input: { command: 'pnpm test' },
       approval: { id: 'approval-missing-call' }
-    } as unknown as CherryMessagePart
+    } as unknown as HuaTuoMessagePart
 
     expect(buildToolResponseFromPart(part)).toBeNull()
   })

@@ -3,7 +3,7 @@
  * Shows the status of each migrator
  */
 
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { MigratorProgress as MigratorProgressType, MigratorStatus } from '@shared/data/migration/v2/types'
 import { Check, Loader2, XCircle } from 'lucide-react'
 import React from 'react'

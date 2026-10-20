@@ -1,5 +1,5 @@
-import { ConfirmDialog } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { ConfirmDialog } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { loggerService } from '@logger'
 import { CommandContextMenu, type CommandContextMenuExtraItem } from '@renderer/components/command'
 import MiniAppIcon from '@renderer/components/icons/MiniAppIcon'

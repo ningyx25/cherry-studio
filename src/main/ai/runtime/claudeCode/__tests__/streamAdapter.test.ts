@@ -1,4 +1,4 @@
-import type { CherryUIMessageChunk } from '@shared/data/types/message'
+import type { HuaTuoUIMessageChunk } from '@shared/data/types/message'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const loggerMocks = vi.hoisted(() => ({
@@ -30,7 +30,7 @@ function createAdapter(
   overrides: Partial<ConstructorParameters<typeof ClaudeCodeStreamAdapter>[0]> = {},
   { openTurn = true }: { openTurn?: boolean } = {}
 ) {
-  const parts: CherryUIMessageChunk[] = []
+  const parts: HuaTuoUIMessageChunk[] = []
   const sessionIds: string[] = []
   const statusEvents: any[] = []
   const adapter = new ClaudeCodeStreamAdapter({
@@ -713,7 +713,7 @@ describe('ClaudeCodeStreamAdapter', () => {
           type: 'mcp_tool_use',
           id: 'mcp-search',
           name: 'web_search',
-          server_name: 'cherry-tools',
+          server_name: 'huatuo-tools',
           input: { query: 'HuaTuo Studio' }
         }
       })
@@ -737,7 +737,7 @@ describe('ClaudeCodeStreamAdapter', () => {
       toolCallId: 'mcp-search',
       output: {
         content: results,
-        metadata: { type: 'mcp', serverName: 'cherry-tools', serverId: 'cherry-tools' }
+        metadata: { type: 'mcp', serverName: 'huatuo-tools', serverId: 'huatuo-tools' }
       }
     })
   })
@@ -753,7 +753,7 @@ describe('ClaudeCodeStreamAdapter', () => {
           type: 'mcp_tool_use',
           id: 'mcp-image',
           name: 'config',
-          server_name: 'cherry-tools',
+          server_name: 'huatuo-tools',
           input: {}
         }
       })
@@ -786,7 +786,7 @@ describe('ClaudeCodeStreamAdapter', () => {
           { type: 'text', text: 'QR code generated' },
           { type: 'image', data: 'iVBORw0KGgo=', mimeType: 'image/png' }
         ],
-        metadata: { type: 'mcp', serverName: 'cherry-tools', serverId: 'cherry-tools' }
+        metadata: { type: 'mcp', serverName: 'huatuo-tools', serverId: 'huatuo-tools' }
       }
     })
   })
@@ -823,7 +823,7 @@ describe('ClaudeCodeStreamAdapter', () => {
       toolName: 'mcp__8171b5f3-c666-4ead-b2ab-bb9ac244af57__resolve-library-id',
       title: 'Context7: resolve-library-id',
       providerMetadata: {
-        cherry: {
+        huatuo: {
           tool: {
             type: 'mcp',
             serverId: '8171b5f3-c666-4ead-b2ab-bb9ac244af57',
@@ -837,7 +837,7 @@ describe('ClaudeCodeStreamAdapter', () => {
     expect(parts[1]).toMatchObject({
       type: 'tool-input-available',
       providerMetadata: {
-        cherry: {
+        huatuo: {
           tool: {
             name: 'resolve-library-id',
             description: 'Resolve a package name into a Context7 library ID.'
@@ -868,7 +868,7 @@ describe('ClaudeCodeStreamAdapter', () => {
       toolName: 'mcp__context7__resolve-library-id',
       title: 'context7: resolve-library-id',
       providerMetadata: {
-        cherry: {
+        huatuo: {
           tool: {
             type: 'mcp',
             serverId: 'context7',

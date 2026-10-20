@@ -1,3 +1,7 @@
+import { dataApiService } from '@data/DataApiService'
+import { usePersistCache } from '@data/hooks/useCache'
+import { useInvalidateCache } from '@data/hooks/useDataApi'
+import { usePreference } from '@data/hooks/usePreference'
 import {
   Button,
   DropdownMenu,
@@ -9,11 +13,7 @@ import {
   Kbd,
   KbdGroup,
   SegmentedControl
-} from '@cherrystudio/ui'
-import { dataApiService } from '@data/DataApiService'
-import { usePersistCache } from '@data/hooks/useCache'
-import { useInvalidateCache } from '@data/hooks/useDataApi'
-import { usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import {
   ResourceEditDialogHost,

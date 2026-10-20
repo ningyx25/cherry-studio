@@ -1,4 +1,4 @@
-import { Checkbox } from '@cherrystudio/ui'
+import { Checkbox } from '@huatuostudio/ui'
 import { useDirectoryTree } from '@renderer/hooks/useDirectoryTree'
 import { useNotesSettings } from '@renderer/hooks/useNotesSettings'
 import { projectNotesTree } from '@renderer/services/NotesService'

@@ -26,7 +26,7 @@ vi.mock('@xyflow/react', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const ReactModule = await import('react')
   const PopoverContext = ReactModule.createContext(false)
 

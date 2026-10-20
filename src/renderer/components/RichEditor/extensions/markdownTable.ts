@@ -1,10 +1,10 @@
-import { Table } from '@cherrystudio/extension-table-plus'
+import { Table } from '@huatuostudio/extension-table-plus'
 import type { JSONContent, MarkdownToken } from '@tiptap/core'
 
 /**
  * Native markdown round-trip for GFM tables.
  *
- * `@cherrystudio/extension-table-plus` ships no markdown hooks, so without this the marked `table`
+ * `@huatuostudio/extension-table-plus` ships no markdown hooks, so without this the marked `table`
  * token has no node to map to and `@tiptap/markdown` falls back to rendering it as a raw-text
  * paragraph. We extend the base Table node to map the token to/from the
  * `table -> tableRow -> tableHeader|tableCell -> paragraph` tree.

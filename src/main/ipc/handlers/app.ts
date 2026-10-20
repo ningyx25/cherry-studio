@@ -18,7 +18,7 @@ export const appHandlers: IpcHandlersFor<typeof appRequestSchemas> = {
     appPath: application.getPath('app.root'),
     homePath: application.getPath('sys.home'),
     notesPath: application.getPath('feature.notes.data'),
-    configPath: application.getPath('cherry.config'),
+    configPath: application.getPath('huatuo.config'),
     appDataPath: application.getPath('app.userdata'),
     resourcesPath: application.getPath('app.root.resources'),
     logsPath: loggerService.getLogsDir(),

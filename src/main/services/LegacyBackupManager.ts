@@ -181,7 +181,7 @@ class BackupManager {
    *
    * Version 7 archives store SQLite inside Data instead of as a standalone
    * resource. Full backups include all supported resources, while slim
-   * backups include only Data/cherrystudio.sqlite and cache.json.
+   * backups include only Data/huatuostudio.sqlite and cache.json.
    */
   private createDirectBackupMetadata(slimBackup: boolean): DirectBackupMetadata {
     return {
@@ -205,7 +205,7 @@ class BackupManager {
   /**
    * Direct backup method - copies Data (excluding transient SQLite sidecars
    * and the internal restore journal) plus cache.json, IndexedDB, and Local Storage.
-   * Slim backups keep only Data/cherrystudio.sqlite and cache.json.
+   * Slim backups keep only Data/huatuostudio.sqlite and cache.json.
    * @param _ - Electron IPC event
    * @param fileName - Name of the backup file
    * @param destinationPath - Path to save the backup (defaults to this.backupDir)
@@ -226,7 +226,7 @@ class BackupManager {
   }
 
   private createBackupFileName(): string {
-    return `cherry-studio.${dayjs().format('YYYYMMDDHHmmssSSS')}.${getHostname() || 'unknown'}.${getDeviceType() || 'unknown'}.zip`
+    return `huatuo-studio.${dayjs().format('YYYYMMDDHHmmssSSS')}.${getHostname() || 'unknown'}.${getDeviceType() || 'unknown'}.zip`
   }
 
   private createRemoteCleanupSignal(signal?: AbortSignal): AbortSignal {
@@ -247,7 +247,7 @@ class BackupManager {
       signal?.throwIfAborted()
       const suffix = `.${getHostname() || 'unknown'}.${getDeviceType() || 'unknown'}.zip`
       const files = (await listFiles(signal)).filter(
-        (file) => file.fileName.startsWith('cherry-studio.') && file.fileName.endsWith(suffix)
+        (file) => file.fileName.startsWith('huatuo-studio.') && file.fileName.endsWith(suffix)
       )
       for (const file of files.slice(maxBackups)) {
         await this.deleteWithRetry(file.fileName, deleteFile, signal, deleteAttempts)
@@ -960,8 +960,8 @@ class BackupManager {
       }
 
       if (metadata.resources.database) {
-        await this.assertArchiveFile(path.join(extractionDir, 'cherrystudio.sqlite'), 'SQLite database')
-        await fs.copy(path.join(extractionDir, 'cherrystudio.sqlite'), workDatabase)
+        await this.assertArchiveFile(path.join(extractionDir, 'huatuostudio.sqlite'), 'SQLite database')
+        await fs.copy(path.join(extractionDir, 'huatuostudio.sqlite'), workDatabase)
       } else {
         const databaseDataPath = this.toDataRelative(application.getPath('app.database.file'))
         if (!databaseDataPath) {
@@ -1051,7 +1051,7 @@ class BackupManager {
           state: 'staged',
           db: {
             promote: path.relative(userDataPath, workDatabase),
-            aside: path.relative(userDataPath, path.join(restoreDir, 'aside', 'cherrystudio.sqlite')),
+            aside: path.relative(userDataPath, path.join(restoreDir, 'aside', 'huatuostudio.sqlite')),
             fingerprint,
             chain
           },
@@ -1083,7 +1083,7 @@ class BackupManager {
     // Accept both the current and the legacy product name so backups created
     // before the rebrand remain restorable.
     const isSupportedApp =
-      raw && typeof raw === 'object' && (raw.appName === 'HuaTuo Studio' || raw.appName === 'Cherry Studio')
+      raw && typeof raw === 'object' && (raw.appName === 'HuaTuo Studio' || raw.appName === 'HuaTuo Studio')
     if (!isSupportedApp) {
       throw new Error('This backup file is not from HuaTuo Studio and cannot be restored')
     }
@@ -1365,7 +1365,7 @@ class BackupManager {
    */
   async restoreFromWebdav(_: Electron.IpcMainInvokeEvent, webdavConfig: WebDavConfig) {
     return this.runBackupWorkflow(async () => {
-      const filename = webdavConfig.fileName || 'cherry-studio.backup.zip'
+      const filename = webdavConfig.fileName || 'huatuo-studio.backup.zip'
       const webdavClient = this.getWebDavInstance(webdavConfig)
       const downloadDir = await this.createOperationDir('webdav-download')
       const backupedFilePath = path.join(downloadDir, path.basename(filename))
@@ -1391,7 +1391,7 @@ class BackupManager {
    */
   async restoreFromS3(_: Electron.IpcMainInvokeEvent, s3Config: S3Config) {
     return this.runBackupWorkflow(async () => {
-      const filename = s3Config.fileName || 'cherry-studio.backup.zip'
+      const filename = s3Config.fileName || 'huatuo-studio.backup.zip'
 
       logger.debug(`Starting restore from S3: ${filename}`)
 
@@ -1943,7 +1943,7 @@ class BackupManager {
       .replace(/[-:T.Z]/g, '')
       .slice(0, 14)
 
-    const fileName = `cherry-studio.${timestamp}.zip`
+    const fileName = `huatuo-studio.${timestamp}.zip`
     const tempPath = application.getPath('feature.lan_transfer.temp')
     const targetPath = destinationPath || tempPath
 

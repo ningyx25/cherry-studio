@@ -1,4 +1,4 @@
-import type { StringKeys } from '@cherrystudio/ai-core/provider'
+import type { StringKeys } from '@huatuostudio/ai-core/provider'
 
 import type { AppProviderSettingsMap, AppRuntimeConfig } from './merged'
 

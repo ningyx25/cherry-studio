@@ -6,7 +6,7 @@
 
 | Data | Source | Notes |
 |------|--------|-------|
-| Global quick phrases | Dexie `quick_phrases` | Optional table in the v1 `CherryStudio` IndexedDB database |
+| Global quick phrases | Dexie `quick_phrases` | Optional table in the v1 `HuaTuoStudio` IndexedDB database |
 | Assistant quick phrases | Redux `state.assistants.assistants[].regularPhrases` | Stored inline on each assistant |
 | Preset quick phrases | Redux `state.assistants.presets[].regularPhrases` | Presets share the v1 Assistant shape |
 | Default assistant quick phrases | Redux `state.assistants.defaultAssistant.regularPhrases` | Separate slot that may duplicate or diverge from `assistants[0]` |

@@ -1,9 +1,9 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { findLatestPendingPermissionRequest } from '../PermissionRequestComposer'
 
-function makePart(overrides: Partial<Record<string, unknown>> = {}): CherryMessagePart {
+function makePart(overrides: Partial<Record<string, unknown>> = {}): HuaTuoMessagePart {
   return {
     type: 'tool-Read',
     toolName: 'Read',
@@ -19,7 +19,7 @@ function makePart(overrides: Partial<Record<string, unknown>> = {}): CherryMessa
       }
     },
     ...overrides
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
 describe('findLatestPendingPermissionRequest', () => {
@@ -73,7 +73,7 @@ describe('findLatestPendingPermissionRequest', () => {
           input: { query: 'composer' },
           approval: { id: 'mcp-approval-1' },
           callProviderMetadata: {
-            cherry: {
+            huatuo: {
               transport: 'claude-agent',
               toolName: 'mcp__8171b5f3-c666-4ead-b2ab-bb9ac244af57__resolve-library-id',
               tool: {
@@ -117,7 +117,7 @@ describe('findLatestPendingPermissionRequest', () => {
         makePart({ state: 'approval-responded' }),
         makePart({ approval: undefined }),
         makePart({ toolCallId: undefined }),
-        { type: 'text', text: 'hello' } as CherryMessagePart
+        { type: 'text', text: 'hello' } as HuaTuoMessagePart
       ]
     })
 

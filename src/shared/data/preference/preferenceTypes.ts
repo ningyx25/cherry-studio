@@ -28,8 +28,8 @@ export type PreferenceShortcutType = {
   enabled: boolean
 }
 
-/** Global menu presentation mode: native system menus or Cherry custom menus. */
-export type MenuPresentationMode = 'native' | 'cherry'
+/** Global menu presentation mode: native system menus or HuaTuo custom menus. */
+export type MenuPresentationMode = 'native' | 'huatuo'
 
 export type OnboardingProviderSetupStatus = 'pending' | 'completed' | 'skipped'
 

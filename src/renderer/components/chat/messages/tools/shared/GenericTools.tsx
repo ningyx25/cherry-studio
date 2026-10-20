@@ -1,6 +1,6 @@
 // 通用工具组件 - 减少重复代码
 
-import { Tooltip } from '@cherrystudio/ui'
+import { Tooltip } from '@huatuostudio/ui'
 import { SkeletonSpan } from '@renderer/components/Skeleton/InlineSkeleton'
 import type { McpToolResponseStatus } from '@renderer/types/mcpTool'
 import { formatFileSize } from '@renderer/utils/file'

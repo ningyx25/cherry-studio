@@ -40,11 +40,11 @@ const logger = loggerService.withContext('KnowledgeVectorMigrator')
 
 // Runtime vector store + material layout — source of truth:
 // src/main/features/knowledge/pathStorage.ts
-// (CHERRY_META_DIR / VECTOR_STORE_FILE / MATERIAL_ROOT_DIR). Runtime opens
-// {knowledgeBaseDir}/{baseId}/.cherry/index.sqlite by the migrated (new) base id, and resolves
+// (HUATUO_META_DIR / VECTOR_STORE_FILE / MATERIAL_ROOT_DIR). Runtime opens
+// {knowledgeBaseDir}/{baseId}/.huatuo/index.sqlite by the migrated (new) base id, and resolves
 // every material's bytes at {knowledgeBaseDir}/{baseId}/raw/{relativePath}, so the migrator must
 // write the rebuilt store and any materialized url/note snapshot to those same nested paths.
-const KNOWLEDGE_META_DIR = '.cherry'
+const KNOWLEDGE_META_DIR = '.huatuo'
 const KNOWLEDGE_VECTOR_STORE_FILE = 'index.sqlite'
 const KNOWLEDGE_MATERIAL_ROOT_DIR = 'raw'
 const INDEXABLE_KNOWLEDGE_ITEM_TYPES = new Set<KnowledgeItemType>(['file', 'url', 'note'])

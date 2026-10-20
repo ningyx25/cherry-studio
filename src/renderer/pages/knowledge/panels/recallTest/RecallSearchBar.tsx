@@ -1,4 +1,4 @@
-import { Button, Input } from '@cherrystudio/ui'
+import { Button, Input } from '@huatuostudio/ui'
 import { History, Search, Zap } from 'lucide-react'
 import type { FocusEvent, MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'

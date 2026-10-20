@@ -12,17 +12,17 @@ const logger = loggerService.withContext('ShellEnv')
 const SHELL_ENV_TIMEOUT_MS = 15_000
 
 /**
- * Ensures Cherry-managed tool directories are appended to the user's PATH while
+ * Ensures HuaTuo-managed tool directories are appended to the user's PATH while
  * preserving the original key casing and avoiding duplicate segments.
  */
-const appendCherryToolDirsToPath = (env: Record<string, string>) => {
+const appendHuaTuoToolDirsToPath = (env: Record<string, string>) => {
   const pathSeparator = isWin ? ';' : ':'
-  const cherryToolDirs = getBinarySearchDirs()
+  const huatuoToolDirs = getBinarySearchDirs()
   // Bundled MinGit as a last-resort git: appended after the managed tool dirs so
   // it lands at the very tail, letting any spawned process (agent, CLI) resolve a
   // bare `git` with no system git — while system/mise/PATH git always win ahead.
   const bundledGitDir = getBundledGitDir()
-  const tailDirs = bundledGitDir ? [...cherryToolDirs, bundledGitDir] : cherryToolDirs
+  const tailDirs = bundledGitDir ? [...huatuoToolDirs, bundledGitDir] : huatuoToolDirs
   const pathKeys = Object.keys(env).filter((key) => key.toLowerCase() === 'path')
   const canonicalPathKey = pathKeys[0] || (isWin ? 'Path' : 'PATH')
   const existingPathValue = env[canonicalPathKey] || env.PATH || ''
@@ -349,7 +349,7 @@ export async function getRawShellEnv(): Promise<Record<string, string>> {
 
 export async function getShellEnv(): Promise<Record<string, string>> {
   const env = await getRawShellEnv()
-  appendCherryToolDirsToPath(env)
+  appendHuaTuoToolDirsToPath(env)
   applyBinaryExecutionEnv(env)
   return env
 }
@@ -373,7 +373,7 @@ export async function refreshShellEnv(): Promise<Record<string, string>> {
     // lookups hit the filesystem live; logged so the reuse is observable.
     logger.debug('refreshShellEnv reusing in-flight shell capture instead of re-spawning')
     const env = { ...(await inflight) }
-    appendCherryToolDirsToPath(env)
+    appendHuaTuoToolDirsToPath(env)
     applyBinaryExecutionEnv(env)
     return env
   }

@@ -27,7 +27,7 @@ const uiMocks = vi.hoisted(() => ({
   sortableCalls: [] as any[]
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   MenuItem: ({
     icon,
     label,

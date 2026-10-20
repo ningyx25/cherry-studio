@@ -12,7 +12,7 @@
  */
 
 import { devToolsMiddleware } from '@ai-sdk/devtools'
-import { definePlugin } from '@cherrystudio/ai-core'
+import { definePlugin } from '@huatuostudio/ai-core'
 import { isDev } from '@main/core/platform'
 
 import type { RequestFeature } from '../feature'

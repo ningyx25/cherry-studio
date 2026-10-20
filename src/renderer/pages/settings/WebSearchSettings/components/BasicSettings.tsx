@@ -1,4 +1,4 @@
-import { Button, InfoTooltip, Input, Tooltip } from '@cherrystudio/ui'
+import { Button, InfoTooltip, Input, Tooltip } from '@huatuostudio/ui'
 import ResetIcon from '@renderer/components/icons/ResetIcon'
 import {
   SettingDivider,

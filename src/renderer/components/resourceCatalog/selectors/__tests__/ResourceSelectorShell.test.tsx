@@ -1,12 +1,12 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useState } from 'react'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
-// Global renderer setup stubs @cherrystudio/ui with only a handful of components; the selector
+// Global renderer setup stubs @huatuostudio/ui with only a handful of components; the selector
 // needs the real Checkbox/Popover primitives, so we restore the actual module here.
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
   return actual
 })
 
@@ -797,12 +797,12 @@ describe('ResourceSelectorShell', () => {
         <ResourceSelectorShell
           trigger={<button type="button">Open</button>}
           items={[
-            { ...ITEMS[0], groupId: 'group-cherry', groupName: 'Cherry' },
+            { ...ITEMS[0], groupId: 'group-huatuo', groupName: 'HuaTuo' },
             { ...ITEMS[1], groupId: 'group-dev', groupName: 'DEV' },
-            { ...ITEMS[2], groupId: 'group-cherry', groupName: 'Cherry' }
+            { ...ITEMS[2], groupId: 'group-huatuo', groupName: 'HuaTuo' }
           ]}
           groups={[
-            { id: 'group-cherry', name: 'Cherry' },
+            { id: 'group-huatuo', name: 'HuaTuo' },
             { id: 'group-dev', name: 'DEV' }
           ]}
           pinnedIds={[]}
@@ -814,7 +814,7 @@ describe('ResourceSelectorShell', () => {
       )
       openPopover()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Cherry' }))
+      fireEvent.click(screen.getByRole('button', { name: 'HuaTuo' }))
       expect(screen.queryByRole('option', { name: /Alpha/ })).toBeInTheDocument()
       expect(screen.queryByRole('option', { name: /Gamma/ })).toBeInTheDocument()
       expect(screen.queryByRole('option', { name: /Beta/ })).not.toBeInTheDocument()
@@ -827,9 +827,9 @@ describe('ResourceSelectorShell', () => {
 
     it('stops filtering when the selected group is removed', () => {
       const groupedItems = [
-        { ...ITEMS[0], groupId: 'group-cherry', groupName: 'Cherry' },
+        { ...ITEMS[0], groupId: 'group-huatuo', groupName: 'HuaTuo' },
         { ...ITEMS[1], groupId: 'group-dev', groupName: 'DEV' },
-        { ...ITEMS[2], groupId: 'group-cherry', groupName: 'Cherry' }
+        { ...ITEMS[2], groupId: 'group-huatuo', groupName: 'HuaTuo' }
       ]
       const commonProps = {
         trigger: <button type="button">Open</button>,
@@ -844,14 +844,14 @@ describe('ResourceSelectorShell', () => {
           {...commonProps}
           items={groupedItems}
           groups={[
-            { id: 'group-cherry', name: 'Cherry' },
+            { id: 'group-huatuo', name: 'HuaTuo' },
             { id: 'group-dev', name: 'DEV' }
           ]}
         />
       )
       openPopover()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Cherry' }))
+      fireEvent.click(screen.getByRole('button', { name: 'HuaTuo' }))
       expect(screen.queryByRole('option', { name: /Beta/ })).not.toBeInTheDocument()
 
       rerender(<ResourceSelectorShell {...commonProps} items={groupedItems} groups={[]} />)

@@ -13,9 +13,9 @@ vi.mock('@main/core/platform', () => ({
 vi.mock('@application', () => ({
   application: {
     getPath: (key: string) => {
-      if (key === 'cherry.bin') return 'C:\\Users\\test\\.cherrystudio\\bin'
+      if (key === 'huatuo.bin') return 'C:\\Users\\test\\.huatuostudio\\bin'
       if (key === 'feature.binary.data') {
-        return 'C:\\Users\\test\\AppData\\Roaming\\CherryStudio\\Toolchain\\mise'
+        return 'C:\\Users\\test\\AppData\\Roaming\\HuaTuoStudio\\Toolchain\\mise'
       }
       if (key === 'sys.home') return 'C:\\Users\\test'
       return `/mock/${key}`
@@ -231,7 +231,7 @@ describe('shellEnv – Windows registry PATH', () => {
 
     expect(env.MISE_DATA_DIR).toBe('C:\\Users\\TestUser\\mise-data')
     expect(env.Path).toBe('C:\\Windows;C:\\UserNode')
-    expect(env.Path).not.toContain('.cherrystudio')
+    expect(env.Path).not.toContain('.huatuostudio')
   })
 
   it('should append HuaTuo Studio tool directories to PATH', async () => {
@@ -243,14 +243,14 @@ describe('shellEnv – Windows registry PATH', () => {
 
     const env = await refreshShellEnv()
 
-    expect(env.Path).toContain('.cherrystudio')
+    expect(env.Path).toContain('.huatuostudio')
     expect(env.Path).toContain('Toolchain\\mise')
     expect(env.Path).toContain('shims')
     expect(env.Path).toContain('bin')
   })
 
   it('lists the mise shims dir only once despite appending and prepending it', async () => {
-    // appendCherryToolDirsToPath() adds the shims dir, then mergeBinaryExecutionEnv()
+    // appendHuaTuoToolDirsToPath() adds the shims dir, then mergeBinaryExecutionEnv()
     // prepends it again — the merge step must dedup so it does not appear twice.
     mockRegistryQuery((args) => {
       const keyPath = args[1]
@@ -265,7 +265,7 @@ describe('shellEnv – Windows registry PATH', () => {
   })
 
   it('appends the bundled MinGit dir to the PATH tail as a last-resort git', async () => {
-    const bundledGitDir = 'C:\\Cherry\\resources\\binaries\\win32-x64\\git\\cmd'
+    const bundledGitDir = 'C:\\HuaTuo\\resources\\binaries\\win32-x64\\git\\cmd'
     vi.mocked(getBundledGitDir).mockReturnValue(bundledGitDir)
     mockRegistryQuery((args) => {
       const keyPath = args[1]

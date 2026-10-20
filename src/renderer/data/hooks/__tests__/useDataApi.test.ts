@@ -156,8 +156,8 @@ describe('resolveTemplate', () => {
   })
 
   it('leaves RPC verb suffixes (`models:resolve`, `models:reconcile`) intact', () => {
-    expect(resolveTemplate('/providers/:providerId/models:reconcile', { providerId: 'cherryin' })).toBe(
-      '/providers/cherryin/models:reconcile'
+    expect(resolveTemplate('/providers/:providerId/models:reconcile', { providerId: 'huatuoin' })).toBe(
+      '/providers/huatuoin/models:reconcile'
     )
     expect(resolveTemplate('/providers/:providerId/models:resolve', { providerId: 'openai' })).toBe(
       '/providers/openai/models:resolve'

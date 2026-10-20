@@ -109,7 +109,7 @@ describe('PromptBuilder', () => {
 
     const { base, context: result } = await builder.buildPromptParts('/workspace')
 
-    // No system.md → keep the Claude Code preset as the base and append Cherry content;
+    // No system.md → keep the Claude Code preset as the base and append HuaTuo content;
     // the old embedded "personal assistant" preamble must be gone.
     expect(base).toEqual({ kind: 'claude_code' })
     expect(result).not.toContain('You are a personal assistant running inside HuaTuo Studio')
@@ -123,15 +123,15 @@ describe('PromptBuilder', () => {
     const { context: result } = await builder.buildPromptParts('/workspace')
 
     // The autonomy / memory-handbook / web-search handbook headings and their
-    // tool-strategy text ship lazily via the `cherry-tool-guide` builtin skill,
+    // tool-strategy text ship lazily via the `huatuo-tool-guide` builtin skill,
     // not baked into every prompt.
     expect(result).not.toContain('## Autonomy Tools')
     expect(result).not.toContain('## Agent Memory')
     expect(result).not.toContain('## Web Search Strategy')
-    expect(result).not.toContain('mcp__cherry-tools__cron')
-    expect(result).not.toContain('mcp__cherry-tools__notify')
-    expect(result).not.toContain('mcp__cherry-tools__web_search')
-    expect(result).not.toContain('mcp__cherry-tools__web_fetch')
+    expect(result).not.toContain('mcp__huatuo-tools__cron')
+    expect(result).not.toContain('mcp__huatuo-tools__notify')
+    expect(result).not.toContain('mcp__huatuo-tools__web_search')
+    expect(result).not.toContain('mcp__huatuo-tools__web_fetch')
 
     // The runtime storage contract stays: the Memories section and its memory
     // safety boundaries must survive the handbook removal.
@@ -154,7 +154,7 @@ describe('PromptBuilder', () => {
     expect(result).toContain('## Memories')
   })
 
-  it('treats an empty system.md as an explicit custom base while retaining Cherry context', async () => {
+  it('treats an empty system.md as an explicit custom base while retaining HuaTuo context', async () => {
     setupFiles({ '/workspace/system.md': '' })
 
     const { base, context } = await builder.buildPromptParts('/workspace')
@@ -260,7 +260,7 @@ describe('PromptBuilder', () => {
     expect(result).not.toContain('## Autonomy Tools')
   })
 
-  it('keeps system.md as the base while building memories as Cherry context', async () => {
+  it('keeps system.md as the base while building memories as HuaTuo context', async () => {
     setupFiles({
       '/workspace/system.md': 'You are CustomBot.',
       '/workspace/soul.md': 'Sharp and efficient.'
@@ -459,7 +459,7 @@ describe('PromptBuilder', () => {
 
     it('wraps memory/FACT.md content in an Agent Knowledge block', async () => {
       setupFiles({
-        '/workspace/memory/FACT.md': '- Project: cherry-studio\n- Build tool: pnpm + electron-vite'
+        '/workspace/memory/FACT.md': '- Project: huatuo-studio\n- Build tool: pnpm + electron-vite'
       })
 
       const result = await builder.buildFactsSection('/workspace')
@@ -467,7 +467,7 @@ describe('PromptBuilder', () => {
       expect(result).toBeDefined()
       expect(result).toContain('## Agent Knowledge')
       expect(result).toContain('<facts>')
-      expect(result).toContain('Project: cherry-studio')
+      expect(result).toContain('Project: huatuo-studio')
       expect(result).toContain('Build tool: pnpm + electron-vite')
       expect(result).toContain('</facts>')
       // The agent should also be told to keep updating FACT.md

@@ -25,8 +25,8 @@ vi.mock('@application', async () => {
 })
 
 // Mock provider-registry/node — include RegistryLoader that delegates to mocked readers
-vi.mock('@cherrystudio/provider-registry/node', async () => {
-  const { normalizeModelId } = await vi.importActual<Record<string, unknown>>('@cherrystudio/provider-registry')
+vi.mock('@huatuostudio/provider-registry/node', async () => {
+  const { normalizeModelId } = await vi.importActual<Record<string, unknown>>('@huatuostudio/provider-registry')
   const normalize = normalizeModelId as (id: string) => string
 
   const readModelRegistry = vi.fn()
@@ -128,7 +128,7 @@ import {
   readModelRegistry,
   readProviderModelRegistry,
   readProviderRegistry
-} from '@cherrystudio/provider-registry/node'
+} from '@huatuostudio/provider-registry/node'
 
 // Must import after mocks are set up
 const { mergePresetModel, providerRegistryService } = await import('../ProviderRegistryService')
@@ -669,7 +669,7 @@ describe('ProviderRegistryService', () => {
             modelId: 'text-model'
           },
           {
-            providerId: 'cherryin',
+            providerId: 'huatuoin',
             modelId: 'qwen-image',
             disabled: true
           }
@@ -685,8 +685,8 @@ describe('ProviderRegistryService', () => {
             metadata: {}
           },
           {
-            id: 'cherryin',
-            name: 'CherryIN',
+            id: 'huatuoin',
+            name: 'HuaTuoIN',
             defaultChatEndpoint: null,
             metadata: {}
           }
@@ -701,7 +701,7 @@ describe('ProviderRegistryService', () => {
         'silicon:text-model:text-model'
       ])
       expect(disabled.map((item) => `${item.providerId}:${item.presetModelId}:${item.apiModelId}`)).toEqual([
-        'cherryin:qwen-image:qwen-image'
+        'huatuoin:qwen-image:qwen-image'
       ])
     })
 

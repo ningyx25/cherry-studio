@@ -7,7 +7,7 @@ import {
   ColFlex,
   EmptyState,
   Flex
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import type { McpResource } from '@shared/types/mcp'
 import { useTranslation } from 'react-i18next'
 

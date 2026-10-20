@@ -9,7 +9,7 @@
  */
 
 import type { LanguageModelV3CallOptions, LanguageModelV3FunctionTool, LanguageModelV3Message } from '@ai-sdk/provider'
-import { definePlugin } from '@cherrystudio/ai-core'
+import { definePlugin } from '@huatuostudio/ai-core'
 import { resolveAnthropicCacheSettings } from '@shared/ai/anthropicCache'
 import type { Assistant } from '@shared/data/types/assistant'
 import { ENDPOINT_TYPE } from '@shared/data/types/model'

@@ -260,7 +260,7 @@ async function resolveStylesheet(id: string, base: string, cwd: string): Promise
     return path.join(cwd, 'node_modules/tw-animate-css/dist/tw-animate.css')
   }
 
-  if (id === '@cherrystudio/ui/styles/theme.css') {
+  if (id === '@huatuostudio/ui/styles/theme.css') {
     const sourcePath = path.join(cwd, 'packages/ui/src/styles/theme.css')
     try {
       await fs.access(sourcePath)

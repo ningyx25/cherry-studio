@@ -1,5 +1,5 @@
 import type { AgentSessionMessageEntity } from '@shared/data/types/agent'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { MockUseCacheUtils } from '@test-mocks/renderer/useCache'
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -266,7 +266,7 @@ describe('useAgentSessionParts', () => {
       {
         type: 'text',
         text: 'Subagent finished',
-        providerMetadata: { cherry: { parentToolCallId: 'task-root' } }
+        providerMetadata: { huatuo: { parentToolCallId: 'task-root' } }
       }
     ])
 
@@ -277,7 +277,7 @@ describe('useAgentSessionParts', () => {
       expect.objectContaining({
         type: 'text',
         text: 'Subagent finished',
-        providerMetadata: { cherry: { parentToolCallId: 'task-root' } }
+        providerMetadata: { huatuo: { parentToolCallId: 'task-root' } }
       })
     ])
   })
@@ -301,15 +301,15 @@ describe('useAgentSessionParts', () => {
     const firstRow = rowFor('message-1')
     const secondRow = rowFor('message-2')
     mockAgentSessionPartsDataApi([{ items: [firstRow, secondRow] }])
-    const firstLiveParts: CherryMessagePart[] = [{ type: 'text', text: 'First live' }]
-    const secondLiveParts: CherryMessagePart[] = [{ type: 'text', text: 'Second live' }]
+    const firstLiveParts: HuaTuoMessagePart[] = [{ type: 'text', text: 'First live' }]
+    const secondLiveParts: HuaTuoMessagePart[] = [{ type: 'text', text: 'Second live' }]
     MockUseCacheUtils.setSharedCacheValue('agent.session.flow_parts.session-1.message-1', firstLiveParts)
     MockUseCacheUtils.setSharedCacheValue('agent.session.flow_parts.session-1.message-2', secondLiveParts)
 
     const { result, rerender } = renderHook(() => useAgentSessionParts('session-1'))
     const originalFirstMessage = result.current.messages[0]
     const originalSecondMessage = result.current.messages[1]
-    const updatedFirstParts: CherryMessagePart[] = [{ type: 'text', text: 'First live updated' }]
+    const updatedFirstParts: HuaTuoMessagePart[] = [{ type: 'text', text: 'First live updated' }]
 
     MockUseCacheUtils.setSharedCacheValue('agent.session.flow_parts.session-1.message-1', updatedFirstParts)
     rerender()
@@ -321,7 +321,7 @@ describe('useAgentSessionParts', () => {
   })
 
   it('reads an existing flow overlay when its message row loads later', () => {
-    const liveParts: CherryMessagePart[] = [{ type: 'text', text: 'Already streaming' }]
+    const liveParts: HuaTuoMessagePart[] = [{ type: 'text', text: 'Already streaming' }]
     MockUseCacheUtils.setSharedCacheValue('agent.session.flow_parts.session-1.message-1', liveParts)
     const { result, rerender } = renderHook(() => useAgentSessionParts('session-1'))
     expect(result.current.messages).toEqual([])

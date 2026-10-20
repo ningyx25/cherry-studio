@@ -3,12 +3,12 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
-  CHERRY_PRODUCT_COLOR_TOKENS,
-  CHERRY_PRODUCT_SURFACE_PAIRS,
-  CHERRY_PRODUCT_VARIABLE_TOKENS,
   COMPATIBILITY_COLOR_TOKENS,
   COMPATIBILITY_SEMANTIC_COLOR_TOKENS,
   COMPATIBILITY_STATUS_COLOR_TOKENS,
+  HUATUO_PRODUCT_COLOR_TOKENS,
+  HUATUO_PRODUCT_SURFACE_PAIRS,
+  HUATUO_PRODUCT_VARIABLE_TOKENS,
   RUNTIME_THEME_INPUT_TOKENS,
   SHADCN_COLOR_TOKENS,
   SHADCN_SURFACE_PAIRS,
@@ -226,7 +226,7 @@ function assertLayerDependencies(sources: ThemeContractSources): void {
   const runtimeVariablePrefix = '--cs-theme-'
   const runtimeVariables = new Set(RUNTIME_THEME_INPUT_TOKENS.map((token) => `--cs-theme-${token}`))
   const officialVariables = new Set(SHADCN_VARIABLE_TOKENS.map((token) => `--${token}`))
-  const productVariables = new Set(CHERRY_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`))
+  const productVariables = new Set(HUATUO_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`))
   const foundationEntries: SourceEntry[] = [
     ['tokens/colors/primitive.css', sources.primitiveColors],
     ['tokens/colors/providers.css', sources.providerColors],
@@ -295,7 +295,7 @@ function assertCatalogCoverage(sources: ThemeContractSources): void {
   const requiredNames = [
     ...RUNTIME_THEME_INPUT_TOKENS.map((token) => `--cs-theme-${token}`),
     ...SHADCN_VARIABLE_TOKENS.map((token) => `--${token}`),
-    ...CHERRY_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`)
+    ...HUATUO_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`)
   ]
   const missing = requiredNames.filter((name) => !sources.variableCatalog.includes(`\`${name}\``))
 
@@ -307,25 +307,25 @@ function assertCatalogCoverage(sources: ThemeContractSources): void {
 export function validateThemeContractSources(sources: ThemeContractSources): void {
   assertUnique('runtime theme inputs', RUNTIME_THEME_INPUT_TOKENS)
   assertUnique('Shadcn variables', SHADCN_VARIABLE_TOKENS)
-  assertUnique('product variables', CHERRY_PRODUCT_VARIABLE_TOKENS)
-  assertUnique('Tailwind product colors', CHERRY_PRODUCT_COLOR_TOKENS)
+  assertUnique('product variables', HUATUO_PRODUCT_VARIABLE_TOKENS)
+  assertUnique('Tailwind product colors', HUATUO_PRODUCT_COLOR_TOKENS)
   assertUnique('compatibility semantic colors', COMPATIBILITY_SEMANTIC_COLOR_TOKENS)
   assertUnique('compatibility status colors', COMPATIBILITY_STATUS_COLOR_TOKENS)
   assertUnique('compatibility colors', COMPATIBILITY_COLOR_TOKENS)
 
-  const productVariables = new Set<string>(CHERRY_PRODUCT_VARIABLE_TOKENS)
+  const productVariables = new Set<string>(HUATUO_PRODUCT_VARIABLE_TOKENS)
   const shadcnVariables = new Set<string>(SHADCN_VARIABLE_TOKENS)
   const shadcnVariableNames = new Set<string>(SHADCN_VARIABLE_TOKENS.map((token) => `--${token}`))
-  const productVariableNames = new Set<string>(CHERRY_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`))
-  const canonicalColors = new Set<string>([...SHADCN_COLOR_TOKENS, ...CHERRY_PRODUCT_COLOR_TOKENS])
+  const productVariableNames = new Set<string>(HUATUO_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`))
+  const canonicalColors = new Set<string>([...SHADCN_COLOR_TOKENS, ...HUATUO_PRODUCT_COLOR_TOKENS])
 
-  for (const token of CHERRY_PRODUCT_VARIABLE_TOKENS) {
+  for (const token of HUATUO_PRODUCT_VARIABLE_TOKENS) {
     if (shadcnVariables.has(token)) {
       throw new Error(`[theme-contract] product variable ${token} overlaps the official Shadcn contract`)
     }
   }
 
-  for (const token of CHERRY_PRODUCT_COLOR_TOKENS) {
+  for (const token of HUATUO_PRODUCT_COLOR_TOKENS) {
     if (!productVariables.has(token)) {
       throw new Error(`[theme-contract] Tailwind product color ${token} is missing from the product contract`)
     }
@@ -360,12 +360,12 @@ export function validateThemeContractSources(sources: ThemeContractSources): voi
   assertRequiredDeclarations(
     'product contract in product.css',
     productRootDeclarations,
-    CHERRY_PRODUCT_VARIABLE_TOKENS,
+    HUATUO_PRODUCT_VARIABLE_TOKENS,
     '--'
   )
 
   assertSurfacePairs('Shadcn contract', SHADCN_SURFACE_PAIRS, shadcnVariables)
-  assertSurfacePairs('product contract', CHERRY_PRODUCT_SURFACE_PAIRS, productVariables)
+  assertSurfacePairs('product contract', HUATUO_PRODUCT_SURFACE_PAIRS, productVariables)
 
   assertExactImports('tokens.css', sources.tokensEntry, ['./tokens/index.css'])
   assertExactImports('tokens/index.css', sources.tokensIndex, [
@@ -403,7 +403,7 @@ export function validateThemeContractSources(sources: ThemeContractSources): voi
 
   assertRequiredDeclarations('runtime theme inputs', rootDeclarations, RUNTIME_THEME_INPUT_TOKENS, '--cs-theme-')
   assertRequiredDeclarations('Shadcn contract', rootDeclarations, SHADCN_VARIABLE_TOKENS, '--')
-  assertRequiredDeclarations('product contract', rootDeclarations, CHERRY_PRODUCT_VARIABLE_TOKENS, '--')
+  assertRequiredDeclarations('product contract', rootDeclarations, HUATUO_PRODUCT_VARIABLE_TOKENS, '--')
 
   const productDeclarationNames = new Set(
     extractDeclarations(sources.product, 'product.css').map((declaration) => declaration.name)

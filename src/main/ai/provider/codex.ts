@@ -44,6 +44,6 @@ export function buildCodexRequestHeaders(base: HeadersInit | undefined, creds: C
   headers.set('Authorization', `Bearer ${creds.accessToken}`)
   if (creds.accountId) headers.set('chatgpt-account-id', creds.accountId)
   headers.set('OpenAI-Beta', 'responses=experimental')
-  headers.set('originator', 'cherry-studio')
+  headers.set('originator', 'huatuo-studio')
   return headers
 }

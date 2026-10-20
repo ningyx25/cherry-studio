@@ -5,7 +5,7 @@ import {
 } from '@renderer/components/chat/messages/tools/shared/agentToolTypes'
 import { APPROVAL_REQUESTED } from '@renderer/components/chat/messages/tools/toolResponse'
 import type { MessageToolApprovalMatch } from '@renderer/components/chat/messages/types'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { UIMessagePart } from 'ai'
 import { isToolUIPart } from 'ai'
 
@@ -17,7 +17,7 @@ export type AskUserQuestionComposerRequest = {
   match: MessageToolApprovalMatch
 }
 
-type AskUserQuestionToolPart = CherryMessagePart & {
+type AskUserQuestionToolPart = HuaTuoMessagePart & {
   type: string
   toolName?: string
   toolCallId: string
@@ -33,7 +33,7 @@ function getToolName(part: AskUserQuestionToolPart): string {
 }
 
 export function findLatestPendingAskUserQuestionRequest(
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 ): AskUserQuestionComposerRequest | null {
   let latest: AskUserQuestionComposerRequest | null = null
 

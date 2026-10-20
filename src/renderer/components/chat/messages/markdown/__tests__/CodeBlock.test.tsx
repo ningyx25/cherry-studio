@@ -206,7 +206,7 @@ describe('CodeBlock', () => {
     })
 
     it.each([
-      '/Users/suyao/Library/Application Support/CherryStudioDev/.claude/skills/guizang-ppt-skill/',
+      '/Users/suyao/Library/Application Support/HuaTuoStudioDev/.claude/skills/guizang-ppt-skill/',
       './src/index.ts',
       '../packages/ui/src/'
     ])('should detect %s as a file path', (path) => {
@@ -215,7 +215,7 @@ describe('CodeBlock', () => {
     })
 
     it('should render ClickableFilePath for text code fences containing a single path', () => {
-      const path = '/Users/suyao/Library/Application Support/CherryStudioDev/.claude/skills/guizang-ppt-skill/'
+      const path = '/Users/suyao/Library/Application Support/HuaTuoStudioDev/.claude/skills/guizang-ppt-skill/'
       render(<CodeBlock {...defaultProps} className="language-text" children={path} />)
 
       expect(screen.getByTestId('clickable-file-path')).toBeInTheDocument()

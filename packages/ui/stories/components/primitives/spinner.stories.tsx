@@ -1,4 +1,4 @@
-import { Button, Spinner } from '@cherrystudio/ui'
+import { Button, Spinner } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

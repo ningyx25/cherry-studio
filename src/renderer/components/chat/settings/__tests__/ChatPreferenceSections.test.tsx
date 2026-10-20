@@ -61,11 +61,11 @@ vi.mock('@renderer/hooks/useCodeStyle', () => ({
   useCodeStyle: () => ({ themeNames: ['auto', 'github'] })
 }))
 
-vi.mock('@cherrystudio/ui/lib/utils', () => ({
+vi.mock('@huatuostudio/ui/lib/utils', () => ({
   cn: (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' ')
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   CustomTag: ({ children }: PropsWithChildren) => <span>{children}</span>,
   Divider: ({ className }: { className?: string }) => <hr className={className} />,
   Flex: ({ children, className }: PropsWithChildren<{ className?: string }>) => (

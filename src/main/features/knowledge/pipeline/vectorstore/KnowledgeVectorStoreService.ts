@@ -27,7 +27,7 @@ function assertVectorStoreReadyBase(base: KnowledgeBase): asserts base is Comple
 
 /**
  * Owns the per-base {@link KnowledgeIndexStore} instances (each backed by that
- * base's `.cherry/index.sqlite`), caching one per base id and closing them on
+ * base's `.huatuo/index.sqlite`), caching one per base id and closing them on
  * shutdown. The cache key is the base id alone: store-shaping config (embedding
  * model / dimensions) is immutable for an existing base — to change it, callers
  * migrate into a new base rather than mutating in place.

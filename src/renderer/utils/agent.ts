@@ -22,7 +22,7 @@ export function getAgentDescriptionForDisplay(
   // Builtin contract: an empty DB description means the bundle/UI owns the localized
   // default. A non-empty user edit is user-owned and is never overwritten.
   if (agent.configuration?.builtin_role === 'assistant') {
-    return t('agent.builtin.cherry_assistant.description')
+    return t('agent.builtin.huatuo_assistant.description')
   }
   return ''
 }

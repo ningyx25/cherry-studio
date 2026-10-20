@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { AiStreamRequest } from '../../types/requests'
 import type {
   AiStreamManagerConfig,
-  CherryUIMessage,
+  HuaTuoUIMessage,
   StreamDoneResult,
   StreamErrorResult,
   StreamListener,
@@ -1930,7 +1930,7 @@ describe('AiStreamManager', () => {
             input: { q: 'x' }
           }
         ]
-      } as unknown as CherryUIMessage
+      } as unknown as HuaTuoUIMessage
 
       const listener = new FakeListener('l:a')
       const request = { ...req('a'), messages: [resumedAssistant] }

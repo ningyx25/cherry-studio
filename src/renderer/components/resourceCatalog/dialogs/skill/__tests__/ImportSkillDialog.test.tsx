@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -21,8 +21,8 @@ const fileMetadata = {
 }
 const directoryMetadata = { kind: 'directory' as const, size: 0, createdAt: 0, modifiedAt: 0 }
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
   return actual
 })
 
@@ -143,7 +143,7 @@ describe('ImportSkillDialog', () => {
   it('shows the localized install prefix with the original ZIP error', async () => {
     const user = userEvent.setup()
     const onOpenChange = vi.fn()
-    const originalError = 'No skill directory found in /tmp/CherryStudio/skill-install/zip-install-123'
+    const originalError = 'No skill directory found in /tmp/HuaTuoStudio/skill-install/zip-install-123'
     installFromZip.mockRejectedValue(new Error(originalError))
 
     render(<ImportSkillDialog open onOpenChange={onOpenChange} />)

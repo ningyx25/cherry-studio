@@ -1,4 +1,4 @@
-import { Input, PageSidePanelItem, Switch, Tooltip } from '@cherrystudio/ui'
+import { Input, PageSidePanelItem, Switch, Tooltip } from '@huatuostudio/ui'
 import { useProvider } from '@renderer/hooks/useProvider'
 import { toast } from '@renderer/services/toast'
 import { cn } from '@renderer/utils/style'

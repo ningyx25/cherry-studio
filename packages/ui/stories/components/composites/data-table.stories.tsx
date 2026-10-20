@@ -1,5 +1,5 @@
-import type { ColumnDef } from '@cherrystudio/ui'
-import { Badge, Button, DataTable, Input } from '@cherrystudio/ui'
+import type { ColumnDef } from '@huatuostudio/ui'
+import { Badge, Button, DataTable, Input } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Pencil, Trash2 } from 'lucide-react'
 import type { Key } from 'react'

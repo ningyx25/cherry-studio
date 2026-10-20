@@ -4,9 +4,9 @@ import { describe, expect, it } from 'vitest'
 
 import {
   buildThemeContractCss,
-  CHERRY_PRODUCT_COLOR_TOKENS,
   COMPATIBILITY_SEMANTIC_COLOR_TOKENS,
   COMPATIBILITY_STATUS_COLOR_TOKENS,
+  HUATUO_PRODUCT_COLOR_TOKENS,
   loadThemeContractInputs,
   RUNTIME_THEME_INPUT_TOKENS,
   SHADCN_COLOR_TOKENS
@@ -98,7 +98,7 @@ describe('buildThemeContractCss', () => {
       expect(css).toContain(`--color-${token}: var(--${token});`)
     }
 
-    for (const token of CHERRY_PRODUCT_COLOR_TOKENS) {
+    for (const token of HUATUO_PRODUCT_COLOR_TOKENS) {
       expect(css).toContain(`--color-${token}: var(--${token});`)
     }
 

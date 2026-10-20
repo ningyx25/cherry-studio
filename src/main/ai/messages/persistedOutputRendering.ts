@@ -19,8 +19,8 @@
  */
 
 import { application } from '@application'
-import { ContextPrompts } from '@cherrystudio/ai-core'
 import { fileEntryService } from '@data/services/FileEntryService'
+import { ContextPrompts } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import { isToolOutputBlobEntry, spliceTextAtKey } from '@main/ai/contextBuild/toolOutputStore'
 import {

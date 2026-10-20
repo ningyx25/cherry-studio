@@ -72,7 +72,7 @@ describe('canWrite', () => {
   let tmp: string
 
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-path-test-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-path-test-'))
   })
 
   afterEach(async () => {

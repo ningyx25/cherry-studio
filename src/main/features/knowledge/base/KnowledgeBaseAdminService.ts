@@ -45,7 +45,7 @@ export class KnowledgeBaseAdminService {
 
   /**
    * Undo a half-created base after its index store failed to open: remove the
-   * orphaned `.cherry/` directory `getIndexStore` left on disk and drop the DB
+   * orphaned `.huatuo/` directory `getIndexStore` left on disk and drop the DB
    * row. Both steps are best-effort and logged — a cleanup failure must never
    * mask the original open error the caller needs to see.
    */

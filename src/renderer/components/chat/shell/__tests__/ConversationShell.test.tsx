@@ -26,7 +26,7 @@ vi.mock('@renderer/components/QuickPanel', () => ({
   QuickPanelProvider: ({ children }: { children: ReactNode }) => <div data-testid="quick-panel">{children}</div>
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => ({
+vi.mock('@huatuostudio/ui', async (importOriginal) => ({
   ...(await importOriginal()),
   Button: ({ children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { children: ReactNode }) => (
     <button type="button" {...props}>

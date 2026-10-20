@@ -34,7 +34,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react')
   const MenuOpenContext = React.createContext(null)
 
@@ -385,9 +385,9 @@ describe('CommandContextMenu', () => {
     })
   })
 
-  it('renders and selects extra items in cherry mode', async () => {
+  it('renders and selects extra items in huatuo mode', async () => {
     const onSelect = vi.fn()
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     renderMenu({ extraItems: [{ type: 'item', id: 'tool:web-search', label: 'Web Search', onSelect }] })
 
@@ -397,7 +397,7 @@ describe('CommandContextMenu', () => {
     await waitFor(() => expect(onSelect).toHaveBeenCalledOnce())
   })
 
-  it('runs selected cherry menu actions after closing even if the menu unmounts', () => {
+  it('runs selected huatuo menu actions after closing even if the menu unmounts', () => {
     const onOpenChange = vi.fn()
     const onSelect = vi.fn()
     const deferredActions: FrameRequestCallback[] = []
@@ -405,7 +405,7 @@ describe('CommandContextMenu', () => {
       deferredActions.push(callback)
       return deferredActions.length
     })
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     const { unmount } = renderMenu({
       onOpenChange,
@@ -428,10 +428,10 @@ describe('CommandContextMenu', () => {
     requestFrameSpy.mockRestore()
   })
 
-  it('stops cherry context-menu events after an inner menu handles them', () => {
+  it('stops huatuo context-menu events after an inner menu handles them', () => {
     const outerOpenChange = vi.fn()
     const innerOpenChange = vi.fn()
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     render(
       <CommandContextKeyProvider>
@@ -459,10 +459,10 @@ describe('CommandContextMenu', () => {
     expect(outerOpenChange).not.toHaveBeenCalled()
   })
 
-  it('stops pointer and mouse down events from bubbling out of cherry context menu content', () => {
+  it('stops pointer and mouse down events from bubbling out of huatuo context menu content', () => {
     const onPointerDown = vi.fn()
     const onMouseDown = vi.fn()
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     render(
       <div onPointerDown={onPointerDown} onMouseDown={onMouseDown}>
@@ -487,8 +487,8 @@ describe('CommandContextMenu', () => {
     expect(onMouseDown).not.toHaveBeenCalled()
   })
 
-  it('renders extra item shortcutCommand in cherry mode', () => {
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+  it('renders extra item shortcutCommand in huatuo mode', () => {
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     renderMenu({
       extraItems: [
@@ -559,8 +559,8 @@ describe('CommandContextMenu', () => {
     expect(firstSelect).not.toHaveBeenCalled()
   })
 
-  it('keeps lazy cherry menus mounted without rendering empty content when static items are empty', async () => {
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+  it('keeps lazy huatuo menus mounted without rendering empty content when static items are empty', async () => {
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
     const getExtraItems = vi.fn().mockResolvedValue([])
 
     renderMenu({ location: 'chat.message.context', getExtraItems })
@@ -573,8 +573,8 @@ describe('CommandContextMenu', () => {
     expect(screen.queryByTestId('menu-content')).not.toBeInTheDocument()
   })
 
-  it('renders cherry menu content when a lazy resolver returns extra items', async () => {
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+  it('renders huatuo menu content when a lazy resolver returns extra items', async () => {
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     renderMenu({
       location: 'chat.message.context',
@@ -586,9 +586,9 @@ describe('CommandContextMenu', () => {
     expect(screen.getByTestId('menu-content')).toBeInTheDocument()
   })
 
-  it('renders async extra items in cherry mode', async () => {
+  it('renders async extra items in huatuo mode', async () => {
     const onSelect = vi.fn()
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     renderMenu({
       location: 'webcontents.context',
@@ -604,11 +604,11 @@ describe('CommandContextMenu', () => {
     await waitFor(() => expect(onSelect).toHaveBeenCalledOnce())
   })
 
-  it('does not remount trigger children after selecting a cherry extra item', async () => {
+  it('does not remount trigger children after selecting a huatuo extra item', async () => {
     const onSelect = vi.fn()
     const mountCount = vi.fn()
     const unmountCount = vi.fn()
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     function TriggerContent() {
       useEffect(() => {
@@ -641,8 +641,8 @@ describe('CommandContextMenu', () => {
     expect(mountCount).toHaveBeenCalledOnce()
   })
 
-  it('uses extra items as pending lazy cherry items by default', async () => {
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+  it('uses extra items as pending lazy huatuo items by default', async () => {
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
     let resolveItems: (items: readonly CommandContextMenuExtraItem[]) => void = () => {}
 
     renderMenu({
@@ -665,7 +665,7 @@ describe('CommandContextMenu', () => {
   })
 
   it('falls back to empty extra items when async resolver fails', async () => {
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
 
     renderMenu({
       location: 'webcontents.context',
@@ -707,8 +707,8 @@ describe('CommandContextMenu', () => {
     })
   })
 
-  it('runs deferred cherry popup actions after the close lifecycle finishes', () => {
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+  it('runs deferred huatuo popup actions after the close lifecycle finishes', () => {
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
     const onOpenChange = vi.fn()
     const onSelect = vi.fn()
     let frameCallback: FrameRequestCallback | undefined
@@ -747,8 +747,8 @@ describe('CommandContextMenu', () => {
     requestAnimationFrameSpy.mockRestore()
   })
 
-  it('keeps disabled popup extra item descriptions in a tooltip in cherry mode', () => {
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+  it('keeps disabled popup extra item descriptions in a tooltip in huatuo mode', () => {
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
     const onSelect = vi.fn()
 
     render(
@@ -785,8 +785,8 @@ describe('CommandContextMenu', () => {
     expect(onSelect).not.toHaveBeenCalled()
   })
 
-  it('triggers onOpenChange(true) when right-clicked in cherry mode, and onOpenChange(false) when selecting item', async () => {
-    preferenceValues['menu.presentation_mode'] = 'cherry'
+  it('triggers onOpenChange(true) when right-clicked in huatuo mode, and onOpenChange(false) when selecting item', async () => {
+    preferenceValues['menu.presentation_mode'] = 'huatuo'
     const onOpenChange = vi.fn()
     const onSelect = vi.fn()
 

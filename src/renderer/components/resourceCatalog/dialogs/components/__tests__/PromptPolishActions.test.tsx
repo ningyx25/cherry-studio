@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Profiler, startTransition, Suspense, useState } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -9,8 +9,8 @@ const mocks = vi.hoisted(() => ({
   toastError: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  return importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  return importOriginal<typeof HuaTuoStudioUi>()
 })
 
 vi.mock('@logger', () => ({

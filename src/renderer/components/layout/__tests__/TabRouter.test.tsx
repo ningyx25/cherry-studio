@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
 
-// Import the real component from its source path: the `@cherrystudio/ui` barrel
+// Import the real component from its source path: the `@huatuostudio/ui` barrel
 // is globally mocked for renderer tests, but this deeper specifier is not.
-import { PageSidePanel } from '@cherrystudio/ui/components/composites/page-side-panel'
-import { Combobox } from '@cherrystudio/ui/components/primitives/combobox'
-import { Dialog, DialogContent } from '@cherrystudio/ui/components/primitives/dialog'
+import { PageSidePanel } from '@huatuostudio/ui/components/composites/page-side-panel'
+import { Combobox } from '@huatuostudio/ui/components/primitives/combobox'
+import { Dialog, DialogContent } from '@huatuostudio/ui/components/primitives/dialog'
 import type { Tab } from '@shared/data/cache/cacheValueTypes'
 import { createMemoryHistory, createRouter } from '@tanstack/react-router'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -25,11 +25,11 @@ const routerMocks = vi.hoisted(() => ({
 // TabRouter's provider sets. PageSidePanel pulls the hook from the deep path while TabRouter
 // pulls the provider from the barrel; mock the deep path to the real module so every importer
 // resolves to one context instance, then re-export it from the barrel (otherwise the global
-// @cherrystudio/ui stub shadows it).
-vi.mock('@cherrystudio/ui/components/primitives/portal-container', async (importOriginal) => importOriginal())
-vi.mock('@cherrystudio/ui', async () => {
+// @huatuostudio/ui stub shadows it).
+vi.mock('@huatuostudio/ui/components/primitives/portal-container', async (importOriginal) => importOriginal())
+vi.mock('@huatuostudio/ui', async () => {
   const { DialogPortalContainerProvider, PortalContainerProvider, usePortalContainer } = await import(
-    '@cherrystudio/ui/components/primitives/portal-container'
+    '@huatuostudio/ui/components/primitives/portal-container'
   )
   return { DialogPortalContainerProvider, PortalContainerProvider, usePortalContainer }
 })
@@ -40,7 +40,7 @@ vi.mock('@renderer/routeTree.gen', () => ({ routeTree: {} }))
 // carries its url so the injected page can tell tabs apart, and the provider exposes the
 // resolved portal container for the scoping assertions.
 vi.mock('@tanstack/react-router', async () => {
-  const { usePortalContainer } = await import('@cherrystudio/ui')
+  const { usePortalContainer } = await import('@huatuostudio/ui')
 
   return {
     createMemoryHistory: vi.fn((options: { initialEntries: string[] }) => options),

@@ -29,7 +29,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children }: { children: ReactNode }) => <button type="button">{children}</button>,
   Kbd: ({ children, className, ...props }: ComponentProps<'kbd'>) => (
     <kbd data-slot="kbd" className={className} {...props}>

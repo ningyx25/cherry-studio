@@ -10,7 +10,7 @@ import type {
   ReasoningWireMode,
   ReasoningWireProfile,
   ReasoningWireTarget
-} from '@cherrystudio/provider-registry'
+} from '@huatuostudio/provider-registry'
 import { DEFAULT_MAX_TOKENS } from '@main/ai/constants'
 import { nearestThinkingOption, resolveBudgetTokens } from '@shared/ai/reasoning'
 import type { Model } from '@shared/data/types/model'

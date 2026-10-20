@@ -3,19 +3,19 @@ import { ContentBlockSchema } from '@modelcontextprotocol/sdk/types.js'
 import type { McpServer } from '@shared/data/types/mcpServer'
 
 export const BuiltinMcpServerNames = {
-  flomo: '@cherry/flomo',
-  mcpAutoInstall: '@cherry/mcp-auto-install',
-  memory: '@cherry/memory',
-  sequentialThinking: '@cherry/sequentialthinking',
-  braveSearch: '@cherry/brave-search',
-  fetch: '@cherry/fetch',
-  filesystem: '@cherry/filesystem',
-  difyKnowledge: '@cherry/dify-knowledge',
-  python: '@cherry/python',
-  didiMcp: '@cherry/didi-mcp',
-  browser: '@cherry/browser',
-  nowledgeMem: '@cherry/nowledge-mem',
-  hub: '@cherry/hub'
+  flomo: '@huatuo/flomo',
+  mcpAutoInstall: '@huatuo/mcp-auto-install',
+  memory: '@huatuo/memory',
+  sequentialThinking: '@huatuo/sequentialthinking',
+  braveSearch: '@huatuo/brave-search',
+  fetch: '@huatuo/fetch',
+  filesystem: '@huatuo/filesystem',
+  difyKnowledge: '@huatuo/dify-knowledge',
+  python: '@huatuo/python',
+  didiMcp: '@huatuo/didi-mcp',
+  browser: '@huatuo/browser',
+  nowledgeMem: '@huatuo/nowledge-mem',
+  hub: '@huatuo/hub'
 } as const
 
 export type BuiltinMcpServerName = (typeof BuiltinMcpServerNames)[keyof typeof BuiltinMcpServerNames]

@@ -3,7 +3,7 @@
  * plugin chain. The role is "build / shape the context the model sees on
  * each call".
  *
- * Layers, all gated on Cherry-owned context and `scope.contextSettings.enabled`:
+ * Layers, all gated on HuaTuo-owned context and `scope.contextSettings.enabled`:
  * - truncate: large tool results → durable FileManager blobs (anchored
  *   requests) replaced with a <persisted-output> marker (read back via
  *   fs_read), or plain inline head/tail truncation when the request has no
@@ -14,7 +14,7 @@
  * - onBeforeCompress: no-LLM sliding-window fallback (drop oldest) — the only
  *   remaining budget guard; active when compress is enabled but no compression
  *   model is configured. In-flight LLM compress was removed in P2-B stage 2:
- *   durable cherry-driven compaction (turn-start) + the mid-loop in-loop
+ *   durable huatuo-driven compaction (turn-start) + the mid-loop in-loop
  *   compaction (prepareStep) hook now own LLM summarization; running an
  *   in-flight compress too would double-compress.
  * - logger: routes middleware degradation warnings to loggerService.
@@ -22,9 +22,9 @@
  * Ordering invariant: registered before anthropicCacheFeature so truncation
  * happens before cache markers are placed (see internalFeatures.ts).
  */
-import type { ContextMiddlewareOptions, TruncateOptions, VFSStorageAdapter } from '@cherrystudio/ai-core'
-import { createContextMiddleware, definePlugin, groupIntoTurns } from '@cherrystudio/ai-core'
 import { messageService } from '@data/services/MessageService'
+import type { ContextMiddlewareOptions, TruncateOptions, VFSStorageAdapter } from '@huatuostudio/ai-core'
+import { createContextMiddleware, definePlugin, groupIntoTurns } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import {
   APPROX_CHARS_PER_TOKEN,
@@ -57,7 +57,7 @@ const MIN_MESSAGES_KEPT = 2
  * default is ~3% of a 1M window but several times a 16k one, so on small
  * windows it never fired and a single tool result could swamp the request.
  *
- * `contextWindow` is optional on `Model` (custom / v1-imported / CherryAI rows
+ * `contextWindow` is optional on `Model` (custom / v1-imported / HuaTuoAI rows
  * can omit it). With no window known there is nothing to take a share of, so
  * the user's absolute character setting stands alone — never a computed `NaN`,
  * which would make `text.length <= threshold` false for EVERY result and
@@ -113,7 +113,7 @@ export function buildContextOptions(scope: RequestScope): ContextMiddlewareOptio
     logger: { warn: (message, ...args) => logger.warn(message, { args }) }
   }
 
-  // In-flight LLM compress was removed in P2-B stage 2: durable cherry-driven compaction
+  // In-flight LLM compress was removed in P2-B stage 2: durable huatuo-driven compaction
   // (turn-start) + the mid-loop in-loop compaction (prepareStep) hook now own LLM summarization,
   // and running an in-flight compress too would double-compress. The no-LLM sliding-window
   // remains as the only guard when compression is enabled but no model is configured

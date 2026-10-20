@@ -1,18 +1,18 @@
 {
-  "name": "@cherrystudio/ai-sdk-provider",
+  "name": "@huatuostudio/ai-sdk-provider",
   "version": "0.1.6",
-  "description": "HuaTuo Studio AI SDK provider bundle with CherryIN routing.",
-  "keywords": ["ai-sdk", "provider", "cherryin", "vercel-ai-sdk", "cherry-studio"],
+  "description": "HuaTuo Studio AI SDK provider bundle with HuaTuoIN routing.",
+  "keywords": ["ai-sdk", "provider", "huatuoin", "vercel-ai-sdk", "huatuo-studio"],
   "author": "HuaTuo Studio",
   "license": "MIT",
-  "homepage": "https://github.com/ningyx25/cherry-studio",
+  "homepage": "https://github.com/huatuostudio/huatuo-studio",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ningyx25/cherry-studio.git",
+    "url": "git+https://github.com/huatuostudio/huatuo-studio.git",
     "directory": "packages/ai-sdk-provider"
   },
   "bugs": {
-    "url": "https://github.com/ningyx25/cherry-studio/issues"
+    "url": "https://github.com/huatuostudio/huatuo-studio/issues"
   },
   "type": "module",
   "main": "dist/index.cjs",

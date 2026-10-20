@@ -29,7 +29,7 @@ const SEARCH_TOOL: Tool = {
 const INSTALL_TOOL: Tool = {
   name: 'install_skill',
   description:
-    "Install ONE marketplace skill into HuaTuo Studio's managed library and enable it for the current agent. Pass the exact `install_source` string from a search_skills result — do NOT construct it yourself, and do NOT run `npx skills add`, `git clone`, or any shell command. Cherry clones the repo, installs just that single skill, and registers it. Call this only when the user intends to install the skill; the active Claude permission mode controls whether execution prompts or runs directly.",
+    "Install ONE marketplace skill into HuaTuo Studio's managed library and enable it for the current agent. Pass the exact `install_source` string from a search_skills result — do NOT construct it yourself, and do NOT run `npx skills add`, `git clone`, or any shell command. HuaTuo clones the repo, installs just that single skill, and registers it. Call this only when the user intends to install the skill; the active Claude permission mode controls whether execution prompts or runs directly.",
   inputSchema: {
     type: 'object',
     properties: {
@@ -46,11 +46,11 @@ const INSTALL_TOOL: Tool = {
  * MCP server exposing skill discovery + install to any agent.
  *
  * Only two deterministic actions: `search_skills` (read-only marketplace search) and
- * `install_skill` (clone-and-install exactly one skill into Cherry's managed library via
+ * `install_skill` (clone-and-install exactly one skill into HuaTuo's managed library via
  * `SkillService.install`). Search reuses the shared `normalizeClaudePlugins` so the install source
  * is built from the real repo directory, never the display name — the model passes that opaque
  * string straight back to install_skill, so it can't pick the wrong skill. Authoring is intentionally
- * NOT here — the skill-creator skill writes files into `$CHERRY_STUDIO_SKILLS_DIR` and
+ * NOT here — the skill-creator skill writes files into `$HUATUO_STUDIO_SKILLS_DIR` and
  * `SkillService.reconcileSkills` catalogs them. Install goes through the main process so a weak model
  * only needs one tool call, not a correct multi-step shell sequence.
  */

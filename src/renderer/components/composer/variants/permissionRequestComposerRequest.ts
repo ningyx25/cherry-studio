@@ -5,7 +5,7 @@ import {
   type ToolResponseLike
 } from '@renderer/components/chat/messages/tools/toolResponse'
 import type { MessageToolApprovalMatch } from '@renderer/components/chat/messages/types'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { UIMessagePart } from 'ai'
 import { isToolUIPart } from 'ai'
 
@@ -18,7 +18,7 @@ export type PermissionRequestComposerRequest = {
   match: MessageToolApprovalMatch
 }
 
-type PermissionToolPart = CherryMessagePart & {
+type PermissionToolPart = HuaTuoMessagePart & {
   type: string
   toolName?: string
   toolCallId: string
@@ -54,7 +54,7 @@ function getPermissionTitle(part: PermissionToolPart, fallback: string): string 
 }
 
 export function findLatestPendingPermissionRequest(
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 ): PermissionRequestComposerRequest | null {
   let latest: PermissionRequestComposerRequest | null = null
 

@@ -1,4 +1,4 @@
-import type { ImagePreviewTransformControls } from '@cherrystudio/ui'
+import type { ImagePreviewTransformControls } from '@huatuostudio/ui'
 import FlipHorizontal from 'lucide-react/dist/esm/icons/flip-horizontal'
 import FlipVertical from 'lucide-react/dist/esm/icons/flip-vertical'
 import RefreshCcw from 'lucide-react/dist/esm/icons/refresh-ccw'

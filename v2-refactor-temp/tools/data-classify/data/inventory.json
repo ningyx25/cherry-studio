@@ -148,7 +148,7 @@
       "settings": {
         "file": "src/renderer/store/llm.ts",
         "type": "unknown",
-        "defaultValue": "{ ollama: { keepAliveTime: 0 }, lmstudio: { keepAliveTime: 0 }, gpustack: { keepAliveTime: 0 }, vertexai: { serviceAccount: { privateKey: '', clientEmail: '' }, projectId: '', location: '' }, awsBedrock: { authType: 'iam', accessKeyId: '', secretAccessKey: '', apiKey: '', region: '' }, cherryIn: { accessToken: '', refreshToken: '' } }"
+        "defaultValue": "{ ollama: { keepAliveTime: 0 }, lmstudio: { keepAliveTime: 0 }, gpustack: { keepAliveTime: 0 }, vertexai: { serviceAccount: { privateKey: '', clientEmail: '' }, projectId: '', location: '' }, awsBedrock: { authType: 'iam', accessKeyId: '', secretAccessKey: '', apiKey: '', region: '' }, huatuoIn: { accessToken: '', refreshToken: '' } }"
       }
     },
     "mcp": {
@@ -235,7 +235,7 @@
       "nutstorePath": {
         "file": "src/renderer/store/nutstore.ts",
         "type": "string",
-        "defaultValue": "/cherry-studio"
+        "defaultValue": "/huatuo-studio"
       },
       "nutstoreAutoSync": {
         "file": "src/renderer/store/nutstore.ts",
@@ -745,7 +745,7 @@
       "webdavPath": {
         "file": "src/renderer/store/settings.ts",
         "type": "string",
-        "defaultValue": "/cherry-studio"
+        "defaultValue": "/huatuo-studio"
       },
       "webdavAutoSync": {
         "file": "src/renderer/store/settings.ts",
@@ -1165,7 +1165,7 @@
       "defaultPaintingProvider": {
         "file": "src/renderer/store/settings.ts",
         "type": "unknown",
-        "defaultValue": "cherryin"
+        "defaultValue": "huatuoin"
       },
       "s3": {
         "file": "src/renderer/store/settings.ts",
@@ -1571,7 +1571,7 @@
       "type": "string",
       "defaultValue": null
     },
-    "persist:cherry-studio": {
+    "persist:huatuo-studio": {
       "file": "src/renderer/services/BackupService.ts",
       "type": "string",
       "defaultValue": null

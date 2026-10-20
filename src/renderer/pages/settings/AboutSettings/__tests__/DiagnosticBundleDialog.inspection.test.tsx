@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 
-import { DIALOG_CLOSE_DURATION_MS } from '@cherrystudio/ui/utils'
+import { DIALOG_CLOSE_DURATION_MS } from '@huatuostudio/ui/utils'
 import type { OutputFor } from '@shared/ipc/types'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'

@@ -1,4 +1,4 @@
-import { CURRENCY, objectValues } from '@cherrystudio/provider-registry'
+import { CURRENCY, objectValues } from '@huatuostudio/provider-registry'
 import type { CursorPaginationResponse } from '@shared/data/api/types'
 import { type ReasoningEffortOption, ReasoningEffortOptionSchema } from '@shared/types/aiSdk'
 import type {
@@ -15,7 +15,7 @@ import type {
 } from 'ai'
 import * as z from 'zod'
 
-import type { CherryDataPartTypes } from './uiParts'
+import type { HuaTuoDataPartTypes } from './uiParts'
 
 /**
  * Canonical schema for message IDs. Accepts any UUID version — v1 legacy IDs
@@ -132,8 +132,8 @@ export type MessageRuntimeStatsInput = Readonly<Pick<MessageStats, 'runtimeTimin
 // Message Data
 // ============================================================================
 
-/** Cherry-specific UIMessagePart with our custom DataUIPart types baked in. */
-export type CherryMessagePart = UIMessagePart<CherryDataPartTypes, UITools>
+/** HuaTuo-specific UIMessagePart with our custom DataUIPart types baked in. */
+export type HuaTuoMessagePart = UIMessagePart<HuaTuoDataPartTypes, UITools>
 
 /** Request controls frozen when an assistant turn is created. */
 export interface AssistantTurnOptions {
@@ -146,19 +146,19 @@ export interface AssistantTurnOptions {
  * message table. Messages are stored in AI SDK `UIMessage.parts` format.
  *
  * Accepts the generic `UIMessagePart[]` for writes — the DB stores whatever
- * parts the AI SDK produces. Readers can narrow to `CherryMessagePart[]` when
- * they need Cherry-specific data part type safety.
+ * parts the AI SDK produces. Readers can narrow to `HuaTuoMessagePart[]` when
+ * they need HuaTuo-specific data part type safety.
  */
 export interface MessageData {
-  parts?: CherryMessagePart[]
+  parts?: HuaTuoMessagePart[]
   /** Main-authoritative request controls for resuming this assistant turn. */
   turnOptions?: AssistantTurnOptions
 }
 
-// ── Cherry-specific UI message types ────────────────────────────────
+// ── HuaTuo-specific UI message types ────────────────────────────────
 
 /**
- * Metadata carried on a streamed `CherryUIMessage`.
+ * Metadata carried on a streamed `HuaTuoUIMessage`.
  *
  * Live cumulative token usage rides in the nested `stats` snapshot — there are
  * deliberately no flat token mirrors. This stream metadata is not the
@@ -172,7 +172,7 @@ export interface MessageData {
  * would overwrite present counters with the latest step while retaining
  * omitted buckets from earlier steps, producing a mixed and invalid total.
  */
-export interface CherryUIMessageMetadata {
+export interface HuaTuoUIMessageMetadata {
   // ── DB-backed tree/ownership (populated by `toUIMessage` from the branch
   //    response, or seeded locally when pushing a placeholder before the
   //    first refresh completes). Keeping these on the message itself means
@@ -213,10 +213,10 @@ export interface CherryUIMessageMetadata {
 }
 
 /** HuaTuo Studio's UIMessage with custom metadata and data part types. */
-export type CherryUIMessage = UIMessage<CherryUIMessageMetadata, CherryDataPartTypes>
+export type HuaTuoUIMessage = UIMessage<HuaTuoUIMessageMetadata, HuaTuoDataPartTypes>
 
-/** HuaTuo Studio's UIMessageChunk — inferred from CherryUIMessage. */
-export type CherryUIMessageChunk = InferUIMessageChunk<CherryUIMessage>
+/** HuaTuo Studio's UIMessageChunk — inferred from HuaTuoUIMessage. */
+export type HuaTuoUIMessageChunk = InferUIMessageChunk<HuaTuoUIMessage>
 
 // Re-export AI SDK part types for convenience
 export type {

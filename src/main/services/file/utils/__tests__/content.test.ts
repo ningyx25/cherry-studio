@@ -12,7 +12,7 @@ describe('file/utils/content', () => {
   let tmp: string
 
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-file-content-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-file-content-'))
   })
 
   afterEach(async () => {

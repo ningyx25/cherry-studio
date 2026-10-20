@@ -1,4 +1,4 @@
-import { Badge, SelectDropdown } from '@cherrystudio/ui'
+import { Badge, SelectDropdown } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Bot } from 'lucide-react'
 import { useMemo, useState } from 'react'

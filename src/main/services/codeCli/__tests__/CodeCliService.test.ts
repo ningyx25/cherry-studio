@@ -302,7 +302,7 @@ describe('CodeCliService', () => {
           mode: 'normal',
           cliTool: CodeCli.OPEN_CODE,
           model: 'deepseek:deepseek-chat',
-          providerId: 'cherry-gateway',
+          providerId: 'huatuo-gateway',
           directory: '/tmp/project'
         })
 
@@ -333,7 +333,7 @@ describe('CodeCliService', () => {
           mode: 'normal',
           cliTool: CodeCli.OPEN_CODE,
           model: 'deepseek:deepseek-chat',
-          providerId: 'cherry-gateway',
+          providerId: 'huatuo-gateway',
           directory: '/tmp/project'
         })
 
@@ -342,7 +342,7 @@ describe('CodeCliService', () => {
         expect(call).toBeDefined()
         const script = (call![1] as string[]).join(' ')
         expect(script).toContain('OPENCODE_DISABLE_AUTOUPDATE=')
-        expect(script).not.toContain('_cherry_mise_key')
+        expect(script).not.toContain('_huatuo_mise_key')
       } finally {
         vi.useRealTimers()
       }
@@ -352,7 +352,7 @@ describe('CodeCliService', () => {
   // gemini-cli's `resolveModel` rewrites a settings.model.name ending in "flash" to a default Gemini
   // model, so the intended model is passed on the command line at launch — `--model` outranks settings
   // and is honored verbatim — and in gateway mode it must carry the providerId prefix the gateway
-  // addresses by plus the @cherry sentinel, or the gateway can't route it.
+  // addresses by plus the @huatuo sentinel, or the gateway can't route it.
   describe('run (gemini-cli passes the model via --model)', () => {
     const originalPlatform = process.platform
 
@@ -390,9 +390,9 @@ describe('CodeCliService', () => {
         gateway: true,
         directory: '/tmp/project'
       })
-      // The @cherry suffix defeats gemini-cli's model normalization, which rewrites
+      // The @huatuo suffix defeats gemini-cli's model normalization, which rewrites
       // any name satisfying endsWith("flash") to a default Gemini model.
-      expect(script).toContain('--model 618d8838-1791-44df-8802-34f8444c0935:agent/deepseek-v4-flash@cherry')
+      expect(script).toContain('--model 618d8838-1791-44df-8802-34f8444c0935:agent/deepseek-v4-flash@huatuo')
       // The gateway serves only /v1beta, so the launch env forces the SDK's API version — a stale
       // GOOGLE_GENAI_API_VERSION=v1 in the user's shell would otherwise redirect it to /v1. (The
       // value's quotes are backslash-escaped by the AppleScript wrapper, so match the export + value.)
@@ -428,7 +428,7 @@ describe('CodeCliService', () => {
       })
 
       expect(script).toContain('GEMINI_CLI_TRUST_WORKSPACE=')
-      expect(script).not.toContain('_cherry_mise_key')
+      expect(script).not.toContain('_huatuo_mise_key')
     })
   })
 
@@ -520,7 +520,7 @@ describe('CodeCliService', () => {
       expect(binaryManagerMock.installByName).toHaveBeenCalledWith({ name: 'claude' })
     })
 
-    it('launches a managed npm CLI with Cherry shims first and no ambient MISE settings', async () => {
+    it('launches a managed npm CLI with HuaTuo shims first and no ambient MISE settings', async () => {
       shellEnvMock.getRawShellEnv.mockResolvedValue({
         PATH: '/usr/local/$(touch /tmp/pwn):`whoami`:$HOME:/usr/bin',
         MISE_CONFIG_FILE: '/home/me/.config/mise/config.toml',
@@ -549,9 +549,9 @@ describe('CodeCliService', () => {
         "PATH='\\''/mock/binary-data/shims:/mock/binary-data:/usr/local/$(touch /tmp/pwn):`whoami`:$HOME:/usr/bin'\\''"
       )
       expect(launchArgs).toContain("MISE_DATA_DIR='\\''/mock/binary-data'\\''")
-      expect(launchArgs).toContain('for _cherry_mise_key in $(env | sed -n')
+      expect(launchArgs).toContain('for _huatuo_mise_key in $(env | sed -n')
       expect(launchArgs).toContain('do unset')
-      expect(launchArgs).toContain('$_cherry_mise_key')
+      expect(launchArgs).toContain('$_huatuo_mise_key')
       expect(launchArgs.indexOf('unset')).toBeLessThan(launchArgs.indexOf('export MISE_DATA_DIR'))
       expect(launchArgs).not.toContain('MISE_CONFIG_FILE')
       expect(launchArgs).not.toContain('PRIVATE_TOKEN')
@@ -672,11 +672,11 @@ describe('CodeCliService', () => {
       }
     })
 
-    it('includes cherry.bin and appends the bundled MinGit dir to a managed launch PATH tail (#16402)', async () => {
+    it('includes huatuo.bin and appends the bundled MinGit dir to a managed launch PATH tail (#16402)', async () => {
       // Regression (PR #16402 review): the launch env must carry the bundled
       // git dir at the very tail so a terminal-launched CLI resolves a bare
       // `git` on a machine without system git, while any real git ahead wins.
-      const gitDir = 'C:\\Cherry\\resources\\binaries\\win32-x64\\git\\cmd'
+      const gitDir = 'C:\\HuaTuo\\resources\\binaries\\win32-x64\\git\\cmd'
       bundledGitMock.getBundledGitDir.mockReturnValue(gitDir)
       shellEnvMock.getRawShellEnv.mockResolvedValue({ Path: 'C:\\Windows\\System32' })
 
@@ -706,8 +706,8 @@ describe('CodeCliService', () => {
       }
     })
 
-    it('gives a system CLI only the git tail — no Cherry MISE_* redirection', async () => {
-      const gitDir = 'C:\\Cherry\\resources\\binaries\\win32-x64\\git\\cmd'
+    it('gives a system CLI only the git tail — no HuaTuo MISE_* redirection', async () => {
+      const gitDir = 'C:\\HuaTuo\\resources\\binaries\\win32-x64\\git\\cmd'
       bundledGitMock.getBundledGitDir.mockReturnValue(gitDir)
       shellEnvMock.getRawShellEnv.mockResolvedValue({
         Path: 'C:\\Windows\\System32',
@@ -731,7 +731,7 @@ describe('CodeCliService', () => {
         expect(result.success).toBe(true)
         const spawnEnv = (vi.mocked(spawn).mock.calls.at(-1)![2] as { env: Record<string, string> }).env
         expect(spawnEnv.Path.split(';').at(-1)).toBe(gitDir)
-        // The user's own mise settings pass through untouched; Cherry's isolated
+        // The user's own mise settings pass through untouched; HuaTuo's isolated
         // MISE_DATA_DIR must never redirect a system CLI's shims.
         expect(spawnEnv.MISE_DATA_DIR).toBe('C:\\Users\\me\\mise-data')
       } finally {

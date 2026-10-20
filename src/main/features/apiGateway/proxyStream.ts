@@ -103,7 +103,7 @@ export interface MessageConfig {
   outputFormat?: OutputFormat
   /** Request abort signal (`context.request.signal`); aborts the upstream stream on client disconnect. */
   signal?: AbortSignal
-  /** Raw request headers used only to validate Cherry-internal usage correlation. */
+  /** Raw request headers used only to validate HuaTuo-internal usage correlation. */
   requestHeaders?: Headers
   onError?: (error: unknown) => void
   onComplete?: () => void

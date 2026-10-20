@@ -48,7 +48,7 @@ const logger = loggerService.withContext('UserDataRelocation')
 // and rollback delete a tree recursively only when the marker matches the
 // task ID, so user data that happens to sit at an artifact path is never
 // removed.
-const RELOCATION_OWNER_MARKER = '.cherry-relocation-owner.json'
+const RELOCATION_OWNER_MARKER = '.huatuo-relocation-owner.json'
 // The copy lands in workPath/payload/, not in workPath itself: fsp.cp must be
 // the one to create its destination (see the cp call below), while the
 // recovery invariant needs the owner marker inside workPath before the first
@@ -60,7 +60,7 @@ const RELOCATION_PAYLOAD_DIRNAME = 'payload'
 const FREE_SPACE_SAFETY_FACTOR = 1.2
 
 const relocationOwnerSchema = z.object({
-  kind: z.literal('cherry-studio-user-data-relocation'),
+  kind: z.literal('huatuo-studio-user-data-relocation'),
   taskId: z.string()
 })
 
@@ -578,7 +578,7 @@ function makeProgress(
 async function writeRelocationOwner(directory: string, taskId: string): Promise<void> {
   await fsp.writeFile(
     path.join(directory, RELOCATION_OWNER_MARKER),
-    JSON.stringify({ kind: 'cherry-studio-user-data-relocation', taskId })
+    JSON.stringify({ kind: 'huatuo-studio-user-data-relocation', taskId })
   )
 }
 

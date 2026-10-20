@@ -46,7 +46,7 @@ vi.mock('react-i18next', () => ({
   })
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await vi.importActual<typeof ReactModule>('react')
   const DialogContext = React.createContext<{ onOpenChange?: (open: boolean) => void } | null>(null)
 

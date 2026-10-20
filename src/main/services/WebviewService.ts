@@ -11,12 +11,12 @@ const logger = loggerService.withContext('WebviewService')
 
 /**
  * init the useragent of the webview session
- * remove the CherryStudio and Electron from the useragent
+ * remove the HuaTuoStudio and Electron from the useragent
  */
 export function initSessionUserAgent() {
   const wvSession = session.fromPartition('persist:webview')
   const originUA = wvSession.getUserAgent()
-  const newUA = originUA.replace(/CherryStudio\/\S+\s/, '').replace(/Electron\/\S+\s/, '')
+  const newUA = originUA.replace(/HuaTuoStudio\/\S+\s/, '').replace(/Electron\/\S+\s/, '')
 
   wvSession.setUserAgent(newUA)
   wvSession.webRequest.onBeforeSendHeaders((details, cb) => {
@@ -132,12 +132,12 @@ export class WebviewService extends BaseService {
 
   /**
    * Initialize the useragent of the webview session.
-   * Removes CherryStudio and Electron from the useragent.
+   * Removes HuaTuoStudio and Electron from the useragent.
    */
   private initSessionUserAgent() {
     const wvSession = session.fromPartition('persist:webview')
     const originUA = wvSession.getUserAgent()
-    const newUA = originUA.replace(/CherryStudio\/\S+\s/, '').replace(/Electron\/\S+\s/, '')
+    const newUA = originUA.replace(/HuaTuoStudio\/\S+\s/, '').replace(/Electron\/\S+\s/, '')
 
     wvSession.setUserAgent(newUA)
     wvSession.webRequest.onBeforeSendHeaders((details, cb) => {

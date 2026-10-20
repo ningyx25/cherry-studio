@@ -1,5 +1,5 @@
-import { Checkbox, NormalTooltip } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Checkbox, NormalTooltip } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { CommandContextMenu, type CommandContextMenuExtraItem } from '@renderer/components/command'
 import { useSharedCacheValue } from '@renderer/data/hooks/useCache'
 import KnowledgeRowActionsMenu from '@renderer/pages/knowledge/components/KnowledgeRowActionsMenu'

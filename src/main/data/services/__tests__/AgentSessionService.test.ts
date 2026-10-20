@@ -36,7 +36,7 @@ function captureError(fn: () => unknown): unknown {
 
 describe('AgentSessionService', () => {
   const dbh = setupTestDatabase()
-  const root = path.join('/tmp', 'cherry-session-service')
+  const root = path.join('/tmp', 'huatuo-session-service')
 
   beforeEach(async () => {
     ;(application.get('DbService').withWriteTx as Mock).mockImplementation((fn) => dbh.db.transaction(fn as never))

@@ -24,7 +24,7 @@ discarding an unsaved draft.
 
 ## Why this matters to the user
 
-Users can make small changes to generated code and text without leaving Cherry
+Users can make small changes to generated code and text without leaving HuaTuo
 Studio, and edits persist automatically. Binary files, files over 2 MiB,
 non-UTF-8 encodings, and mixed line endings remain preview-only (in Notes such
 files show a load-failure state instead of an editable blank page).

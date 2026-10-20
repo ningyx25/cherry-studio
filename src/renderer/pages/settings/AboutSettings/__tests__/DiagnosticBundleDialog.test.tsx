@@ -58,8 +58,8 @@ const inspectResult: OutputFor<'diagnostics.bundle.inspect'> = {
 const savedResult: Extract<OutputFor<'diagnostics.bundle.export'>, { status: 'saved' }> = {
   archiveBytes: 2_000,
   bundleId: 'bundle-123',
-  fileName: 'cherry-studio-diagnostics.zip',
-  filePath: AbsoluteFilePathSchema.parse('/tmp/cherry-studio-diagnostics.zip'),
+  fileName: 'huatuo-studio-diagnostics.zip',
+  filePath: AbsoluteFilePathSchema.parse('/tmp/huatuo-studio-diagnostics.zip'),
   hasWarnings: false,
   includedFileCount: 2,
   omittedFileCount: 0,
@@ -142,7 +142,7 @@ describe('DiagnosticBundleDialog', () => {
     await waitFor(() =>
       expect(mocks.request).toHaveBeenCalledWith('file.show_in_folder', {
         kind: 'path',
-        path: '/tmp/cherry-studio-diagnostics.zip'
+        path: '/tmp/huatuo-studio-diagnostics.zip'
       })
     )
 
@@ -151,12 +151,12 @@ describe('DiagnosticBundleDialog', () => {
       const mailCall = mocks.request.mock.calls.find(([route]) => route === 'system.shell.open_website')
       expect(mailCall).toBeDefined()
       const mailto = String(mailCall?.[1])
-      expect(mailto).toMatch(/^mailto:support@cherry-ai\.com\?/)
+      expect(mailto).toMatch(/^mailto:support@huatuo\.ai\?/)
       expect(mailto).not.toContain('+')
       expect(mailto).toContain('%20')
       expect(decodeURIComponent(mailto)).toContain('Diagnostics bundle-123')
       expect(decodeURIComponent(mailto)).toContain('bundle-123')
-      expect(decodeURIComponent(mailto)).toContain('cherry-studio-diagnostics.zip')
+      expect(decodeURIComponent(mailto)).toContain('huatuo-studio-diagnostics.zip')
       expect(decodeURIComponent(mailto)).not.toContain('/Users/')
       expect(decodeURIComponent(mailto)).not.toContain('/tmp/')
     })
@@ -273,7 +273,7 @@ describe('DiagnosticBundleDialog', () => {
     expect(mocks.toastError).toHaveBeenCalledWith('settings.about.diagnostics.errors.email_client_failed')
 
     await user.click(copyButton)
-    await waitFor(() => expect(clipboardWrite).toHaveBeenCalledWith('support@cherry-ai.com'))
+    await waitFor(() => expect(clipboardWrite).toHaveBeenCalledWith('support@huatuo.ai'))
     expect(mocks.toastSuccess).toHaveBeenCalledWith('settings.about.diagnostics.success.email_copied')
   })
 })

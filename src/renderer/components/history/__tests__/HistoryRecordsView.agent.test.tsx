@@ -27,9 +27,9 @@ const hookMocks = vi.hoisted(() => ({
   virtualListRenderRows: [] as VirtualListRenderRow[]
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
-  const { MockCherrystudioUI } = await import('@test-mocks/renderer/CherrystudioUI')
-  return MockCherrystudioUI
+vi.mock('@huatuostudio/ui', async () => {
+  const { MockHuaTuostudioUI } = await import('@test-mocks/renderer/HuaTuostudioUI')
+  return MockHuaTuostudioUI
 })
 
 vi.mock('@renderer/data/CacheService', async () => {
@@ -116,7 +116,7 @@ vi.mock('@renderer/components/resourceCatalog/selectors', () => ({
 }))
 
 vi.mock('@renderer/data/hooks/usePreference', () => ({
-  usePreference: () => ['cherry', () => {}],
+  usePreference: () => ['huatuo', () => {}],
   useMultiplePreferences: hookMocks.useMultiplePreferences
 }))
 

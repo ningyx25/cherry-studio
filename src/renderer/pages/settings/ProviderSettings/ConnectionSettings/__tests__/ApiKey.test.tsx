@@ -9,7 +9,7 @@ const useProviderMock = vi.fn()
 const useProviderMetaMock = vi.fn()
 const useAuthenticationApiKeyMock = vi.fn()
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   InputGroup: ({ children }: any) => <div>{children}</div>,
   InputGroupAddon: ({ children }: any) => <span>{children}</span>,
   InputGroupInput: (props: any) => <input {...props} />,

@@ -706,7 +706,7 @@ describe('composer draft serialization', () => {
         type: 'text',
         text: 'Read ',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             composer: {
               version: 1,
               tokens: [{ id: 'kb-1', kind: 'knowledge', label: 'Docs', index: 0, textOffset: 5 }]
@@ -742,7 +742,7 @@ describe('composer draft serialization', () => {
         type: 'text',
         text: `Read ${folderPath}`,
         providerMetadata: {
-          cherry: {
+          huatuo: {
             composer: {
               version: 1,
               tokens: [

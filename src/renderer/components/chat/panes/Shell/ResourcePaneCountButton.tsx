@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
+import { Button, Tooltip } from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import { List } from 'lucide-react'
 import { useCallback } from 'react'

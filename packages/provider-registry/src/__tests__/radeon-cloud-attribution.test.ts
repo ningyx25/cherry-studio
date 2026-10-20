@@ -15,7 +15,7 @@ function expectTokenFactorySource(urlString: string | undefined) {
 
   const url = new URL(urlString!)
   expect(`${url.origin}${url.pathname}`).toBe('https://developer.amd.com.cn/radeon/tokenfactory')
-  expect(Object.fromEntries(url.searchParams)).toEqual({ source: 'cherry-studio' })
+  expect(Object.fromEntries(url.searchParams)).toEqual({ source: 'huatuo-studio' })
 }
 
 describe('Radeon Cloud source attribution', () => {

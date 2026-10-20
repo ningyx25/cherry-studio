@@ -31,7 +31,7 @@ import { extractAgentSessionIdFromTopicId } from '@renderer/utils/agentSession'
 import type { DiagnosisResult } from '@renderer/utils/errorDiagnosis'
 import { normalizeInlineFilePath, resolveInlineFilePath } from '@renderer/utils/filePath'
 import type { ResponseForPath } from '@shared/data/api/paths'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { type AbsoluteFilePath, AbsoluteFilePathSchema } from '@shared/types/file'
 import { type ReactNode, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -46,16 +46,16 @@ import {
 const agentMessageListRuntimes = new Map<string, MessageListRuntime>()
 
 function withTerminalErrorFallback(
-  messages: CherryUIMessage[],
-  partsByMessageId: Record<string, CherryMessagePart[]>,
+  messages: HuaTuoUIMessage[],
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>,
   noResponseMessage: string
-): Record<string, CherryMessagePart[]> {
+): Record<string, HuaTuoMessagePart[]> {
   let next = partsByMessageId
 
   for (const message of messages) {
     if (message.role !== 'assistant') continue
     const status = message.metadata?.status
-    const parts = partsByMessageId[message.id] ?? ((message.parts ?? []) as CherryMessagePart[])
+    const parts = partsByMessageId[message.id] ?? ((message.parts ?? []) as HuaTuoMessagePart[])
     const hasVisiblePart = parts.some((part) => !isHiddenPart(part))
     const needsFallback =
       (status === 'error' && !parts.some((part) => part.type === 'data-error')) ||
@@ -83,8 +83,8 @@ export function locateAgentMessageInList(topicId: string, messageId: string, hig
 
 interface AgentMessageListParams {
   topic: Topic
-  messages: CherryUIMessage[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  messages: HuaTuoUIMessage[]
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   streamingLayers?: MessageStreamingLayers
   assistantProfile?: {
     name?: string
@@ -118,7 +118,7 @@ interface AgentMessageListParams {
  * `AgentWorkspacePathSchema` is only `z.string().min(1)`, so the guarantee does
  * not survive the process boundary as a type. Re-asserting it here is the cost
  * of that gap, not redundant validation — tracked in
- * https://github.com/ningyx25/cherry-studio/issues/17431.
+ * https://github.com/huatuostudio/huatuo-studio/issues/17431.
  */
 const resolveWorkspaceFilePath = (workspacePath: string | undefined, rawPath: string): AbsoluteFilePath | null => {
   const normalizedPath = normalizeInlineFilePath(resolveInlineFilePath(rawPath))
@@ -164,7 +164,7 @@ export function useAgentMessageListProviderValue({
   const resolvedAgentId = assistantId ?? topic.assistantId
   const messageItemCacheRef = useRef(
     new WeakMap<
-      CherryUIMessage,
+      HuaTuoUIMessage,
       {
         assistantId?: string
         item: MessageListItem
@@ -191,7 +191,7 @@ export function useAgentMessageListProviderValue({
   const visibleMessages = useMemo(
     () =>
       messages.filter((message) => {
-        const parts = displayPartsByMessageId[message.id] ?? ((message.parts ?? []) as CherryMessagePart[])
+        const parts = displayPartsByMessageId[message.id] ?? ((message.parts ?? []) as HuaTuoMessagePart[])
         if (parts.length === 0) return true
         return parts.some((part) => !hasPartParentToolCallId(part))
       }),

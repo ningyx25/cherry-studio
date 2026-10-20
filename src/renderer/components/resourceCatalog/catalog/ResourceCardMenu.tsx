@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { type CommandContextMenuExtraItem, CommandPopupMenu } from '@renderer/components/command'
 import { useAssistantMutationsById } from '@renderer/hooks/resourceCatalog'
@@ -194,7 +194,7 @@ export function ResourceCardMenu({ triggerClassName, ...props }: ResourceCardMen
       align="end"
       side="bottom"
       sideOffset={6}
-      presentationMode="cherry"
+      presentationMode="huatuo"
       contentClassName="min-w-32 rounded-xl border-border p-1.5">
       <Button
         variant="ghost"

@@ -1,4 +1,4 @@
-import { HorizontalScrollContainer, Tabs, TabsList, TabsTrigger } from '@cherrystudio/ui'
+import { HorizontalScrollContainer, Tabs, TabsList, TabsTrigger } from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import { ArrowUpDown, AudioLines, Boxes, Image, type LucideIcon, Mic, Speech, Type, Video } from 'lucide-react'
 import { useEffect, useState, useTransition } from 'react'

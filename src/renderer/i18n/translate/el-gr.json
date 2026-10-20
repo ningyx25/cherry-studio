@@ -32,7 +32,7 @@
       "title": "Ερωτήσεις από τον πράκτορα"
     },
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "Ενσωματωμένος σύμβουλος HuaTuo Studio. Διάγνωση προβλημάτων, καθοδήγηση λειτουργιών, συλλογή συχνών ερωτήσεων, υποβολή σφαλμάτων/αιτημάτων χαρακτηριστικών και αναζήτηση/δημιουργία Δεξιοτήτων"
       }
     },
@@ -983,38 +983,6 @@
           "description": "Εκτελεί εντολές κελύφους στο περιβάλλον σας",
           "label": "Bash"
         },
-        "CherryConfig": {
-          "description": "Ελέγχει και διαχειρίζεται αυτήν τη ρύθμιση παράγοντα και τα κανάλια",
-          "label": "Ρύθμιση Πράκτορα"
-        },
-        "CherryCron": {
-          "description": "Διαχειρίζεται τον ενσωματωμένο προγραμματιστή εντός της εφαρμογής",
-          "label": "Προγραμματιστής"
-        },
-        "CherryGenerateImage": {
-          "description": "Δημιουργεί μια εικόνα από ένα κείμενο προτροπής χρησιμοποιώντας το διαμορφωμένο σας μοντέλο ζωγραφικής",
-          "label": "Δημιουργία Εικόνας"
-        },
-        "CherryKbManage": {
-          "description": "Προσθέτει, διαγράφει ή ανανεώνει έγγραφα στις βάσεις γνώσης σας",
-          "label": "Διαχείριση Γνώσης"
-        },
-        "CherryKbSearch": {
-          "description": "Αναζητά τις βάσεις γνώσης σας",
-          "label": "Αναζήτηση Γνώσης"
-        },
-        "CherryNotify": {
-          "description": "Στέλνει μια ειδοποίηση μέσω ενός συνδεδεμένου καναλιού",
-          "label": "Ειδοποίηση"
-        },
-        "CherryWebFetch": {
-          "description": "Ανάκτηση και ανάγνωση μιας ιστοσελίδας",
-          "label": "Λήψη από τον Ιστό"
-        },
-        "CherryWebSearch": {
-          "description": "Αναζητά στο διαδίκτυο μέσω του ρυθμισμένου παρόχου σας",
-          "label": "Αναζήτηση στον Ιστό"
-        },
         "Edit": {
           "description": "Πραγματοποιεί στοχευμένες επεξεργασίες σε συγκεκριμένα αρχεία",
           "label": "Επεξεργασία"
@@ -1026,6 +994,38 @@
         "Grep": {
           "description": "Αναζητά μοτίβα στο περιεχόμενο αρχείων",
           "label": "Grep"
+        },
+        "HuaTuoConfig": {
+          "description": "Ελέγχει και διαχειρίζεται αυτήν τη ρύθμιση παράγοντα και τα κανάλια",
+          "label": "Ρύθμιση Πράκτορα"
+        },
+        "HuaTuoCron": {
+          "description": "Διαχειρίζεται τον ενσωματωμένο προγραμματιστή εντός της εφαρμογής",
+          "label": "Προγραμματιστής"
+        },
+        "HuaTuoGenerateImage": {
+          "description": "Δημιουργεί μια εικόνα από ένα κείμενο προτροπής χρησιμοποιώντας το διαμορφωμένο σας μοντέλο ζωγραφικής",
+          "label": "Δημιουργία Εικόνας"
+        },
+        "HuaTuoKbManage": {
+          "description": "Προσθέτει, διαγράφει ή ανανεώνει έγγραφα στις βάσεις γνώσης σας",
+          "label": "Διαχείριση Γνώσης"
+        },
+        "HuaTuoKbSearch": {
+          "description": "Αναζητά τις βάσεις γνώσης σας",
+          "label": "Αναζήτηση Γνώσης"
+        },
+        "HuaTuoNotify": {
+          "description": "Στέλνει μια ειδοποίηση μέσω ενός συνδεδεμένου καναλιού",
+          "label": "Ειδοποίηση"
+        },
+        "HuaTuoWebFetch": {
+          "description": "Ανάκτηση και ανάγνωση μιας ιστοσελίδας",
+          "label": "Λήψη από τον Ιστό"
+        },
+        "HuaTuoWebSearch": {
+          "description": "Αναζητά στο διαδίκτυο μέσω του ρυθμισμένου παρόχου σας",
+          "label": "Αναζήτηση στον Ιστό"
         },
         "MultiEdit": {
           "description": "Εκτελεί πολλαπλές επεξεργασίες σε ένα μόνο αρχείο ατομικά"
@@ -1634,6 +1634,7 @@
         "permission_denied": "[to be translated]:Microphone permission denied",
         "recording_failed": "[to be translated]:Recording failed",
         "stop": "[to be translated]:Stop recording",
+        "switch_hint": "[to be translated]:Switch to voice input",
         "transcribing": "[to be translated]:Transcribing…",
         "transcription_failed": "[to be translated]:Transcription failed"
       },
@@ -2486,7 +2487,8 @@
     "jina-rerank": "Επαναταξινόμηση Jina",
     "openai": "OpenAI",
     "openai-embeddings": "Embeddings (OpenAI)",
-    "openai-response": "Απάντηση OpenAI"
+    "openai-response": "Απάντηση OpenAI",
+    "transcription": "[to be translated]:Speech Transcription (OpenAI)"
   },
   "error": {
     "availableProviders": "Διαθέσιμοι πάροχοι",
@@ -3063,7 +3065,7 @@
           "description": "Εισάγετε διεύθυνση ιστοσελίδας:",
           "help": "Το κείμενο της σελίδας θα ανακτηθεί, θα τεμαχιστεί και θα ευρετηριαστεί αυτόματα",
           "input_label": "URL ιστοσελίδας",
-          "placeholder": "https://docs.cherry-ai.com/",
+          "placeholder": "https://docs.huatuo.ai/",
           "title": "Εισαγωγή μίας μόνο ιστοσελίδας"
         }
       },
@@ -4692,7 +4694,7 @@
       "missing_model": "Ενεργοποιήστε τουλάχιστον ένα μοντέλο από τον ενεργοποιημένο πάροχο",
       "missing_provider": "Ενεργοποίηση παρόχου για συνέχιση",
       "next": "Επόμενο",
-      "subtitle": "Προσθέστε ένα κλειδί API ή συνδεθείτε με το CherryIN και, στη συνέχεια, ενεργοποιήστε έναν πάροχο.",
+      "subtitle": "Προσθέστε ένα κλειδί API ή συνδεθείτε με το HuaTuoIN και, στη συνέχεια, ενεργοποιήστε έναν πάροχο.",
       "title": "Επιλέξτε Πάροχο"
     },
     "select_model": {
@@ -4704,10 +4706,10 @@
     "skip": "Παράλειψη",
     "toast": {
       "complete_failed": "Αδυναμία ολοκλήρωσης της ρύθμισης. Παρακαλώ προσπαθήστε ξανά.",
-      "connected": "Συνδέθηκε επιτυχώς με το CherryIN"
+      "connected": "Συνδέθηκε επιτυχώς με το HuaTuoIN"
     },
     "welcome": {
-      "login_cherryin": "Σύνδεση με CherryIN",
+      "login_huatuoin": "Σύνδεση με HuaTuoIN",
       "or_continue_with": "Ή ΣΥΝΕΧΕΙΑ ΜΕ",
       "other_provider": "Επιλέξτε Άλλους Παρόχους",
       "select_other_provider": "Επιλέξτε Άλλο Πάροχο",
@@ -4826,7 +4828,7 @@
       "stop": "Διακοπή OVMS",
       "stopping": "Διακοπή σε εξέλιξη"
     },
-    "description": "<div><p>1. Λήψη μοντέλου OV.</p><p>2. Προσθήκη μοντέλου στο 'Manager'.</p><p>Υποστηρίζεται μόνο στα Windows!</p><p>Διαδρομή εγκατάστασης OVMS: '%USERPROFILE%\\.cherrystudio\\ovms' .</p><p>Ανατρέξτε στον <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Οδηγό Intel OVMS</a></p></div>",
+    "description": "<div><p>1. Λήψη μοντέλου OV.</p><p>2. Προσθήκη μοντέλου στο 'Manager'.</p><p>Υποστηρίζεται μόνο στα Windows!</p><p>Διαδρομή εγκατάστασης OVMS: '%USERPROFILE%\\.huatuostudio\\ovms' .</p><p>Ανατρέξτε στον <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Οδηγό Intel OVMS</a></p></div>",
     "download": {
       "button": "Λήψη",
       "error": "Η επιλογή απέτυχε",
@@ -5242,8 +5244,6 @@
     "baidu-cloud": "Baidu Cloud Qianfan",
     "burncloud": "BurnCloud",
     "cerebras": "Cerebras AI",
-    "cherryai": "CherryAI",
-    "cherryin": "CherryIN",
     "claude-code": "Claude Code",
     "copilot": "GitHub Copilot",
     "dashscope": "AliCloud Bailian",
@@ -5259,6 +5259,8 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
+    "huatuoai": "HuaTuoAI",
+    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "Tencent Hunyuan",
     "hyperbolic": "Υπερβολικός",
@@ -6447,7 +6449,7 @@
         },
         "root": {
           "label": "Κατάλογος αντιγράφου ασφαλείας (προαιρετικό)",
-          "placeholder": "Π.χ.: /cherry-studio"
+          "placeholder": "Π.χ.: /huatuo-studio"
         },
         "secretAccessKey": {
           "label": "Secret Access Key",
@@ -6611,7 +6613,7 @@
           "placeholder": "https://ghfast.top (άμεσο αν κενό)"
         },
         "githubToken": {
-          "help": "Αυξάνει το όριο ρυθμού του GitHub API για αναζητήσεις εργαλείων. Αποθηκεύεται τοπικά σε απλό κείμενο. Αφήστε κενό για να χρησιμοποιηθεί η μεταβλητή περιβάλλοντος CHERRY_GITHUB_TOKEN.",
+          "help": "Αυξάνει το όριο ρυθμού του GitHub API για αναζητήσεις εργαλείων. Αποθηκεύεται τοπικά σε απλό κείμενο. Αφήστε κενό για να χρησιμοποιηθεί η μεταβλητή περιβάλλοντος HUATUO_GITHUB_TOKEN.",
           "hide": "Απόκρυψη token",
           "label": "Token GitHub",
           "placeholder": "ghp_…",
@@ -6804,7 +6806,7 @@
       "common": {
         "menu": {
           "presentation_mode": {
-            "cherry": "Κεράσι",
+            "huatuo": "Κεράσι",
             "native": "Ντόπιος",
             "restart": {
               "content": "Η αλλαγή του στυλ του μενού απαιτεί επανεκκίνηση της εφαρμογής για να τεθεί σε ισχύ. Θέλετε να γίνει επανεκκίνηση τώρα;",
@@ -7338,7 +7340,11 @@
             "description": "Δημιουργία εικόνων από μια προτροπή",
             "label": "Δημιουργία εικόνων"
           },
-          "label": "Σκοπός του μοντέλου"
+          "label": "Σκοπός του μοντέλου",
+          "transcription": {
+            "description": "[to be translated]:Transcribe audio input into text via the OpenAI audio API",
+            "label": "[to be translated]:Speech transcription"
+          }
         },
         "supported_text_delta": {
           "label": "αυξητική έξοδος κειμένου",
@@ -7744,12 +7750,6 @@
       "check": "Έλεγχος",
       "check_all_keys": "Έλεγχος όλων των κλειδιών",
       "check_multiple_keys": "Έλεγχος πολλαπλών κλειδιών API",
-      "cherryin": {
-        "api_host": {
-          "acceleration": "Τομέας επιτάχυνσης",
-          "international": "Διεθνής τομέας"
-        }
-      },
       "claude_code": {
         "agent_only_note": "Ο πάροχος Claude Code είναι διαθέσιμος μόνο για Πράκτορες — δεν μπορεί να χρησιμοποιηθεί σε συνομιλίες ή βοηθούς.",
         "description": "Συνδεθείτε με τη συνδρομή σας Claude",
@@ -7872,6 +7872,12 @@
         "sign_in_success": "Συνδεδεμένος στο Grok CLI",
         "signing_in": "Αναμονή για πρόγραμμα περιήγησης…"
       },
+      "huatuoin": {
+        "api_host": {
+          "acceleration": "Τομέας επιτάχυνσης",
+          "international": "Διεθνής τομέας"
+        }
+      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "Χρησιμοποιείται για /images/edits; αφήστε το κενό για να χρησιμοποιήσετε την προεπιλεγμένη Βασική URL τελικού σημείου συζήτησης",
@@ -7903,10 +7909,13 @@
         "balance": "Υπόλοιπο",
         "balance_error": "Αποτυχία ανάκτησης υπολοίπου",
         "button": "Σύνδεση με λογαριασμό {{provider}}",
-        "cherryIn": {
+        "connect": "Σύνδεση {{provider}}",
+        "description": "Η υπηρεσία παρέχεται από την ιστοσελίδα {{provider}}",
+        "error": "Αποτυχία πιστοποίησης",
+        "huatuoIn": {
           "description": "Συνδεθείτε με τον διακομιστή New-API που φιλοξενείτε ο ίδιος χρησιμοποιώντας OAuth 2.0 (PKCE)",
           "logged_in": "Σύνδεση μέσω OAuth",
-          "login_button": "Εξουσιοδότηση με CherryIN",
+          "login_button": "Εξουσιοδότηση με HuaTuoIN",
           "logout_button": "Αποσύνδεση",
           "not_logged_in": "Δεν έχετε συνδεθεί",
           "register_account": "Create account",
@@ -7915,9 +7924,6 @@
           "title": "Σύνδεση μέσω OAuth",
           "use_api_key": "Use API key instead"
         },
-        "connect": "Σύνδεση {{provider}}",
-        "description": "Η υπηρεσία παρέχεται από την ιστοσελίδα {{provider}}",
-        "error": "Αποτυχία πιστοποίησης",
         "logged_in": "Συνδεδεμένος",
         "logout": "Αποσύνδεση",
         "logout_confirm": "Είσαι σίγουρος ότι θέλεις να αποσυνδεθείς;",

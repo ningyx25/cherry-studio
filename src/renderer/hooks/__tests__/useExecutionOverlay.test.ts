@@ -1,5 +1,5 @@
 import type { ActiveExecution } from '@shared/ai/transport'
-import type { CherryUIMessage, CherryUIMessageChunk } from '@shared/data/types/message'
+import type { HuaTuoUIMessage, HuaTuoUIMessageChunk } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -73,7 +73,7 @@ const { fake } = vi.hoisted(() => {
       return () => {}
     },
     // test helpers
-    emit(executionId: string, chunk: CherryUIMessageChunk, anchorMessageId?: string) {
+    emit(executionId: string, chunk: HuaTuoUIMessageChunk, anchorMessageId?: string) {
       findBranch(executionId, anchorMessageId)?.controller.enqueue(chunk)
     },
     close(executionId: string, anchorMessageId?: string) {
@@ -121,8 +121,8 @@ const exec = (executionId: UniqueModelId, anchorMessageId?: string): ActiveExecu
   executionId,
   anchorMessageId
 })
-const asst = (id: string, parts: CherryUIMessage['parts'] = []): CherryUIMessage =>
-  ({ id, role: 'assistant', parts }) as CherryUIMessage
+const asst = (id: string, parts: HuaTuoUIMessage['parts'] = []): HuaTuoUIMessage =>
+  ({ id, role: 'assistant', parts }) as HuaTuoUIMessage
 
 function streamText(
   executionId: string,
@@ -131,15 +131,15 @@ function streamText(
   opts?: { startId?: string; anchorMessageId?: string }
 ) {
   if (opts?.startId) {
-    fake.emit(executionId, { type: 'start', messageId: opts.startId } as CherryUIMessageChunk, opts.anchorMessageId)
+    fake.emit(executionId, { type: 'start', messageId: opts.startId } as HuaTuoUIMessageChunk, opts.anchorMessageId)
   }
-  fake.emit(executionId, { type: 'text-start', id: textId } as CherryUIMessageChunk, opts?.anchorMessageId)
-  fake.emit(executionId, { type: 'text-delta', id: textId, delta: text } as CherryUIMessageChunk, opts?.anchorMessageId)
-  fake.emit(executionId, { type: 'text-end', id: textId } as CherryUIMessageChunk, opts?.anchorMessageId)
-  fake.emit(executionId, { type: 'finish' } as CherryUIMessageChunk, opts?.anchorMessageId)
+  fake.emit(executionId, { type: 'text-start', id: textId } as HuaTuoUIMessageChunk, opts?.anchorMessageId)
+  fake.emit(executionId, { type: 'text-delta', id: textId, delta: text } as HuaTuoUIMessageChunk, opts?.anchorMessageId)
+  fake.emit(executionId, { type: 'text-end', id: textId } as HuaTuoUIMessageChunk, opts?.anchorMessageId)
+  fake.emit(executionId, { type: 'finish' } as HuaTuoUIMessageChunk, opts?.anchorMessageId)
 }
 
-function textOf(parts: CherryUIMessage['parts'] | undefined): string {
+function textOf(parts: HuaTuoUIMessage['parts'] | undefined): string {
   return (parts ?? [])
     .filter((p): p is { type: 'text'; text: string } => p.type === 'text')
     .map((p) => p.text)
@@ -205,7 +205,7 @@ describe('useExecutionOverlay', () => {
   it('N2 — no cross-turn pollution: same model, new anchor next turn is clean', async () => {
     const ui1 = [asst('anchor-1')]
     const { result, rerender } = renderHook(
-      ({ execs, ui }: { execs: ActiveExecution[]; ui: CherryUIMessage[] }) => useExecutionOverlay(TOPIC, execs, ui),
+      ({ execs, ui }: { execs: ActiveExecution[]; ui: HuaTuoUIMessage[] }) => useExecutionOverlay(TOPIC, execs, ui),
       { initialProps: { execs: [exec(A, 'anchor-1')], ui: ui1 } }
     )
 
@@ -229,7 +229,7 @@ describe('useExecutionOverlay', () => {
   it('N2b — same model direct anchor switch starts a fresh reader', async () => {
     const ui1 = [asst('anchor-1')]
     const { result, rerender } = renderHook(
-      ({ execs, ui }: { execs: ActiveExecution[]; ui: CherryUIMessage[] }) => useExecutionOverlay(TOPIC, execs, ui),
+      ({ execs, ui }: { execs: ActiveExecution[]; ui: HuaTuoUIMessage[] }) => useExecutionOverlay(TOPIC, execs, ui),
       { initialProps: { execs: [exec(A, 'anchor-1')], ui: ui1 } }
     )
 
@@ -265,7 +265,7 @@ describe('useExecutionOverlay', () => {
   it('N3b — leaves the SWR-cached seed row unmutated during streaming (REGRESSION renderer-transport-1)', async () => {
     // The anchor row is the live SWR-derived projection; readUIMessageStream mutates its
     // message.parts in place. The seed must be cloned so the cached row is never touched.
-    const priorParts: CherryUIMessage['parts'] = [{ type: 'text', text: 'PRIOR ' }]
+    const priorParts: HuaTuoUIMessage['parts'] = [{ type: 'text', text: 'PRIOR ' }]
     const ui = [asst('anchor-a', priorParts)]
     const { result } = renderHook(() => useExecutionOverlay(TOPIC, [exec(A, 'anchor-a')], ui))
 
@@ -281,9 +281,9 @@ describe('useExecutionOverlay', () => {
     const ui = [asst('anchor-a')]
     const { result } = renderHook(() => useExecutionOverlay(TOPIC, [exec(A, 'anchor-a')], ui))
 
-    fake.emit(A, { type: 'text-start', id: 't1' } as CherryUIMessageChunk)
-    fake.emit(A, { type: 'text-delta', id: 't1', delta: 'settled text' } as CherryUIMessageChunk)
-    fake.emit(A, { type: 'text-end', id: 't1' } as CherryUIMessageChunk)
+    fake.emit(A, { type: 'text-start', id: 't1' } as HuaTuoUIMessageChunk)
+    fake.emit(A, { type: 'text-delta', id: 't1', delta: 'settled text' } as HuaTuoUIMessageChunk)
+    fake.emit(A, { type: 'text-end', id: 't1' } as HuaTuoUIMessageChunk)
     await waitFor(() => expect(result.current.overlay['anchor-a']?.[0]).toMatchObject({ state: 'done' }))
     const settledText = result.current.overlay['anchor-a'][0]
 
@@ -292,7 +292,7 @@ describe('useExecutionOverlay', () => {
       toolCallId: 'tool-1',
       toolName: 'search',
       dynamic: true
-    } as CherryUIMessageChunk)
+    } as HuaTuoUIMessageChunk)
     await waitFor(() => expect(result.current.overlay['anchor-a']).toHaveLength(2))
     expect(result.current.overlay['anchor-a'][0]).toBe(settledText)
 
@@ -301,7 +301,7 @@ describe('useExecutionOverlay', () => {
       toolCallId: 'tool-1',
       output: { phase: 'preliminary' },
       preliminary: true
-    } as CherryUIMessageChunk)
+    } as HuaTuoUIMessageChunk)
     await waitFor(() =>
       expect(result.current.overlay['anchor-a'][1]).toMatchObject({ output: { phase: 'preliminary' } })
     )
@@ -311,12 +311,12 @@ describe('useExecutionOverlay', () => {
       type: 'tool-output-available',
       toolCallId: 'tool-1',
       output: { phase: 'final' }
-    } as CherryUIMessageChunk)
+    } as HuaTuoUIMessageChunk)
     await waitFor(() => expect(result.current.overlay['anchor-a'][1]).toMatchObject({ output: { phase: 'final' } }))
     const settledTool = result.current.overlay['anchor-a'][1]
     expect(settledTool).not.toBe(preliminaryTool)
 
-    fake.emit(A, { type: 'text-start', id: 't2' } as CherryUIMessageChunk)
+    fake.emit(A, { type: 'text-start', id: 't2' } as HuaTuoUIMessageChunk)
     await waitFor(() => expect(result.current.overlay['anchor-a']).toHaveLength(3))
     expect(result.current.overlay['anchor-a'][0]).toBe(settledText)
     expect(result.current.overlay['anchor-a'][1]).toBe(settledTool)
@@ -332,12 +332,12 @@ describe('useExecutionOverlay', () => {
     })
 
     await act(async () => {
-      fake.emit(A, { type: 'text-start', id: 'ta' } as CherryUIMessageChunk)
-      fake.emit(A, { type: 'text-delta', id: 'ta', delta: 'a' } as CherryUIMessageChunk)
-      fake.emit(A, { type: 'text-delta', id: 'ta', delta: 'b' } as CherryUIMessageChunk)
-      fake.emit(B, { type: 'text-start', id: 'tb' } as CherryUIMessageChunk)
-      fake.emit(B, { type: 'text-delta', id: 'tb', delta: 'x' } as CherryUIMessageChunk)
-      fake.emit(B, { type: 'text-delta', id: 'tb', delta: 'y' } as CherryUIMessageChunk)
+      fake.emit(A, { type: 'text-start', id: 'ta' } as HuaTuoUIMessageChunk)
+      fake.emit(A, { type: 'text-delta', id: 'ta', delta: 'a' } as HuaTuoUIMessageChunk)
+      fake.emit(A, { type: 'text-delta', id: 'ta', delta: 'b' } as HuaTuoUIMessageChunk)
+      fake.emit(B, { type: 'text-start', id: 'tb' } as HuaTuoUIMessageChunk)
+      fake.emit(B, { type: 'text-delta', id: 'tb', delta: 'x' } as HuaTuoUIMessageChunk)
+      fake.emit(B, { type: 'text-delta', id: 'tb', delta: 'y' } as HuaTuoUIMessageChunk)
       await drainStreamMicrotasks()
     })
 
@@ -359,9 +359,9 @@ describe('useExecutionOverlay', () => {
     const { result } = renderHook(() => useExecutionOverlay(TOPIC, [exec(A, 'anchor-a')], ui, { onFinish }))
 
     await act(async () => {
-      fake.emit(A, { type: 'text-start', id: 't' } as CherryUIMessageChunk)
-      fake.emit(A, { type: 'text-delta', id: 't', delta: 'final' } as CherryUIMessageChunk)
-      fake.emit(A, { type: 'text-end', id: 't' } as CherryUIMessageChunk)
+      fake.emit(A, { type: 'text-start', id: 't' } as HuaTuoUIMessageChunk)
+      fake.emit(A, { type: 'text-delta', id: 't', delta: 'final' } as HuaTuoUIMessageChunk)
+      fake.emit(A, { type: 'text-end', id: 't' } as HuaTuoUIMessageChunk)
       fake.terminal(A, { isAbort: false, isError: false })
       await drainStreamMicrotasks()
     })
@@ -376,15 +376,15 @@ describe('useExecutionOverlay', () => {
     const ui = [asst('anchor-a')]
     const executions = [exec(A, 'anchor-a')]
     const first = renderHook(() => useExecutionOverlay(TOPIC, executions, ui))
-    fake.emit(A, { type: 'text-start', id: 't1' } as CherryUIMessageChunk)
-    fake.emit(A, { type: 'text-delta', id: 't1', delta: 'before' } as CherryUIMessageChunk)
+    fake.emit(A, { type: 'text-start', id: 't1' } as HuaTuoUIMessageChunk)
+    fake.emit(A, { type: 'text-delta', id: 't1', delta: 'before' } as HuaTuoUIMessageChunk)
     await waitFor(() => expect(textOf(first.result.current.overlay['anchor-a'])).toBe('before'))
 
     first.unmount()
 
     // Stream continues while no consumer is mounted.
     await act(async () => {
-      fake.emit(A, { type: 'text-delta', id: 't1', delta: ' after' } as CherryUIMessageChunk)
+      fake.emit(A, { type: 'text-delta', id: 't1', delta: ' after' } as HuaTuoUIMessageChunk)
       await drainStreamMicrotasks()
     })
 
@@ -400,8 +400,8 @@ describe('useExecutionOverlay', () => {
     const { result } = renderHook(() => useExecutionOverlay(TOPIC, [exec(A, 'anchor-a')], ui))
 
     await act(async () => {
-      fake.emit(A, { type: 'text-start', id: 't' } as CherryUIMessageChunk)
-      fake.emit(A, { type: 'text-delta', id: 't', delta: 'stale' } as CherryUIMessageChunk)
+      fake.emit(A, { type: 'text-start', id: 't' } as HuaTuoUIMessageChunk)
+      fake.emit(A, { type: 'text-delta', id: 't', delta: 'stale' } as HuaTuoUIMessageChunk)
       await drainStreamMicrotasks()
     })
     const staleFrame = frames.callbacks.values().next().value as FrameRequestCallback
@@ -421,7 +421,7 @@ describe('useExecutionOverlay', () => {
     fake.emit(A, {
       type: 'message-metadata',
       messageMetadata: { totalTokens: 321 }
-    } as CherryUIMessageChunk)
+    } as HuaTuoUIMessageChunk)
 
     await waitFor(() => {
       expect(result.current.liveAssistants.at(-1)?.metadata?.totalTokens).toBe(321)
@@ -433,9 +433,9 @@ describe('useExecutionOverlay', () => {
     const ui = [asst('anchor-a')]
     renderHook(() => useExecutionOverlay(TOPIC, [exec(A, 'anchor-a')], ui, { onFinish }))
 
-    fake.emit(A, { type: 'text-start', id: 't' } as CherryUIMessageChunk)
-    fake.emit(A, { type: 'text-delta', id: 't', delta: 'x' } as CherryUIMessageChunk)
-    fake.emit(A, { type: 'text-end', id: 't' } as CherryUIMessageChunk)
+    fake.emit(A, { type: 'text-start', id: 't' } as HuaTuoUIMessageChunk)
+    fake.emit(A, { type: 'text-delta', id: 't', delta: 'x' } as HuaTuoUIMessageChunk)
+    fake.emit(A, { type: 'text-end', id: 't' } as HuaTuoUIMessageChunk)
     fake.terminal(A, { isAbort: true, isError: false })
 
     await waitFor(() => expect(onFinish).toHaveBeenCalled())

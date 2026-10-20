@@ -1,9 +1,9 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => importOriginal<typeof CherryStudioUi>())
+vi.mock('@huatuostudio/ui', async (importOriginal) => importOriginal<typeof HuaTuoStudioUi>())
 vi.mock('@iconify/react', () => ({
   Icon: ({ icon, className, width, height }: { icon: string; className?: string; width?: number; height?: number }) => (
     <span data-icon={icon} className={className} data-width={width} data-height={height} />

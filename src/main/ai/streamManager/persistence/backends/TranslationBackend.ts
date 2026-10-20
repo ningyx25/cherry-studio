@@ -10,7 +10,7 @@
 
 import { messageService } from '@main/data/services/MessageService'
 import type { TranslateLangCode } from '@shared/data/preference/preferenceTypes'
-import type { CherryMessagePart, CherryUIMessage, TextUIPart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage, TextUIPart } from '@shared/data/types/message'
 
 import type { PersistAssistantInput, PersistenceBackend } from '../PersistenceBackend'
 
@@ -37,14 +37,14 @@ export class TranslationBackend implements PersistenceBackend {
     const existingParts = message.data?.parts ?? []
     const baseParts = existingParts.filter((p) => p.type !== 'data-translation')
 
-    const translationPart: CherryMessagePart = {
+    const translationPart: HuaTuoMessagePart = {
       type: 'data-translation',
       data: {
         content: accumulated,
         targetLanguage: this.opts.targetLanguage,
         ...(this.opts.sourceLanguage && { sourceLanguage: this.opts.sourceLanguage })
       }
-    } as CherryMessagePart
+    } as HuaTuoMessagePart
 
     messageService.update(this.opts.messageId, {
       data: { ...message.data, parts: [...baseParts, translationPart] }
@@ -52,7 +52,7 @@ export class TranslationBackend implements PersistenceBackend {
   }
 }
 
-function extractText(finalMessage: CherryUIMessage | undefined): string {
+function extractText(finalMessage: HuaTuoUIMessage | undefined): string {
   if (!finalMessage?.parts) return ''
   return finalMessage.parts
     .filter((p): p is TextUIPart => p.type === 'text')

@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest'
 
 import {
   createAgentProxyEnvironmentFingerprint,
-  hasStaleCherryProxyMarkers,
+  hasStaleHuaTuoProxyMarkers,
   isAgentProxyEnvironmentKey,
   mergeAgentLoopbackProxyBypass,
-  stripInheritedCherryProxyMarkers
+  stripInheritedHuaTuoProxyMarkers
 } from '../agentProxyEnvironment'
 
 const ACTIVE_PROXY_KEYS = [
@@ -145,14 +145,14 @@ describe('mergeAgentLoopbackProxyBypass', () => {
   })
 })
 
-describe('stripInheritedCherryProxyMarkers', () => {
-  it('removes Cherry markers without deleting an equal user-owned proxy value', () => {
+describe('stripInheritedHuaTuoProxyMarkers', () => {
+  it('removes HuaTuo markers without deleting an equal user-owned proxy value', () => {
     const proxyUrl = 'http://127.0.0.1:7890'
 
     expect(
-      stripInheritedCherryProxyMarkers({
-        CHERRY_STUDIO_NODE_PROXY_RULES: proxyUrl,
-        CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES: 'service.internal',
+      stripInheritedHuaTuoProxyMarkers({
+        HUATUO_STUDIO_NODE_PROXY_RULES: proxyUrl,
+        HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES: 'service.internal',
         HTTP_PROXY: proxyUrl,
         NO_PROXY: 'service.internal'
       })
@@ -163,52 +163,52 @@ describe('stripInheritedCherryProxyMarkers', () => {
   })
 })
 
-describe('hasStaleCherryProxyMarkers', () => {
-  it('detects a cached Cherry proxy after the current proxy is disabled', () => {
+describe('hasStaleHuaTuoProxyMarkers', () => {
+  it('detects a cached HuaTuo proxy after the current proxy is disabled', () => {
     expect(
-      hasStaleCherryProxyMarkers(
+      hasStaleHuaTuoProxyMarkers(
         {
-          CHERRY_STUDIO_NODE_PROXY_RULES: 'http://stale.example:7890',
-          CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES: 'stale.internal'
+          HUATUO_STUDIO_NODE_PROXY_RULES: 'http://stale.example:7890',
+          HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES: 'stale.internal'
         },
         {}
       )
     ).toBe(true)
   })
 
-  it('keeps a cached Cherry proxy when its markers match the current proxy', () => {
+  it('keeps a cached HuaTuo proxy when its markers match the current proxy', () => {
     const currentProxy = {
-      CHERRY_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890',
-      CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES: ''
+      HUATUO_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890',
+      HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES: ''
     }
 
-    expect(hasStaleCherryProxyMarkers(currentProxy, currentProxy)).toBe(false)
+    expect(hasStaleHuaTuoProxyMarkers(currentProxy, currentProxy)).toBe(false)
     expect(
-      hasStaleCherryProxyMarkers(currentProxy, {
-        CHERRY_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890'
+      hasStaleHuaTuoProxyMarkers(currentProxy, {
+        HUATUO_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890'
       })
     ).toBe(false)
   })
 
-  it('detects a bypass-rule change for the same Cherry proxy URL', () => {
+  it('detects a bypass-rule change for the same HuaTuo proxy URL', () => {
     expect(
-      hasStaleCherryProxyMarkers(
+      hasStaleHuaTuoProxyMarkers(
         {
-          CHERRY_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890',
-          CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES: 'stale.internal'
+          HUATUO_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890',
+          HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES: 'stale.internal'
         },
         {
-          CHERRY_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890'
+          HUATUO_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890'
         }
       )
     ).toBe(true)
   })
 
-  it('does not treat an unmarked user proxy as stale Cherry state', () => {
+  it('does not treat an unmarked user proxy as stale HuaTuo state', () => {
     expect(
-      hasStaleCherryProxyMarkers(
+      hasStaleHuaTuoProxyMarkers(
         { HTTP_PROXY: 'http://user.example:7890' },
-        { CHERRY_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890' }
+        { HUATUO_STUDIO_NODE_PROXY_RULES: 'http://current.example:7890' }
       )
     ).toBe(false)
   })
@@ -274,11 +274,11 @@ describe('createAgentProxyEnvironmentFingerprint', () => {
     const environment = { HTTP_PROXY: 'http://proxy.example.com:8080' }
     const first = createAgentProxyEnvironmentFingerprint({
       ...environment,
-      CHERRY_STUDIO_NODE_PROXY_RULES: 'http://internal-one.example.com:8080'
+      HUATUO_STUDIO_NODE_PROXY_RULES: 'http://internal-one.example.com:8080'
     })
     const second = createAgentProxyEnvironmentFingerprint({
       ...environment,
-      CHERRY_STUDIO_NODE_PROXY_RULES: 'http://internal-two.example.com:8080'
+      HUATUO_STUDIO_NODE_PROXY_RULES: 'http://internal-two.example.com:8080'
     })
 
     expect(first).toBe(second)

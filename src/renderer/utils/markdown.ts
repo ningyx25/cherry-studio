@@ -51,12 +51,12 @@ export const processLatexBrackets = (text: string) => {
     .replace(/(```[\s\S]*?```|`[^`]*`)/g, (match) => {
       const index = protectedItems.length
       protectedItems.push(match)
-      return `__CHERRY_STUDIO_PROTECTED_${index}__`
+      return `__HUATUO_STUDIO_PROTECTED_${index}__`
     })
     .replace(/\[([^[\]]*(?:\[[^\]]*\][^[\]]*)*)\]\([^)]*?\)/g, (match) => {
       const index = protectedItems.length
       protectedItems.push(match)
-      return `__CHERRY_STUDIO_PROTECTED_${index}__`
+      return `__HUATUO_STUDIO_PROTECTED_${index}__`
     })
 
   const processMath = (content: string, openDelim: string, closeDelim: string, wrapper: string): string => {
@@ -80,7 +80,7 @@ export const processLatexBrackets = (text: string) => {
   let result = processMath(processedContent, '\\[', '\\]', '$$')
   result = processMath(result, '\\(', '\\)', '$')
 
-  result = result.replace(/__CHERRY_STUDIO_PROTECTED_(\d+)__/g, (match, indexStr) => {
+  result = result.replace(/__HUATUO_STUDIO_PROTECTED_(\d+)__/g, (match, indexStr) => {
     const index = parseInt(indexStr, 10)
     if (index >= 0 && index < protectedItems.length) {
       return protectedItems[index]

@@ -88,7 +88,7 @@
 
 当前实现的目标结构是：
 
-- 目标文件：迁移后 base 的 runtime 路径 `{knowledgeBaseDir}/{migratedBaseId}/.cherry/index.sqlite`（不再沿用原 legacy DB 路径）
+- 目标文件：迁移后 base 的 runtime 路径 `{knowledgeBaseDir}/{migratedBaseId}/.huatuo/index.sqlite`（不再沿用原 legacy DB 路径）
 - 目标 schema：以 `schema.ts` 的多表 index store 为准（`meta`/`content`/`material`/`search_unit`/`search_text`/`embedding` + 外部内容 FTS5 `search_text_fts`），由 `openBetterSqlite3IndexDriver` → `createKnowledgeIndexSchema` 建立。下方“1. 主表字段/2. 普通索引”是旧 embedjs/langchain 单表布局，已被上述多表 schema 取代。
 
 迁移器会为目标存储补齐必要 schema：
@@ -184,7 +184,7 @@ V2 迁移时，不保留这个旧字段作为最终业务标识，而是把它�
 1. 先在目标路径的同级写一个临时文件
    - `{targetDbPath}.vectorstore.tmp`
 2. v1 legacy `embedjs` DB（`{knowledgeBaseDir}/{legacyBaseId}`）在整个迁移过程中**不被移动也不被删除**
-   - 因为迁移后 base 使用全新 uuid，V2 store 落在 `{migratedBaseId}/.cherry/index.sqlite`，与 legacy flat path 不同名、不冲突，源文件无需腾挪
+   - 因为迁移后 base 使用全新 uuid，V2 store 落在 `{migratedBaseId}/.huatuo/index.sqlite`，与 legacy flat path 不同名、不冲突，源文件无需腾挪
 3. 临时文件写完整并校验成功后，先删除目标路径上可能已存在的空 store（runtime 可能预先创建过），再把临时文件原子 rename 到目标路径
    - 这一步的 unlink 在 `EBUSY` 时会重试（`recursive` + `maxRetries` + `retryDelay`），以兼容 Windows 上的瞬时文件锁
 4. 如果当前 base 在替换前失败，已写入的临时文件会被清理；v1 legacy DB 始终原样保留

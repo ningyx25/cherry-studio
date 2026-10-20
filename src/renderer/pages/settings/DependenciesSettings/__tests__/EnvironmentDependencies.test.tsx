@@ -86,7 +86,7 @@ vi.mock('semver', () => ({
   gt: vi.fn(() => true),
   valid: vi.fn((version: string) => (/^\d+\.\d+\.\d+/.test(version) ? version : null))
 }))
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const passthrough =
     (tag: string) =>
     ({ children, closeOnOverlayClick, ...props }: { children?: React.ReactNode; closeOnOverlayClick?: boolean }) => {
@@ -253,7 +253,7 @@ describe('EnvironmentDependencies', () => {
     const card = (await screen.findByText('fd')).closest('[role="listitem"]') as HTMLElement
     expect(card).toHaveTextContent('settings.dependencies.source.system')
     expect(card.querySelector('[title="/usr/local/bin/fd"]')).toBeInTheDocument()
-    // Cherry uses the system binary in place — no install action, no remove.
+    // HuaTuo uses the system binary in place — no install action, no remove.
     expect(within(card).queryByText('settings.mcp.install')).not.toBeInTheDocument()
     expect(within(card).queryByLabelText('settings.dependencies.remove')).not.toBeInTheDocument()
     expect(ipcMocks.installTool).not.toHaveBeenCalled()

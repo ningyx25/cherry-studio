@@ -1,4 +1,4 @@
-import { getToastUtilities, type ToastLabels } from '@cherrystudio/ui'
+import { getToastUtilities, type ToastLabels } from '@huatuostudio/ui'
 import i18n from '@renderer/i18n/resolver'
 
 /**
@@ -8,7 +8,7 @@ import i18n from '@renderer/i18n/resolver'
  * (confirm) instead; toasts never take focus and are easy to miss.
  *
  * Labels are supplied as a getter so every toast resolves the current language at
- * fire time (see @cherrystudio/ui ToastLabelsInput). Every toast renders in the one
+ * fire time (see @huatuostudio/ui ToastLabelsInput). Every toast renders in the one
  * shared `defaultToastStore`, drained by each window's <ToastHost/>.
  */
 const resolveToastLabels = (): Partial<ToastLabels> => ({

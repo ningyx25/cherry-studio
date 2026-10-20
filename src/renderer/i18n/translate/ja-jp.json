@@ -32,7 +32,7 @@
       "title": "エージェントからの質問"
     },
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "内蔵のHuaTuo Studioアドバイザー。問題の診断、操作ガイド、FAQの収集、バグ/機能リクエストの提出、およびスキルの検索/作成を行います。"
       }
     },
@@ -983,38 +983,6 @@
           "description": "環境でシェルコマンドを実行します",
           "label": "Bash"
         },
-        "CherryConfig": {
-          "description": "このエージェント設定とチャネルの検査と管理",
-          "label": "エージェント設定"
-        },
-        "CherryCron": {
-          "description": "アプリ内スケジューラを管理します",
-          "label": "スケジューラ"
-        },
-        "CherryGenerateImage": {
-          "description": "設定されたペインティングモデルを使用して、テキストプロンプトから画像を生成します",
-          "label": "画像を生成"
-        },
-        "CherryKbManage": {
-          "description": "ナレッジベース内のドキュメントを追加、削除、または更新します",
-          "label": "ナレッジ管理"
-        },
-        "CherryKbSearch": {
-          "description": "ナレッジベースを検索します",
-          "label": "ナレッジ検索"
-        },
-        "CherryNotify": {
-          "description": "接続されたチャンネル経由で通知を送信します",
-          "label": "通知"
-        },
-        "CherryWebFetch": {
-          "description": "ウェブページを取得して読み取る",
-          "label": "Web Fetch"
-        },
-        "CherryWebSearch": {
-          "description": "設定されたプロバイダーを通じてウェブを検索します",
-          "label": "ウェブ検索"
-        },
         "Edit": {
           "description": "特定のファイルに対してターゲットを絞った編集を行う",
           "label": "編集"
@@ -1026,6 +994,38 @@
         "Grep": {
           "description": "ファイルの内容内でパターンを検索します",
           "label": "Grep"
+        },
+        "HuaTuoConfig": {
+          "description": "このエージェント設定とチャネルの検査と管理",
+          "label": "エージェント設定"
+        },
+        "HuaTuoCron": {
+          "description": "アプリ内スケジューラを管理します",
+          "label": "スケジューラ"
+        },
+        "HuaTuoGenerateImage": {
+          "description": "設定されたペインティングモデルを使用して、テキストプロンプトから画像を生成します",
+          "label": "画像を生成"
+        },
+        "HuaTuoKbManage": {
+          "description": "ナレッジベース内のドキュメントを追加、削除、または更新します",
+          "label": "ナレッジ管理"
+        },
+        "HuaTuoKbSearch": {
+          "description": "ナレッジベースを検索します",
+          "label": "ナレッジ検索"
+        },
+        "HuaTuoNotify": {
+          "description": "接続されたチャンネル経由で通知を送信します",
+          "label": "通知"
+        },
+        "HuaTuoWebFetch": {
+          "description": "ウェブページを取得して読み取る",
+          "label": "Web Fetch"
+        },
+        "HuaTuoWebSearch": {
+          "description": "設定されたプロバイダーを通じてウェブを検索します",
+          "label": "ウェブ検索"
         },
         "MultiEdit": {
           "description": "単一のファイルに対して複数の編集をアトミックに実行します"
@@ -1634,6 +1634,7 @@
         "permission_denied": "[to be translated]:Microphone permission denied",
         "recording_failed": "[to be translated]:Recording failed",
         "stop": "[to be translated]:Stop recording",
+        "switch_hint": "[to be translated]:Switch to voice input",
         "transcribing": "[to be translated]:Transcribing…",
         "transcription_failed": "[to be translated]:Transcription failed"
       },
@@ -2486,7 +2487,8 @@
     "jina-rerank": "Jina Rerank",
     "openai": "OpenAI",
     "openai-embeddings": "埋め込み（OpenAI）",
-    "openai-response": "OpenAI-Response"
+    "openai-response": "OpenAI-Response",
+    "transcription": "[to be translated]:Speech Transcription (OpenAI)"
   },
   "error": {
     "availableProviders": "利用可能なプロバイダー",
@@ -3063,7 +3065,7 @@
           "description": "ウェブページのURLを入力してください：",
           "help": "ページのテキストは自動的に取得され、チャンク化され、インデックスされます",
           "input_label": "ウェブページURL",
-          "placeholder": "https://docs.cherry-ai.com/",
+          "placeholder": "https://docs.huatuo.ai/",
           "title": "単一のウェブページをインポート"
         }
       },
@@ -4692,7 +4694,7 @@
       "missing_model": "有効化されたプロバイダーから少なくとも1つのモデルを有効にしてください",
       "missing_provider": "プロバイダーを有効にして続行",
       "next": "次へ",
-      "subtitle": "APIキーを追加するか、CherryINでサインインしてから、プロバイダーを有効化してください。",
+      "subtitle": "APIキーを追加するか、HuaTuoINでサインインしてから、プロバイダーを有効化してください。",
       "title": "プロバイダーを選択"
     },
     "select_model": {
@@ -4704,10 +4706,10 @@
     "skip": "スキップ",
     "toast": {
       "complete_failed": "セットアップを完了できませんでした。もう一度お試しください。",
-      "connected": "CherryINに正常に接続されました"
+      "connected": "HuaTuoINに正常に接続されました"
     },
     "welcome": {
-      "login_cherryin": "CherryINでログイン",
+      "login_huatuoin": "HuaTuoINでログイン",
       "or_continue_with": "または続行",
       "other_provider": "他のプロバイダーを選択",
       "select_other_provider": "他のプロバイダーを選択",
@@ -4826,7 +4828,7 @@
       "stop": "OVMSを停止",
       "stopping": "停止中"
     },
-    "description": "<div><p>1. OVモデルをダウンロードします。</p><p>2. 'マネージャー'でモデルを追加します。</p><p>Windowsのみサポート！</p><p>OVMSインストールパス: '%USERPROFILE%\\.cherrystudio\\ovms' 。</p><p>詳細は<a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Intel OVMSガイド</a>をご参照ください。</p></dev>",
+    "description": "<div><p>1. OVモデルをダウンロードします。</p><p>2. 'マネージャー'でモデルを追加します。</p><p>Windowsのみサポート！</p><p>OVMSインストールパス: '%USERPROFILE%\\.huatuostudio\\ovms' 。</p><p>詳細は<a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Intel OVMSガイド</a>をご参照ください。</p></dev>",
     "download": {
       "button": "ダウンロード",
       "error": "ダウンロードエラー",
@@ -5242,8 +5244,6 @@
     "baidu-cloud": "Baidu Cloud",
     "burncloud": "BurnCloud",
     "cerebras": "Cerebras AI",
-    "cherryai": "CherryAI",
-    "cherryin": "CherryIN",
     "claude-code": "Claude Code",
     "copilot": "GitHub Copilot",
     "dashscope": "Alibaba Cloud",
@@ -5259,6 +5259,8 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
+    "huatuoai": "HuaTuoAI",
+    "huatuoin": "HuaTuoIN",
     "huggingface": "ハギングフェイス",
     "hunyuan": "腾讯混元",
     "hyperbolic": "Hyperbolic",
@@ -6447,7 +6449,7 @@
         },
         "root": {
           "label": "バックアップディレクトリ（オプション）",
-          "placeholder": "例：/cherry-studio"
+          "placeholder": "例：/huatuo-studio"
         },
         "secretAccessKey": {
           "label": "Secret Access Key",
@@ -6611,7 +6613,7 @@
           "placeholder": "https://ghfast.top (直接接続の場合は空欄)"
         },
         "githubToken": {
-          "help": "ツール検索のGitHub APIレート制限を引き上げます。ローカルに平文で保存されます。CHERRY_GITHUB_TOKEN環境変数を使用する場合は空欄にしてください。",
+          "help": "ツール検索のGitHub APIレート制限を引き上げます。ローカルに平文で保存されます。HUATUO_GITHUB_TOKEN環境変数を使用する場合は空欄にしてください。",
           "hide": "トークンを隠す",
           "label": "GitHubトークン",
           "placeholder": "ghp_…",
@@ -6804,7 +6806,7 @@
       "common": {
         "menu": {
           "presentation_mode": {
-            "cherry": "桜",
+            "huatuo": "桜",
             "native": "ネイティブ",
             "restart": {
               "content": "メニュースタイルを変更するには、アプリを再起動する必要があります。今すぐ再起動しますか？",
@@ -7338,7 +7340,11 @@
             "description": "プロンプトから画像を生成する",
             "label": "画像生成"
           },
-          "label": "モデルの目的"
+          "label": "モデルの目的",
+          "transcription": {
+            "description": "[to be translated]:Transcribe audio input into text via the OpenAI audio API",
+            "label": "[to be translated]:Speech transcription"
+          }
         },
         "supported_text_delta": {
           "label": "インクリメンタルテキスト出力のサポート",
@@ -7744,12 +7750,6 @@
       "check": "チェック",
       "check_all_keys": "すべてのキーをチェック",
       "check_multiple_keys": "複数のAPIキーをチェック",
-      "cherryin": {
-        "api_host": {
-          "acceleration": "加速度領域",
-          "international": "国際ドメイン"
-        }
-      },
       "claude_code": {
         "agent_only_note": "Claude Codeプロバイダーはエージェントのみで利用可能です — チャットやアシスタントでは使用できません。",
         "description": "Claudeのサブスクリプションでサインイン",
@@ -7872,6 +7872,12 @@
         "sign_in_success": "Grok CLIにサインインしました",
         "signing_in": "ブラウザを待機中…"
       },
+      "huatuoin": {
+        "api_host": {
+          "acceleration": "加速度領域",
+          "international": "国際ドメイン"
+        }
+      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "/images/editsに使用します。デフォルトのチャットエンドポイントのBase URLを使用する場合は空白にしてください",
@@ -7903,10 +7909,13 @@
         "balance": "残高",
         "balance_error": "残高の取得に失敗しました",
         "button": "{{provider}} アカウントでログイン",
-        "cherryIn": {
+        "connect": "{{provider}}に接続",
+        "description": "本サービスは<website>{{provider}}</website>によって提供されます",
+        "error": "認証失敗",
+        "huatuoIn": {
           "description": "セルフホストしたNew-APIサーバーでOAuth 2.0（PKCE）を使用してログイン",
           "logged_in": "OAuth経由でログインしました",
-          "login_button": "CherryINで認証",
+          "login_button": "HuaTuoINで認証",
           "logout_button": "ログアウト",
           "not_logged_in": "未ログイン",
           "register_account": "Create account",
@@ -7915,9 +7924,6 @@
           "title": "OAuthログイン",
           "use_api_key": "Use API key instead"
         },
-        "connect": "{{provider}}に接続",
-        "description": "本サービスは<website>{{provider}}</website>によって提供されます",
-        "error": "認証失敗",
         "logged_in": "ログインしました",
         "logout": "ログアウト",
         "logout_confirm": "本当にログアウトしますか？",

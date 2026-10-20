@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { createCherryIn } from '../cherryin-provider'
+import { createHuaTuoIn } from '../huatuoin-provider'
 import { createOpenAICompatibleRerankingModel } from '../openai-compatible-reranking-model'
 
 describe('createOpenAICompatibleRerankingModel', () => {
@@ -162,7 +162,7 @@ describe('createOpenAICompatibleRerankingModel', () => {
     ).rejects.toThrow()
   })
 
-  it('is reused by CherryIN reranking models', async () => {
+  it('is reused by HuaTuoIN reranking models', async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(
         JSON.stringify({
@@ -170,8 +170,8 @@ describe('createOpenAICompatibleRerankingModel', () => {
         })
       )
     )
-    const provider = createCherryIn({
-      apiKey: 'cherry-key',
+    const provider = createHuaTuoIn({
+      apiKey: 'huatuo-key',
       baseURL: 'https://open.cherryin.net/v1',
       headers: { 'x-static': 'yes' },
       fetch: fetchMock
@@ -191,7 +191,7 @@ describe('createOpenAICompatibleRerankingModel', () => {
       documents: ['alpha'],
       top_n: 1
     })
-    expect(new Headers(init.headers).get('Authorization')).toBe('Bearer cherry-key')
+    expect(new Headers(init.headers).get('Authorization')).toBe('Bearer huatuo-key')
     expect(new Headers(init.headers).get('x-static')).toBe('yes')
     expect(result.ranking).toEqual([{ index: 0, relevanceScore: 0.7 }])
   })

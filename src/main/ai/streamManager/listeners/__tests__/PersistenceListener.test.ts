@@ -7,7 +7,7 @@
  * which backend is wired in.
  */
 
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import type { SerializedError } from '@shared/types/error'
 import type { UIMessage } from 'ai'
@@ -34,15 +34,15 @@ const { PersistenceListener } = await import('../PersistenceListener')
 const { TemporaryChatBackend } = await import('../../persistence/backends/TemporaryChatBackend')
 const { MessageServiceBackend } = await import('../../persistence/backends/MessageServiceBackend')
 
-function makeFinalMessage(partsText = 'hello'): CherryUIMessage {
+function makeFinalMessage(partsText = 'hello'): HuaTuoUIMessage {
   return {
     id: 'ignored',
     role: 'assistant',
     parts: [{ type: 'text', text: partsText }]
-  } as unknown as CherryUIMessage
+  } as unknown as HuaTuoUIMessage
 }
 
-function makeStreamingReasoningMessage(startedAt: number): CherryUIMessage {
+function makeStreamingReasoningMessage(startedAt: number): HuaTuoUIMessage {
   return {
     id: 'reasoning-message',
     role: 'assistant',
@@ -51,10 +51,10 @@ function makeStreamingReasoningMessage(startedAt: number): CherryUIMessage {
         type: 'reasoning',
         text: 'thinking...',
         state: 'streaming',
-        providerMetadata: { cherry: { startedAt } }
+        providerMetadata: { huatuo: { startedAt } }
       }
     ]
-  } as unknown as CherryUIMessage
+  } as unknown as HuaTuoUIMessage
 }
 
 function makeListener(modelId?: UniqueModelId) {
@@ -106,7 +106,7 @@ describe('PersistenceListener + TemporaryChatBackend', () => {
         { type: 'text', text: 'answer' },
         { type: 'text', text: '   \n  ' }
       ]
-    } as unknown as CherryUIMessage
+    } as unknown as HuaTuoUIMessage
 
     await listener.onDone({ finalMessage, status: 'success', modelId: 'openai::gpt-4o' })
 
@@ -132,7 +132,7 @@ describe('PersistenceListener + TemporaryChatBackend', () => {
           outputTokenDetails: { reasoningTokens: 3 }
         }
       }
-    } as unknown as CherryUIMessage
+    } as unknown as HuaTuoUIMessage
 
     await listener.onDone({ finalMessage, status: 'success' })
 
@@ -202,7 +202,7 @@ describe('PersistenceListener + TemporaryChatBackend', () => {
     expect(payload.data.parts[0]).toMatchObject({
       type: 'reasoning',
       state: 'done',
-      providerMetadata: { cherry: { startedAt: 2000, thinkingMs: 5000 } }
+      providerMetadata: { huatuo: { startedAt: 2000, thinkingMs: 5000 } }
     })
     expect(appendAssistantMessageMock.mock.calls[0][2]).toBeUndefined()
   })
@@ -217,7 +217,7 @@ describe('PersistenceListener + TemporaryChatBackend', () => {
       parts: [{ type: 'text', text: 'so far so good' }]
     } as unknown as UIMessage
 
-    await listener.onError({ status: 'error', error: err, finalMessage: finalMessage as CherryUIMessage })
+    await listener.onError({ status: 'error', error: err, finalMessage: finalMessage as HuaTuoUIMessage })
 
     expect(appendAssistantMessageMock).toHaveBeenCalledTimes(1)
     const payload = appendAssistantMessageMock.mock.calls[0][1]
@@ -245,7 +245,7 @@ describe('PersistenceListener + TemporaryChatBackend', () => {
     expect(payload.data.parts[0]).toMatchObject({
       type: 'reasoning',
       state: 'done',
-      providerMetadata: { cherry: { startedAt: 3000, thinkingMs: 6000 } }
+      providerMetadata: { huatuo: { startedAt: 3000, thinkingMs: 6000 } }
     })
     expect(appendAssistantMessageMock.mock.calls[0][2]).toBeUndefined()
   })
@@ -408,7 +408,7 @@ describe('PersistenceListener + MessageServiceBackend — projection ownership',
       metadata: {
         stats: { inputTokens: 10, outputTokens: 5, totalTokens: 15, contextTokens: 13 }
       }
-    } as unknown as CherryUIMessage
+    } as unknown as HuaTuoUIMessage
 
     const listener = new PersistenceListener({
       topicId: 'topic-1',

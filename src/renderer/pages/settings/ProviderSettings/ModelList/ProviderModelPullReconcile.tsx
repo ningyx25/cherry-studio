@@ -1,4 +1,4 @@
-import { Button, ButtonGroupItem } from '@cherrystudio/ui'
+import { Button, ButtonGroupItem } from '@huatuostudio/ui'
 import { ArrowRight, RefreshCw } from 'lucide-react'
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'

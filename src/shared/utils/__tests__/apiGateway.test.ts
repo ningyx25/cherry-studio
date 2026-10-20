@@ -1,4 +1,3 @@
-import { CHERRYAI_DEFAULT_MODEL_ID, CHERRYAI_PROVIDER_ID } from '@shared/data/presets/cherryai'
 import { formatGatewayModelId } from '@shared/utils/apiGateway'
 import { describe, expect, it } from 'vitest'
 
@@ -23,9 +22,5 @@ describe('formatGatewayModelId', () => {
   it('rejects a provider id containing ":" — the first-colon split would route it to the wrong provider', () => {
     // "corp:west" + "model" would format to "corp:west:model" and parse back as provider "corp".
     expect(() => formatGatewayModelId('corp:west', 'model')).toThrow(/cannot be addressed/)
-  })
-
-  it('rejects the CherryAI managed default model (mirrors the gateway guard)', () => {
-    expect(() => formatGatewayModelId(CHERRYAI_PROVIDER_ID, CHERRYAI_DEFAULT_MODEL_ID)).toThrow(/CherryAI/)
   })
 })

@@ -29,10 +29,10 @@ async function collect(stream: ReadableStream<UIMessageChunk>): Promise<UIMessag
   return chunks
 }
 
-function cherryMeta(chunk: UIMessageChunk): Record<string, unknown> | undefined {
+function huatuoMeta(chunk: UIMessageChunk): Record<string, unknown> | undefined {
   const metadata =
     'providerMetadata' in chunk ? (chunk.providerMetadata as Record<string, unknown> | undefined) : undefined
-  return metadata?.cherry as Record<string, unknown> | undefined
+  return metadata?.huatuo as Record<string, unknown> | undefined
 }
 
 describe('withReasoningTimingMetadata', () => {
@@ -59,10 +59,10 @@ describe('withReasoningTimingMetadata', () => {
       )
     )
 
-    expect(cherryMeta(chunks[2])?.thinkingMs).toBe(332)
+    expect(huatuoMeta(chunks[2])?.thinkingMs).toBe(332)
   })
 
-  it('preserves existing provider metadata and cherry fields', async () => {
+  it('preserves existing provider metadata and huatuo fields', async () => {
     vi.spyOn(performance, 'now').mockReturnValueOnce(10).mockReturnValueOnce(35)
 
     const chunks = await collect(
@@ -74,7 +74,7 @@ describe('withReasoningTimingMetadata', () => {
             id: 'r1',
             providerMetadata: {
               openai: { itemId: 'provider-item' },
-              cherry: { existing: true }
+              huatuo: { existing: true }
             }
           } as UIMessageChunk
         ])
@@ -82,10 +82,10 @@ describe('withReasoningTimingMetadata', () => {
     )
 
     const reasoningEnd = chunks[1] as UIMessageChunk & {
-      providerMetadata: { openai: Record<string, unknown>; cherry: Record<string, unknown> }
+      providerMetadata: { openai: Record<string, unknown>; huatuo: Record<string, unknown> }
     }
     expect(reasoningEnd.providerMetadata.openai).toEqual({ itemId: 'provider-item' })
-    expect(reasoningEnd.providerMetadata.cherry).toEqual({
+    expect(reasoningEnd.providerMetadata.huatuo).toEqual({
       existing: true,
       thinkingMs: 25,
       startedAt: expect.any(Number)
@@ -103,7 +103,7 @@ describe('withReasoningTimingMetadata', () => {
             id: 'r1',
             providerMetadata: {
               'claude-code': { parentToolCallId: 'parent-tool' },
-              cherry: { transport: 'claude-agent' }
+              huatuo: { transport: 'claude-agent' }
             }
           } as UIMessageChunk,
           {
@@ -111,7 +111,7 @@ describe('withReasoningTimingMetadata', () => {
             id: 'r1',
             providerMetadata: {
               openai: { itemId: 'provider-item' },
-              cherry: { existing: true }
+              huatuo: { existing: true }
             }
           } as UIMessageChunk
         ])
@@ -122,12 +122,12 @@ describe('withReasoningTimingMetadata', () => {
       providerMetadata: {
         'claude-code': Record<string, unknown>
         openai: Record<string, unknown>
-        cherry: Record<string, unknown>
+        huatuo: Record<string, unknown>
       }
     }
     expect(reasoningEnd.providerMetadata['claude-code']).toEqual({ parentToolCallId: 'parent-tool' })
     expect(reasoningEnd.providerMetadata.openai).toEqual({ itemId: 'provider-item' })
-    expect(reasoningEnd.providerMetadata.cherry).toEqual({
+    expect(reasoningEnd.providerMetadata.huatuo).toEqual({
       transport: 'claude-agent',
       existing: true,
       thinkingMs: 25,
@@ -155,10 +155,10 @@ describe('withReasoningTimingMetadata', () => {
     )
 
     const reasoningEnd = chunks[3] as UIMessageChunk & {
-      providerMetadata: { anthropic: Record<string, unknown>; cherry: Record<string, unknown> }
+      providerMetadata: { anthropic: Record<string, unknown>; huatuo: Record<string, unknown> }
     }
     expect(reasoningEnd.providerMetadata.anthropic).toEqual({ signature: 'sig-abc' })
-    expect(reasoningEnd.providerMetadata.cherry).toEqual({ thinkingMs: 25, startedAt: expect.any(Number) })
+    expect(reasoningEnd.providerMetadata.huatuo).toEqual({ thinkingMs: 25, startedAt: expect.any(Number) })
   })
 
   it('preserves the anthropic signature in the accumulated final message', async () => {
@@ -190,7 +190,7 @@ describe('withReasoningTimingMetadata', () => {
 
     expect(finalReasoningPart?.text).toBe('steady thought')
     expect(finalReasoningPart?.providerMetadata?.anthropic).toEqual({ signature: 'sig-abc' })
-    expect(finalReasoningPart?.providerMetadata?.cherry).toEqual({
+    expect(finalReasoningPart?.providerMetadata?.huatuo).toEqual({
       thinkingMs: 350,
       startedAt: expect.any(Number)
     })
@@ -214,8 +214,8 @@ describe('withReasoningTimingMetadata', () => {
       )
     )
 
-    expect(cherryMeta(chunks[2])?.thinkingMs).toBe(250)
-    expect(cherryMeta(chunks[3])?.thinkingMs).toBe(350)
+    expect(huatuoMeta(chunks[2])?.thinkingMs).toBe(250)
+    expect(huatuoMeta(chunks[3])?.thinkingMs).toBe(350)
   })
 
   it('feeds the same thinkingMs into broadcast chunks and the accumulated final message', async () => {
@@ -243,11 +243,11 @@ describe('withReasoningTimingMetadata', () => {
 
     const broadcastReasoningEnd = broadcastChunks.find((chunk) => chunk.type === 'reasoning-end')
     const finalReasoningPart = result.finalMessage?.parts.find((part) => part.type === 'reasoning') as
-      | { providerMetadata?: { cherry?: { thinkingMs?: number } } }
+      | { providerMetadata?: { huatuo?: { thinkingMs?: number } } }
       | undefined
 
-    expect(cherryMeta(broadcastReasoningEnd!)?.thinkingMs).toBe(350)
-    expect(finalReasoningPart?.providerMetadata?.cherry?.thinkingMs).toBe(350)
+    expect(huatuoMeta(broadcastReasoningEnd!)?.thinkingMs).toBe(350)
+    expect(finalReasoningPart?.providerMetadata?.huatuo?.thinkingMs).toBe(350)
     expect(result.finalMessage?.parts.find((part) => part.type === 'text')).toMatchObject({ text: 'answer' })
   })
 
@@ -263,7 +263,7 @@ describe('withReasoningTimingMetadata', () => {
             id: 'r1',
             providerMetadata: {
               'claude-code': { parentToolCallId: 'parent-tool' },
-              cherry: { transport: 'claude-agent' }
+              huatuo: { transport: 'claude-agent' }
             }
           } as UIMessageChunk,
           { type: 'reasoning-delta', id: 'r1', delta: 'steady thought' } as UIMessageChunk,
@@ -280,7 +280,7 @@ describe('withReasoningTimingMetadata', () => {
       | undefined
 
     expect(finalReasoningPart?.providerMetadata?.['claude-code']).toEqual({ parentToolCallId: 'parent-tool' })
-    expect(finalReasoningPart?.providerMetadata?.cherry).toEqual({
+    expect(finalReasoningPart?.providerMetadata?.huatuo).toEqual({
       transport: 'claude-agent',
       thinkingMs: 350,
       startedAt: expect.any(Number)
@@ -293,7 +293,7 @@ describe('withReasoningTimingMetadata', () => {
     )
 
     expect(chunks[0]).toEqual({ type: 'reasoning-end', id: 'unmatched-id' })
-    expect(cherryMeta(chunks[0])).toBeUndefined()
+    expect(huatuoMeta(chunks[0])).toBeUndefined()
     expect(mockMainLoggerService.debug).toHaveBeenCalledWith(
       expect.stringContaining('reasoning-end received with no matching reasoning-start'),
       expect.objectContaining({ id: 'unmatched-id' })
@@ -317,7 +317,7 @@ describe('withReasoningTimingMetadata', () => {
 
     // The second start overwrote the first, so the end's thinkingMs is the
     // delta from the second start (200 -> 300 = 100), not the first.
-    expect(cherryMeta(chunks[2])?.thinkingMs).toBe(100)
+    expect(huatuoMeta(chunks[2])?.thinkingMs).toBe(100)
     expect(mockMainLoggerService.debug).toHaveBeenCalledWith(
       expect.stringContaining('reasoning-start received for an id that was never ended'),
       expect.objectContaining({ id: 'r1' })
@@ -347,7 +347,7 @@ describe('withReasoningTimingMetadata', () => {
       | { providerMetadata?: Record<string, unknown> }
       | undefined
 
-    expect(finalReasoningPart?.providerMetadata?.cherry).toEqual({
+    expect(finalReasoningPart?.providerMetadata?.huatuo).toEqual({
       startedAt: baseTime,
       thinkingMs: 350
     })

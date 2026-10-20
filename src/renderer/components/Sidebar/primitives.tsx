@@ -1,4 +1,4 @@
-import { EmojiIcon } from '@cherrystudio/ui'
+import { EmojiIcon } from '@huatuostudio/ui'
 import MiniAppLogo from '@renderer/components/icons/MiniAppIcon'
 import { isEmoji } from '@renderer/utils/naming'
 

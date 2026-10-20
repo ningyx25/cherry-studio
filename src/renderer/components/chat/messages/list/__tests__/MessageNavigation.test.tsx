@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { MessageListItem } from '../../types'
 import MessageNavigation from '../MessageNavigation'
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: { children: ReactNode }) => (
     <button type="button" {...props}>
       {children}

@@ -23,7 +23,7 @@ const mocks = vi.hoisted(() => ({ request: vi.fn() }))
 const themeMocks = vi.hoisted(() => ({ setTheme: vi.fn() }))
 vi.mock('@renderer/ipc', () => ({ ipcApi: { request: mocks.request } }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
   const passthrough =
     (tag: string) =>
@@ -222,8 +222,8 @@ describe('AppearanceSettings menu presentation mode', () => {
 
   it('does nothing when the selected mode is already active', () => {
     void confirmMenuPresentationModeChange({
-      currentMode: 'cherry',
-      mode: 'cherry',
+      currentMode: 'huatuo',
+      mode: 'huatuo',
       setMenuPresentationMode,
       setTimeoutTimer,
       t
@@ -234,7 +234,7 @@ describe('AppearanceSettings menu presentation mode', () => {
 
   it('saves the selected mode and schedules relaunch after confirmation', async () => {
     await confirmMenuPresentationModeChange({
-      currentMode: 'cherry',
+      currentMode: 'huatuo',
       mode: 'native',
       setMenuPresentationMode,
       setTimeoutTimer,
@@ -264,7 +264,7 @@ describe('AppearanceSettings menu presentation mode', () => {
 
     await expect(
       confirmMenuPresentationModeChange({
-        currentMode: 'cherry',
+        currentMode: 'huatuo',
         mode: 'native',
         setMenuPresentationMode,
         setTimeoutTimer,

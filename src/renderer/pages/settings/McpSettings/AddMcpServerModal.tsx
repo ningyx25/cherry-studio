@@ -1,3 +1,6 @@
+import { dataApiService } from '@data/DataApiService'
+import { usePreference } from '@data/hooks/usePreference'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Button,
   CodeEditor,
@@ -14,10 +17,7 @@ import {
   FormLabel,
   FormMessage,
   Label
-} from '@cherrystudio/ui'
-import { dataApiService } from '@data/DataApiService'
-import { usePreference } from '@data/hooks/usePreference'
-import { zodResolver } from '@hookform/resolvers/zod'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { useCodeStyle } from '@renderer/hooks/useCodeStyle'
 import { useTimer } from '@renderer/hooks/useTimer'

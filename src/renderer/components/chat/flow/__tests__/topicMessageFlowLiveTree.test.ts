@@ -1,4 +1,4 @@
-import type { CherryMessagePart, CherryUIMessage, TreeNode, TreeResponse } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage, TreeNode, TreeResponse } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { buildTopicMessageFlowLiveState, mergeTopicMessageFlowLiveTree } from '../topicMessageFlowLiveTree'
@@ -24,14 +24,14 @@ function uiMessage({
   id,
   parts = [],
   ...metadata
-}: Pick<CherryUIMessage, 'id' | 'role'> & {
-  parts?: CherryMessagePart[]
+}: Pick<HuaTuoUIMessage, 'id' | 'role'> & {
+  parts?: HuaTuoMessagePart[]
   parentId?: string | null
   status?: 'pending' | 'success' | 'error' | 'paused'
   siblingsGroupId?: number
   modelId?: string
   createdAt?: string
-}): CherryUIMessage {
+}): HuaTuoUIMessage {
   return {
     id,
     role: metadata.role,
@@ -43,10 +43,10 @@ function uiMessage({
       modelId: metadata.modelId,
       createdAt: metadata.createdAt ?? createdAt
     }
-  } as CherryUIMessage
+  } as HuaTuoUIMessage
 }
 
-const textPart = (text: string): CherryMessagePart => ({ type: 'text', text }) as CherryMessagePart
+const textPart = (text: string): HuaTuoMessagePart => ({ type: 'text', text }) as HuaTuoMessagePart
 
 describe('topicMessageFlowLiveTree', () => {
   it('derives a context boundary from the hidden data UI part', () => {

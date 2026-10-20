@@ -8,7 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mocks = vi.hoisted(() => ({ ipcApiRequest: vi.fn() }))
 
-vi.unmock('@cherrystudio/ui')
+vi.unmock('@huatuostudio/ui')
 vi.mock('@renderer/ipc', () => ({
   ipcApi: { request: mocks.ipcApiRequest }
 }))

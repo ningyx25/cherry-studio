@@ -3,7 +3,7 @@ import { loggerService } from '@logger'
 import { ipcApi } from '@renderer/ipc'
 import { ipcChatTransport } from '@renderer/services/aiTransport'
 import type { ActiveExecution } from '@shared/ai/transport'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { ChatRequestOptions, FileUIPart } from 'ai'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
@@ -21,25 +21,25 @@ export interface UseChatWithHistoryResult {
   regenerate: (options?: ChatRequestOptions & { messageId?: string }) => Promise<void>
   stop: () => Promise<void>
   error: Error | undefined
-  status: ReturnType<typeof useChat<CherryUIMessage>>['status']
-  setMessages: (messages: CherryUIMessage[] | ((messages: CherryUIMessage[]) => CherryUIMessage[])) => void
+  status: ReturnType<typeof useChat<HuaTuoUIMessage>>['status']
+  setMessages: (messages: HuaTuoUIMessage[] | ((messages: HuaTuoUIMessage[]) => HuaTuoUIMessage[])) => void
   activeExecutions: readonly ActiveExecution[]
-  chat: Chat<CherryUIMessage>
+  chat: Chat<HuaTuoUIMessage>
 }
 
 // ── Hook ──
 
 export function useChatWithHistory(
   topicId: string,
-  initialMessages: CherryUIMessage[],
-  refresh: () => Promise<CherryUIMessage[]>
+  initialMessages: HuaTuoUIMessage[],
+  refresh: () => Promise<HuaTuoUIMessage[]>
 ): UseChatWithHistoryResult {
   const enabled = Boolean(topicId)
   // The topic id is the Chat instance identity. Initial messages seed only a
   // newly selected topic; history updates flow through the explicit adapters.
   const chat = useMemo(
     () =>
-      new Chat<CherryUIMessage>({
+      new Chat<HuaTuoUIMessage>({
         id: topicId,
         transport: ipcChatTransport,
         messages: initialMessages,
@@ -59,7 +59,7 @@ export function useChatWithHistory(
     sendMessage,
     regenerate,
     resumeStream
-  } = useChat<CherryUIMessage>({
+  } = useChat<HuaTuoUIMessage>({
     chat,
     experimental_throttle: 0
   })

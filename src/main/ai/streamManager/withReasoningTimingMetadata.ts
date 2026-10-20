@@ -18,7 +18,7 @@
  */
 
 import { loggerService } from '@logger'
-import { type CherryReasoningMeta, CherryReasoningMetaSchema } from '@shared/data/types/uiParts'
+import { type HuaTuoReasoningMeta, HuaTuoReasoningMetaSchema } from '@shared/data/types/uiParts'
 import type { ProviderMetadata, UIMessageChunk } from 'ai'
 
 const logger = loggerService.withContext('withReasoningTimingMetadata')
@@ -44,7 +44,7 @@ export function withReasoningTimingMetadata(stream: ReadableStream<UIMessageChun
             epochStartedAt: epochNow,
             providerMetadata: toProviderMetadata(chunk.providerMetadata)
           })
-          controller.enqueue(withChunkCherryMeta(chunk, { startedAt: epochNow }))
+          controller.enqueue(withChunkHuaTuoMeta(chunk, { startedAt: epochNow }))
           return
         }
 
@@ -67,7 +67,7 @@ export function withReasoningTimingMetadata(stream: ReadableStream<UIMessageChun
             const thinkingMs = Math.round(performance.now() - reasoning.startedAt)
 
             controller.enqueue(
-              withChunkCherryMeta(
+              withChunkHuaTuoMeta(
                 chunk,
                 {
                   startedAt: reasoning.epochStartedAt,
@@ -87,12 +87,12 @@ export function withReasoningTimingMetadata(stream: ReadableStream<UIMessageChun
   )
 }
 
-function withChunkCherryMeta<C extends UIMessageChunk>(
+function withChunkHuaTuoMeta<C extends UIMessageChunk>(
   chunk: C,
-  patch: CherryReasoningMeta,
+  patch: HuaTuoReasoningMeta,
   startProviderMetadata?: ProviderMetadata
 ): C {
-  const parsed = CherryReasoningMetaSchema.safeParse(patch)
+  const parsed = HuaTuoReasoningMetaSchema.safeParse(patch)
   if (!parsed.success) {
     logger.warn('Failed to parse reasoning timing metadata chunk, falling back to empty patch', {
       issues: parsed.error.issues.length
@@ -101,17 +101,17 @@ function withChunkCherryMeta<C extends UIMessageChunk>(
   const cleanPatch = parsed.success ? parsed.data : {}
 
   const endMeta = 'providerMetadata' in chunk ? toProviderMetadata(chunk.providerMetadata) : undefined
-  const startCherry = isRecord(startProviderMetadata?.cherry) ? startProviderMetadata.cherry : {}
-  const endCherry = isRecord(endMeta?.cherry) ? endMeta.cherry : {}
+  const startHuaTuo = isRecord(startProviderMetadata?.huatuo) ? startProviderMetadata.huatuo : {}
+  const endHuaTuo = isRecord(endMeta?.huatuo) ? endMeta.huatuo : {}
 
   return {
     ...chunk,
     providerMetadata: {
       ...startProviderMetadata,
       ...endMeta,
-      cherry: {
-        ...startCherry,
-        ...endCherry,
+      huatuo: {
+        ...startHuaTuo,
+        ...endHuaTuo,
         ...cleanPatch
       }
     }

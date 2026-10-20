@@ -1,7 +1,7 @@
 import type { Span } from '@opentelemetry/api'
 import type { CompactionAnchorData } from '@shared/ai/compaction'
 import type { StreamChunkPayload, TopicStreamStatus } from '@shared/ai/transport'
-import type { CherryUIMessage, MessageRuntimeTiming } from '@shared/data/types/message'
+import type { HuaTuoUIMessage, MessageRuntimeTiming } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import type { SerializedError } from '@shared/types/error'
 import type { UIMessageChunk } from 'ai'
@@ -11,7 +11,7 @@ import type { MessageRuntimeTimingCollector } from './MessageRuntimeTimingCollec
 
 // ── Re-export shared types for consumers ────────────────────────────
 
-export type { CherryUIMessage }
+export type { HuaTuoUIMessage }
 export type {
   AiStreamAbortRequest,
   AiStreamAttachRequest,
@@ -24,7 +24,7 @@ export type {
   StreamErrorPayload,
   TopicStreamStatus
 } from '@shared/ai/transport'
-export type { CherryUIMessageChunk } from '@shared/data/types/message'
+export type { HuaTuoUIMessageChunk } from '@shared/data/types/message'
 
 // ── Timings ─────────────────────────────────────────────────────────
 //
@@ -39,7 +39,7 @@ export interface TransportTimings {
 // ── Stream terminal results ─────────────────────────────────────────
 
 export interface StreamDoneResult {
-  finalMessage?: CherryUIMessage
+  finalMessage?: HuaTuoUIMessage
   status: 'success'
   modelId?: UniqueModelId
   anchorMessageId?: string
@@ -50,7 +50,7 @@ export interface StreamDoneResult {
 }
 
 export interface StreamPausedResult {
-  finalMessage?: CherryUIMessage
+  finalMessage?: HuaTuoUIMessage
   status: 'paused'
   modelId?: UniqueModelId
   anchorMessageId?: string
@@ -62,7 +62,7 @@ export interface StreamPausedResult {
 export interface StreamErrorResult {
   error: SerializedError
   /** Whatever accumulated before the error — same shape as the success case. */
-  finalMessage?: CherryUIMessage
+  finalMessage?: HuaTuoUIMessage
   status: 'error'
   modelId?: UniqueModelId
   anchorMessageId?: string
@@ -104,7 +104,7 @@ export interface StreamExecution {
   buffer: StreamChunkPayload[]
   droppedChunks: number
   /** Latest accumulated snapshot from `readUIMessageStream`. Undefined until the first snapshot lands. */
-  finalMessage?: CherryUIMessage
+  finalMessage?: HuaTuoUIMessage
   /**
    * Compaction anchors emitted during this turn, newest last.
    *

@@ -1,4 +1,4 @@
-import { wireName } from '@cherrystudio/provider-registry'
+import { wireName } from '@huatuostudio/provider-registry'
 import type { JSONValue } from 'ai'
 
 import type { WireProfile, WireRegistration } from './wireProfile'

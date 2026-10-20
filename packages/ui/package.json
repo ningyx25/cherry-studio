@@ -1,5 +1,5 @@
 {
-  "name": "@cherrystudio/ui",
+  "name": "@huatuostudio/ui",
   "version": "1.0.0-alpha.1",
   "description": "HuaTuo Studio UI Component Library - React Components for HuaTuo Studio",
   "main": "dist/index.js",
@@ -27,18 +27,18 @@
     "react",
     "tailwindcss",
     "typescript",
-    "cherry-studio"
+    "huatuo-studio"
   ],
   "author": "HuaTuo Studio",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ningyx25/cherry-studio.git"
+    "url": "git+https://github.com/huatuostudio/huatuo-studio.git"
   },
   "bugs": {
-    "url": "https://github.com/ningyx25/cherry-studio/issues"
+    "url": "https://github.com/huatuostudio/huatuo-studio/issues"
   },
-  "homepage": "https://github.com/ningyx25/cherry-studio#readme",
+  "homepage": "https://github.com/huatuostudio/huatuo-studio#readme",
   "peerDependencies": {
     "@hookform/resolvers": "^5.0.0",
     "motion": "^12.42.0",

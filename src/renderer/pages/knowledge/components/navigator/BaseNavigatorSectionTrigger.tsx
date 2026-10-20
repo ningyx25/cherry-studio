@@ -1,5 +1,5 @@
-import { AccordionTrigger } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { AccordionTrigger } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 
 import type { BaseNavigatorSectionTriggerProps } from './types'
 

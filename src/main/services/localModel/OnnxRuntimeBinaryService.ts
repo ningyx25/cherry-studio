@@ -45,7 +45,7 @@ async function tarballUrlOrder(): Promise<string[]> {
  * for the current platform/arch on first use of local embedding or local OCR. The
  * package is no longer bundled at build time (see electron-builder.yml/before-pack.js) —
  * `onnxruntime-node`'s `dist/binding.js` is patched (see patches/onnxruntime-node@1.24.3.patch)
- * to require this downloaded copy via `CHERRY_ONNXRUNTIME_BINDING_PATH` instead of its own
+ * to require this downloaded copy via `HUATUO_ONNXRUNTIME_BINDING_PATH` instead of its own
  * bundled-relative path.
  *
  * Not a `LocalModelDownloadService` subclass: this has no `LocalModelKind`, no IPC route, no
@@ -67,7 +67,7 @@ class OnnxRuntimeBinaryService {
     return path.join(application.getPath('feature.onnxruntime.binary'), 'napi-v6', process.platform, process.arch)
   }
 
-  /** Absolute path to the native `.node` binding — set as `CHERRY_ONNXRUNTIME_BINDING_PATH`
+  /** Absolute path to the native `.node` binding — set as `HUATUO_ONNXRUNTIME_BINDING_PATH`
    * before the inference worker's first (lazy) `require('onnxruntime-node')`. */
   bindingPath(): string {
     const leaf = this.leaf()

@@ -255,7 +255,7 @@ describe('OpenClawService gateway status state machine', () => {
       runOpenClawCommandSpy.mockRestore()
       const stdout = JSON.stringify({
         valid: false,
-        issues: [{ path: 'models.providers.cherry-openai.apiKey', message: 'Invalid value' }]
+        issues: [{ path: 'models.providers.huatuo-openai.apiKey', message: 'Invalid value' }]
       })
       queueSpawnResult({ stdout, stderr: 'configuration rejected', exitCode: 1 })
 
@@ -391,7 +391,7 @@ describe('OpenClawService gateway status state machine', () => {
         exitCode: 1,
         stdout: JSON.stringify({
           valid: false,
-          path: '/mock/openclaw/openclaw.json.cherry-candidate-id',
+          path: '/mock/openclaw/openclaw.json.huatuo-candidate-id',
           issues: [{ path: 'tools.web.fetch.ssrfPolicy', message: 'Unsupported field' }]
         }),
         stderr: 'ignored diagnostic',
@@ -405,22 +405,22 @@ describe('OpenClawService gateway status state machine', () => {
       }
 
       await expect(
-        (service as any).validateConfig(runtime, '/mock/openclaw/openclaw.json.cherry-candidate-id')
+        (service as any).validateConfig(runtime, '/mock/openclaw/openclaw.json.huatuo-candidate-id')
       ).resolves.toEqual({
         valid: false,
-        path: '/mock/openclaw/openclaw.json.cherry-candidate-id',
+        path: '/mock/openclaw/openclaw.json.huatuo-candidate-id',
         issues: [{ path: 'tools.web.fetch.ssrfPolicy', message: 'Unsupported field' }],
         warnings: []
       })
       expect(runOpenClawCommandSpy).toHaveBeenCalledWith('/mock/bin/openclaw', ['config', 'validate', '--json'], {
         PATH: '/mock/bin',
         MISE_DATA_DIR: '/mock/mise',
-        OPENCLAW_CONFIG_PATH: '/mock/openclaw/openclaw.json.cherry-candidate-id'
+        OPENCLAW_CONFIG_PATH: '/mock/openclaw/openclaw.json.huatuo-candidate-id'
       })
     })
 
     it('accepts a successful OpenClaw validation report without an issues field', () => {
-      const path = '/mock/openclaw/openclaw.json.cherry-candidate-id'
+      const path = '/mock/openclaw/openclaw.json.huatuo-candidate-id'
 
       expect(
         (service as any).parseValidationResult({
@@ -437,7 +437,7 @@ describe('OpenClawService gateway status state machine', () => {
       { name: 'different', reportPath: '/mock/openclaw/openclaw.json' }
     ])('rejects a successful validation report with a $name config path', async ({ reportPath }) => {
       validateConfigSpy.mockRestore()
-      const candidatePath = '/mock/openclaw/openclaw.json.cherry-candidate-id'
+      const candidatePath = '/mock/openclaw/openclaw.json.huatuo-candidate-id'
       runOpenClawCommandSpy.mockResolvedValueOnce({
         exitCode: 0,
         stdout: JSON.stringify({
@@ -456,12 +456,12 @@ describe('OpenClawService gateway status state machine', () => {
 
     it('accepts a validation report whose config path resolves to the requested path', async () => {
       validateConfigSpy.mockRestore()
-      const candidatePath = '/mock/openclaw/openclaw.json.cherry-candidate-id'
+      const candidatePath = '/mock/openclaw/openclaw.json.huatuo-candidate-id'
       runOpenClawCommandSpy.mockResolvedValueOnce({
         exitCode: 0,
         stdout: JSON.stringify({
           valid: true,
-          path: '/mock/openclaw/nested/../openclaw.json.cherry-candidate-id',
+          path: '/mock/openclaw/nested/../openclaw.json.huatuo-candidate-id',
           warnings: []
         }),
         stderr: '',
@@ -470,7 +470,7 @@ describe('OpenClawService gateway status state machine', () => {
 
       await expect(
         (service as any).validateConfig({ path: '/mock/bin/openclaw', env: { PATH: '/mock/bin' } }, candidatePath)
-      ).resolves.toMatchObject({ valid: true, path: '/mock/openclaw/nested/../openclaw.json.cherry-candidate-id' })
+      ).resolves.toMatchObject({ valid: true, path: '/mock/openclaw/nested/../openclaw.json.huatuo-candidate-id' })
     })
 
     it('rejects an invalid validation report that omits the config path as binary incompatible', async () => {
@@ -479,7 +479,7 @@ describe('OpenClawService gateway status state machine', () => {
         exitCode: 1,
         stdout: JSON.stringify({
           valid: false,
-          issues: [{ path: 'models.providers.cherry-openai', message: 'Unsupported field' }]
+          issues: [{ path: 'models.providers.huatuo-openai', message: 'Unsupported field' }]
         }),
         stderr: '',
         outputTruncated: false
@@ -488,7 +488,7 @@ describe('OpenClawService gateway status state machine', () => {
       await expect(
         (service as any).validateConfig(
           { path: '/mock/bin/openclaw', env: { PATH: '/mock/bin' } },
-          '/mock/openclaw/openclaw.json.cherry-candidate-id'
+          '/mock/openclaw/openclaw.json.huatuo-candidate-id'
         )
       ).rejects.toMatchObject({ kind: 'binary_incompatible' })
     })
@@ -554,12 +554,12 @@ describe('OpenClawService gateway status state machine', () => {
       expect((thrown as Error).message).not.toContain('stderr-secret')
     })
 
-    it('classifies a rejected Cherry-managed provider field as binary incompatibility', async () => {
+    it('classifies a rejected HuaTuo-managed provider field as binary incompatibility', async () => {
       validateConfigSpy.mockResolvedValueOnce({
         valid: false,
         issues: [
           {
-            path: 'models.providers.cherry-openai.models.0.contextWindow',
+            path: 'models.providers.huatuo-openai.models.0.contextWindow',
             message: 'Unsupported generated field'
           }
         ],
@@ -569,7 +569,7 @@ describe('OpenClawService gateway status state machine', () => {
       await expect(
         (service as any).assertConfigValid(
           { source: 'mise', path: '/mock/bin/openclaw', env: { PATH: '/mock/bin' } },
-          '/mock/openclaw/openclaw.json.cherry-candidate-id'
+          '/mock/openclaw/openclaw.json.huatuo-candidate-id'
         )
       ).rejects.toMatchObject({
         kind: 'binary_incompatible',
@@ -589,7 +589,7 @@ describe('OpenClawService gateway status state machine', () => {
         await expect(
           (service as any).assertConfigValid(
             { source: 'mise', path: '/mock/bin/openclaw', env: { PATH: '/mock/bin' } },
-            '/mock/openclaw/openclaw.json.cherry-candidate-id'
+            '/mock/openclaw/openclaw.json.huatuo-candidate-id'
           )
         ).rejects.toMatchObject({
           kind: 'external_config_invalid',
@@ -1454,8 +1454,8 @@ describe('OpenClawService gateway status state machine', () => {
 
       expect(result).toEqual({ success: true })
       const written = JSON.parse(fs.readFileSync(path.join(configDir, 'openclaw.json'), 'utf-8'))
-      expect(written.models.providers['cherry-openai']).toMatchObject({ apiKey: 'sk-test' })
-      expect(written.agents.defaults.model.primary).toBe('cherry-openai/gpt-4o')
+      expect(written.models.providers['huatuo-openai']).toMatchObject({ apiKey: 'sk-test' })
+      expect(written.agents.defaults.model.primary).toBe('huatuo-openai/gpt-4o')
     })
 
     it('disables the OpenClaw update hint so its banner cannot swap the managed binary', async () => {
@@ -1474,14 +1474,14 @@ describe('OpenClawService gateway status state machine', () => {
       expect(written.update.checkOnStart).toBe(true)
     })
 
-    it('removes stale Cherry providers while preserving supported hand edits on the selected provider', async () => {
+    it('removes stale HuaTuo providers while preserving supported hand edits on the selected provider', async () => {
       fs.writeFileSync(
         path.join(configDir, 'openclaw.json'),
         JSON.stringify({
           models: {
             mode: 'merge',
             providers: {
-              'cherry-openai': {
+              'huatuo-openai': {
                 baseUrl: 'https://manual.example.com',
                 apiKey: 'manual-key',
                 api: 'anthropic-messages',
@@ -1496,7 +1496,7 @@ describe('OpenClawService gateway status state machine', () => {
                   }
                 ]
               },
-              'cherry-minimax': {
+              'huatuo-minimax': {
                 models: [{ id: 'MiniMax-M2', name: 'MiniMax M2', maxTokens: 4096 }]
               },
               external: {
@@ -1534,14 +1534,14 @@ describe('OpenClawService gateway status state machine', () => {
       await service.syncProviderConfig(provider, legacyModel)
 
       const written = JSON.parse(fs.readFileSync(path.join(configDir, 'openclaw.json'), 'utf-8'))
-      expect(Object.keys(written.models.providers)).toEqual(['external', 'cherry-openai'])
+      expect(Object.keys(written.models.providers)).toEqual(['external', 'huatuo-openai'])
       expect(written.models.providers.external).toEqual({
         baseUrl: 'https://external.example.com',
         apiKey: 'external-key',
         api: 'openai-completions',
         models: [{ id: 'external-model', name: 'External Model' }]
       })
-      expect(written.models.providers['cherry-openai']).toEqual({
+      expect(written.models.providers['huatuo-openai']).toEqual({
         baseUrl: 'https://api.openai.com/v1',
         apiKey: 'sk-test',
         api: 'openai-completions',
@@ -1676,7 +1676,7 @@ describe('OpenClawService gateway status state machine', () => {
         JSON.stringify({
           models: {
             providers: {
-              'cherry-openai': {
+              'huatuo-openai': {
                 request: {
                   allowPrivateNetwork: true,
                   removedField: 'drop',
@@ -1715,7 +1715,7 @@ describe('OpenClawService gateway status state machine', () => {
 
       expect(result).toEqual({ success: true })
       const written = JSON.parse(fs.readFileSync(path.join(configDir, 'openclaw.json'), 'utf-8'))
-      const managedProvider = written.models.providers['cherry-openai']
+      const managedProvider = written.models.providers['huatuo-openai']
       expect(managedProvider.headers).toBeUndefined()
       expect(managedProvider.request).toEqual({
         allowPrivateNetwork: true,
@@ -1760,7 +1760,7 @@ describe('OpenClawService gateway status state machine', () => {
 
       expect(result).toEqual({ success: true })
       const written = JSON.parse(fs.readFileSync(path.join(configDir, 'openclaw.json'), 'utf-8'))
-      expect(written.models.providers['cherry-openai']).toEqual({
+      expect(written.models.providers['huatuo-openai']).toEqual({
         baseUrl: 'https://api.openai.com/v1',
         apiKey: 'sk-test',
         api: 'openai-completions',
@@ -1796,7 +1796,7 @@ describe('OpenClawService gateway status state machine', () => {
       expect(result.success).toBe(false)
       expect('message' in result && result.message).toContain('incompatible with the generated configuration')
       expect(fs.readFileSync(configPath, 'utf-8')).toBe(original)
-      expect(fs.readdirSync(configDir).some((entry) => entry.includes('cherry-candidate'))).toBe(false)
+      expect(fs.readdirSync(configDir).some((entry) => entry.includes('huatuo-candidate'))).toBe(false)
     })
 
     it.each([
@@ -1825,7 +1825,7 @@ describe('OpenClawService gateway status state machine', () => {
         expect(fs.readFileSync(configPath, 'utf-8')).toBe(original)
         const candidatePath = validateConfigSpy.mock.calls[0][1] as string
         expect(path.dirname(candidatePath)).toBe(configDir)
-        expect(path.basename(candidatePath)).toContain('openclaw.json.cherry-candidate-')
+        expect(path.basename(candidatePath)).toContain('openclaw.json.huatuo-candidate-')
         expect(fs.existsSync(candidatePath)).toBe(false)
       }
     )
@@ -1879,13 +1879,13 @@ describe('OpenClawService gateway status state machine', () => {
       expect(message).toContain('and 2 more')
     })
 
-    it('classifies rejected Cherry-generated fields as binary incompatibility without changing the formal file', async () => {
+    it('classifies rejected HuaTuo-generated fields as binary incompatibility without changing the formal file', async () => {
       const configPath = path.join(configDir, 'openclaw.json')
       const original = '{"tools":{"web":{"search":{"enabled":true}}}}'
       fs.writeFileSync(configPath, original, 'utf-8')
       validateConfigSpy.mockResolvedValueOnce({
         valid: false,
-        issues: [{ path: 'models.providers.cherry-openai.models.0.contextWindow', message: 'Unknown field' }],
+        issues: [{ path: 'models.providers.huatuo-openai.models.0.contextWindow', message: 'Unknown field' }],
         warnings: []
       })
 
@@ -1894,7 +1894,7 @@ describe('OpenClawService gateway status state machine', () => {
       expect(result.success).toBe(false)
       expect('message' in result && result.message).toContain('incompatible with the generated configuration')
       expect(fs.readFileSync(configPath, 'utf-8')).toBe(original)
-      expect(fs.readdirSync(configDir).some((entry) => entry.includes('cherry-candidate'))).toBe(false)
+      expect(fs.readdirSync(configDir).some((entry) => entry.includes('huatuo-candidate'))).toBe(false)
     })
 
     it('validates a same-directory candidate, removes it, and atomically writes the formal config as 0600', async () => {
@@ -1904,7 +1904,7 @@ describe('OpenClawService gateway status state machine', () => {
       const configPath = path.join(configDir, 'openclaw.json')
       const candidatePath = validateConfigSpy.mock.calls[0][1] as string
       expect(path.dirname(candidatePath)).toBe(path.dirname(configPath))
-      expect(path.basename(candidatePath)).toContain('openclaw.json.cherry-candidate-')
+      expect(path.basename(candidatePath)).toContain('openclaw.json.huatuo-candidate-')
       expect(fs.existsSync(candidatePath)).toBe(false)
       expect(fs.statSync(configPath).mode & 0o777).toBe(0o600)
     })

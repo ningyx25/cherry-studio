@@ -10,8 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
   Label
-} from '@cherrystudio/ui'
-import { useIcon } from '@cherrystudio/ui/icons'
+} from '@huatuostudio/ui'
+import { useIcon } from '@huatuostudio/ui/icons'
 import { showErrorDetailPopup } from '@renderer/components/ErrorDetailModal'
 import type { SerializedError } from '@renderer/types/error'
 import { maskApiKey } from '@renderer/utils/api'

@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type * as ReactI18next from 'react-i18next'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -13,8 +13,8 @@ const { createWorkspaceMock, refetchWorkspacesMock, selectFolderMock, useMutatio
   })
 )
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
   return actual
 })
 
@@ -46,8 +46,8 @@ import { WorkspaceSelector } from '../WorkspaceSelector'
 const WORKSPACES = [
   {
     id: 'workspace-alpha',
-    name: 'cherry-studio',
-    path: '/Users/jd/cherry-studio',
+    name: 'huatuo-studio',
+    path: '/Users/jd/huatuo-studio',
     type: 'user',
     orderKey: 'a0',
     createdAt: '2026-01-01T00:00:00.000Z',
@@ -55,8 +55,8 @@ const WORKSPACES = [
   },
   {
     id: 'workspace-beta',
-    name: 'cherry-studio-1',
-    path: '/Users/jd/projects/cherry-studio-1',
+    name: 'huatuo-studio-1',
+    path: '/Users/jd/projects/huatuo-studio-1',
     type: 'user',
     orderKey: 'a1',
     createdAt: '2026-01-02T00:00:00.000Z',
@@ -141,9 +141,9 @@ describe('WorkspaceSelector', () => {
 
     expect(useQueryMock).toHaveBeenCalledWith('/agent-workspaces')
     const options = screen.getAllByRole('option')
-    expect(options[0]).toHaveTextContent('cherry-studio')
-    expect(options[1]).toHaveTextContent('cherry-studio-1')
-    expect(screen.queryByText('/Users/jd/cherry-studio')).not.toBeInTheDocument()
+    expect(options[0]).toHaveTextContent('huatuo-studio')
+    expect(options[1]).toHaveTextContent('huatuo-studio-1')
+    expect(screen.queryByText('/Users/jd/huatuo-studio')).not.toBeInTheDocument()
   })
 
   it('renders and selects the no-project option', async () => {
@@ -168,8 +168,8 @@ describe('WorkspaceSelector', () => {
 
     fireEvent.change(screen.getByPlaceholderText('Search work directories'), { target: { value: 'projects' } })
 
-    expect(screen.queryByRole('option', { name: /\/Users\/jd\/cherry-studio/ })).not.toBeInTheDocument()
-    expect(screen.getByRole('option', { name: /cherry-studio-1/ })).toBeInTheDocument()
+    expect(screen.queryByRole('option', { name: /\/Users\/jd\/huatuo-studio/ })).not.toBeInTheDocument()
+    expect(screen.getByRole('option', { name: /huatuo-studio-1/ })).toBeInTheDocument()
   })
 
   it('scrolls the selected workspace to the start when opened', async () => {
@@ -194,7 +194,7 @@ describe('WorkspaceSelector', () => {
     const { onChange } = renderSelector()
     openPopover()
 
-    fireEvent.click(screen.getByText('cherry-studio-1'))
+    fireEvent.click(screen.getByText('huatuo-studio-1'))
 
     await waitFor(() => expect(onChange).toHaveBeenCalledWith('workspace-beta'))
   })

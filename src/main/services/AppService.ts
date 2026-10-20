@@ -16,7 +16,7 @@ export class AppService {
     } else if (isLinux) {
       try {
         const autostartDir = application.getPath('sys.appdata.autostart')
-        const desktopFile = path.join(autostartDir, isDev ? 'cherry-studio-dev.desktop' : 'cherry-studio.desktop')
+        const desktopFile = path.join(autostartDir, isDev ? 'huatuo-studio-dev.desktop' : 'huatuo-studio.desktop')
 
         if (isLaunchOnBoot) {
           // Ensure autostart directory exists
@@ -39,7 +39,7 @@ export class AppService {
   Name=HuaTuo Studio
   Comment=A powerful AI assistant for producer.
   Exec=${executablePath}
-  Icon=cherrystudio
+  Icon=huatuostudio
   Terminal=false
   StartupNotify=false
   Categories=Development;Utility;

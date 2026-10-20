@@ -1,4 +1,4 @@
-import { Popover, PopoverContent, PopoverTrigger } from '@cherrystudio/ui'
+import { Popover, PopoverContent, PopoverTrigger } from '@huatuostudio/ui'
 import Selector from '@renderer/components/Selector'
 import type { MultiModelGridPopoverTrigger } from '@shared/data/preference/preferenceTypes'
 import { Settings } from 'lucide-react'

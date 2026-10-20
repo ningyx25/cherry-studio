@@ -1,5 +1,5 @@
 import type { DiagnosisResult } from '@renderer/utils/errorDiagnosis'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 
 import type { MessageListActions, MessageListItem, MessageStreamingLayers } from '../types'
 import { useMessageActivityState } from './useMessageActivityState'
@@ -16,7 +16,7 @@ interface UseMessageListAdapterCapabilitiesOptions {
   topicId: string
   topicName: string
   messages: MessageListItem[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   streamingLayers?: MessageStreamingLayers
   deleteMessage?: MessageListActions['deleteMessage']
   persistDiagnosis?: (partId: string, diagnosis: DiagnosisResult) => void | Promise<void>

@@ -1,4 +1,4 @@
-import { EmptyState } from '@cherrystudio/ui'
+import { EmptyState } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Sparkles } from 'lucide-react'
 

@@ -1,20 +1,20 @@
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { collectAssistantFileAttachments, createAssistantFileAttachmentHandle } from '../assistantFileAttachments'
 
-function filePart(fileEntryId: string, filename?: string): CherryMessagePart {
+function filePart(fileEntryId: string, filename?: string): HuaTuoMessagePart {
   return {
     type: 'file',
     url: 'file:///attachment',
     mediaType: 'application/octet-stream',
     filename,
-    providerMetadata: { cherry: { fileEntryId } }
-  } as CherryMessagePart
+    providerMetadata: { huatuo: { fileEntryId } }
+  } as HuaTuoMessagePart
 }
 
-function message(id: string, parts: CherryMessagePart[]): CherryUIMessage {
-  return { id, role: 'user', parts } as CherryUIMessage
+function message(id: string, parts: HuaTuoMessagePart[]): HuaTuoUIMessage {
+  return { id, role: 'user', parts } as HuaTuoUIMessage
 }
 
 describe('assistantFileAttachments', () => {

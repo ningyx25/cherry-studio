@@ -1,4 +1,4 @@
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import * as React from 'react'
 

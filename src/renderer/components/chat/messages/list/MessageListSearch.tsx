@@ -9,7 +9,7 @@ import { FindBar, type FindBarRef, type FindBarState, INITIAL_FIND_BAR_STATE } f
 import { useCommandHandler } from '@renderer/hooks/command'
 import { useIsActiveTab } from '@renderer/hooks/tab'
 import { findRangesInScope, supportsCustomHighlights } from '@renderer/utils/contentSearch'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { FC, RefObject } from 'react'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
@@ -30,7 +30,7 @@ const CURRENT_HIGHLIGHT = 'message-search-current'
 interface Props {
   /** Loaded messages in chronological order, including any live tail. */
   messages: MessageListItem[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   renderUserTextAsMarkdown: boolean
   excludedMessageIds: ReadonlySet<string>
   isStreaming: boolean

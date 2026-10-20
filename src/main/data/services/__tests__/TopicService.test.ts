@@ -373,7 +373,7 @@ describe('TopicService', () => {
         { id: 'p1', name: 'apple pie', orderKey: 'a0', createdAt: 1, updatedAt: 1 },
         { id: 'p2', name: 'banana split', orderKey: 'a1', createdAt: 1, updatedAt: 1 },
         { id: 'u1', name: 'apple juice', orderKey: 'a2', createdAt: 1, updatedAt: 1 },
-        { id: 'u2', name: 'cherry tart', orderKey: 'a3', createdAt: 1, updatedAt: 1 }
+        { id: 'u2', name: 'huatuo tart', orderKey: 'a3', createdAt: 1, updatedAt: 1 }
       ])
       await dbh.db.insert(pinTable).values([
         { id: 'pin-1', entityType: 'topic', entityId: 'p1', orderKey: 'a0', createdAt: 1, updatedAt: 1 },
@@ -967,7 +967,7 @@ describe('TopicService', () => {
                   mediaType: 'text/plain',
                   url: 'file:///tmp/duplicate-attachment.txt',
                   filename: 'duplicate-attachment.txt',
-                  providerMetadata: { cherry: { fileEntryId } }
+                  providerMetadata: { huatuo: { fileEntryId } }
                 }
               ]
             },
@@ -1041,7 +1041,7 @@ describe('TopicService', () => {
       expect(result.activeNodeId).toBe(copiedLeaf?.id)
       expect(copiedLeaf?.data.parts?.[1]).toMatchObject({
         type: 'file',
-        providerMetadata: { cherry: { fileEntryId } }
+        providerMetadata: { huatuo: { fileEntryId } }
       })
 
       const refs = await dbh.db.select().from(chatMessageFileRefTable)

@@ -1,4 +1,4 @@
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -71,7 +71,7 @@ const assistantMessage = {
   role: 'assistant',
   parts: [],
   metadata: { status: 'pending' }
-} as CherryUIMessage
+} as HuaTuoUIMessage
 const askUserQuestionInput = {
   questions: [
     {
@@ -87,7 +87,7 @@ const askUserQuestionUpdatedInput = {
   answers: { 'Choose logger': 'Winston' }
 }
 
-function makeAskUserQuestionPart(overrides: Partial<Record<string, unknown>> = {}): CherryMessagePart {
+function makeAskUserQuestionPart(overrides: Partial<Record<string, unknown>> = {}): HuaTuoMessagePart {
   return {
     type: 'dynamic-tool',
     toolName: 'AskUserQuestion',
@@ -96,7 +96,7 @@ function makeAskUserQuestionPart(overrides: Partial<Record<string, unknown>> = {
     input: askUserQuestionInput,
     approval: { id: 'approval-ask' },
     ...overrides
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
 function makeAskUserQuestionApproval(part = makeAskUserQuestionPart()) {
@@ -232,7 +232,7 @@ describe('useAgentChatRuntimeState', () => {
             ...assistantMessage.metadata,
             totalTokens: 256
           }
-        } as CherryUIMessage
+        } as HuaTuoUIMessage
       ],
       disposeOverlay: mocks.disposeOverlay,
       reset: mocks.resetOverlay
@@ -252,7 +252,7 @@ describe('useAgentChatRuntimeState', () => {
   it('keeps the history contract and composer callback stable across stream snapshots', () => {
     mocks.useExecutionOverlay.mockReturnValue({
       overlay: { 'assistant-1': [{ type: 'text', text: 'a' }] },
-      liveAssistants: [{ ...assistantMessage, parts: [{ type: 'text', text: 'a' }] } as CherryUIMessage],
+      liveAssistants: [{ ...assistantMessage, parts: [{ type: 'text', text: 'a' }] } as HuaTuoUIMessage],
       disposeOverlay: mocks.disposeOverlay,
       reset: mocks.resetOverlay
     })
@@ -268,7 +268,7 @@ describe('useAgentChatRuntimeState', () => {
 
     mocks.useExecutionOverlay.mockReturnValue({
       overlay: { 'assistant-1': [{ type: 'text', text: 'ab' }] },
-      liveAssistants: [{ ...assistantMessage, parts: [{ type: 'text', text: 'ab' }] } as CherryUIMessage],
+      liveAssistants: [{ ...assistantMessage, parts: [{ type: 'text', text: 'ab' }] } as HuaTuoUIMessage],
       disposeOverlay: mocks.disposeOverlay,
       reset: mocks.resetOverlay
     })

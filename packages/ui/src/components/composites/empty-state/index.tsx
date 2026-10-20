@@ -1,5 +1,5 @@
-import { Button } from '@cherrystudio/ui/components/primitives/button'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button } from '@huatuostudio/ui/components/primitives/button'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { ComponentType } from 'react'
 
 /**

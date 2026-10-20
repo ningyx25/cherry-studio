@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { useTheme } from '@renderer/hooks/useTheme'
 import { ipcApi } from '@renderer/ipc'
@@ -26,7 +26,7 @@ export function getPrivacyPolicyAsset(language: string): 'privacy-en.html' | 'pr
 
 export function buildPrivacyPolicyUrl(resourcesPath: string, language: string, theme: ThemeMode): string {
   const filePath = AbsoluteFilePathSchema.parse(
-    joinPath(resourcesPath, `cherry-studio/${getPrivacyPolicyAsset(language)}`)
+    joinPath(resourcesPath, `huatuo-studio/${getPrivacyPolicyAsset(language)}`)
   )
   const themeName = theme === ThemeMode.dark ? 'dark' : 'light'
   return `${toFileUrl(filePath)}?theme=${themeName}`

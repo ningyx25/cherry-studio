@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type * as ReactI18next from 'react-i18next'
 import { describe, expect, it, vi } from 'vitest'
@@ -49,7 +49,7 @@ function makeRequest(): AskUserQuestionComposerRequest {
     state: 'approval-requested',
     input: { questions },
     approval: { id: 'approval-1' }
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 
   return {
     messageId: 'message-1',

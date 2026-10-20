@@ -18,7 +18,7 @@ const sortableCalls: Array<{
   onSortEnd: (event: { oldIndex: number; newIndex: number }) => void
 }> = []
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   return {
     ReorderableList: ({ items }: { items: Provider[] }) => {
       reorderableItemsCalls.push(items)

@@ -1,5 +1,5 @@
-import type { CompoundIcon } from '@cherrystudio/ui'
-import { Bailian, Modelscope } from '@cherrystudio/ui/icons'
+import type { CompoundIcon } from '@huatuostudio/ui'
+import { Bailian, Modelscope } from '@huatuostudio/ui/icons'
 import type { McpServer } from '@shared/data/types/mcpServer'
 
 import { getBailianToken, saveBailianToken, syncBailianServers } from './bailian'

@@ -1,12 +1,12 @@
 import type { MessageActivityState, MessageListItem } from '@renderer/components/chat/messages/types'
 import { isMessageListItemProcessing } from '@renderer/components/chat/messages/utils/messageListItem'
 import { useTopicStreamStatus } from '@renderer/hooks/useTopicStreamStatus'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { useCallback } from 'react'
 
 export function useMessageActivityState(
   topicId: string,
-  partsMap?: Record<string, CherryMessagePart[]> | null
+  partsMap?: Record<string, HuaTuoMessagePart[]> | null
 ): (message: MessageListItem) => MessageActivityState {
   void partsMap
   const { activeExecutions, awaitingApprovalAnchors } = useTopicStreamStatus(topicId)

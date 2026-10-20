@@ -44,7 +44,7 @@ function message(fileEntryId: string, filename: string) {
           url: `file:///tmp/${filename}`,
           mediaType: 'text/plain',
           filename,
-          providerMetadata: { cherry: { fileEntryId } }
+          providerMetadata: { huatuo: { fileEntryId } }
         }
       ]
     }

@@ -1,5 +1,5 @@
 /**
- * Utility functions for reading data directly from CherryMessagePart[].
+ * Utility functions for reading data directly from HuaTuoMessagePart[].
  *
  * These are the parts-native equivalents of find.ts functions (which read from blocks).
  * Components should prefer these when PartsContext is available.
@@ -8,8 +8,8 @@
  * all components migrate to read parts. find.ts will then be removed.
  */
 
-import type { CherryMessagePart } from '@shared/data/types/message'
-import { readCherryMeta, type TranslationPartData } from '@shared/data/types/uiParts'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
+import { readHuaTuoMeta, type TranslationPartData } from '@shared/data/types/uiParts'
 
 /**
  * Extract concatenated **text-part** content from parts.
@@ -20,9 +20,9 @@ import { readCherryMeta, type TranslationPartData } from '@shared/data/types/uiP
  * other in a migration without accounting for that divergence, or code/error/
  * translation would silently drop from export/copy.
  */
-export function getTextFromParts(parts: CherryMessagePart[]): string {
+export function getTextFromParts(parts: HuaTuoMessagePart[]): string {
   return parts
-    .filter((p): p is Extract<CherryMessagePart, { type: 'text' }> => p.type === 'text')
+    .filter((p): p is Extract<HuaTuoMessagePart, { type: 'text' }> => p.type === 'text')
     .map((p) => p.text)
     .filter((t) => t.trim().length > 0)
     .join('\n\n')
@@ -31,9 +31,9 @@ export function getTextFromParts(parts: CherryMessagePart[]): string {
 /**
  * Extract concatenated reasoning/thinking content from parts (equivalent to getThinkingContent).
  */
-export function getReasoningFromParts(parts: CherryMessagePart[]): string {
+export function getReasoningFromParts(parts: HuaTuoMessagePart[]): string {
   return parts
-    .filter((p): p is Extract<CherryMessagePart, { type: 'reasoning' }> => p.type === 'reasoning')
+    .filter((p): p is Extract<HuaTuoMessagePart, { type: 'reasoning' }> => p.type === 'reasoning')
     .map((p) => p.text)
     .filter((t) => t.trim().length > 0)
     .join('\n\n')
@@ -42,7 +42,7 @@ export function getReasoningFromParts(parts: CherryMessagePart[]): string {
 /**
  * Check if parts contain any text content (equivalent to findMainTextBlocks().length > 0).
  */
-export function hasTextParts(parts: CherryMessagePart[]): boolean {
+export function hasTextParts(parts: HuaTuoMessagePart[]): boolean {
   return parts.some((p) => p.type === 'text' && p.text.trim().length > 0)
 }
 
@@ -50,18 +50,18 @@ export function hasTextParts(parts: CherryMessagePart[]): boolean {
  * Check if parts contain any translation data parts.
  * DataUIPart for translation has type: 'data-translation'.
  */
-export function hasTranslationParts(parts: CherryMessagePart[]): boolean {
+export function hasTranslationParts(parts: HuaTuoMessagePart[]): boolean {
   return parts.some((p) => p.type === 'data-translation')
 }
 
-type TextMessagePart = Extract<CherryMessagePart, { type: 'text' }>
+type TextMessagePart = Extract<HuaTuoMessagePart, { type: 'text' }>
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
 /**
- * Composer rebuilds text parts instead of patching them in place. A valid Cherry composer
+ * Composer rebuilds text parts instead of patching them in place. A valid HuaTuo composer
  * snapshot on a single text part can be rebuilt from the edited draft, and empty references carry
  * no content. Every other metadata field is opaque state that cannot be safely attached to changed
  * text (for example, Gemini thought signatures), so editing must be rejected instead of dropping it.
@@ -71,19 +71,19 @@ function hasUnroundtrippableTextMetadata(part: TextMessagePart, textPartCount: n
   if (providerMetadata === undefined) return false
   if (!isRecord(providerMetadata)) return true
   if (Object.keys(providerMetadata).length === 0) return false
-  if (Object.keys(providerMetadata).some((provider) => provider !== 'cherry')) return true
+  if (Object.keys(providerMetadata).some((provider) => provider !== 'huatuo')) return true
 
-  const cherry = providerMetadata.cherry
-  if (!isRecord(cherry)) return cherry !== undefined
+  const huatuo = providerMetadata.huatuo
+  if (!isRecord(huatuo)) return huatuo !== undefined
 
-  for (const [key, value] of Object.entries(cherry)) {
+  for (const [key, value] of Object.entries(huatuo)) {
     if (key === 'references') {
       if (!Array.isArray(value) || value.length > 0) return true
       continue
     }
 
     if (key === 'composer') {
-      if (value !== undefined && (textPartCount !== 1 || !readCherryMeta(part)?.composer)) return true
+      if (value !== undefined && (textPartCount !== 1 || !readHuaTuoMeta(part)?.composer)) return true
       continue
     }
 
@@ -99,7 +99,7 @@ function hasUnroundtrippableTextMetadata(part: TextMessagePart, textPartCount: n
  * text first, then files. Text parts with metadata Composer cannot reproduce are rejected instead
  * of silently losing provider state. Translation parts are derived and removed when the edit is saved.
  */
-export function canEditAssistantMessageParts(parts: CherryMessagePart[]): boolean {
+export function canEditAssistantMessageParts(parts: HuaTuoMessagePart[]): boolean {
   let hasText = false
   let hasEditablePart = false
   let hasFile = false
@@ -132,7 +132,7 @@ export function canEditAssistantMessageParts(parts: CherryMessagePart[]): boolea
 /**
  * Extract translation content from data-translation parts.
  */
-export function getTranslationFromParts(parts: CherryMessagePart[]): TranslationPartData[] {
+export function getTranslationFromParts(parts: HuaTuoMessagePart[]): TranslationPartData[] {
   return parts
     .filter(
       (p): p is { type: 'data-translation'; id?: string; data: TranslationPartData } => p.type === 'data-translation'

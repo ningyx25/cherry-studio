@@ -1,7 +1,7 @@
 import path from 'node:path'
 
 import type { ProviderOptions } from '@ai-sdk/provider-utils'
-import { generateText as aiCoreGenerateText } from '@cherrystudio/ai-core'
+import { generateText as aiCoreGenerateText } from '@huatuostudio/ai-core'
 import { ENDPOINT_TYPE, type EndpointType, MODEL_CAPABILITY, SERVER_TOOL } from '@shared/data/types/model'
 import type { StopCondition, Tool, ToolSet } from 'ai'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -946,7 +946,7 @@ describe('buildAgentParams retained context', () => {
         mediaType: 'text/plain',
         url: 'file:///tmp/log.txt',
         filename: 'log.txt',
-        providerMetadata: { cherry: { fileEntryId: 'fe-1' } }
+        providerMetadata: { huatuo: { fileEntryId: 'fe-1' } }
       }
     ]
   } as never

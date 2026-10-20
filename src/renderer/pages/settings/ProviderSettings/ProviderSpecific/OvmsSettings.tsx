@@ -1,5 +1,5 @@
-import { Button, ColFlex } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, ColFlex } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { ipcApi } from '@renderer/ipc'
 import { toast } from '@renderer/services/toast'
 import { AlertTriangle, CheckCircle2, Info, XCircle } from 'lucide-react'

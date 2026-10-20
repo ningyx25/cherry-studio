@@ -1,5 +1,5 @@
-import { Button, ConfirmDialog } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, ConfirmDialog } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { CommandContextMenu, type CommandContextMenuExtraItem, CommandPopupMenu } from '@renderer/components/command'
 import { MoreHorizontal, PencilLine, Plus, Trash2 } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'

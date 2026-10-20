@@ -95,14 +95,14 @@ describe('RuntimeExecutor.rerank', () => {
     })
   })
 
-  it('resolves CherryIN rerank models through the provider registry', async () => {
-    const cherryInExecutor = await createExecutor('cherryin', {
+  it('resolves HuaTuoIN rerank models through the provider registry', async () => {
+    const huatuoInExecutor = await createExecutor('huatuoin', {
       apiKey: 'test-key',
       baseURL: 'https://open.cherryin.net/v1',
       endpointType: 'jina-rerank'
     })
 
-    await cherryInExecutor.rerank({
+    await huatuoInExecutor.rerank({
       model: 'BAAI/bge-reranker-v2-m3(free)',
       query: 'test',
       documents: ['test'],
@@ -112,7 +112,7 @@ describe('RuntimeExecutor.rerank', () => {
     expect(aiRerank).toHaveBeenLastCalledWith(
       expect.objectContaining({
         model: expect.objectContaining({
-          provider: 'cherryin.rerank',
+          provider: 'huatuoin.rerank',
           modelId: 'BAAI/bge-reranker-v2-m3(free)'
         }),
         query: 'test',

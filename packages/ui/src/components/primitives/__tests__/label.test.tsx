@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
 
-import { Form, FormField, FormItem, FormLabel } from '@cherrystudio/ui/components/composites/form'
-import { Label, RequiredMark } from '@cherrystudio/ui/components/primitives/label'
+import { Form, FormField, FormItem, FormLabel } from '@huatuostudio/ui/components/composites/form'
+import { Label, RequiredMark } from '@huatuostudio/ui/components/primitives/label'
 import { cleanup, render, screen } from '@testing-library/react'
 import { useForm } from 'react-hook-form'
 import { afterEach, describe, expect, it } from 'vitest'

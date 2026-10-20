@@ -14,8 +14,8 @@
  */
 
 import { application } from '@application'
-import type { VFSStorageAdapter } from '@cherrystudio/ai-core'
 import { messageService } from '@data/services/MessageService'
+import type { VFSStorageAdapter } from '@huatuostudio/ai-core'
 
 import { persistToolOutputText } from './toolOutputStore'
 

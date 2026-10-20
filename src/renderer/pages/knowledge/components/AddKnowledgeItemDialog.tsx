@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from '@cherrystudio/ui'
+import { Dialog, DialogContent } from '@huatuostudio/ui'
 import { useAddKnowledgeItems } from '@renderer/hooks/useKnowledgeItems'
 import { toast } from '@renderer/services/toast'
 import { formatErrorMessageWithPrefix } from '@renderer/utils/error'

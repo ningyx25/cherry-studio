@@ -6,7 +6,7 @@ import {
   Alert,
   Button,
   Scrollbar
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { useEnableKnowledgeBaseEmbedding } from '@renderer/hooks/useKnowledgeBase'
 import { toast } from '@renderer/services/toast'
 import { formatErrorMessageWithPrefix } from '@renderer/utils/error'

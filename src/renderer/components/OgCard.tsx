@@ -1,6 +1,6 @@
 import '@renderer/assets/styles/vendor/og-crd.css'
 
-import { Skeleton } from '@cherrystudio/ui'
+import { Skeleton } from '@huatuostudio/ui'
 import { useMetaDataParser } from '@renderer/hooks/useMetaDataParser'
 import { OgCard as OgCrdCard } from 'og-crd'
 import { type CSSProperties, type PropsWithChildren, useEffect, useMemo } from 'react'

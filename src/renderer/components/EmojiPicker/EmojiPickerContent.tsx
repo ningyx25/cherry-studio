@@ -21,7 +21,7 @@ import { useRecentEmojis } from './useRecentEmojis'
 
 const logger = loggerService.withContext('EmojiPicker')
 
-const CHERRY_PICKER_STYLE = {
+const HUATUO_PICKER_STYLE = {
   '--epr-bg-color': 'var(--popover)',
   '--epr-picker-border-color': 'transparent',
   '--epr-picker-border-radius': 'var(--radius-lg)',
@@ -160,7 +160,7 @@ const EmojiPickerContent: FC<EmojiPickerProps> = ({ onEmojiClick }) => {
       <EmojiPickerReact
         autoFocusSearch
         categories={categories}
-        className="cherry-emoji-picker-react"
+        className="huatuo-emoji-picker-react"
         emojiData={emojiData}
         emojiStyle={EmojiStyle.NATIVE}
         emojiVersion={emojiVersion}
@@ -171,7 +171,7 @@ const EmojiPickerContent: FC<EmojiPickerProps> = ({ onEmojiClick }) => {
         searchDisabled={false}
         searchPlaceholder={t('emoji_picker.search')}
         skinTonesDisabled
-        style={CHERRY_PICKER_STYLE}
+        style={HUATUO_PICKER_STYLE}
         suggestedEmojis={recent}
         suggestedEmojisMode={SuggestionMode.RECENT}
         theme={Theme.AUTO}

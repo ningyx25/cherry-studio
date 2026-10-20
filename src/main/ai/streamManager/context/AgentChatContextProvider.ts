@@ -11,7 +11,7 @@ import { agentSessionService } from '@data/services/AgentSessionService'
 import { topicNamingService } from '@main/services/TopicNamingService'
 import { DataApiErrorFactory } from '@shared/data/api/errors'
 import type { AgentSessionMessageEntity } from '@shared/data/api/schemas/agentSessionMessages'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { parseUniqueModelId } from '@shared/data/types/model'
 import type { UIMessage } from 'ai'
 import { v7 as uuidv7 } from 'uuid'
@@ -23,7 +23,7 @@ import type { StreamListener } from '../types'
 import type { ChatContextProvider, DispatchContext, PreparedDispatch } from './ChatContextProvider'
 import type { MainDispatchRequest } from './dispatch'
 
-function toReservedAgentUIMessage(row: AgentSessionMessageEntity): CherryUIMessage {
+function toReservedAgentUIMessage(row: AgentSessionMessageEntity): HuaTuoUIMessage {
   return {
     id: row.id,
     role: row.role,
@@ -36,7 +36,7 @@ function toReservedAgentUIMessage(row: AgentSessionMessageEntity): CherryUIMessa
       stats: row.stats ?? undefined,
       ...(row.stats?.totalTokens ? { totalTokens: row.stats.totalTokens } : {})
     }
-  } as CherryUIMessage
+  } as HuaTuoUIMessage
 }
 
 export class AgentChatContextProvider implements ChatContextProvider {

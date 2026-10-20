@@ -1,22 +1,22 @@
 import type { TranslationOverlayEntry } from '@renderer/components/chat/messages/blocks/MessagePartsContext'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { useStableMessagePartsLayers, useStablePartsByMessageId } from '../useStableMessagePartsLayers'
 
-function makeMessage(id: string, parts: CherryMessagePart[]): CherryUIMessage {
-  return { id, role: 'assistant', parts } as unknown as CherryUIMessage
+function makeMessage(id: string, parts: HuaTuoMessagePart[]): HuaTuoUIMessage {
+  return { id, role: 'assistant', parts } as unknown as HuaTuoUIMessage
 }
 
-const textPart = (text: string): CherryMessagePart => ({ type: 'text', text }) as CherryMessagePart
+const textPart = (text: string): HuaTuoMessagePart => ({ type: 'text', text }) as HuaTuoMessagePart
 
 describe('useStablePartsByMessageId', () => {
   it('preserves container ref when nothing changes across renders', () => {
     const partsA = [textPart('a')]
     const partsB = [textPart('b')]
     const messages = [makeMessage('m1', partsA), makeMessage('m2', partsB)]
-    const overlay: Record<string, CherryMessagePart[]> = {}
+    const overlay: Record<string, HuaTuoMessagePart[]> = {}
     const translationOverlay: Record<string, TranslationOverlayEntry> = {}
 
     const { result, rerender } = renderHook(({ msgs, ov, tov }) => useStablePartsByMessageId(msgs, ov, tov), {
@@ -99,8 +99,8 @@ describe('useStablePartsByMessageId', () => {
     const messages = [makeMessage('m1', partsBase)]
 
     const { result, rerender } = renderHook(
-      ({ ov }: { ov: Record<string, CherryMessagePart[]> }) => useStablePartsByMessageId(messages, ov, {}),
-      { initialProps: { ov: { m1: overlayParts } as Record<string, CherryMessagePart[]> } }
+      ({ ov }: { ov: Record<string, HuaTuoMessagePart[]> }) => useStablePartsByMessageId(messages, ov, {}),
+      { initialProps: { ov: { m1: overlayParts } as Record<string, HuaTuoMessagePart[]> } }
     )
 
     expect(result.current['m1']).toBe(overlayParts)
@@ -124,10 +124,10 @@ describe('useStablePartsByMessageId', () => {
     const messages = [makeMessage('m1', historyParts)]
 
     const { result, rerender } = renderHook(
-      ({ ov }: { ov: Record<string, CherryMessagePart[]> }) => useStableMessagePartsLayers(messages, ov, {}),
+      ({ ov }: { ov: Record<string, HuaTuoMessagePart[]> }) => useStableMessagePartsLayers(messages, ov, {}),
       {
         initialProps: {
-          ov: { 'live-m2': liveParts, 'live-m3': retainedLiveParts } as Record<string, CherryMessagePart[]>
+          ov: { 'live-m2': liveParts, 'live-m3': retainedLiveParts } as Record<string, HuaTuoMessagePart[]>
         }
       }
     )
@@ -166,7 +166,7 @@ describe('useStablePartsByMessageId', () => {
     }
 
     const { result, rerender } = renderHook(
-      ({ ov }: { ov: Record<string, CherryMessagePart[]> }) =>
+      ({ ov }: { ov: Record<string, HuaTuoMessagePart[]> }) =>
         useStableMessagePartsLayers(messages, ov, { m1: translation }),
       { initialProps: { ov: { m1: firstFrame } } }
     )

@@ -7,7 +7,7 @@ const LEADING_HTML_METADATA_REGEX = /^(?:\s*(?:<!--[\s\S]*?-->|<!doctype[^>]*>|<
 const HTML_DOCUMENT_START_REGEX = /^<html(?:\s|>)/i
 const HTML_DOCUMENT_END_REGEX = /<\/html\s*>/i
 const HTML_LANGUAGE_REGEX = /^html?$/i
-const PROTECTED_HTML_PLACEHOLDER_PREFIX = '__CHERRY_STUDIO_HTML_ARTIFACT_'
+const PROTECTED_HTML_PLACEHOLDER_PREFIX = '__HUATUO_STUDIO_HTML_ARTIFACT_'
 const LEADING_HTML_DOCTYPE_REGEX = /^(?:\s*(?:<!--[\s\S]*?-->|<\?[\s\S]*?\?>))*\s*<!doctype(?:\s|>)/i
 // A *closed* opening tag, so a half-streamed `<div` never counts as a fragment.
 const HTML_FRAGMENT_START_REGEX = /^<[a-z][a-z0-9-]*(?:\s[^>]*)?>/i

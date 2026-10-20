@@ -35,7 +35,7 @@ describe('internal/system/tempCopy', () => {
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
     mockLoggerWarn.mockClear()
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-tempcopy-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-tempcopy-'))
     filesDir = path.join(tmp, 'Files')
     const { mkdir } = await import('node:fs/promises')
     await mkdir(filesDir, { recursive: true })

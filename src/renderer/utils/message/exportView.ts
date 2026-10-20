@@ -1,8 +1,8 @@
 import type { MessageExportView } from '@renderer/types/messageExport'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 
-export function exportViewToUIMessage(message: MessageExportView): CherryUIMessage {
-  const metadata: CherryUIMessage['metadata'] = {
+export function exportViewToUIMessage(message: MessageExportView): HuaTuoUIMessage {
+  const metadata: HuaTuoUIMessage['metadata'] = {
     status: message.status,
     createdAt: message.createdAt
   }
@@ -20,15 +20,15 @@ export function exportViewToUIMessage(message: MessageExportView): CherryUIMessa
   return {
     id: message.id,
     role: message.role,
-    parts: message.parts as CherryUIMessage['parts'],
+    parts: message.parts as HuaTuoUIMessage['parts'],
     metadata
-  } as CherryUIMessage
+  } as HuaTuoUIMessage
 }
 
-export function createPartsByMessageId(messages: CherryUIMessage[]): Record<string, CherryMessagePart[]> {
-  const partsByMessageId: Record<string, CherryMessagePart[]> = {}
+export function createPartsByMessageId(messages: HuaTuoUIMessage[]): Record<string, HuaTuoMessagePart[]> {
+  const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {}
   for (const message of messages) {
-    partsByMessageId[message.id] = (message.parts ?? []) as CherryMessagePart[]
+    partsByMessageId[message.id] = (message.parts ?? []) as HuaTuoMessagePart[]
   }
   return partsByMessageId
 }

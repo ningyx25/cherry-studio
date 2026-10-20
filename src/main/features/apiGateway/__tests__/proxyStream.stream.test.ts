@@ -1,6 +1,6 @@
 import type { MessageCreateParams } from '@anthropic-ai/sdk/resources/messages'
 import type { StreamListener } from '@main/ai/streamManager/types'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { createUniqueModelId, ENDPOINT_TYPE, type EndpointType } from '@shared/data/types/model'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -27,7 +27,7 @@ const {
   mockListModels: vi.fn(),
   mockResolveAgentSessionUsage: vi.fn(),
   mockIsInternalAgentRequest: vi.fn(),
-  mockToUIMessages: vi.fn<(params: MessageCreateParams) => CherryUIMessage[]>(),
+  mockToUIMessages: vi.fn<(params: MessageCreateParams) => HuaTuoUIMessage[]>(),
   captured: { listener: undefined as StreamListener | undefined }
 }))
 
@@ -86,11 +86,11 @@ vi.mock('../adapters', () => ({
 import { processMessage } from '../proxyStream'
 import { AGENT_CONTINUATION_TEXT } from '../utils/agentContinuation'
 
-function convertMockAnthropicMessages(params: MessageCreateParams): CherryUIMessage[] {
-  const messages: CherryUIMessage[] = []
+function convertMockAnthropicMessages(params: MessageCreateParams): HuaTuoUIMessage[] {
+  const messages: HuaTuoUIMessage[] = []
 
   params.messages.forEach((message, index) => {
-    const parts: CherryUIMessage['parts'] = []
+    const parts: HuaTuoUIMessage['parts'] = []
     if (typeof message.content === 'string') {
       if (message.content.length > 0) {
         parts.push({ type: 'text', text: message.content })
@@ -205,12 +205,12 @@ function createAnthropicParams(
 async function processAndCaptureStreamMessages(
   params: MessageCreateParams,
   inputFormat: 'anthropic' | 'openai' = 'anthropic'
-): Promise<CherryUIMessage[]> {
+): Promise<HuaTuoUIMessage[]> {
   const response = processMessage({
     params,
     inputFormat,
     outputFormat: 'anthropic',
-    requestHeaders: new Headers({ 'x-cherry-internal-usage-token': 'proof' })
+    requestHeaders: new Headers({ 'x-huatuo-internal-usage-token': 'proof' })
   })
   await vi.waitFor(() => expect(mockToUIMessages).toHaveBeenCalled())
   await vi.waitFor(() => expect(captured.listener).toBeDefined())
@@ -221,7 +221,7 @@ async function processAndCaptureStreamMessages(
   await captured.listener!.onDone({} as any)
   await response
 
-  return mockStreamPrompt.mock.calls[0][0].messages as CherryUIMessage[]
+  return mockStreamPrompt.mock.calls[0][0].messages as HuaTuoUIMessage[]
 }
 
 describe('processMessage (internal Agent continuation normalization)', () => {
@@ -448,7 +448,7 @@ describe('processMessage (streaming)', () => {
       source: { type: 'agent', id: 'agent-1', name: 'Original Agent', icon: '🧠' }
     }
     mockResolveAgentSessionUsage.mockReturnValue(usageContext)
-    const requestHeaders = new Headers({ 'x-cherry-internal-usage-token': 'proof' })
+    const requestHeaders = new Headers({ 'x-huatuo-internal-usage-token': 'proof' })
     const response = processMessage({
       params: { model: 'openai:gpt-4', stream: true, messages: [] } as any,
       inputFormat: 'openai',

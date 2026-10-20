@@ -21,7 +21,7 @@ const mocks = vi.hoisted(() => ({
   windowOpen: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const ReactActual = await vi.importActual<typeof React>('react')
   // Controlled Popover so menu items are hidden until the trigger ("More") opens it — otherwise
   // the test could click menu entries without the split-button/asChild/open flow ever running.

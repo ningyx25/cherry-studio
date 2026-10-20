@@ -1,5 +1,5 @@
-import { Checkbox } from '@cherrystudio/ui/components/primitives/checkbox'
-import { RadioGroup, RadioGroupItem } from '@cherrystudio/ui/components/primitives/radio-group'
+import { Checkbox } from '@huatuostudio/ui/components/primitives/checkbox'
+import { RadioGroup, RadioGroupItem } from '@huatuostudio/ui/components/primitives/radio-group'
 import {
   Table,
   TableBody,
@@ -7,8 +7,8 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@cherrystudio/ui/components/primitives/table'
-import { cn } from '@cherrystudio/ui/lib/utils'
+} from '@huatuostudio/ui/components/primitives/table'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import {
   type Cell,
   type ColumnDef,

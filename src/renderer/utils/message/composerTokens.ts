@@ -1,18 +1,18 @@
 import type { ExportableMessage } from '@renderer/types/messageExport'
 import { isComposerMessageTextTokenKind, isComposerMessageTokenKind } from '@renderer/utils/composerTokenPolicy'
-import type { CherryMessagePart } from '@shared/data/types/message'
-import { type ComposerMessageSnapshot, type ComposerMessageToken, readCherryMeta } from '@shared/data/types/uiParts'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
+import { type ComposerMessageSnapshot, type ComposerMessageToken, readHuaTuoMeta } from '@shared/data/types/uiParts'
 
 const SKILL_TOKEN_ID_PREFIX = 'skill:'
 const KNOWLEDGE_TOKEN_ID_PREFIX = 'knowledge:'
 
-function isTextPart(part: CherryMessagePart): part is Extract<CherryMessagePart, { type: 'text' }> {
+function isTextPart(part: HuaTuoMessagePart): part is Extract<HuaTuoMessagePart, { type: 'text' }> {
   return part.type === 'text'
 }
 
-function getMessageParts(message: ExportableMessage): CherryMessagePart[] {
+function getMessageParts(message: ExportableMessage): HuaTuoMessagePart[] {
   const parts = (message as { parts?: unknown }).parts
-  return Array.isArray(parts) ? (parts as CherryMessagePart[]) : []
+  return Array.isArray(parts) ? (parts as HuaTuoMessagePart[]) : []
 }
 
 function getSortedComposerTokens(
@@ -85,13 +85,13 @@ export function replaceComposerTokenPromptText(
 }
 
 export function getComposerTextFromParts(
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   getTokenText?: (token: ComposerMessageToken, index: number) => string
 ): string {
   return parts
     .filter(isTextPart)
     .map((part) => {
-      const composer = readCherryMeta(part)?.composer
+      const composer = readHuaTuoMeta(part)?.composer
       return composer ? replaceComposerTokenPromptText(part.text, composer, getTokenText) : part.text
     })
     .filter((text) => text.trim().length > 0)

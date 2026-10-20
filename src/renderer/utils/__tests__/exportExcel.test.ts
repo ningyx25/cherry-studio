@@ -39,7 +39,7 @@ describe('exportTableToExcel', () => {
     vi.clearAllMocks()
     delete (xlsxMock.worksheet as Record<string, unknown>)['!cols']
     xlsxMock.write.mockReturnValue([1, 2, 3])
-    fileApiMock.save.mockResolvedValue('/tmp/cherry-export/custom-table.xlsx')
+    fileApiMock.save.mockResolvedValue('/tmp/huatuo-export/custom-table.xlsx')
 
     Object.assign(window, {
       api: {

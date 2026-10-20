@@ -21,7 +21,7 @@ describe('agent utilities', () => {
         { description: '', configuration: { builtin_role: 'assistant' } },
         t as Parameters<typeof getAgentDescriptionForDisplay>[1]
       )
-    ).toBe('translated:agent.builtin.cherry_assistant.description')
+    ).toBe('translated:agent.builtin.huatuo_assistant.description')
     expect(
       getAgentDescriptionForDisplay(
         { description: 'User description', configuration: { builtin_role: 'assistant' } },

@@ -1,4 +1,4 @@
-import { Button, CircularProgress, ConfirmDialog } from '@cherrystudio/ui'
+import { Button, CircularProgress, ConfirmDialog } from '@huatuostudio/ui'
 import { useLocalModel } from '@renderer/hooks/useLocalModel'
 import { openSettingsTab } from '@renderer/services/mainWindowNavigation'
 import { toast } from '@renderer/services/toast'

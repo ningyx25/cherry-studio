@@ -4,7 +4,7 @@
 
 | Subpath | Files | Role |
 |---|---|---|
-| `src/main/ai/messages/` | `messageConverter.ts` (96), `fileProcessor.ts` (86) | UI `CherryMessagePart[]` → AI SDK `ModelMessage[]` |
+| `src/main/ai/messages/` | `messageConverter.ts` (96), `fileProcessor.ts` (86) | UI `HuaTuoMessagePart[]` → AI SDK `ModelMessage[]` |
 | `src/main/ai/runtime/aiSdk/prompts/` | `deferredTools.ts` (38) | Static `<DEFERRED_TOOLS>` system-prompt section + namespace list |
 | `src/main/ai/observability/adapters/aiSdk/` | `adapterTracer.ts`, `aiSdkSpanAdapter.ts` | AI SDK telemetry adapter feeding AI observability |
 | `src/main/ai/utils/` | `reasoning.ts` (1092), `options.ts` (445), `modelParameters.ts` (146), `websearch.ts` (142), `provider.ts` (81), `anthropicHeaders.ts` (44), `image.ts` (5) | Shared helpers used across `runtime/aiSdk/params/features/` |
@@ -27,7 +27,7 @@ captures them into the dev-tools cache.
 
 ### `messageConverter.ts`
 
-Folds `CherryMessagePart[]` (Cherry's renderer-facing parts) into AI
+Folds `HuaTuoMessagePart[]` (HuaTuo's renderer-facing parts) into AI
 SDK's `ModelMessage[]`. Per-part routing:
 
 - `text` → `{ role, content: [{ type: 'text', text }] }`

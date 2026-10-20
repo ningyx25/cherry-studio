@@ -1,4 +1,4 @@
-import { Button, Input, Switch, Tooltip } from '@cherrystudio/ui'
+import { Button, Input, Switch, Tooltip } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { useProviderApiKeys, useProviderMutations } from '@renderer/hooks/useProvider'

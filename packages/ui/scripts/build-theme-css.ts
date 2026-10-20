@@ -3,19 +3,19 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
-  CHERRY_PRODUCT_COLOR_TOKENS,
   COMPATIBILITY_SEMANTIC_COLOR_TOKENS,
   COMPATIBILITY_STATUS_COLOR_TOKENS,
+  HUATUO_PRODUCT_COLOR_TOKENS,
   SHADCN_COLOR_TOKENS
 } from './theme-contract'
 
 export {
-  CHERRY_PRODUCT_COLOR_TOKENS,
-  CHERRY_PRODUCT_SURFACE_PAIRS,
-  CHERRY_PRODUCT_VARIABLE_TOKENS,
   COMPATIBILITY_COLOR_TOKENS,
   COMPATIBILITY_SEMANTIC_COLOR_TOKENS,
   COMPATIBILITY_STATUS_COLOR_TOKENS,
+  HUATUO_PRODUCT_COLOR_TOKENS,
+  HUATUO_PRODUCT_SURFACE_PAIRS,
+  HUATUO_PRODUCT_VARIABLE_TOKENS,
   RUNTIME_THEME_INPUT_TOKENS,
   SHADCN_COLOR_TOKENS,
   SHADCN_SURFACE_PAIRS,
@@ -129,7 +129,7 @@ export function buildThemeContractCss(inputs: ThemeContractInputs): string {
   const sections = [
     buildSection('Compatibility: Primitive Colors', toPrefixedMappings(inputs.primitiveColors, 'color-')),
     buildSection('Canonical Shadcn Colors', toColorMappings(SHADCN_COLOR_TOKENS)),
-    buildSection('HuaTuo Studio Product Colors', toColorMappings(CHERRY_PRODUCT_COLOR_TOKENS)),
+    buildSection('HuaTuo Studio Product Colors', toColorMappings(HUATUO_PRODUCT_COLOR_TOKENS)),
     buildSection(
       'Compatibility: Existing Semantic Colors',
       toPrefixedMappings(COMPATIBILITY_SEMANTIC_COLOR_TOKENS, 'color-')

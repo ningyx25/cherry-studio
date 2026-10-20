@@ -9,7 +9,7 @@
  */
 import { executionStreamOverlayService } from '@renderer/services/aiTransport'
 import type { ActiveExecution } from '@shared/ai/transport'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react'
 
 export type { ExecutionFinishEvent } from '@renderer/services/aiTransport'
@@ -22,9 +22,9 @@ export interface UseExecutionOverlayOptions {
 export interface ExecutionOverlayApi {
   /** messageId -> latest streamed parts. messageId = anchorMessageId, or the
    *  start-chunk id when the execution has no pre-allocated row (temp topic). */
-  overlay: Record<string, CherryMessagePart[]>
+  overlay: Record<string, HuaTuoMessagePart[]>
   /** Latest assistant snapshot per execution, in insertion order. */
-  liveAssistants: CherryUIMessage[]
+  liveAssistants: HuaTuoUIMessage[]
   /** Drop one overlay/snapshot entry by its message id (post-persist handoff). */
   disposeOverlay: (messageId: string) => void
   /** Drop settled overlay/snapshot entries (terminal handoff); live readers survive. */
@@ -36,7 +36,7 @@ export interface ExecutionOverlayApi {
 export function useExecutionOverlay(
   topicId: string,
   activeExecutions: readonly ActiveExecution[],
-  uiMessages: CherryUIMessage[],
+  uiMessages: HuaTuoUIMessage[],
   options: UseExecutionOverlayOptions = {}
 ): ExecutionOverlayApi {
   // Identity of this consumer inside the service's refcount/contribution maps.

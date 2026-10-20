@@ -1,5 +1,5 @@
 /**
- * Hook for loading topic messages from DataApi as CherryUIMessage[].
+ * Hook for loading topic messages from DataApi as HuaTuoUIMessage[].
  *
  * Uses `useInfiniteQuery` + `useInfiniteFlatItems` with `reversePages: true` —
  * the branch endpoint paginates newest-page-first but keeps within-page items
@@ -7,7 +7,7 @@
  * chronological `items` array (root → activeNode) across any number of loaded
  * pages. `activeNodeId` is read from the freshest page's top-level metadata.
  *
- * `toUIMessage` projects every persisted field onto `CherryUIMessage.metadata`
+ * `toUIMessage` projects every persisted field onto `HuaTuoUIMessage.metadata`
  * so downstream consumers read per-message metadata (model, parent, stats,
  * status, …) directly from the message object — no parallel metadataMap
  * lookup that can lag behind `useChat.state.messages` during streaming.
@@ -19,7 +19,7 @@ import { sharedMessageToUIMessage } from '@renderer/utils/message/messageProject
 import type {
   BranchMessage,
   BranchMessagesResponse,
-  CherryUIMessage,
+  HuaTuoUIMessage,
   Message as SharedMessage
 } from '@shared/data/types/message'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -156,7 +156,7 @@ function buildSiblingsMap(items: BranchMessage[]): Record<string, SharedMessage[
 // ── Hook ──
 
 export interface UseTopicMessagesResult {
-  uiMessages: CherryUIMessage[]
+  uiMessages: HuaTuoUIMessage[]
   /**
    * Map from any sibling member's id to the full ordered sibling group
    * (includes the member itself). Lets the sibling navigator render
@@ -166,7 +166,7 @@ export interface UseTopicMessagesResult {
   siblingsMap: Record<string, SharedMessage[]>
   isLoading: boolean
   isStale: boolean
-  refresh: () => Promise<CherryUIMessage[]>
+  refresh: () => Promise<HuaTuoUIMessage[]>
   activeNodeId: string | null
   /** The topic's virtual-root id — authoritative first-turn signal (parentId === rootId). */
   rootId: string | null
@@ -242,8 +242,8 @@ export function useTopicMessages(
     setReadyTopicId(topicId)
   }, [enabled, isLoading, isRefreshing, pagesBelongToTopic, topicId])
 
-  const projectionCacheRef = useRef<WeakMap<SharedMessage, CherryUIMessage>>(new WeakMap())
-  const uiMessages = useMemo<CherryUIMessage[]>(
+  const projectionCacheRef = useRef<WeakMap<SharedMessage, HuaTuoUIMessage>>(new WeakMap())
+  const uiMessages = useMemo<HuaTuoUIMessage[]>(
     () => projectBranchMessagesToUI(branchItems, projectionCacheRef.current),
     [branchItems]
   )
@@ -254,7 +254,7 @@ export function useTopicMessages(
   // uiMessages so `useChatWithHistory`'s on-done handler can push DB truth
   // into `useChat.state.messages`. Reuses the same projection helper as the
   // memo above so the two paths can't drift on flatten / cache semantics.
-  const refresh = useCallback(async (): Promise<CherryUIMessage[]> => {
+  const refresh = useCallback(async (): Promise<HuaTuoUIMessage[]> => {
     if (!enabled) return []
     const refreshed = await mutate()
     if (!refreshed?.length) return []
@@ -282,14 +282,14 @@ export function useTopicMessages(
 }
 
 /**
- * Flatten paginated branch items into chronological `CherryUIMessage[]`,
+ * Flatten paginated branch items into chronological `HuaTuoUIMessage[]`,
  * reusing the per-row WeakMap so a stable shared message keeps its
  * projection identity across re-renders.
  */
 export function projectBranchMessagesToUI(
   branchItems: BranchMessage[],
-  cache: WeakMap<SharedMessage, CherryUIMessage> = new WeakMap()
-): CherryUIMessage[] {
+  cache: WeakMap<SharedMessage, HuaTuoUIMessage> = new WeakMap()
+): HuaTuoUIMessage[] {
   return flattenBranchMessages(branchItems).map(({ message, isActiveBranch }) => {
     const cached = cache.get(message)
     if (cached && cached.metadata?.isActiveBranch === isActiveBranch) return cached

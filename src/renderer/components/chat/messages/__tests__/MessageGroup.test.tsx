@@ -1,5 +1,5 @@
 import type { MultiModelMessageStyle } from '@shared/data/preference/preferenceTypes'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { Model } from '@shared/data/types/model'
 import { act, createEvent, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ComponentProps, ReactNode } from 'react'
@@ -31,7 +31,7 @@ const mocks = vi.hoisted(() => ({
   },
   MessageGroupMenuBar: vi.fn(() => <div className="group-menu-bar">menu</div>),
   HorizontalScrollContainer: vi.fn(({ children }: { children: ReactNode }) => <div>{children}</div>),
-  MessageContent: vi.fn(({ messageId, parts }: { messageId: string; parts: CherryMessagePart[] }) => (
+  MessageContent: vi.fn(({ messageId, parts }: { messageId: string; parts: HuaTuoMessagePart[] }) => (
     <div
       data-testid="message-parts-content"
       data-message-id={messageId}
@@ -335,8 +335,8 @@ describe('MessageGroup', () => {
 
   it('passes updated parts when only the parts map changes', () => {
     const messages = [createMessage('msg-1', 0, 'vertical')]
-    const initialParts = [{ type: 'text', text: 'initial' }] as CherryMessagePart[]
-    const updatedParts = [{ type: 'text', text: 'updated' }] as CherryMessagePart[]
+    const initialParts = [{ type: 'text', text: 'initial' }] as HuaTuoMessagePart[]
+    const updatedParts = [{ type: 'text', text: 'updated' }] as HuaTuoMessagePart[]
 
     const { getByTestId, rerender } = render(
       <MessageGroup messages={messages} partsByMessageId={{ 'msg-1': initialParts }} />
@@ -726,7 +726,7 @@ describe('MessageGroup', () => {
     render(
       <MessageGroup
         messages={[assistantMessage]}
-        partsByMessageId={{ 'assistant-1': [{ type: 'text', text: 'answer' }] as CherryMessagePart[] }}
+        partsByMessageId={{ 'assistant-1': [{ type: 'text', text: 'answer' }] as HuaTuoMessagePart[] }}
       />
     )
     await waitFor(() => expect(runtime).toBeDefined())

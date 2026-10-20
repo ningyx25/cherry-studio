@@ -85,12 +85,12 @@ describe('mergeCustomProviderParameters', () => {
   })
 
   it('Case 2 (proxy): key === rawProviderId, not in actualAiSdkProviderIds → map to primary', () => {
-    // CherryIn proxy emits `google` as the actual SDK provider; user writes `cherryin: {...}`.
+    // HuaTuoIn proxy emits `google` as the actual SDK provider; user writes `huatuoin: {...}`.
     const initial = { google: {} }
     const result = mergeCustomProviderParameters(
       initial as Record<string, Record<string, never>>,
-      { cherryin: { proxyOpt: 'val' } },
-      'cherryin'
+      { huatuoin: { proxyOpt: 'val' } },
+      'huatuoin'
     )
     expect(result).toEqual({ google: { proxyOpt: 'val' } })
   })

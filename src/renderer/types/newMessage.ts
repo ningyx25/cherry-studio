@@ -1,7 +1,7 @@
 //TODO [v2] 类型将转移至 src/shared/data/types/message.ts。 转移后此文件将废弃(deprecated)
 
 import type { McpServer } from '@shared/data/types/mcpServer'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { ProviderMetadata } from 'ai'
 
 import type { SerializedError } from './error'
@@ -196,7 +196,7 @@ export type Message = {
   // 块集合 (v1 — 仅 v1 路径填充，v2 全靠 parts)
   blocks: MessageBlock['id'][]
 
-  parts?: CherryMessagePart[]
+  parts?: HuaTuoMessagePart[]
 
   // 跟踪Id
   traceId?: string

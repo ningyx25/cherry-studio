@@ -12,8 +12,8 @@ import {
   PopoverTrigger,
   Switch,
   Tooltip
-} from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+} from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Plus } from 'lucide-react'
 import type { FC, ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'

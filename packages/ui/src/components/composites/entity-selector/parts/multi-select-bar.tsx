@@ -1,4 +1,4 @@
-import { Switch } from '@cherrystudio/ui/components/primitives/switch'
+import { Switch } from '@huatuostudio/ui/components/primitives/switch'
 import type { ReactNode } from 'react'
 
 type Props = {

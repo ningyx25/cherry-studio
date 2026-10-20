@@ -8,7 +8,7 @@ date: 2026-06-06
 
 ## What changed
 
-New and preset providers (except CherryAI) are now created and seeded **disabled**. They auto-enable once usable models are discovered through the existing provider-settings flows (auto model sync, pull reconcile, or a successful connection check).
+New and preset providers (except HuaTuoAI) are now created and seeded **disabled**. They auto-enable once usable models are discovered through the existing provider-settings flows (auto model sync, pull reconcile, or a successful connection check).
 
 ## Why this matters to the user
 

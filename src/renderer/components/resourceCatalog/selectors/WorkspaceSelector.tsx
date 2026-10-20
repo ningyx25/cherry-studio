@@ -1,4 +1,4 @@
-import { EmptyState } from '@cherrystudio/ui'
+import { EmptyState } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { ModelSelectorRow } from '@renderer/components/ModelSelector'
 import Scrollbar from '@renderer/components/Scrollbar'

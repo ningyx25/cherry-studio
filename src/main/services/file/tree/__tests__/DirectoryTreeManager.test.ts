@@ -30,7 +30,7 @@ vi.mock('@main/core/lifecycle', async (importOriginal) => {
 import { BaseService } from '@main/core/lifecycle'
 
 // Production resolves ripgrep via BinaryManager (`getBinaryPath('rg')`), which
-// reads cherry.bin / mise shims — neither is populated under vitest. Point it
+// reads huatuo.bin / mise shims — neither is populated under vitest. Point it
 // at the test ripgrep binary so real-builder tests spawn an actual ripgrep scan.
 vi.mock('@main/utils/binaryResolver', async () => {
   const { tryTestRipgrepPath: tryPath } = await import('./ripgrepTestUtils')
@@ -106,7 +106,7 @@ describe.skipIf(!ripgrepAvailable)('DirectoryTreeManager', () => {
   let registry: DirectoryTreeManager
 
   beforeEach(async () => {
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-tree-registry-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-tree-registry-'))
     BaseService.resetInstances()
     registry = new DirectoryTreeManager()
   })

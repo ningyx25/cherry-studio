@@ -61,7 +61,7 @@ describe('createDirectoryWatcher', () => {
   let dir: string
 
   beforeEach(async () => {
-    dir = await mkdtemp(path.join(tmpdir(), 'cherry-fm-watcher-'))
+    dir = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-watcher-'))
     danglingCache.clear()
   })
 

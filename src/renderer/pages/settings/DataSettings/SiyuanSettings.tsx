@@ -1,5 +1,5 @@
-import { Button, InfoTooltip, Input, RowFlex } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, InfoTooltip, Input, RowFlex } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import {
   SettingDivider,
@@ -42,7 +42,7 @@ const SiyuanSettings: FC = () => {
   }
 
   const handleSiyuanHelpClick = () => {
-    void ipcApi.request('system.shell.open_website', 'https://docs.cherry-ai.com/advanced-basic/siyuan')
+    void ipcApi.request('system.shell.open_website', 'https://docs.huatuo.ai/advanced-basic/siyuan')
   }
 
   const handleCheckConnection = async () => {

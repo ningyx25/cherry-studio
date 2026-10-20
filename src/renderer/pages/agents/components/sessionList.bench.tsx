@@ -16,7 +16,7 @@ function createSessions(count: number, renamedId?: string): AgentSessionEntity[]
       workspace: {
         id: 'benchmark-workspace',
         name: 'Benchmark Workspace',
-        path: '/tmp/cherry-studio-session-list-benchmark',
+        path: '/tmp/huatuo-studio-session-list-benchmark',
         type: 'user',
         orderKey: 'a',
         createdAt: '2026-01-01T00:00:00.000Z',

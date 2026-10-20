@@ -1,10 +1,10 @@
 /**
  * App-level provider type merge — combines `coreExtensions` with
- * Cherry's app extensions to produce the unified `AppProviderId`,
+ * HuaTuo's app extensions to produce the unified `AppProviderId`,
  * `AppProviderSettingsMap`, and `appProviderIds` lookup.
  */
 
-import type { RuntimeConfig } from '@cherrystudio/ai-core/core'
+import type { RuntimeConfig } from '@huatuostudio/ai-core/core'
 import type {
   ExtensionConfigToIdResolutionMap,
   ExtensionToSettingsMap,
@@ -12,8 +12,8 @@ import type {
   ProviderExtensionConfig,
   StringKeys,
   UnionToIntersection
-} from '@cherrystudio/ai-core/provider'
-import { coreExtensions } from '@cherrystudio/ai-core/provider'
+} from '@huatuostudio/ai-core/provider'
+import { coreExtensions } from '@huatuostudio/ai-core/provider'
 
 import { extensions } from '../provider/extensions'
 

@@ -12,7 +12,7 @@ import { modelService } from '@data/services/ModelService'
 import { projectRuntimeReasoning, providerRegistryService } from '@data/services/ProviderRegistryService'
 import { providerService } from '@data/services/ProviderService'
 import { loggerService } from '@logger'
-import { CHERRY_FAST_MODE_HEADER, CHERRY_INTERNAL_REQUEST_TOKEN_HEADER } from '@main/ai/constants'
+import { HUATUO_FAST_MODE_HEADER, HUATUO_INTERNAL_REQUEST_TOKEN_HEADER } from '@main/ai/constants'
 import { resolveKnowledgeBaseScope } from '@main/ai/utils/knowledgeScope'
 import { encodeReasoningInvocation, resolveReasoningInvocation } from '@main/ai/utils/reasoningSerializers'
 import { createAiUsagePricingSnapshot } from '@main/ai/utils/usageCapture'
@@ -131,7 +131,7 @@ type CustomHeaderSource = string | Readonly<Record<string, string>> | undefined
 /**
  * Serialize headers in the newline-delimited format consumed by Claude Code's
  * `ANTHROPIC_CUSTOM_HEADERS`. Later sources win case-insensitively, so provider
- * settings override Cherry's app attribution and inherited agent/shell headers.
+ * settings override HuaTuo's app attribution and inherited agent/shell headers.
  */
 function mergeAnthropicCustomHeaders(...sources: CustomHeaderSource[]): string | undefined {
   const headers = new Map<string, { name: string; value: string }>()
@@ -556,7 +556,7 @@ export async function buildClaudeCodeQueryRequestForAgentSession(
 
 /**
  * Claude Agent SDK always speaks the Anthropic-native reasoning dialect. When its route points at
- * Cherry's gateway, the gateway translates those native fields again for the target endpoint.
+ * HuaTuo's gateway, the gateway translates those native fields again for the target endpoint.
  */
 function resolveClaudeCodeThinkingOptions(
   model: Model,
@@ -862,7 +862,7 @@ function mergeRuntimeSettings(
 ): ClaudeCodeSettings {
   const fastModeHeaders =
     route.branch === 'gateway' && fastModeTransport === 'openai-priority' && route.internalRequestToken
-      ? `${CHERRY_FAST_MODE_HEADER}: true\n${CHERRY_INTERNAL_REQUEST_TOKEN_HEADER}: ${route.internalRequestToken}`
+      ? `${HUATUO_FAST_MODE_HEADER}: true\n${HUATUO_INTERNAL_REQUEST_TOKEN_HEADER}: ${route.internalRequestToken}`
       : undefined
   const customHeaders = mergeAnthropicCustomHeaders(
     settings.env?.ANTHROPIC_CUSTOM_HEADERS,

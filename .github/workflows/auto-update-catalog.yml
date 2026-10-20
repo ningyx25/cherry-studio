@@ -9,7 +9,7 @@ on:
 
 jobs:
   auto-update-catalog:
-    if: github.repository == 'ningyx25/cherry-studio'
+    if: github.repository == 'huatuostudio/huatuo-studio'
     runs-on: ubuntu-latest
     name: Auto Update Catalog
     permissions:
@@ -48,7 +48,7 @@ jobs:
           pnpm install
 
       - name: 🏃‍♀️ Generate catalog
-        run: pnpm --filter @cherrystudio/provider-registry generate
+        run: pnpm --filter @huatuostudio/provider-registry generate
 
       - name: 🔍 Check for changes
         id: git_status

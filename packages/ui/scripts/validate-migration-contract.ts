@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
 
 import { parseMigrationRegistry } from './migration-registry'
-import { CHERRY_PRODUCT_VARIABLE_TOKENS, RUNTIME_THEME_INPUT_TOKENS, SHADCN_VARIABLE_TOKENS } from './theme-contract'
+import { HUATUO_PRODUCT_VARIABLE_TOKENS, RUNTIME_THEME_INPUT_TOKENS, SHADCN_VARIABLE_TOKENS } from './theme-contract'
 
 export { type MigrationRegistry, type MigrationRule, parseMigrationRegistry } from './migration-registry'
 
@@ -18,7 +18,7 @@ const TYPESCRIPT_SOURCE_EXTENSIONS = new Set(['.ts', '.tsx'])
 const RUNTIME_THEME_INPUT_VARIABLES = new Set(RUNTIME_THEME_INPUT_TOKENS.map((token) => `--cs-theme-${token}`))
 const PUBLIC_SEMANTIC_VARIABLES = new Set([
   ...SHADCN_VARIABLE_TOKENS.map((token) => `--${token}`),
-  ...CHERRY_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`)
+  ...HUATUO_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`)
 ])
 const REQUIRED_EXCLUDES = [
   'packages/ui/src/styles/theme.css',
@@ -149,7 +149,7 @@ export function validateMigrationContractSources(sources: MigrationContractSourc
   const registry = parseMigrationRegistry(sources.migrationRegistry)
   const canonicalNames = new Set<string>([
     ...SHADCN_VARIABLE_TOKENS.map((token) => `--${token}`),
-    ...CHERRY_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`)
+    ...HUATUO_PRODUCT_VARIABLE_TOKENS.map((token) => `--${token}`)
   ])
 
   if (registry.version !== 1 || registry.contract !== 'shadcn-v2') {

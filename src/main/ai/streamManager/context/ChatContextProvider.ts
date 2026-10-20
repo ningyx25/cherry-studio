@@ -6,7 +6,7 @@
  */
 
 import type { Span } from '@opentelemetry/api'
-import type { CherryUIMessage, MessageRuntimeTiming } from '@shared/data/types/message'
+import type { HuaTuoUIMessage, MessageRuntimeTiming } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import type { ReasoningEffortOption } from '@shared/types/aiSdk'
 
@@ -38,7 +38,7 @@ export interface PreparedDispatch {
   /** Fast selection captured alongside the pending steer. */
   pendingSteerFastMode?: boolean
   /** Persisted user/assistant skeletons created for this dispatch. */
-  reservedMessages?: CherryUIMessage[]
+  reservedMessages?: HuaTuoUIMessage[]
   /** Shared sibling group for multi-model parallel responses. */
   siblingsGroupId?: number
   /** True when the response should surface `executionIds` (multi-model UI). */

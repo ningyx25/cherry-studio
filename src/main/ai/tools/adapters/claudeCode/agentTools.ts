@@ -125,7 +125,7 @@ function injectedRuntimeTool(runtimeName: string): Tool {
 }
 
 // An injected runtime tool that matches an auto-allow prefix but must still prompt — used for
-// mutating cherry-tools (e.g. kb_manage) so a destructive call goes through per-call user approval.
+// mutating huatuo-tools (e.g. kb_manage) so a destructive call goes through per-call user approval.
 function injectedRuntimeToolRequiringApproval(runtimeName: string): Tool {
   return {
     id: runtimeName,
@@ -149,7 +149,7 @@ export async function createClaudeAgentToolPolicySnapshot(
     autoAllowRuntimeNames?: readonly string[]
     autoAllowRuntimeNamePrefixes?: readonly string[]
     // Runtime names that match an auto-allow list/prefix but must still require per-call approval
-    // (e.g. mutating cherry-tools like kb_manage). Checked against the full runtime name.
+    // (e.g. mutating huatuo-tools like kb_manage). Checked against the full runtime name.
     autoAllowRuntimeNameExceptions?: readonly string[]
     conditionContext?: ClaudeToolContext
   } = {}

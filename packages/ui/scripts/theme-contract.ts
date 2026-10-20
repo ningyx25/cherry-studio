@@ -62,7 +62,7 @@ export const SHADCN_SURFACE_PAIRS = [
   ['sidebar-accent', 'sidebar-accent-foreground']
 ] as const
 
-export const CHERRY_PRODUCT_VARIABLE_TOKENS = [
+export const HUATUO_PRODUCT_VARIABLE_TOKENS = [
   /* Shared product semantics */
   'background-subtle',
   'foreground-tertiary',
@@ -103,7 +103,7 @@ export const CHERRY_PRODUCT_VARIABLE_TOKENS = [
   'chat-user'
 ] as const
 
-export const CHERRY_PRODUCT_COLOR_TOKENS = [
+export const HUATUO_PRODUCT_COLOR_TOKENS = [
   'background-subtle',
   'foreground-tertiary',
   'foreground-disabled',
@@ -148,7 +148,7 @@ export const COMPATIBILITY_COLOR_TOKENS = [
   ...COMPATIBILITY_STATUS_COLOR_TOKENS
 ] as const
 
-export const CHERRY_PRODUCT_SURFACE_PAIRS = [
+export const HUATUO_PRODUCT_SURFACE_PAIRS = [
   ['success-subtle', 'success-subtle-foreground'],
   ['warning-subtle', 'warning-subtle-foreground'],
   ['info-subtle', 'info-subtle-foreground'],

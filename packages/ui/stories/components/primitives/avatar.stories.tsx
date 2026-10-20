@@ -1,4 +1,4 @@
-import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@cherrystudio/ui'
+import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Bot, User } from 'lucide-react'
 

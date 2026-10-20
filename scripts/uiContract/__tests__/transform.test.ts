@@ -121,7 +121,7 @@ const Message = () => {
 
     expect(callSite.descriptors.map((descriptor) => descriptor.semanticId)).toEqual(['chat.message'])
     expect(implementation.descriptors).toHaveLength(1)
-    expect(implementation.code).toContain('__cherryUiContractMergeUiProps(props')
+    expect(implementation.code).toContain('__huatuoUiContractMergeUiProps(props')
     expect(implementation.code).toContain('part:wrapper')
     expect(mergeDataUi('chat.wrapper part:wrapper', 'chat.message')).toBe('chat.message part:wrapper')
     expect(mergeUiProps({ 'data-ui': 'chat.message' }, 'chat.wrapper part:wrapper')).toEqual({
@@ -139,7 +139,7 @@ const Message = () => {
         injectDataUi: true
       })
 
-      expect(result.code.indexOf('data-ui=')).toBeLessThan(result.code.indexOf('{...__cherryUiContractMergeUiProps'))
+      expect(result.code.indexOf('data-ui=')).toBeLessThan(result.code.indexOf('{...__huatuoUiContractMergeUiProps'))
       expect(() => parseSync(result.code, { syntax: 'typescript', tsx: true })).not.toThrow()
     }
   })
@@ -152,8 +152,8 @@ const Message = () => {
       })
 
       expect(result.descriptors).toHaveLength(0)
-      expect(result.code).toContain('<__CherryUiContractSlot><a href="/settings" />')
-      expect(result.code).toContain('</__CherryUiContractSlot></Button>')
+      expect(result.code).toContain('<__HuaTuoUiContractSlot><a href="/settings" />')
+      expect(result.code).toContain('</__HuaTuoUiContractSlot></Button>')
       expect(() => parseSync(result.code, { syntax: 'typescript', tsx: true })).not.toThrow()
     }
   })
@@ -168,7 +168,7 @@ const Message = () => {
     )
 
     expect(result.descriptors).toHaveLength(0)
-    expect(result.code).not.toContain('__CherryUiContractSlot')
+    expect(result.code).not.toContain('__HuaTuoUiContractSlot')
     expect(() => parseSync(result.code, { syntax: 'typescript', tsx: true })).not.toThrow()
   })
 
@@ -179,8 +179,8 @@ const Message = () => {
     })
 
     expect(result.descriptors).toHaveLength(0)
-    expect(result.code).toContain('<__CherryUiContractSlot><a href="/settings" />')
-    expect(result.code).toContain('</__CherryUiContractSlot></Button>')
+    expect(result.code).toContain('<__HuaTuoUiContractSlot><a href="/settings" />')
+    expect(result.code).toContain('</__HuaTuoUiContractSlot></Button>')
     expect(() => parseSync(result.code, { syntax: 'typescript', tsx: true })).not.toThrow()
   })
 
@@ -246,7 +246,7 @@ const Message = () => {
     expect(result.code).toContain('part:button')
     expect(result.code).not.toContain('id:ui-')
     expect(result.code).toContain('data-slot="button"')
-    expect(result.code).toContain('__cherryUiContractMergeUiProps(props')
+    expect(result.code).toContain('__huatuoUiContractMergeUiProps(props')
     expect(() => parseSync(result.code, { syntax: 'typescript', tsx: true })).not.toThrow()
   })
 
@@ -273,7 +273,7 @@ const Message = () => {
     expect(result.descriptors[0].parts).toEqual(['dialog-trigger'])
     expect(result.code).toContain('data-ui="part:dialog-trigger"')
     expect(result.code).toContain('data-slot="dialog-trigger"')
-    expect(result.code).toContain('__cherryUiContractMergeUiProps(props')
+    expect(result.code).toContain('__huatuoUiContractMergeUiProps(props')
   })
 
   it('rejects dynamic data-slot values', () => {

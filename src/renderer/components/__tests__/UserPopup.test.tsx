@@ -15,7 +15,7 @@ type PopoverContextValue = {
   onOpenChange?: (open: boolean) => void
 }
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react') as typeof ReactType
   const PopoverContext = React.createContext<PopoverContextValue>({ open: false })
 

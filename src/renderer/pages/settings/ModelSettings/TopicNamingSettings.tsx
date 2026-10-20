@@ -1,3 +1,4 @@
+import { usePreference } from '@data/hooks/usePreference'
 import {
   Button,
   ColFlex,
@@ -9,8 +10,7 @@ import {
   RowFlex,
   Switch,
   Textarea
-} from '@cherrystudio/ui'
-import { usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import ResetIcon from '@renderer/components/icons/ResetIcon'
 import { SettingSubtitle } from '@renderer/components/SettingsPrimitives'
 import { useModelById } from '@renderer/hooks/useModel'

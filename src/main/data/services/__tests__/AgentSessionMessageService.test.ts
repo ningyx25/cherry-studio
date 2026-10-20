@@ -262,7 +262,7 @@ describe('AgentSessionMessageService', () => {
         {
           type: 'data-error' as const,
           data: { message: 'failed' },
-          providerMetadata: { cherry: { diagnosis: { summary: 'Check the provider' } } }
+          providerMetadata: { huatuo: { diagnosis: { summary: 'Check the provider' } } }
         }
       ]
     }
@@ -305,7 +305,7 @@ describe('AgentSessionMessageService', () => {
       {
         type: 'text',
         text: 'Subagent finished',
-        providerMetadata: { cherry: { parentToolCallId: 'task-root' } }
+        providerMetadata: { huatuo: { parentToolCallId: 'task-root' } }
       }
     ])
 

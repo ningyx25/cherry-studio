@@ -42,7 +42,7 @@ vi.mock('@shared/utils/provider', () => ({
   isSystemProvider: (...args: unknown[]) => isSystemProviderMock(...args)
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   return {
     Button: ({ children, onClick, ...props }: any) => (
       <button type="button" onClick={onClick} {...props}>

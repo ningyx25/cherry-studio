@@ -1,8 +1,8 @@
 import type { LanguageModelV3Source } from '@ai-sdk/provider'
 import type { WebSearchResultBlock } from '@anthropic-ai/sdk/resources'
-import type OpenAI from '@cherrystudio/openai'
 import type { GroundingMetadata } from '@google/genai'
 import { objectValues } from '@renderer/utils/object'
+import type OpenAI from 'openai'
 import * as z from 'zod'
 
 export const WebSearchProviderIds = {

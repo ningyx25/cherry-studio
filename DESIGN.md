@@ -215,7 +215,7 @@ Three weights are exposed as semantic tokens; the rest of the Tailwind weight ut
 
 ### Buttons
 
-Source: `Button` from `@cherrystudio/ui` (`packages/ui/src/components/primitives/button.tsx`).
+Source: `Button` from `@huatuostudio/ui` (`packages/ui/src/components/primitives/button.tsx`).
 
 **Base**
 - Layout: inline flex, centered, `gap-2`, no wrapping
@@ -341,7 +341,7 @@ Button hover behavior is variant-specific:
 
 ### Dialogs
 
-Source: `DialogContent` and related primitives from `@cherrystudio/ui` (`packages/ui/src/components/primitives/dialog.tsx`).
+Source: `DialogContent` and related primitives from `@huatuostudio/ui` (`packages/ui/src/components/primitives/dialog.tsx`).
 
 **Shell**
 - Surface: `bg-card`
@@ -364,7 +364,7 @@ Source: `DialogContent` and related primitives from `@cherrystudio/ui` (`package
   - `size="sm"` → `sm:max-w-sm` (24rem ≈ 384px) — single-field inputs, rename, short confirmations. Use this whenever the body is one label + one input or a one-line confirmation; the default size feels empty for that amount of content.
   - `size="default"` (current default) → `sm:max-w-lg` (32rem ≈ 512px) — standard forms with a few fields.
   - `size="lg"` → `sm:max-w-xl` (36rem ≈ 576px) — multi-field forms, scrollable bodies, rich configuration panels.
-- Do not override the dialog width with `className="sm:max-w-*"` or similar. Pick a `size` instead; if no size fits, propose a new size in `@cherrystudio/ui` rather than patching at the call site. `className` on `DialogContent` is reserved for non-width layout concerns (e.g. `max-h-[70vh]`, `flex flex-col overflow-hidden` for scrollable bodies).
+- Do not override the dialog width with `className="sm:max-w-*"` or similar. Pick a `size` instead; if no size fits, propose a new size in `@huatuostudio/ui` rather than patching at the call site. `className` on `DialogContent` is reserved for non-width layout concerns (e.g. `max-h-[70vh]`, `flex flex-col overflow-hidden` for scrollable bodies).
 - Consumers should use the default overlay first. If the scrim needs local tuning, pass `overlayClassName`; do not rewrite a page-local Dialog shell.
 
 **Structure**
@@ -391,7 +391,7 @@ There are two different drawer patterns. Do not collapse them into one generic "
 
 **PageSidePanel** — in-page side panel
 
-Source: `PageSidePanel` from `@cherrystudio/ui` (`packages/ui/src/components/composites/page-side-panel/index.tsx`).
+Source: `PageSidePanel` from `@huatuostudio/ui` (`packages/ui/src/components/composites/page-side-panel/index.tsx`).
 
 Use `PageSidePanel` for page-owned management surfaces such as mini-app display settings, translate settings, and translate history. By default, the panel and backdrop portal to `document.body` so page scroll containers, transformed ancestors, and nested layout shells cannot clip or re-base the drawer. In app shell route tabs, the tab content root is provided via `PortalContainerProvider` on every platform; `PageSidePanel` reads it with `usePortalContainer()`, portals into its owning tab root, and switches to absolute positioning, so a still-open panel stays hidden with its owning tab instead of surfacing over the active tab. The same provider scopes tab-owned Radix floating overlays (popovers, dropdown menus, selects, tooltips, hover cards, context menus) to that root, so the panel and those overlays share one portal container per tab.
 
@@ -424,7 +424,7 @@ Do not force `PageSidePanelSection` / `PageSidePanelItem` onto non-settings cont
 
 **Drawer primitive** — modal edge drawer
 
-Source: `Drawer` primitives from `@cherrystudio/ui` (`packages/ui/src/components/primitives/drawer.tsx`, Vaul-based).
+Source: `Drawer` primitives from `@huatuostudio/ui` (`packages/ui/src/components/primitives/drawer.tsx`, Vaul-based).
 
 Use `Drawer` for modal edge/bottom sheets, especially mobile-oriented or full-viewport overlays that are not visually nested inside a page workspace.
 
@@ -459,7 +459,7 @@ Use `Drawer` for modal edge/bottom sheets, especially mobile-oriented or full-vi
 
 ### Popover
 
-Source: `Popover`, `PopoverTrigger`, `PopoverAnchor`, and `PopoverContent` from `@cherrystudio/ui` (`packages/ui/src/components/primitives/popover.tsx`). Use this as the default floating container for dropdowns, compact action menus, filters, and other trigger-bound transient panels.
+Source: `Popover`, `PopoverTrigger`, `PopoverAnchor`, and `PopoverContent` from `@huatuostudio/ui` (`packages/ui/src/components/primitives/popover.tsx`). Use this as the default floating container for dropdowns, compact action menus, filters, and other trigger-bound transient panels.
 
 **Default `PopoverContent`:**
 - Background: `var(--popover)`
@@ -473,9 +473,9 @@ Source: `Popover`, `PopoverTrigger`, `PopoverAnchor`, and `PopoverContent` from 
 - Z-index: 80
 
 **Compact menu popovers:**
-- Keep `PopoverContent` from `@cherrystudio/ui`; override layout density with `w-fit min-w-32 rounded-xl p-1.5`.
+- Keep `PopoverContent` from `@huatuostudio/ui`; override layout density with `w-fit min-w-32 rounded-xl p-1.5`.
 - Width is content-driven (`w-fit`), floored at 128px (`min-w-32`) so short menus stay legible. This matches `ContextMenu`'s `min-w-[8rem]` baseline in `packages/ui/src/components/primitives/context-menu.tsx`. Do not hard-code widths like `w-40` / `w-44` — they trap trailing whitespace when labels are shorter than the slot.
-- Compose menu bodies with `MenuList` and `MenuItem` from `@cherrystudio/ui`.
+- Compose menu bodies with `MenuList` and `MenuItem` from `@huatuostudio/ui`.
 - Menu rows should use 32px height (`h-8`), `rounded-lg`, `px-2.5`, and `text-sm`.
 - Close the popover after a menu action is selected unless the action intentionally opens an inline sub-flow.
 - Do not add page-specific theme scopes to portal popovers unless the whole floating surface is intentionally part of that page-local theme.
@@ -555,7 +555,7 @@ Canonical implementation: `providerListClasses.searchInlineAddButton` in `src/re
 
 ### Sidebar
 
-Sidebar primitives currently live in `src/renderer/components/Sidebar`, not in `@cherrystudio/ui`. Treat this section as renderer sidebar guidance until a shared `@cherrystudio/ui` sidebar API exists.
+Sidebar primitives currently live in `src/renderer/components/Sidebar`, not in `@huatuostudio/ui`. Treat this section as renderer sidebar guidance until a shared `@huatuostudio/ui` sidebar API exists.
 
 The page owns the outer wrapper (width / Scrollbar / padding). Reusable sidebar internals should own spacing, sizing, and active state so individual pages do not hand-roll divergent menus.
 
@@ -590,11 +590,11 @@ The page owns the outer wrapper (width / Scrollbar / padding). Reusable sidebar 
 
 > If a sidebar elsewhere needs different spacing, propose a shared renderer variant before hard-coding page-local overrides.
 >
-> **Target rule:** once the `SidebarHeader / SidebarSection / SidebarSectionTitle / SidebarMenuItem` family lands in `@cherrystudio/ui`, hand-rolled sidebar menus will not be allowed. Until that family ships, compose with `MenuList` + `MenuItem` + project-level className tokens (see `src/renderer/pages/settings/index.tsx` for the canonical token pattern: `settingsSubmenuItemClassName`, `settingsSubmenuItemLabelClassName`, `settingsSubmenuSectionTitleClassName`, `settingsSubmenuDividerClassName`).
+> **Target rule:** once the `SidebarHeader / SidebarSection / SidebarSectionTitle / SidebarMenuItem` family lands in `@huatuostudio/ui`, hand-rolled sidebar menus will not be allowed. Until that family ships, compose with `MenuList` + `MenuItem` + project-level className tokens (see `src/renderer/pages/settings/index.tsx` for the canonical token pattern: `settingsSubmenuItemClassName`, `settingsSubmenuItemLabelClassName`, `settingsSubmenuSectionTitleClassName`, `settingsSubmenuDividerClassName`).
 
 ### Page Header
 
-Source: `PageHeader` from `@cherrystudio/ui`. The single component for any page or side-panel top title. All settings pages, sidebars, drawers, and content panels that need a heading row **must** use this — never hand-roll `<h2>` with manual padding.
+Source: `PageHeader` from `@huatuostudio/ui`. The single component for any page or side-panel top title. All settings pages, sidebars, drawers, and content panels that need a heading row **must** use this — never hand-roll `<h2>` with manual padding.
 
 **Anatomy:**
 - `title` (required) — heading text, rendered inside an `<h2>` with `truncate` for overflow safety.
@@ -626,7 +626,7 @@ Source: `PageHeader` from `@cherrystudio/ui`. The single component for any page 
 
 ### Switch
 
-Source: `Switch` and `DescriptionSwitch` from `@cherrystudio/ui` (`packages/ui/src/components/primitives/switch.tsx`). Current implementation uses a quiet gray off state and a brand/primary on state, matching the settings screenshots.
+Source: `Switch` and `DescriptionSwitch` from `@huatuostudio/ui` (`packages/ui/src/components/primitives/switch.tsx`). Current implementation uses a quiet gray off state and a brand/primary on state, matching the settings screenshots.
 
 **Anatomy & sizing:**
 
@@ -676,7 +676,7 @@ Settings pages use the same two-column shape:
 
 Submenu composition rules:
 
-- Use `PageHeader` from `@cherrystudio/ui` at the top — do not hand-roll a header.
+- Use `PageHeader` from `@huatuostudio/ui` at the top — do not hand-roll a header.
 - **Section-title-as-page-title exception**: when a page-level label is itself a *group name* that should match in-list group labels, keep using `PageHeader` and pass `titleClassName="font-normal text-muted-foreground text-xs leading-4"` so the heading swaps to section-title typography while preserving the same 16px line box. The PageHeader's `mt-3 + h-8 + mb-2` outer geometry is preserved, so the label baseline still aligns with the right column's PageHeader heading. See `page-header.stories.tsx` › `SectionTitleStyle` for the canonical example.
 - Wrap menu rows in `MenuList` with `gap-1`; group with `MenuDivider` + a section title `<div>` carrying `settingsSubmenuSectionTitleClassName`.
 - Each row is a `MenuItem` styled by the canonical settings token pair: `settingsSubmenuItemClassName` on `className` (height / hover / active surface) and `settingsSubmenuItemLabelClassName` on `labelClassName` (`group-data-[active=true]:font-medium` for the bold-on-active label). Both tokens live in `src/renderer/pages/settings/index.tsx`.
@@ -726,7 +726,7 @@ Use Tailwind's numeric spacing scale, based on the `--spacing` 4px unit. Compone
 
 ### Border Radius Scale
 
-> ⚠️ **Cherry remaps the Tailwind default radius scale.** `rounded-md` resolves to 8px (Tailwind default: 6px), `rounded-lg` to 10px (default: 8px), `rounded-xl` to 14px (default: 12px), and `rounded-3xl` to 22px (default: 24px). When copying components from shadcn examples, Tailwind tutorials, or any third-party Tailwind library, expect a 2–4px visual difference until the radius is consciously chosen against the table below.
+> ⚠️ **HuaTuo remaps the Tailwind default radius scale.** `rounded-md` resolves to 8px (Tailwind default: 6px), `rounded-lg` to 10px (default: 8px), `rounded-xl` to 14px (default: 12px), and `rounded-3xl` to 22px (default: 24px). When copying components from shadcn examples, Tailwind tutorials, or any third-party Tailwind library, expect a 2–4px visual difference until the radius is consciously chosen against the table below.
 
 > Defined in `tokens/radius.css`. Shadcn consumes `--radius`; generated Tailwind radius variables derive from it.
 
@@ -781,7 +781,7 @@ HuaTuo Studio uses a dual depth system: **surface color layering** for structura
 
 ### Blur
 
-Use Tailwind blur/backdrop-blur utilities directly when a component intentionally needs blur. There are currently no public `--blur-*` design-token aliases in `@cherrystudio/ui`.
+Use Tailwind blur/backdrop-blur utilities directly when a component intentionally needs blur. There are currently no public `--blur-*` design-token aliases in `@huatuostudio/ui`.
 
 ### Opacity
 
@@ -791,13 +791,13 @@ Foreground variables are solid and must not be weakened with color-opacity modif
 `text-foreground-tertiary/50`. Choose the correct foreground role instead. Element-level opacity may still be
 used for animation and for existing component-owned disabled treatments that intentionally fade the entire
 control; migrate those controls only when text, icon, border, and background disabled states can be designed
-together. There are no public `--opacity-*` design-token aliases in `@cherrystudio/ui`.
+together. There are no public `--opacity-*` design-token aliases in `@huatuostudio/ui`.
 
 ### Border Width
 
 > Use Tailwind border-width utilities and semantic border color tokens.
 
-Use Tailwind border-width utilities (`border`, `border-0`, `border-2`, etc.) with semantic border colors. There are currently no public `--border-width-*` design-token aliases in `@cherrystudio/ui`.
+Use Tailwind border-width utilities (`border`, `border-0`, `border-2`, etc.) with semantic border colors. There are currently no public `--border-width-*` design-token aliases in `@huatuostudio/ui`.
 
 ### Stroke Width
 

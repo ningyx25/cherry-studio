@@ -39,7 +39,7 @@ describe('buildCodexRequestHeaders', () => {
     expect(headers.get('Authorization')).toBe('Bearer tok')
     expect(headers.get('chatgpt-account-id')).toBe('acct-1')
     expect(headers.get('OpenAI-Beta')).toBe('responses=experimental')
-    expect(headers.get('originator')).toBe('cherry-studio')
+    expect(headers.get('originator')).toBe('huatuo-studio')
     expect(headers.get('content-type')).toBe('application/json')
   })
 

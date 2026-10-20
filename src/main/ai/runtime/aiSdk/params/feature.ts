@@ -1,4 +1,4 @@
-import type { AiPlugin } from '@cherrystudio/ai-core'
+import type { AiPlugin } from '@huatuostudio/ai-core'
 import type { StopCondition, ToolSet } from 'ai'
 
 import type { AgentLoopHooks } from '../loop/types'

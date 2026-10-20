@@ -18,9 +18,9 @@ import {
   SelectValue,
   success as showSuccessToast,
   Tooltip
-} from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
-import { DIALOG_UNMOUNT_DELAY_MS } from '@cherrystudio/ui/utils'
+} from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
+import { DIALOG_UNMOUNT_DELAY_MS } from '@huatuostudio/ui/utils'
 import AppLogo from '@renderer/assets/images/logo.png'
 import ToastHost from '@renderer/components/ToastHost'
 import { loggerService } from '@renderer/services/LoggerService'
@@ -390,7 +390,7 @@ const MigrationApp: React.FC = () => {
     localStorage.setItem(THEME_STORAGE_KEY, next)
   }
   useEffect(() => {
-    // Mirror ThemeProvider: class both <html> (drives Tailwind/@cherrystudio/ui `.dark` tokens)
+    // Mirror ThemeProvider: class both <html> (drives Tailwind/@huatuostudio/ui `.dark` tokens)
     // and <body> so global styles keyed off `body.light` — notably scrollbar.css — also resolve
     // in this standalone preboot window.
     const applyResolved = (resolved: 'light' | 'dark') => {

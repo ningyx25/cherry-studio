@@ -1,6 +1,6 @@
 import '@renderer/assets/styles/vendor/pdf-viewer.css'
 
-import { EmptyState } from '@cherrystudio/ui'
+import { EmptyState } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { toast } from '@renderer/services/toast'
 import { safeOpen } from '@renderer/utils/file/safeOpen'

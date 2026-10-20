@@ -138,15 +138,15 @@ describe('remapAgentPrefixIds', () => {
   // UUIDs into job_schedule directly — no in-place rewrite is needed.
 
   it('migrates hardcoded builtin agent IDs to UUIDs', async () => {
-    await insertAgent(dbh.db, 'cherry-claw-default')
-    await insertAgent(dbh.db, 'cherry-assistant-default')
+    await insertAgent(dbh.db, 'huatuo-claw-default')
+    await insertAgent(dbh.db, 'huatuo-assistant-default')
 
     remapAgentPrefixIds(dbh.db)
 
     const agents = await dbh.db.select().from(agentTable)
     const ids = agents.map((a) => a.id)
-    expect(ids).not.toContain('cherry-claw-default')
-    expect(ids).not.toContain('cherry-assistant-default')
+    expect(ids).not.toContain('huatuo-claw-default')
+    expect(ids).not.toContain('huatuo-assistant-default')
     for (const id of ids) {
       expect(id).toMatch(UUID_PATTERN)
     }

@@ -24,7 +24,7 @@ export const KB_LIST_TOOL_NAME = 'kb_list'
 //
 // kb_list is consumed by two paths with conflicting schema needs, so it has two shapes.
 //
-// MCP / Claude Code bridge (cherryBuiltinTools): the agent parses raw args with this schema and may
+// MCP / Claude Code bridge (huatuoBuiltinTools): the agent parses raw args with this schema and may
 // omit any field, so they are `.optional()`. `z.toJSONSchema` legitimately drops them from
 // `required`, which the non-strict MCP schema accepts. Omit a field to skip it.
 export const kbListInputSchema = z.object({
@@ -364,7 +364,7 @@ export const KB_MANAGE_UNUSED_TYPE = 'none' as const
 //
 // kb_manage is consumed by two paths with conflicting schema needs, same split as kb_list.
 //
-// MCP / Claude Code bridge (cherryBuiltinTools): the agent parses raw args with this schema and may
+// MCP / Claude Code bridge (huatuoBuiltinTools): the agent parses raw args with this schema and may
 // omit any field, so they are `.optional()`.
 export const kbManageInputSchema = z.object({
   baseId: z.string().trim().min(1).describe('ID of the knowledge base to modify — a base id from kb_list.'),
@@ -555,8 +555,8 @@ export const REPORT_ARTIFACTS_DESCRIPTION =
 export type ReportArtifactsInput = z.infer<typeof reportArtifactsInputSchema>
 
 // ── agent autonomy tools (cron / notify / config) ────────────────
-// Hosted by the same in-process `cherry-tools` MCP server as the tools above. Their input schemas
-// are plain JSON Schema `Tool` definitions in `src/main/ai/mcp/servers/cherryAutonomyTools.ts`;
+// Hosted by the same in-process `huatuo-tools` MCP server as the tools above. Their input schemas
+// are plain JSON Schema `Tool` definitions in `src/main/ai/mcp/servers/huatuoAutonomyTools.ts`;
 // only the names are shared (the approval policy references them).
 
 export const CRON_TOOL_NAME = 'cron'

@@ -1,4 +1,4 @@
-import { Checkbox, Input, Label } from '@cherrystudio/ui'
+import { Checkbox, Input, Label } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof Label> = {
@@ -23,7 +23,7 @@ export const Default: Story = {
   render: () => (
     <div className="flex w-72 flex-col gap-2">
       <Label htmlFor="email">Email</Label>
-      <Input id="email" type="email" placeholder="hello@cherry.studio" />
+      <Input id="email" type="email" placeholder="hello@huatuo.studio" />
     </div>
   )
 }

@@ -381,7 +381,7 @@ ambiguous, disambiguate with AIP-136 colon notation:
 | `GET /:parent/:id/:sub/:childId` | Look up one merged item |
 
 **Registry packages are main-only.** Packages like
-`@cherrystudio/provider-registry` ship the preset data Registry Services
+`@huatuostudio/provider-registry` ship the preset data Registry Services
 merge against. **Renderer code must not import them.** Two reasons:
 
 - **Bundle waste.** Registry packages are large (preset catalogs, vendor

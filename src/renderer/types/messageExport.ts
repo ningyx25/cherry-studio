@@ -1,6 +1,6 @@
 import type {
-  CherryMessagePart,
-  CherryUIMessage,
+  HuaTuoMessagePart,
+  HuaTuoUIMessage,
   MessageSnapshot,
   MessageStats,
   MessageStatus
@@ -11,7 +11,7 @@ import type { Message } from './newMessage'
 
 export interface MessageExportView {
   id: string
-  role: CherryUIMessage['role']
+  role: HuaTuoUIMessage['role']
   assistantId?: string
   topicId: string
   createdAt: string
@@ -24,7 +24,7 @@ export interface MessageExportView {
   parentId?: string | null
   siblingsGroupId?: number
   stats?: MessageStats
-  parts: CherryMessagePart[]
+  parts: HuaTuoMessagePart[]
 }
 
 // `Message` (v1) is still produced only by the v1-block-based export/copy test

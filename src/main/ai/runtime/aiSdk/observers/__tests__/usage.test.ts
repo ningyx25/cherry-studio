@@ -1,4 +1,4 @@
-import type { CherryUIMessageChunk } from '@shared/data/types/message'
+import type { HuaTuoUIMessageChunk } from '@shared/data/types/message'
 import type { LanguageModelUsage } from 'ai'
 import { describe, expect, it } from 'vitest'
 
@@ -13,7 +13,7 @@ type HandlerMap = Record<string, ((...args: unknown[]) => void)[]>
 
 function makeFakeAgent() {
   const handlers: HandlerMap = {}
-  const written: CherryUIMessageChunk[] = []
+  const written: HuaTuoUIMessageChunk[] = []
 
   const agent = {
     on(key: string, fn: (...args: unknown[]) => void) {
@@ -26,7 +26,7 @@ function makeFakeAgent() {
         }
       }
     },
-    write(chunk: CherryUIMessageChunk) {
+    write(chunk: HuaTuoUIMessageChunk) {
       written.push(chunk)
     },
     fire(key: string, ...args: unknown[]) {
@@ -67,7 +67,7 @@ describe('attachUsageObserver', () => {
 
     const lastChunk = written[1]
     expect(lastChunk.type).toBe('message-metadata')
-    const meta = (lastChunk as Extract<CherryUIMessageChunk, { type: 'message-metadata' }>).messageMetadata
+    const meta = (lastChunk as Extract<HuaTuoUIMessageChunk, { type: 'message-metadata' }>).messageMetadata
 
     // totalTokens must be the running SUM (15 + 28 = 43)
     expect(meta?.stats?.totalTokens).toBe(43)
@@ -97,7 +97,7 @@ describe('attachUsageObserver', () => {
     )
 
     expect(written).toHaveLength(1)
-    const meta = (written[0] as Extract<CherryUIMessageChunk, { type: 'message-metadata' }>).messageMetadata
+    const meta = (written[0] as Extract<HuaTuoUIMessageChunk, { type: 'message-metadata' }>).messageMetadata
 
     // outputTokens must still be summed (200)
     expect(meta?.stats?.outputTokens).toBe(200)
@@ -123,7 +123,7 @@ describe('attachUsageObserver', () => {
     // After two steps, contextTokens should be 28.
     const afterSecondStep = written[1]
     expect(
-      (afterSecondStep as Extract<CherryUIMessageChunk, { type: 'message-metadata' }>).messageMetadata?.stats
+      (afterSecondStep as Extract<HuaTuoUIMessageChunk, { type: 'message-metadata' }>).messageMetadata?.stats
         ?.contextTokens
     ).toBe(28)
 
@@ -135,7 +135,7 @@ describe('attachUsageObserver', () => {
     )
 
     const lastChunk = written[written.length - 1]
-    const meta = (lastChunk as Extract<CherryUIMessageChunk, { type: 'message-metadata' }>).messageMetadata
+    const meta = (lastChunk as Extract<HuaTuoUIMessageChunk, { type: 'message-metadata' }>).messageMetadata
 
     // totalTokens resets: only step C = 9
     expect(meta?.stats?.totalTokens).toBe(9)
@@ -161,7 +161,7 @@ describe('attachUsageObserver', () => {
     )
 
     expect(written).toHaveLength(1)
-    const meta = (written[0] as Extract<CherryUIMessageChunk, { type: 'message-metadata' }>).messageMetadata
+    const meta = (written[0] as Extract<HuaTuoUIMessageChunk, { type: 'message-metadata' }>).messageMetadata
 
     // inputTokens is present → contextTokens anchors on the last-step totalTokens (14);
     // cache-token details accumulate alongside the base counters.

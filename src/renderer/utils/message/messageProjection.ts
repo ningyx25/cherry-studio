@@ -1,16 +1,16 @@
 import {
   type BranchMessage,
-  type CherryMessagePart,
-  type CherryUIMessage,
+  type HuaTuoMessagePart,
+  type HuaTuoUIMessage,
   type Message as SharedMessage,
   toContentRole
 } from '@shared/data/types/message'
 
-export function sharedMessageToUIMessage(shared: SharedMessage): CherryUIMessage {
+export function sharedMessageToUIMessage(shared: SharedMessage): HuaTuoUIMessage {
   return {
     id: shared.id,
     role: toContentRole(shared.role),
-    parts: (shared.data?.parts ?? []) as CherryUIMessage['parts'],
+    parts: (shared.data?.parts ?? []) as HuaTuoUIMessage['parts'],
     metadata: {
       parentId: shared.parentId,
       siblingsGroupId: shared.siblingsGroupId || undefined,
@@ -25,8 +25,8 @@ export function sharedMessageToUIMessage(shared: SharedMessage): CherryUIMessage
   }
 }
 
-export function uiMessagesToPartsMap(messages: CherryUIMessage[]): Record<string, CherryMessagePart[]> {
-  const map: Record<string, CherryMessagePart[]> = {}
+export function uiMessagesToPartsMap(messages: HuaTuoUIMessage[]): Record<string, HuaTuoMessagePart[]> {
+  const map: Record<string, HuaTuoMessagePart[]> = {}
   for (const message of messages) {
     if (message.parts.length > 0) {
       map[message.id] = message.parts
@@ -35,8 +35,8 @@ export function uiMessagesToPartsMap(messages: CherryUIMessage[]): Record<string
   return map
 }
 
-export function branchMessagesToFullUIMessages(branchItems: BranchMessage[]): CherryUIMessage[] {
-  const messages: CherryUIMessage[] = []
+export function branchMessagesToFullUIMessages(branchItems: BranchMessage[]): HuaTuoUIMessage[] {
+  const messages: HuaTuoUIMessage[] = []
   const seen = new Set<string>()
 
   const pushMessage = (message: SharedMessage) => {

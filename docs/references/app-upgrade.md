@@ -2,7 +2,7 @@
 
 ## Overview
 
-HuaTuo Studio clients check for updates through the managed release service at `https://releases.cherry-ai.com`. The client selects an update channel and sends application, client, platform, and region metadata. The release service owns target-version selection, regional mirrors, rollout policy, and required upgrade gateways.
+HuaTuo Studio clients check for updates through the managed release service at `https://releases.huatuo.ai`. The client selects an update channel and sends application, client, platform, and region metadata. The release service owns target-version selection, regional mirrors, rollout policy, and required upgrade gateways.
 
 ## Update Feed Configuration
 

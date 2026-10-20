@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback } from '@cherrystudio/ui/components/primitives/avatar'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Avatar, AvatarFallback } from '@huatuostudio/ui/components/primitives/avatar'
+import { cn } from '@huatuostudio/ui/lib/utils'
 
 import { type IconAvatarProps } from '../../types'
 import { SunoDark } from './dark'

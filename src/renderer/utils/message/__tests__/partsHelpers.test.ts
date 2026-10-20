@@ -1,9 +1,9 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { canEditAssistantMessageParts } from '../partsHelpers'
 
-const parts = (...items: Array<Record<string, unknown>>) => items as CherryMessagePart[]
+const parts = (...items: Array<Record<string, unknown>>) => items as HuaTuoMessagePart[]
 
 describe('canEditAssistantMessageParts', () => {
   it.each([
@@ -35,7 +35,7 @@ describe('canEditAssistantMessageParts', () => {
         type: 'text',
         text: 'answer with safe composer metadata',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             references: [],
             composer: { version: 1, tokens: [] }
           }
@@ -72,7 +72,7 @@ describe('canEditAssistantMessageParts', () => {
         type: 'text',
         text: 'cited answer [1]',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             references: [
               {
                 category: 'citation',
@@ -108,9 +108,9 @@ describe('canEditAssistantMessageParts', () => {
     {
       messageParts: parts({
         type: 'text',
-        text: 'answer with unknown Cherry metadata',
+        text: 'answer with unknown HuaTuo metadata',
         providerMetadata: {
-          cherry: { futureField: 'state-1' }
+          huatuo: { futureField: 'state-1' }
         }
       })
     },
@@ -120,7 +120,7 @@ describe('canEditAssistantMessageParts', () => {
           type: 'text',
           text: 'first paragraph',
           providerMetadata: {
-            cherry: { composer: { version: 1, tokens: [] } }
+            huatuo: { composer: { version: 1, tokens: [] } }
           }
         },
         { type: 'text', text: 'second paragraph' }

@@ -1,6 +1,6 @@
-import { Button, EmptyState, Scrollbar } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
 import { useQuery } from '@data/hooks/useDataApi'
+import { Button, EmptyState, Scrollbar } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { loggerService } from '@logger'
 import { DynamicVirtualList } from '@renderer/components/VirtualList'
 import { ipcApi } from '@renderer/ipc'

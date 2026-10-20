@@ -1,5 +1,5 @@
 import { COMPOSER_CLIPBOARD_FRAGMENT_MIME } from '@renderer/utils/message/composerClipboard'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { MockUseCache } from '@test-mocks/renderer/useCache'
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -81,13 +81,13 @@ describe('useMessageSelectionController', () => {
 
   it('copies selected composer tokens through rich clipboard when available', async () => {
     const copyRichContent = vi.fn().mockResolvedValue(undefined)
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
       a: [
         {
           type: 'text',
           text: 'Use the pdf skill. first',
           providerMetadata: {
-            cherry: {
+            huatuo: {
               composer: {
                 version: 1,
                 tokens: [
@@ -157,7 +157,7 @@ describe('useMessageSelectionController', () => {
     writeText.mockResolvedValue(undefined)
     type HookProps = {
       messages: ReturnType<typeof message>[]
-      partsByMessageId: Record<string, CherryMessagePart[]>
+      partsByMessageId: Record<string, HuaTuoMessagePart[]>
     }
     const { result, rerender } = renderHook(
       ({ messages, partsByMessageId }: HookProps) =>
@@ -169,7 +169,7 @@ describe('useMessageSelectionController', () => {
       {
         initialProps: {
           messages: [message('a')],
-          partsByMessageId: { a: [{ type: 'text', text: 'old' }] as CherryMessagePart[] }
+          partsByMessageId: { a: [{ type: 'text', text: 'old' }] as HuaTuoMessagePart[] }
         } as HookProps
       }
     )
@@ -177,7 +177,7 @@ describe('useMessageSelectionController', () => {
 
     rerender({
       messages: [message('b')],
-      partsByMessageId: { b: [{ type: 'text', text: 'latest' }] as CherryMessagePart[] }
+      partsByMessageId: { b: [{ type: 'text', text: 'latest' }] as HuaTuoMessagePart[] }
     })
 
     expect(result.current.actions).toBe(initialActions)

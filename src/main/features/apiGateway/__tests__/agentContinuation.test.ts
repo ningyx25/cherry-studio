@@ -1,15 +1,15 @@
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { AGENT_CONTINUATION_TEXT, appendInternalAgentContinuation } from '../utils/agentContinuation'
 
-const userMessage: CherryUIMessage = {
+const userMessage: HuaTuoUIMessage = {
   id: 'user-1',
   role: 'user',
   parts: [{ type: 'text', text: 'Original request' }]
 }
 
-const assistantTextMessage: CherryUIMessage = {
+const assistantTextMessage: HuaTuoUIMessage = {
   id: 'assistant-1',
   role: 'assistant',
   parts: [
@@ -18,7 +18,7 @@ const assistantTextMessage: CherryUIMessage = {
   ]
 }
 
-const nonTextParts: Array<[string, CherryUIMessage['parts'][number]]> = [
+const nonTextParts: Array<[string, HuaTuoUIMessage['parts'][number]]> = [
   [
     'dynamic-tool part',
     {
@@ -34,7 +34,7 @@ const nonTextParts: Array<[string, CherryUIMessage['parts'][number]]> = [
 
 describe('appendInternalAgentContinuation', () => {
   it('returns the same messages for an empty list', () => {
-    const messages: CherryUIMessage[] = []
+    const messages: HuaTuoUIMessage[] = []
 
     expect(appendInternalAgentContinuation(messages)).toBe(messages)
   })
@@ -68,7 +68,7 @@ describe('appendInternalAgentContinuation', () => {
   it.each(nonTextParts)(
     'returns the same messages when the trailing assistant contains a %s',
     (_label, nonTextPart) => {
-      const messages: CherryUIMessage[] = [
+      const messages: HuaTuoUIMessage[] = [
         userMessage,
         {
           id: 'assistant-2',

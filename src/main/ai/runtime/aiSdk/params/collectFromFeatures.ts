@@ -8,7 +8,7 @@
  * dropped, other features continue, the request still proceeds.
  */
 
-import type { AiPlugin } from '@cherrystudio/ai-core'
+import type { AiPlugin } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import type { StopCondition, ToolSet } from 'ai'
 

@@ -1,7 +1,7 @@
 import { loggerService } from '@logger'
 import { ipcApi } from '@renderer/ipc'
 import { type AiChatRequestBody, type AiStreamOpenRequest, type StreamChunkPayload } from '@shared/ai/transport'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import type { ChatRequestOptions, ChatTransport, UIMessageChunk } from 'ai'
 
@@ -14,7 +14,7 @@ export function isPerExecutionOnly(data: { executionId?: UniqueModelId; isTopicD
   return !!data.executionId && !data.isTopicDone
 }
 
-export class IpcChatTransport implements ChatTransport<CherryUIMessage> {
+export class IpcChatTransport implements ChatTransport<HuaTuoUIMessage> {
   readonly #defaultBody: Partial<AiChatRequestBody>
 
   constructor(defaultBody: Partial<AiChatRequestBody> = {}) {
@@ -26,7 +26,7 @@ export class IpcChatTransport implements ChatTransport<CherryUIMessage> {
       trigger: 'submit-message' | 'regenerate-message'
       chatId: string
       messageId: string | undefined
-      messages: CherryUIMessage[]
+      messages: HuaTuoUIMessage[]
       abortSignal: AbortSignal | undefined
     } & ChatRequestOptions
   ): Promise<ReadableStream<UIMessageChunk>> {

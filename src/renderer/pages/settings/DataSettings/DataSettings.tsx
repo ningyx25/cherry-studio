@@ -1,4 +1,4 @@
-import { MenuDivider, MenuItem, MenuList, PageHeader, RowFlex } from '@cherrystudio/ui'
+import { MenuDivider, MenuItem, MenuList, PageHeader, RowFlex } from '@huatuostudio/ui'
 import { NutstoreIcon } from '@renderer/components/icons/NutstoreIcons'
 import { JoplinIcon, SiyuanIcon } from '@renderer/components/icons/SvgIcon'
 import Scrollbar from '@renderer/components/Scrollbar'

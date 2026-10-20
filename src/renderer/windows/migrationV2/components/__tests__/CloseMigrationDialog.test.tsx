@@ -24,7 +24,7 @@ vi.mock('react-i18next', () => ({
 }))
 
 // Override the global passthrough Dialog mock with the Radix autofocus behavior under test.
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react')
 
   return {

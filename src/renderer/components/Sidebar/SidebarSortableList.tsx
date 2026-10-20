@@ -1,5 +1,5 @@
-import { Sortable } from '@cherrystudio/ui'
 import type { Active } from '@dnd-kit/core'
+import { Sortable } from '@huatuostudio/ui'
 import type { ReactNode } from 'react'
 import { useCallback, useRef } from 'react'
 

@@ -1,5 +1,5 @@
 import { UpdateAgentSessionMessageSchema } from '@shared/data/api/schemas/agentSessionMessages'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -375,7 +375,7 @@ const msg = (overrides: Partial<MessageListItem> = {}): MessageListItem =>
   }) as MessageListItem
 
 const renderPartsTree = (
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   message: MessageListItem = msg(),
   actions: MessageListProviderValue['actions'] = {},
   renderConfig: MessageListProviderValue['state']['renderConfig'] = defaultMessageRenderConfig
@@ -411,7 +411,7 @@ const renderPartsTree = (
 }
 
 const renderParts = (
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   message: MessageListItem = msg(),
   actions: MessageListProviderValue['actions'] = {},
   renderConfig: MessageListProviderValue['state']['renderConfig'] = defaultMessageRenderConfig
@@ -567,7 +567,7 @@ describe('MessagePartsRenderer', () => {
     it('uses activity-specific placeholders for empty streaming content without creating process boundaries', () => {
       activateTurn('streaming')
       const reasoning = renderParts(
-        [{ type: 'reasoning', text: '', state: 'streaming' }] as unknown as CherryMessagePart[],
+        [{ type: 'reasoning', text: '', state: 'streaming' }] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
       expect(screen.getByTestId('mock-placeholder')).toHaveAttribute('data-status', 'thinking')
@@ -575,7 +575,7 @@ describe('MessagePartsRenderer', () => {
       reasoning.unmount()
 
       renderParts(
-        [{ type: 'text', text: '', state: 'streaming' }] as unknown as CherryMessagePart[],
+        [{ type: 'text', text: '', state: 'streaming' }] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
       expect(screen.getByTestId('mock-placeholder')).toHaveAttribute('data-status', 'generating')
@@ -586,7 +586,7 @@ describe('MessagePartsRenderer', () => {
       renderParts([
         { type: 'text', text: 'hello world' },
         { type: 'data-code', data: { content: 'console.log(1)', language: 'js' } }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       const markdown = screen.getAllByTestId('mock-markdown').map((node) => node.textContent)
       expect(markdown[0]).toContain('hello world')
@@ -597,7 +597,7 @@ describe('MessagePartsRenderer', () => {
     it('renders single and grouped images while skipping image parts without a URL', () => {
       const single = renderParts([
         { type: 'file', url: 'https://img.test/single.png', mediaType: 'image/png' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
       expect(screen.getByTestId('mock-image-block')).toHaveAttribute('data-single', 'true')
       single.unmount()
 
@@ -605,7 +605,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'file', url: 'https://img.test/a.png', mediaType: 'image/png' },
         { type: 'file', url: 'https://img.test/b.jpg', mediaType: 'image/jpeg' },
         { type: 'file', mediaType: 'image/png' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       const block = screen.getByTestId('mock-image-block')
       expect(block).toHaveAttribute('data-single', 'false')
@@ -619,7 +619,7 @@ describe('MessagePartsRenderer', () => {
             type: 'text',
             text: 'Look ',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [
@@ -634,13 +634,13 @@ describe('MessagePartsRenderer', () => {
                 }
               }
             }
-          } as unknown as CherryMessagePart,
+          } as unknown as HuaTuoMessagePart,
           {
             type: 'file',
             url: 'file:///tmp/photo.png',
             mediaType: 'image/png',
             filename: 'photo.png'
-          } as unknown as CherryMessagePart
+          } as unknown as HuaTuoMessagePart
         ],
         msg({ role: 'user' })
       )
@@ -656,7 +656,7 @@ describe('MessagePartsRenderer', () => {
             type: 'text',
             text: 'Compare ',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [
@@ -678,21 +678,21 @@ describe('MessagePartsRenderer', () => {
                 }
               }
             }
-          } as unknown as CherryMessagePart,
+          } as unknown as HuaTuoMessagePart,
           {
             type: 'file',
             url: 'file:///tmp/first/photo.png',
             mediaType: 'image/png',
             filename: 'photo.png',
-            providerMetadata: { cherry: { fileTokenSourceId: 'source-image-1' } }
-          } as unknown as CherryMessagePart,
+            providerMetadata: { huatuo: { fileTokenSourceId: 'source-image-1' } }
+          } as unknown as HuaTuoMessagePart,
           {
             type: 'file',
             url: 'file:///tmp/second/photo.png',
             mediaType: 'image/png',
             filename: 'photo.png',
-            providerMetadata: { cherry: { fileTokenSourceId: 'source-image-2' } }
-          } as unknown as CherryMessagePart
+            providerMetadata: { huatuo: { fileTokenSourceId: 'source-image-2' } }
+          } as unknown as HuaTuoMessagePart
         ],
         msg({ role: 'user' })
       )
@@ -716,7 +716,7 @@ describe('MessagePartsRenderer', () => {
             type: 'text',
             text: 'Read ',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [
@@ -745,14 +745,14 @@ describe('MessagePartsRenderer', () => {
             mediaType: 'text/plain',
             filename: 'Pasted text.txt',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 fileEntryId: 'entry-pasted-text',
                 fileTokenSourceId: 'source-pasted-text',
                 composerFileKind: 'pasted-text'
               }
             }
           }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ role: 'user' })
       )
 
@@ -768,13 +768,13 @@ describe('MessagePartsRenderer', () => {
     it('keeps a user image when no composer file token is visible', () => {
       renderParts(
         [
-          { type: 'text', text: 'Look at this' } as unknown as CherryMessagePart,
+          { type: 'text', text: 'Look at this' } as unknown as HuaTuoMessagePart,
           {
             type: 'file',
             url: 'file:///tmp/photo.png',
             mediaType: 'image/png',
             filename: 'photo.png'
-          } as unknown as CherryMessagePart
+          } as unknown as HuaTuoMessagePart
         ],
         msg({ role: 'user' })
       )
@@ -785,7 +785,7 @@ describe('MessagePartsRenderer', () => {
     it('renders non-image file attachments', () => {
       renderParts([
         { type: 'file', url: 'file:///doc.pdf', mediaType: 'application/pdf', filename: 'doc.pdf' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       expect(screen.queryByTestId('mock-image-block')).toBeNull()
       expect(screen.getByTestId('mock-attachments')).toHaveAttribute('data-file-name', 'doc.pdf')
@@ -798,7 +798,7 @@ describe('MessagePartsRenderer', () => {
             type: 'text',
             text: '',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [{ id: 'file:license', kind: 'file', label: 'LICENSE', index: 0, textOffset: 0 }]
@@ -811,9 +811,9 @@ describe('MessagePartsRenderer', () => {
             url: 'file:///internal/message-files/LICENSE',
             mediaType: 'text/plain',
             filename: 'LICENSE',
-            providerMetadata: { cherry: { fileTokenSourceId: 'license' } }
+            providerMetadata: { huatuo: { fileTokenSourceId: 'license' } }
           }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ role: 'user' })
       )
 
@@ -828,7 +828,7 @@ describe('MessagePartsRenderer', () => {
             type: 'text',
             text: 'Open ',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [{ id: 'file:doc.pdf', kind: 'file', label: 'doc.pdf', index: 0, textOffset: 5 }]
@@ -837,7 +837,7 @@ describe('MessagePartsRenderer', () => {
             }
           },
           { type: 'file', url: 'file:///doc.pdf', mediaType: 'application/pdf', filename: 'doc.pdf' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ role: 'user' })
       )
 
@@ -852,7 +852,7 @@ describe('MessagePartsRenderer', () => {
             type: 'text',
             text: 'Open latest',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [
@@ -870,7 +870,7 @@ describe('MessagePartsRenderer', () => {
             }
           },
           { type: 'file', url: 'file:///doc.pdf', mediaType: 'application/pdf', filename: 'doc.pdf' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ role: 'user' })
       )
 
@@ -884,7 +884,7 @@ describe('MessagePartsRenderer', () => {
           type: 'text',
           text: 'cited [1]',
           providerMetadata: {
-            cherry: {
+            huatuo: {
               references: [
                 {
                   category: 'citation',
@@ -894,7 +894,7 @@ describe('MessagePartsRenderer', () => {
               ]
             }
           }
-        } as unknown as CherryMessagePart
+        } as unknown as HuaTuoMessagePart
       ])
 
       expect(screen.getByTestId('mock-markdown').textContent).toContain('data-citation')
@@ -915,7 +915,7 @@ describe('MessagePartsRenderer', () => {
         },
         { type: 'text', text: 'Later source first. [cite:call-2]' },
         { type: 'text', text: 'Earlier source second. [cite:call-1]' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       const [first, second] = screen.getAllByTestId('mock-markdown').map((node) => node.textContent ?? '')
       expect(first).toContain("data-citation='1'")
@@ -929,7 +929,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'data-video', data: { filePath: '/tmp/v.mp4' } },
         { type: 'data-video', data: { url: 'https://v.test/v.mp4' } },
         { type: 'data-error', data: { name: 'Err', message: 'boom' } }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       const videos = screen.getAllByTestId('mock-message-video')
       expect(videos[0]).toHaveAttribute('data-file-path', '/tmp/v.mp4')
@@ -946,7 +946,7 @@ describe('MessagePartsRenderer', () => {
       }
       const initialParts = [
         { type: 'data-error', data: { name: 'AuthError', message: 'Unauthorized' } }
-      ] as unknown as CherryMessagePart[]
+      ] as unknown as HuaTuoMessagePart[]
 
       // Persist the diagnosis, then push the whole message data through the PATCH
       // body validator the DataApi runs before writing `data.parts` to SQLite.
@@ -954,7 +954,7 @@ describe('MessagePartsRenderer', () => {
       expect(withDiagnosis).not.toBeNull()
       const parsed = UpdateAgentSessionMessageSchema.parse({ data: { parts: withDiagnosis } })
 
-      renderParts(parsed.data.parts as CherryMessagePart[])
+      renderParts(parsed.data.parts as HuaTuoMessagePart[])
 
       const block = screen.getByTestId('mock-error-block')
       expect(block).toHaveAttribute('data-error-message', 'Unauthorized')
@@ -966,7 +966,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'data-video', data: { filePath: '/tmp/same.mp4', url: 'https://v.test/first.mp4' } },
         { type: 'text', text: 'between videos' },
         { type: 'data-video', data: { filePath: '/tmp/same.mp4', url: 'https://v.test/second.mp4' } }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       const html = container.innerHTML
       expect(screen.getAllByTestId('mock-message-video')).toHaveLength(2)
@@ -986,7 +986,7 @@ describe('MessagePartsRenderer', () => {
           text: 'child text',
           providerMetadata: { 'claude-code': { parentToolCallId: 'parent' } }
         }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
       expandCollapsedChildToolGroups()
@@ -1014,7 +1014,7 @@ describe('MessagePartsRenderer', () => {
             output: {}
           },
           { type: 'text', text: 'final answer' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg(),
         { openArtifactFile, openPath }
       )
@@ -1065,11 +1065,11 @@ describe('MessagePartsRenderer', () => {
         state: 'output-available',
         input: { artifacts: [{ path: 'dist/report.md', description: 'Report' }] },
         output: {}
-      } as unknown as CherryMessagePart
+      } as unknown as HuaTuoMessagePart
       const initialParts = [
         reportPart,
         { type: 'text', text: 'A', state: 'streaming' }
-      ] as unknown as CherryMessagePart[]
+      ] as unknown as HuaTuoMessagePart[]
       const { rerender } = renderParts(initialParts, pendingMessage)
 
       expect(screen.queryByText('report.md')).toBeNull()
@@ -1078,7 +1078,7 @@ describe('MessagePartsRenderer', () => {
       const finalParts = [
         reportPart,
         { type: 'text', text: finalText, state: 'done' }
-      ] as unknown as CherryMessagePart[]
+      ] as unknown as HuaTuoMessagePart[]
       rerender(renderPartsTree(finalParts, pendingMessage))
 
       mockIsActiveTurnTarget.mockReturnValue(false)
@@ -1104,7 +1104,7 @@ describe('MessagePartsRenderer', () => {
           input: { artifacts: [{ path: 'dist/report.md', description: 'Report' }] },
           output: {}
         }
-      ] as unknown as CherryMessagePart[]
+      ] as unknown as HuaTuoMessagePart[]
       const { rerender } = renderParts(parts, pendingMessage)
 
       expect(screen.getByTestId('mock-placeholder')).toHaveAttribute('data-status', 'usingTools')
@@ -1126,7 +1126,7 @@ describe('MessagePartsRenderer', () => {
       const initialParts = [
         toolPart('read'),
         { type: 'text', text: 'answer in progress' }
-      ] as unknown as CherryMessagePart[]
+      ] as unknown as HuaTuoMessagePart[]
       const { rerender } = renderParts(initialParts, pendingMessage)
 
       const answer = screen.getByText('answer in progress')
@@ -1137,7 +1137,7 @@ describe('MessagePartsRenderer', () => {
       expandCollapsedLiveToolGroups()
       expect(screen.getByTestId('mock-tool-group-content')).toHaveAttribute('data-count', '1')
 
-      const laterParts = [...initialParts, toolPart('edit', 'input-available')] as CherryMessagePart[]
+      const laterParts = [...initialParts, toolPart('edit', 'input-available')] as HuaTuoMessagePart[]
       rerender(renderPartsTree(laterParts, pendingMessage))
 
       expect(document.querySelector('[data-live-process-run]')).toBeNull()
@@ -1159,7 +1159,7 @@ describe('MessagePartsRenderer', () => {
           { type: 'text', text: 'open answer', state: 'streaming' },
           { type: 'source-url', url: 'https://example.com' },
           { type: 'data-citation', data: {} }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1177,7 +1177,7 @@ describe('MessagePartsRenderer', () => {
           toolPart('read', 'input-available', 'Read'),
           { type: 'source-url', url: 'https://example.com' },
           { type: 'reasoning', text: 'Checking result', state: 'done' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1207,7 +1207,7 @@ describe('MessagePartsRenderer', () => {
             output: { action: { type: 'search' } },
             providerExecuted: true
           }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1223,7 +1223,7 @@ describe('MessagePartsRenderer', () => {
           toolPart('read'),
           { type: 'text', text: '...' },
           toolPart('edit', 'input-available')
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1236,7 +1236,7 @@ describe('MessagePartsRenderer', () => {
     it('renders the latest running tool after an earlier tool failure', () => {
       activateTurn('streaming')
       renderParts(
-        [toolPart('failed', 'output-error'), toolPart('cleanup', 'input-available')] as unknown as CherryMessagePart[],
+        [toolPart('failed', 'output-error'), toolPart('cleanup', 'input-available')] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1255,7 +1255,7 @@ describe('MessagePartsRenderer', () => {
         [
           toolPart('failed', 'output-error'),
           { type: 'reasoning', text: 'Recovering', state: 'streaming' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1288,7 +1288,7 @@ describe('MessagePartsRenderer', () => {
             input: { artifacts: [] }
           },
           toolPart('five', 'input-available')
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1307,7 +1307,7 @@ describe('MessagePartsRenderer', () => {
     it('keeps direct live rendering when completed-history collapsing is disabled', () => {
       activateTurn()
       renderParts(
-        [toolPart('read', 'input-available')] as unknown as CherryMessagePart[],
+        [toolPart('read', 'input-available')] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' }),
         {},
         { ...defaultMessageRenderConfig, collapseCompletedToolHistory: false }
@@ -1324,7 +1324,7 @@ describe('MessagePartsRenderer', () => {
         [
           toolPart('read', 'output-available'),
           { type: 'reasoning', text: 'Continuing', state: 'streaming' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1336,9 +1336,9 @@ describe('MessagePartsRenderer', () => {
     it('does not rerender settled process history while only the final text tail streams', () => {
       activateTurn('streaming')
       const pendingMessage = msg({ status: 'pending' })
-      const settledTool = toolPart('read') as unknown as CherryMessagePart
+      const settledTool = toolPart('read') as unknown as HuaTuoMessagePart
       const { rerender } = renderParts(
-        [settledTool, { type: 'text', text: 'answer 1', state: 'streaming' }] as unknown as CherryMessagePart[],
+        [settledTool, { type: 'text', text: 'answer 1', state: 'streaming' }] as unknown as HuaTuoMessagePart[],
         pendingMessage
       )
 
@@ -1349,7 +1349,7 @@ describe('MessagePartsRenderer', () => {
       for (const text of ['answer 2', 'answer 3', 'answer 4']) {
         rerender(
           renderPartsTree(
-            [settledTool, { type: 'text', text, state: 'streaming' }] as unknown as CherryMessagePart[],
+            [settledTool, { type: 'text', text, state: 'streaming' }] as unknown as HuaTuoMessagePart[],
             pendingMessage
           )
         )
@@ -1364,7 +1364,7 @@ describe('MessagePartsRenderer', () => {
       activateTurn('streaming')
       const message = msg({ status: 'pending' })
 
-      renderParts([toolPart('read', 'input-available')] as unknown as CherryMessagePart[], message)
+      renderParts([toolPart('read', 'input-available')] as unknown as HuaTuoMessagePart[], message)
 
       expect(mockUsePlaceholderElapsedMs).toHaveBeenCalledWith(true, message.createdAt, 1000)
     })
@@ -1375,7 +1375,7 @@ describe('MessagePartsRenderer', () => {
         [
           toolPart('read', 'output-available'),
           { type: 'text', text: 'Writing the answer', state: 'streaming' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1386,7 +1386,7 @@ describe('MessagePartsRenderer', () => {
     it('hides a standalone unanswered AskUserQuestion while the reply is streaming', () => {
       activateTurn('streaming')
       renderParts(
-        [toolPart('question', 'input-available', 'AskUserQuestion')] as unknown as CherryMessagePart[],
+        [toolPart('question', 'input-available', 'AskUserQuestion')] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1401,7 +1401,7 @@ describe('MessagePartsRenderer', () => {
           toolPart('read', 'output-available', 'Read'),
           answeredAskUserQuestionPart('question'),
           toolPart('edit', 'input-available', 'Edit')
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1427,7 +1427,7 @@ describe('MessagePartsRenderer', () => {
           answeredAskUserQuestionPart('question', 'approval-responded'),
           { type: 'reasoning', text: 'Waiting for input', state: 'streaming' },
           { type: 'text', text: 'Waiting for your choice', state: 'streaming' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'pending' })
       )
 
@@ -1455,7 +1455,7 @@ describe('MessagePartsRenderer', () => {
             ...toolPart('approval', 'approval-requested', 'Bash'),
             approval: { id: 'approval-1' }
           }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ status: 'success' })
       )
 
@@ -1467,7 +1467,7 @@ describe('MessagePartsRenderer', () => {
 
     it('does not expose the removed preview, close, full-history, or bottom-collapse controls', () => {
       activateTurn()
-      renderParts([toolPart('read', 'input-available')] as unknown as CherryMessagePart[], msg({ status: 'pending' }))
+      renderParts([toolPart('read', 'input-available')] as unknown as HuaTuoMessagePart[], msg({ status: 'pending' }))
 
       expect(screen.queryByTestId('tool-history-preview')).toBeNull()
       expect(screen.queryByRole('button', { name: 'Close' })).toBeNull()
@@ -1480,7 +1480,7 @@ describe('MessagePartsRenderer', () => {
   describe('terminal layout', () => {
     it('replaces direct live process content with collapsed history and keeps the final answer outside', () => {
       activateTurn('streaming')
-      const parts = [toolPart('read'), { type: 'text', text: 'final answer' }] as unknown as CherryMessagePart[]
+      const parts = [toolPart('read'), { type: 'text', text: 'final answer' }] as unknown as HuaTuoMessagePart[]
       const { rerender } = renderParts(parts, msg({ status: 'pending' }))
 
       expect(document.querySelector('[data-live-process-run]')).toBeNull()
@@ -1504,7 +1504,7 @@ describe('MessagePartsRenderer', () => {
 
     it('keeps the final text node mounted across the active-to-terminal frame', () => {
       activateTurn('streaming')
-      const parts = [{ type: 'text', text: 'stable answer node' }] as unknown as CherryMessagePart[]
+      const parts = [{ type: 'text', text: 'stable answer node' }] as unknown as HuaTuoMessagePart[]
       const { rerender } = renderParts(parts, msg({ status: 'pending' }))
       const activeAnswerNode = screen.getByText('stable answer node')
 
@@ -1519,7 +1519,7 @@ describe('MessagePartsRenderer', () => {
       activateTurn('streaming')
       const parts = [
         { type: 'data-error', data: { name: 'ProviderError', message: 'failed immediately' } }
-      ] as unknown as CherryMessagePart[]
+      ] as unknown as HuaTuoMessagePart[]
       const { rerender } = renderParts(parts, msg({ status: 'pending' }))
       const activeErrorNode = screen.getByTestId('mock-error-block')
       const animatedWrapper = activeErrorNode.closest('.block-wrapper')
@@ -1538,7 +1538,7 @@ describe('MessagePartsRenderer', () => {
     })
 
     it('preserves completed process expansion when the same message metadata updates', () => {
-      const parts = [toolPart('read'), { type: 'text', text: 'final answer' }] as unknown as CherryMessagePart[]
+      const parts = [toolPart('read'), { type: 'text', text: 'final answer' }] as unknown as HuaTuoMessagePart[]
       const { rerender } = renderParts(parts, msg({ updatedAt: '2026-01-01T00:00:01Z' }))
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
@@ -1555,7 +1555,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'text', text: 'Searching provider sources' },
         { ...toolPart('search', 'output-available', 'web_search'), toolType: 'provider' },
         { type: 'text', text: 'Provider-backed final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       expect(screen.queryByText('Searching provider sources')).toBeNull()
       expect(screen.getByText('Provider-backed final answer')).toBeInTheDocument()
@@ -1572,7 +1572,7 @@ describe('MessagePartsRenderer', () => {
         {
           type: 'dynamic-tool',
           toolCallId: 'channel-auth',
-          toolName: 'mcp__cherry-tools__config',
+          toolName: 'mcp__huatuo-tools__config',
           state: 'output-available',
           input: { action: 'add_channel', type: 'wechat', auth_mode: 'qr' },
           output: {
@@ -1580,16 +1580,16 @@ describe('MessagePartsRenderer', () => {
               { type: 'text', text: 'Scan this QR code' },
               { type: 'image', data: 'BASE64', mimeType: 'image/png' }
             ],
-            metadata: { type: 'mcp', serverId: 'cherry-tools', serverName: 'cherry-tools' }
+            metadata: { type: 'mcp', serverId: 'huatuo-tools', serverName: 'huatuo-tools' }
           }
         }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       const historyTrigger = screen.getByTestId('completed-process-trigger')
       expect(historyTrigger).toHaveAttribute('aria-expanded', 'false')
 
       const visibleAuthTool = screen.getByTestId('mock-message-tools')
-      expect(visibleAuthTool).toHaveAttribute('data-tool-name', 'mcp__cherry-tools__config')
+      expect(visibleAuthTool).toHaveAttribute('data-tool-name', 'mcp__huatuo-tools__config')
       expect(visibleAuthTool.closest('[data-testid="tool-history-content"]')).toBeNull()
 
       fireEvent.click(historyTrigger)
@@ -1599,7 +1599,7 @@ describe('MessagePartsRenderer', () => {
       expect(
         screen
           .getAllByTestId('mock-message-tools')
-          .filter((node) => node.getAttribute('data-tool-name') === 'mcp__cherry-tools__config')
+          .filter((node) => node.getAttribute('data-tool-name') === 'mcp__huatuo-tools__config')
       ).toHaveLength(1)
     })
 
@@ -1607,7 +1607,7 @@ describe('MessagePartsRenderer', () => {
       renderParts([
         { ...toolPart('search', 'output-available', 'unknown_provider_tool'), toolType: 'provider' },
         { type: 'text', text: 'Provider-backed final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       expect(screen.getByText('Provider-backed final answer')).toBeInTheDocument()
       expect(screen.queryByTestId('completed-process-trigger')).toBeNull()
@@ -1619,7 +1619,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'text', text: 'Process update between tools' },
         toolPart('edit'),
         { type: 'text', text: 'Main final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       const historyTrigger = screen.getByTestId('completed-process-trigger')
       expect(historyTrigger).toHaveAttribute('aria-expanded', 'false')
@@ -1646,7 +1646,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'reasoning', text: 'Reasoning between tools', state: 'done' },
         toolPart('edit'),
         { type: 'text', text: 'Main final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
 
@@ -1666,7 +1666,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'source-url', url: 'https://example.com' },
         ...Array.from({ length: 6 }, (_, index) => toolPart(`after-${index}`)),
         { type: 'text', text: 'Main final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
 
@@ -1680,7 +1680,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'text', text: '...' },
         toolPart('edit'),
         { type: 'text', text: 'Final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
       expandCollapsedChildToolGroups()
@@ -1696,7 +1696,7 @@ describe('MessagePartsRenderer', () => {
         answeredAskUserQuestionPart('ask'),
         toolPart('edit'),
         { type: 'text', text: 'Answer after question' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
 
@@ -1719,7 +1719,7 @@ describe('MessagePartsRenderer', () => {
           ...toolPart('ask', 'approval-requested', 'AskUserQuestion'),
           approval: { id: 'ask-approval' }
         }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
       expandCollapsedChildToolGroups()
@@ -1728,13 +1728,13 @@ describe('MessagePartsRenderer', () => {
     })
 
     it('shows completed summaries for tools and pure reasoning groups', () => {
-      const tools = renderParts([toolPart('read')] as unknown as CherryMessagePart[])
+      const tools = renderParts([toolPart('read')] as unknown as HuaTuoMessagePart[])
       expect(screen.getByTestId('completed-process-trigger')).toHaveAccessibleName('Processed')
       expect(screen.getByTestId('completed-process-trigger')).toHaveAttribute('aria-expanded', 'false')
       expect(screen.queryByTestId('mock-tool-group-content')).toBeNull()
       tools.unmount()
 
-      renderParts([{ type: 'reasoning', text: 'Only thought', state: 'done' }] as unknown as CherryMessagePart[])
+      renderParts([{ type: 'reasoning', text: 'Only thought', state: 'done' }] as unknown as HuaTuoMessagePart[])
       const reasoningTrigger = screen.getByTestId('completed-process-trigger')
       expect(reasoningTrigger).toHaveAccessibleName('Processed')
       expect(screen.queryByTestId('mock-thinking-block')).toBeNull()
@@ -1747,7 +1747,7 @@ describe('MessagePartsRenderer', () => {
       renderParts([
         { type: 'reasoning', text: 'Deep thought', state: 'done' },
         { type: 'text', text: 'final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       expect(screen.getByText('final answer')).toBeInTheDocument()
       const historyTrigger = screen.getByTestId('completed-process-trigger')
@@ -1759,7 +1759,7 @@ describe('MessagePartsRenderer', () => {
     })
 
     it('shows processed status and elapsed time in a completed tool summary', () => {
-      renderParts([toolPart('read')] as unknown as CherryMessagePart[], msg({ updatedAt: '2026-01-01T00:00:01Z' }))
+      renderParts([toolPart('read')] as unknown as HuaTuoMessagePart[], msg({ updatedAt: '2026-01-01T00:00:01Z' }))
 
       expect(screen.getByRole('button', { name: 'Processed 1 second' })).toBeInTheDocument()
     })
@@ -1770,7 +1770,7 @@ describe('MessagePartsRenderer', () => {
           toolPart('failed', 'output-error'),
           toolPart('cleanup'),
           { type: 'text', text: 'Recovered answer' }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg({ updatedAt: '2026-01-01T00:00:01Z' })
       )
 
@@ -1785,7 +1785,7 @@ describe('MessagePartsRenderer', () => {
     })
 
     it('keeps an unrecovered tool failure in the collapsed completed summary', () => {
-      renderParts([toolPart('failed', 'output-error')] as unknown as CherryMessagePart[])
+      renderParts([toolPart('failed', 'output-error')] as unknown as HuaTuoMessagePart[])
 
       expect(screen.getByRole('button', { name: 'Error' })).toBeInTheDocument()
     })
@@ -1795,7 +1795,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'text', text: 'partial answer' },
         { type: 'reasoning', text: 'Investigating', state: 'done' },
         { type: 'data-error', data: { name: 'Err', message: 'failed after reasoning' } }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       const historyTrigger = screen.getByRole('button', { name: 'Error' })
       expect(historyTrigger).toHaveAttribute('aria-expanded', 'false')
@@ -1808,7 +1808,7 @@ describe('MessagePartsRenderer', () => {
     })
 
     it('renders pure text without a process-history summary', () => {
-      renderParts([{ type: 'text', text: 'plain final answer' } as unknown as CherryMessagePart])
+      renderParts([{ type: 'text', text: 'plain final answer' } as unknown as HuaTuoMessagePart])
 
       expect(screen.getByText('plain final answer')).toBeInTheDocument()
       expect(screen.queryByTestId('tool-history-divider')).toBeNull()
@@ -1820,7 +1820,7 @@ describe('MessagePartsRenderer', () => {
         toolPart('read'),
         { type: 'text', text: 'stable final answer' },
         toolPart('cleanup')
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       expect(screen.getByText('stable final answer')).toBeInTheDocument()
       const historyTrigger = screen.getByTestId('completed-process-trigger')
@@ -1839,7 +1839,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'file', url: 'file:///process.pdf', mediaType: 'application/pdf', filename: 'process.pdf' },
         toolPart('read'),
         { type: 'text', text: 'final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       expect(screen.queryByTestId('mock-attachments')).toBeNull()
       expect(screen.getByText('final answer')).toBeInTheDocument()
@@ -1869,7 +1869,7 @@ describe('MessagePartsRenderer', () => {
             },
             output: {}
           }
-        ] as unknown as CherryMessagePart[],
+        ] as unknown as HuaTuoMessagePart[],
         msg(),
         {},
         { ...defaultMessageRenderConfig, collapseCompletedToolHistory: false }
@@ -1900,7 +1900,7 @@ describe('MessagePartsRenderer', () => {
           state: 'done'
         })),
         { type: 'text', text: 'final answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
       expandCollapsedChildToolGroups()
@@ -1915,7 +1915,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'reasoning', text: 'Interrupted thought', state: 'streaming' },
         toolPart('unfinished', 'input-streaming'),
         { type: 'text', text: 'partial answer' }
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       fireEvent.click(screen.getByTestId('completed-process-trigger'))
       expandCollapsedChildToolGroups()
@@ -1937,7 +1937,7 @@ describe('MessagePartsRenderer', () => {
         { type: 'file', url: 'file:///result.pdf', mediaType: 'application/pdf', filename: 'result.pdf' },
         { type: 'data-video', data: { filePath: '/tmp/result.mp4' } },
         toolPart('cleanup')
-      ] as unknown as CherryMessagePart[])
+      ] as unknown as HuaTuoMessagePart[])
 
       expect(screen.getByTestId('mock-markdown').textContent).toContain('answer()')
       expect(screen.getByTestId('mock-compact-block')).toHaveTextContent('summary|compacted source')

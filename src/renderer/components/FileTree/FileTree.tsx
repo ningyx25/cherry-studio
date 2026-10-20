@@ -5,7 +5,7 @@ import {
   type TreeListSlotArgs,
   type TreeNodeAdapter,
   TreeView
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { DynamicVirtualList } from '@renderer/components/VirtualList'
 import { Search, X } from 'lucide-react'
 import { useCallback, useMemo } from 'react'

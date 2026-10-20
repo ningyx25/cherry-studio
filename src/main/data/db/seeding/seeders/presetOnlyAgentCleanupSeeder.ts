@@ -12,7 +12,7 @@ import type { DbType, ISeeder } from '../../types'
  * fixed preset agents (科普AI / 问诊AI).
  *
  * The slim build is a two-module product: the sidebared agents are exactly the
- * preset rows, so any other row is legacy residue — the seeded Cherry Assistant
+ * preset rows, so any other row is legacy residue — the seeded HuaTuo Assistant
  * (builtin_role='assistant', pre-slim) or user-created agents carried over from
  * before the slim-down. Hard-deleting them (including their sessions and system
  * workspaces) is the "these agents are gone" contract; soft-deleted non-preset
@@ -24,7 +24,7 @@ import type { DbType, ISeeder } from '../../types'
  */
 export class PresetOnlyAgentCleanupSeeder implements ISeeder {
   readonly name = 'presetOnlyAgentCleanup'
-  readonly description = 'Hard-delete non-preset agent rows (legacy Cherry Assistant + leftover user agents)'
+  readonly description = 'Hard-delete non-preset agent rows (legacy HuaTuo Assistant + leftover user agents)'
   readonly executionPolicy = 'run-on-change' as const
   readonly version = '1'
 

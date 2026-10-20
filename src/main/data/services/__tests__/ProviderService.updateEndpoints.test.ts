@@ -8,20 +8,20 @@ import { setupTestDatabase } from '@test-helpers/db'
 import { eq } from 'drizzle-orm'
 import { describe, expect, it, vi } from 'vitest'
 
-// Stub the registry loader so the preset lookup returns a minimal CherryIN row
-// (its anthropic / gemini / OpenAI endpoints tagged `cherryin`) without
+// Stub the registry loader so the preset lookup returns a minimal HuaTuoIN row
+// (its anthropic / gemini / OpenAI endpoints tagged `huatuoin`) without
 // reading the shipped providers.json, whose path is mocked away in the harness.
-vi.mock('@cherrystudio/provider-registry/node', () => {
+vi.mock('@huatuostudio/provider-registry/node', () => {
   class RegistryLoader {
     loadProviders() {
       return [
         {
-          id: 'cherryin',
+          id: 'huatuoin',
           endpointConfigs: {
-            'anthropic-messages': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' },
-            'google-generate-content': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' },
-            'openai-responses': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' },
-            'openai-chat-completions': { adapterFamily: 'cherryin', baseUrl: 'https://open.cherryin.net' }
+            'anthropic-messages': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
+            'google-generate-content': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
+            'openai-responses': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' },
+            'openai-chat-completions': { adapterFamily: 'huatuoin', baseUrl: 'https://open.cherryin.net' }
           }
         }
       ]
@@ -70,11 +70,11 @@ describe('ProviderService.update — endpoint config overrides', () => {
   })
 
   it('persists a { baseUrl }-only override when a settings PATCH adds an endpoint', async () => {
-    // A correctly-created preset-derived instance (openai-chat tagged `cherryin`).
+    // A correctly-created preset-derived instance (openai-chat tagged `huatuoin`).
     providerService.create({
-      providerId: 'cherryin-express',
-      presetProviderId: 'cherryin',
-      name: 'CherryIn Express',
+      providerId: 'huatuoin-express',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIn Express',
       defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://express-ent-admin.cherryin.ai' }
@@ -82,7 +82,7 @@ describe('ProviderService.update — endpoint config overrides', () => {
     })
 
     // The "add endpoint" drawer PATCHes the public baseUrl-only shape.
-    providerService.update('cherryin-express', {
+    providerService.update('huatuoin-express', {
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: {
           baseUrl: 'https://express-ent-admin.cherryin.ai'
@@ -94,7 +94,7 @@ describe('ProviderService.update — endpoint config overrides', () => {
     const [row] = await dbh.db
       .select()
       .from(userProviderTable)
-      .where(eq(userProviderTable.providerId, 'cherryin-express'))
+      .where(eq(userProviderTable.providerId, 'huatuoin-express'))
 
     // Rows persist only the user-owned override shape — the echoed
     // adapterFamily is stripped for preset-linked providers.
@@ -106,9 +106,9 @@ describe('ProviderService.update — endpoint config overrides', () => {
     })
     // The runtime read supplies the preset family for the newly-added
     // endpoint instead of the openai-compatible fallback.
-    const runtime = providerService.getByProviderId('cherryin-express')
-    expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.ANTHROPIC_MESSAGES]?.adapterFamily).toBe('cherryin')
-    expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]?.adapterFamily).toBe('cherryin')
+    const runtime = providerService.getByProviderId('huatuoin-express')
+    expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.ANTHROPIC_MESSAGES]?.adapterFamily).toBe('huatuoin')
+    expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]?.adapterFamily).toBe('huatuoin')
   })
 
   it('preserves a main-only legacy adapterFamily when a custom provider baseUrl is updated', async () => {
@@ -142,18 +142,18 @@ describe('ProviderService.update — endpoint config overrides', () => {
     expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]?.adapterFamily).toBe('newapi')
   })
 
-  it('uses the preset adapter family when adding the CherryIN Responses endpoint', async () => {
+  it('uses the preset adapter family when adding the HuaTuoIN Responses endpoint', async () => {
     providerService.create({
-      providerId: 'cherryin-express-2',
-      presetProviderId: 'cherryin',
-      name: 'CherryIn Express 2',
+      providerId: 'huatuoin-express-2',
+      presetProviderId: 'huatuoin',
+      name: 'HuaTuoIn Express 2',
       defaultChatEndpoint: ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS,
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS]: { baseUrl: 'https://express-ent-admin.cherryin.ai' }
       }
     })
 
-    providerService.update('cherryin-express-2', {
+    providerService.update('huatuoin-express-2', {
       endpointConfigs: {
         [ENDPOINT_TYPE.OPENAI_RESPONSES]: { baseUrl: 'https://express-ent-admin.cherryin.ai' }
       }
@@ -162,11 +162,11 @@ describe('ProviderService.update — endpoint config overrides', () => {
     const [row] = await dbh.db
       .select()
       .from(userProviderTable)
-      .where(eq(userProviderTable.providerId, 'cherryin-express-2'))
+      .where(eq(userProviderTable.providerId, 'huatuoin-express-2'))
     expect(row.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_RESPONSES]).toEqual({
       baseUrl: 'https://express-ent-admin.cherryin.ai'
     })
-    const runtime = providerService.getByProviderId('cherryin-express-2')
-    expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_RESPONSES]?.adapterFamily).toBe('cherryin')
+    const runtime = providerService.getByProviderId('huatuoin-express-2')
+    expect(runtime.endpointConfigs?.[ENDPOINT_TYPE.OPENAI_RESPONSES]?.adapterFamily).toBe('huatuoin')
   })
 })

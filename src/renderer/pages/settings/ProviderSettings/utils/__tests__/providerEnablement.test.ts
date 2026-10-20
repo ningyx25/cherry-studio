@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { enableProviderWhenModelsAvailable } from '../providerEnablement'
 
-const disabledProvider = { id: 'cherryin', isEnabled: false }
-const enabledProvider = { id: 'cherryin', isEnabled: true }
+const disabledProvider = { id: 'huatuoin', isEnabled: false }
+const enabledProvider = { id: 'huatuoin', isEnabled: true }
 
 describe('enableProviderWhenModelsAvailable', () => {
   let loggerErrorSpy: ReturnType<typeof vi.spyOn>
@@ -55,7 +55,7 @@ describe('enableProviderWhenModelsAvailable', () => {
     )
     expect(loggerErrorSpy).toHaveBeenCalledWith(
       'Failed to enable provider with pin-to-top when models are available',
-      expect.objectContaining({ providerId: 'cherryin', modelCount: 2, source: 'test', error: enableError })
+      expect.objectContaining({ providerId: 'huatuoin', modelCount: 2, source: 'test', error: enableError })
     )
   })
 })

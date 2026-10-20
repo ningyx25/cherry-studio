@@ -28,7 +28,7 @@ For a comprehensive overview of the project architecture, tech stack, code conve
 
 ## Getting Started
 
-To familiarize yourself with the code, we recommend working on issues tagged with one or more of the following labels: [good-first-issue](https://github.com/ningyx25/cherry-studio/labels/good%20first%20issue), [help-wanted](https://github.com/ningyx25/cherry-studio/labels/help%20wanted), or [kind/bug](https://github.com/ningyx25/cherry-studio/labels/kind%2Fbug). Any help is welcome.
+To familiarize yourself with the code, we recommend working on issues tagged with one or more of the following labels: [good-first-issue](https://github.com/huatuostudio/huatuo-studio/labels/good%20first%20issue), [help-wanted](https://github.com/huatuostudio/huatuo-studio/labels/help%20wanted), or [kind/bug](https://github.com/huatuostudio/huatuo-studio/labels/kind%2Fbug). Any help is welcome.
 
 ### Testing
 
@@ -91,6 +91,6 @@ Thank you for your understanding and continued support during this important dev
 If you have any questions or suggestions, feel free to reach out:
 
 - WeChat: kangfenmao
-- [GitHub Issues](https://github.com/ningyx25/cherry-studio/issues)
+- [GitHub Issues](https://github.com/huatuostudio/huatuo-studio/issues)
 
 Thank you for your support and contributions! We look forward to building a better HuaTuo Studio with you.

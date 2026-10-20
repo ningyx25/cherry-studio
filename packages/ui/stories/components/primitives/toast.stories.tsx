@@ -1,4 +1,4 @@
-import { Button, getToastUtilities, ToastViewport } from '@cherrystudio/ui'
+import { Button, getToastUtilities, ToastViewport } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 
 const toast = getToastUtilities()

@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
+import { Button, Tooltip } from '@huatuostudio/ui'
 import CopyIcon from '@renderer/components/icons/CopyIcon'
 import { useTemporaryValue } from '@renderer/hooks/useTemporaryValue'
 import { Check } from 'lucide-react'

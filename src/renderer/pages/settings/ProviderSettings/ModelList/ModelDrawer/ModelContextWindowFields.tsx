@@ -1,4 +1,4 @@
-import { Input } from '@cherrystudio/ui'
+import { Input } from '@huatuostudio/ui'
 import ProviderField from '@renderer/pages/settings/ProviderSettings/primitives/ProviderField'
 import { drawerClasses } from '@renderer/pages/settings/ProviderSettings/primitives/ProviderSettingsPrimitives'
 import { useTranslation } from 'react-i18next'

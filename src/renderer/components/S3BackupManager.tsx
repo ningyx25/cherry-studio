@@ -1,4 +1,4 @@
-import type { ColumnDef } from '@cherrystudio/ui'
+import type { ColumnDef } from '@huatuostudio/ui'
 import {
   Button,
   DataTable,
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   Spinner,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { restoreFromS3 } from '@renderer/services/BackupService'
 import { popup } from '@renderer/services/popup'
 import { toast } from '@renderer/services/toast'

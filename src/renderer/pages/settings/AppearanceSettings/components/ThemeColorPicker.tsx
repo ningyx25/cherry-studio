@@ -1,4 +1,4 @@
-import { Input, RowFlex } from '@cherrystudio/ui'
+import { Input, RowFlex } from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import { useEffect, useState } from 'react'
 

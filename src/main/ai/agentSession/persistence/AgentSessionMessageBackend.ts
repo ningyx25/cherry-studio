@@ -8,7 +8,7 @@
  */
 
 import { agentSessionMessageService } from '@data/services/AgentSessionMessageService'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 
 import type { PersistAssistantInput, PersistenceBackend } from '../../streamManager'
@@ -23,13 +23,13 @@ export interface AgentSessionMessageBackendOptions {
   /** Opaque runtime resume token persisted for future recovery; `undefined` when unknown. */
   runtimeResumeToken?: string | (() => string | undefined)
   /** Post-success hook — typically session auto-rename. */
-  afterPersist?: (finalMessage: CherryUIMessage) => Promise<void>
+  afterPersist?: (finalMessage: HuaTuoUIMessage) => Promise<void>
 }
 
 export class AgentSessionMessageBackend implements PersistenceBackend {
   readonly kind = 'agents-db'
   readonly canPersistEmptyTerminal = true
-  readonly afterPersist?: (finalMessage: CherryUIMessage) => Promise<void>
+  readonly afterPersist?: (finalMessage: HuaTuoUIMessage) => Promise<void>
 
   constructor(private readonly opts: AgentSessionMessageBackendOptions) {
     this.afterPersist = opts.afterPersist

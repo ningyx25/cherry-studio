@@ -1,5 +1,5 @@
-import { Button, Input } from '@cherrystudio/ui'
 import { usePersistCache } from '@data/hooks/useCache'
+import { Button, Input } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import CollapsibleSearchBar from '@renderer/components/CollapsibleSearchBar'
 import { SettingGroup, SettingsContentColumn } from '@renderer/components/SettingsPrimitives'

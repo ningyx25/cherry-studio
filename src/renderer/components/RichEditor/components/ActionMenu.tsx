@@ -1,4 +1,4 @@
-import { MenuList } from '@cherrystudio/ui'
+import { MenuList } from '@huatuostudio/ui'
 import type { FC } from 'react'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'

@@ -52,7 +52,7 @@ describe('FileManager (integration)', () => {
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
     MockMainCacheServiceUtils.resetMocks()
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-int-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-int-'))
     internalRoot = path.join(tmp, 'files-internal')
     await mkdir(internalRoot, { recursive: true })
     vi.mocked(application.getPath).mockImplementation((key: string, filename?: string) => {

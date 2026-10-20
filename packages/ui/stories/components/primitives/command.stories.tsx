@@ -8,8 +8,8 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut
-} from '@cherrystudio/ui'
-import { Button } from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
+import { Button } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Calculator, Calendar, CreditCard, Settings, Smile, User } from 'lucide-react'
 import { useEffect, useState } from 'react'

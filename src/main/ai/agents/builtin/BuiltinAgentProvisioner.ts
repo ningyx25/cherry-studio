@@ -31,13 +31,27 @@ const logger = loggerService.withContext('BuiltinAgentProvisioner')
  *
  * Add a new hash here only when a bundled revision contains product-owned role
  * or policy that must not remain in the user-owned persona file. Compute with:
- *   `shasum -a 256 resources/builtin-agents/cherry-assistant/SOUL.md`
+ *   `shasum -a 256 resources/builtin-agents/huatuo-assistant/SOUL.md`
  */
 const LEGACY_STOCK_SOUL_SHA256_BY_SIZE: ReadonlyMap<number, ReadonlySet<string>> = new Map([
   // v2.0.0-rc.5 — restrictive "identity/grounding/working-principles" persona.
-  [3600, new Set(['61ad24c3bb6bb1032c3664e847988b0f13a429a3d0e5d5048c74a65f6b35faa9'])],
+  // Both the pre-white-label bytes and the current HuaTuo-branded bytes are listed so installs
+  // from before and after the rename migrate identically.
+  [
+    3600,
+    new Set([
+      '61ad24c3bb6bb1032c3664e847988b0f13a429a3d0e5d5048c74a65f6b35faa9',
+      'cd12eed8cb224ae07b83c87b2599e7a8fcba71c0d907cbd37be3458d4e03442f'
+    ])
+  ],
   // Interim "restore normal agent capabilities" persona (PR #17870, pre-release).
-  [321, new Set(['6aeb1da6822e43670bed8a683ecc22194a1517b9c377988c1f77d48d872618e8'])]
+  [
+    321,
+    new Set([
+      '6aeb1da6822e43670bed8a683ecc22194a1517b9c377988c1f77d48d872618e8',
+      'd79e9dfe79bacf11a26d31ea4b0f6843301759387cc28137cb7de803ee3328c2'
+    ])
+  ]
 ])
 
 function sha256(buffer: Buffer): string {

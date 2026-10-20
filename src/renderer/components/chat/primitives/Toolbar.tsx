@@ -1,4 +1,4 @@
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { ComponentProps, ReactNode } from 'react'
 
 type ToolbarDensity = 'compact' | 'default'

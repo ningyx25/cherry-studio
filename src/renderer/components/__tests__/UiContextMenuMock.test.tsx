@@ -1,8 +1,8 @@
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@cherrystudio/ui'
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@huatuostudio/ui'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-describe('@cherrystudio/ui ContextMenu test mock', () => {
+describe('@huatuostudio/ui ContextMenu test mock', () => {
   it('keeps uncontrolled content hidden until the trigger is opened', () => {
     const onSelect = vi.fn()
 

@@ -42,7 +42,7 @@
  */
 import { loggerService } from '@logger'
 import type { ActiveExecution } from '@shared/ai/transport'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import { isToolUIPart, readUIMessageStream } from 'ai'
 
@@ -51,7 +51,7 @@ import { TopicStreamSubscription } from './TopicStreamSubscription'
 const logger = loggerService.withContext('ExecutionStreamOverlayService')
 
 export interface ExecutionFinishEvent {
-  message: CherryUIMessage
+  message: HuaTuoUIMessage
   isAbort: boolean
   isError: boolean
 }
@@ -59,9 +59,9 @@ export interface ExecutionFinishEvent {
 interface ExecutionOverlayView {
   /** messageId -> latest streamed parts. messageId = anchorMessageId, or the
    *  start-chunk id when the execution has no pre-allocated row (temp topic). */
-  overlay: Record<string, CherryMessagePart[]>
+  overlay: Record<string, HuaTuoMessagePart[]>
   /** Latest assistant snapshot per execution, in insertion order. */
-  liveAssistants: CherryUIMessage[]
+  liveAssistants: HuaTuoUIMessage[]
 }
 
 type FinishListener = (executionId: string, event: ExecutionFinishEvent) => void
@@ -76,12 +76,12 @@ interface ReaderHandle {
 interface PendingSnapshot {
   epoch: number
   readerVersion: number
-  snapshot: CherryUIMessage
+  snapshot: HuaTuoUIMessage
 }
 
 interface ConsumerContribution {
   executions: readonly ActiveExecution[]
-  getSeedMessages: () => CherryUIMessage[]
+  getSeedMessages: () => HuaTuoUIMessage[]
 }
 
 interface Entry {
@@ -93,7 +93,7 @@ interface Entry {
   /** executionId -> latest message snapshot. Retained after a reader tears
    *  down (final frame / Phase 2 last-good) until the same execution
    *  restarts, an explicit dispose, or the entry is dropped. */
-  snapshots: Record<string, CherryUIMessage>
+  snapshots: Record<string, HuaTuoUIMessage>
   view: ExecutionOverlayView
   pendingSnapshots: Map<string, PendingSnapshot>
   readerVersions: Map<string, number>
@@ -123,18 +123,18 @@ const MAX_ENTRIES = 32
 // so a consumer mutation would silently poison every topic in the window.
 const EMPTY_VIEW: ExecutionOverlayView = Object.freeze({
   overlay: Object.freeze({}),
-  liveAssistants: Object.freeze([]) as unknown as CherryUIMessage[]
+  liveAssistants: Object.freeze([]) as unknown as HuaTuoUIMessage[]
 })
 
 function executionKey(executionId: UniqueModelId, anchorMessageId?: string): string {
   return JSON.stringify([executionId, anchorMessageId ?? null])
 }
 
-function pickSeed(uiMessages: CherryUIMessage[], anchorMessageId?: string): CherryUIMessage | undefined {
+function pickSeed(uiMessages: HuaTuoUIMessage[], anchorMessageId?: string): HuaTuoUIMessage | undefined {
   if (!anchorMessageId) return undefined
   const found = uiMessages.find((m) => m.id === anchorMessageId)
   if (!found) {
-    return { id: anchorMessageId, role: 'assistant', parts: [] } as CherryUIMessage
+    return { id: anchorMessageId, role: 'assistant', parts: [] } as HuaTuoUIMessage
   }
   // readUIMessageStream mutates `message.parts` in place. `found` is the live, render-stable
   // SWR-derived row whose `parts` array aliases the SWR cache, so seeding the reader with it
@@ -143,7 +143,7 @@ function pickSeed(uiMessages: CherryUIMessage[], anchorMessageId?: string): Cher
   return { ...found, parts: structuredClone(found.parts ?? []) }
 }
 
-function canReuseSettledPart(previous: CherryMessagePart, next: CherryMessagePart): boolean {
+function canReuseSettledPart(previous: HuaTuoMessagePart, next: HuaTuoMessagePart): boolean {
   if (previous.type !== next.type) return false
 
   if (previous.type === 'text' && next.type === 'text') {
@@ -185,9 +185,9 @@ function canReuseSettledPart(previous: CherryMessagePart, next: CherryMessagePar
  * to the live frontier instead of the full accumulated transcript.
  */
 function shareSettledPartReferences(
-  previous: CherryMessagePart[] | undefined,
-  next: CherryMessagePart[]
-): CherryMessagePart[] {
+  previous: HuaTuoMessagePart[] | undefined,
+  next: HuaTuoMessagePart[]
+): HuaTuoMessagePart[] {
   if (!previous || previous.length === 0 || next.length === 0) return next
 
   let reusedAny = false
@@ -206,12 +206,12 @@ function shareSettledPartReferences(
   return reusedAny ? shared : next
 }
 
-function computeView(snapshots: Record<string, CherryUIMessage>): ExecutionOverlayView {
-  const overlay: Record<string, CherryMessagePart[]> = {}
+function computeView(snapshots: Record<string, HuaTuoUIMessage>): ExecutionOverlayView {
+  const overlay: Record<string, HuaTuoMessagePart[]> = {}
   for (const snapshot of Object.values(snapshots)) {
-    if (snapshot?.parts?.length) overlay[snapshot.id] = snapshot.parts as CherryMessagePart[]
+    if (snapshot?.parts?.length) overlay[snapshot.id] = snapshot.parts as HuaTuoMessagePart[]
   }
-  const liveAssistants = Object.values(snapshots).filter((s): s is CherryUIMessage => s?.role === 'assistant')
+  const liveAssistants = Object.values(snapshots).filter((s): s is HuaTuoUIMessage => s?.role === 'assistant')
   return { overlay, liveAssistants }
 }
 
@@ -250,7 +250,7 @@ export class ExecutionStreamOverlayService {
     topicId: string,
     consumer: object,
     executions: readonly ActiveExecution[],
-    getSeedMessages: () => CherryUIMessage[]
+    getSeedMessages: () => HuaTuoUIMessage[]
   ): void {
     const entry = this.#entries.get(topicId)
     if (!entry) return
@@ -476,7 +476,7 @@ export class ExecutionStreamOverlayService {
     key: string,
     executionId: UniqueModelId,
     anchorMessageId: string | undefined,
-    getSeedMessages: () => CherryUIMessage[]
+    getSeedMessages: () => HuaTuoUIMessage[]
   ): void {
     const branch = entry.sub.register(executionId, anchorMessageId)
     const readerEpoch = entry.epoch
@@ -519,9 +519,9 @@ export class ExecutionStreamOverlayService {
 
     entry.liveReaderCount += 1
     void (async () => {
-      let last: CherryUIMessage | undefined
+      let last: HuaTuoUIMessage | undefined
       try {
-        for await (const snapshot of readUIMessageStream<CherryUIMessage>({
+        for await (const snapshot of readUIMessageStream<HuaTuoUIMessage>({
           stream: branch,
           message: seed,
           terminateOnError: false,
@@ -529,8 +529,8 @@ export class ExecutionStreamOverlayService {
         })) {
           if (cancelled) break
           const sharedParts = shareSettledPartReferences(
-            last?.parts as CherryMessagePart[] | undefined,
-            snapshot.parts as CherryMessagePart[]
+            last?.parts as HuaTuoMessagePart[] | undefined,
+            snapshot.parts as HuaTuoMessagePart[]
           )
           const nextSnapshot = sharedParts === snapshot.parts ? snapshot : { ...snapshot, parts: sharedParts }
           last = nextSnapshot
@@ -597,7 +597,7 @@ export class ExecutionStreamOverlayService {
   #queueSnapshot(
     entry: Entry,
     executionId: string,
-    snapshot: CherryUIMessage,
+    snapshot: HuaTuoUIMessage,
     epoch: number,
     readerVersion: number
   ): void {
@@ -631,7 +631,7 @@ export class ExecutionStreamOverlayService {
     this.#commitSnapshots(entry, next)
   }
 
-  #commitSnapshots(entry: Entry, next: Record<string, CherryUIMessage>): void {
+  #commitSnapshots(entry: Entry, next: Record<string, HuaTuoUIMessage>): void {
     if (next === entry.snapshots) return
     entry.snapshots = next
     entry.view = computeView(next)

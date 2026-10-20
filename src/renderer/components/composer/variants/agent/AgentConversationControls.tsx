@@ -1,4 +1,4 @@
-import { Button, NormalTooltip, Tooltip } from '@cherrystudio/ui'
+import { Button, NormalTooltip, Tooltip } from '@huatuostudio/ui'
 import ModelAvatar from '@renderer/components/Avatar/ModelAvatar'
 import OpenExternalAppButton from '@renderer/components/chat/panes/OpenExternalAppButton'
 import { ModelSelector } from '@renderer/components/ModelSelector'

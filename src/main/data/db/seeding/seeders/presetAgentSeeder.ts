@@ -58,7 +58,7 @@ export class PresetAgentSeeder implements ISeeder {
       name,
       description,
       instructions,
-      // The managed CherryAI model cannot run the agent runtime; model choice is
+      // The managed HuaTuoAI model cannot run the agent runtime; model choice is
       // user-owned and assigned via the agent settings UI.
       model: null,
       configuration: {

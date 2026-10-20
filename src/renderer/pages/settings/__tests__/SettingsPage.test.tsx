@@ -9,7 +9,7 @@ const { isMacTransparentWindowMock, navigateMock } = vi.hoisted(() => ({
   navigateMock: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   MenuDivider: () => <hr data-testid="menu-divider" />,
   MenuItem: ({ icon, label, onClick }: { icon?: ReactNode; label: string; onClick?: () => void }) => (
     <button type="button" data-testid="menu-item" onClick={onClick}>

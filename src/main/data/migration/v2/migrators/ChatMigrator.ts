@@ -44,7 +44,7 @@
  * ## `chat_message_file_ref` backfill
  *
  * v1 image/file blocks reference v1 files via `block.file.id`. Those ids
- * survive into v2 as `FileUIPart.providerMetadata.cherry.fileEntryId` (inline
+ * survive into v2 as `FileUIPart.providerMetadata.huatuo.fileEntryId` (inline
  * JSON on `messageTable.data.parts`), populated by ChatMappings during the
  * image/file mapping. This migrator also creates `chat_message_file_ref` rows
  * (`sourceId=messageId`, `role='attachment'`) for each distinct (message,
@@ -70,8 +70,8 @@ import { userModelTable } from '@data/db/schemas/userModel'
 import type { DbType } from '@data/db/types'
 import { loggerService } from '@logger'
 import type { ExecuteResult, PrepareResult, ValidateResult, ValidationError } from '@shared/data/migration/v2/types'
-import type { CherryMessagePart } from '@shared/data/types/message'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { eq, inArray, sql } from 'drizzle-orm'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -119,14 +119,14 @@ const TEMP_BLOCK_INDEX_TABLE = 'migration_chat_blocks'
 
 /**
  * Yield each FileEntryId referenced by file parts in a message's parts array.
- * v1→v2 ChatMappings stashes `block.file.id` into `providerMetadata.cherry.fileEntryId`
+ * v1→v2 ChatMappings stashes `block.file.id` into `providerMetadata.huatuo.fileEntryId`
  * during the image/file mapping; external (user-path) files have no fileEntryId.
  */
-function* extractFileEntryIds(parts: CherryMessagePart[] | undefined): Iterable<string> {
+function* extractFileEntryIds(parts: HuaTuoMessagePart[] | undefined): Iterable<string> {
   if (!parts) return
   for (const part of parts) {
     if (part.type !== 'file') continue
-    const fileId = readCherryMeta(part)?.fileEntryId
+    const fileId = readHuaTuoMeta(part)?.fileEntryId
     if (fileId) yield fileId
   }
 }

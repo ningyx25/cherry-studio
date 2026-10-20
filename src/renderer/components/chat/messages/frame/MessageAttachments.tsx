@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { popup } from '@renderer/services/popup'
 import type { FileMetadata } from '@renderer/types/file'
 import { formatFileSize } from '@renderer/utils/file'

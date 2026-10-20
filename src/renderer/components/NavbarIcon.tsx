@@ -1,5 +1,5 @@
-import { Button } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import type { ComponentProps } from 'react'
 
 type NavbarIconProps = Omit<ComponentProps<typeof Button>, 'variant' | 'size'> & {

@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@cherrystudio/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@huatuostudio/ui'
 import type { ToolRenderItem } from '@renderer/components/chat/messages/tools/toolResponse'
 import type { MessageListItem } from '@renderer/components/chat/messages/types'
 import type { MessageRuntimeTiming } from '@shared/data/types/message'

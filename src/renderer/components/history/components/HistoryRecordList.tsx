@@ -1,4 +1,4 @@
-import { EmptyState } from '@cherrystudio/ui'
+import { EmptyState } from '@huatuostudio/ui'
 import EditNameDialog from '@renderer/components/EditNameDialog'
 import { MessageSquareText } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'

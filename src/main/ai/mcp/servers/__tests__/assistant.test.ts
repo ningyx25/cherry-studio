@@ -53,7 +53,7 @@ import AssistantServer, { isAllowedAssistantNavigationPath, isBlockedSourceFile 
 const temporaryDirectories: string[] = []
 
 function writeProductManifest(content: string): string {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'cherry-assistant-manifest-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'huatuo-assistant-manifest-'))
   temporaryDirectories.push(directory)
   const manifestPath = path.join(directory, 'product-manifest.json')
   fs.writeFileSync(manifestPath, content, 'utf-8')
@@ -115,7 +115,7 @@ describe('product_info', () => {
   it('returns a compact current-package manifest index through its registered path', async () => {
     const manifest = {
       schemaVersion: 1,
-      package: { name: 'CherryStudio', version: '2.0.0-dev' },
+      package: { name: 'HuaTuoStudio', version: '2.0.0-dev' },
       routes: { primary: [], all: [] },
       extraFutureField: { preserved: true }
     }
@@ -139,7 +139,7 @@ describe('product_info', () => {
   it('reads one requested manifest section and supports an explicit full-manifest fallback', async () => {
     const manifest = {
       schemaVersion: 1,
-      package: { name: 'CherryStudio', version: '2.0.0-dev' },
+      package: { name: 'HuaTuoStudio', version: '2.0.0-dev' },
       routes: { primary: [{ id: 'agents', path: '/app/agents' }], all: ['/app/agents'] }
     }
     writeProductManifest(JSON.stringify(manifest))

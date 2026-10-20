@@ -23,7 +23,7 @@ const virtuaMockState = vi.hoisted(() => ({
   scrollRefReadyAtMount: [] as boolean[]
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   return {
     Button: ({ children, size, variant, ...props }: any) => {
       void size

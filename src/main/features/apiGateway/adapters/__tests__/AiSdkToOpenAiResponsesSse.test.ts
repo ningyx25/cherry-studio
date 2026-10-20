@@ -1,5 +1,5 @@
-import type OpenAI from '@cherrystudio/openai'
 import type { FinishReason, UIMessageChunk } from 'ai'
+import type OpenAI from 'openai'
 import { describe, expect, it } from 'vitest'
 
 import { OpenAiResponsesSseFormatter } from '../formatters/OpenAiResponsesSseFormatter'

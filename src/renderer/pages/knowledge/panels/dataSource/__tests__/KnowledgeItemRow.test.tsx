@@ -29,7 +29,7 @@ vi.mock('@renderer/utils/error', () => ({
     `${prefix}: ${error instanceof Error ? error.message : String(error)}`
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({
     children,
     type = 'button',

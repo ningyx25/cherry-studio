@@ -1,3 +1,4 @@
+import { usePreference } from '@data/hooks/usePreference'
 import {
   Button,
   InputGroup,
@@ -6,8 +7,7 @@ import {
   InputGroupInput,
   RowFlex,
   Switch
-} from '@cherrystudio/ui'
-import { usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import {
   SettingDivider,
   SettingGroup,

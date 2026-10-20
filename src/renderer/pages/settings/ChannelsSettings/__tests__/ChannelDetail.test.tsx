@@ -81,7 +81,7 @@ vi.mock('react-i18next', () => ({
   })
 }))
 
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const SelectContext = React.createContext<{ onValueChange?: (value: string) => void } | null>(null)
 
   const passthrough =

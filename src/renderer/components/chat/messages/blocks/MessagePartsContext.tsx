@@ -6,7 +6,7 @@
  */
 
 import type { TranslateLangCode } from '@shared/data/preference/preferenceTypes'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { ReactNode } from 'react'
 import { createContext, use, useMemo } from 'react'
 
@@ -28,16 +28,16 @@ export function useRefresh(): () => void {
 // ============================================================================
 
 /**
- * Parts context — provides raw CherryMessagePart[] keyed by message ID.
+ * Parts context — provides raw HuaTuoMessagePart[] keyed by message ID.
  * Null when no parts provider is present.
  */
-export const PartsContext = createContext<Record<string, CherryMessagePart[]> | null>(null)
+export const PartsContext = createContext<Record<string, HuaTuoMessagePart[]> | null>(null)
 
-type PartsMap = Record<string, CherryMessagePart[]> | null
-const EMPTY_MESSAGE_PARTS: CherryMessagePart[] = []
+type PartsMap = Record<string, HuaTuoMessagePart[]> | null
+const EMPTY_MESSAGE_PARTS: HuaTuoMessagePart[] = []
 interface MessagePartsScopeValue {
   messageId: string
-  parts: CherryMessagePart[]
+  parts: HuaTuoMessagePart[]
 }
 
 const MessagePartsScopeContext = createContext<MessagePartsScopeValue | null>(null)
@@ -63,7 +63,7 @@ export function MessagePartsScopeProvider({
   children
 }: {
   messageId: string
-  parts: CherryMessagePart[]
+  parts: HuaTuoMessagePart[]
   children: ReactNode
 }) {
   const value = useMemo(() => ({ messageId, parts }), [messageId, parts])
@@ -162,7 +162,7 @@ export function useOptionalTranslationOverlaySetter(): TranslationOverlaySetter 
  * Get raw parts for a message from PartsContext.
  * Returns empty array if no parts provider exists or no parts are present.
  */
-export function useMessageParts(messageId: string): CherryMessagePart[] {
+export function useMessageParts(messageId: string): HuaTuoMessagePart[] {
   const scope = use(MessagePartsScopeContext)
   if (scope?.messageId === messageId) return scope.parts
 
@@ -178,9 +178,9 @@ export function useMessageParts(messageId: string): CherryMessagePart[] {
  * Returns null if not found.
  */
 export function resolvePartFromParts(
-  partsMap: Record<string, CherryMessagePart[]>,
+  partsMap: Record<string, HuaTuoMessagePart[]>,
   partId: string
-): { part: CherryMessagePart; messageId: string; index: number } | null {
+): { part: HuaTuoMessagePart; messageId: string; index: number } | null {
   // Try block format first (existing parseBlockId handles ${msgId}-block-${i})
   let parsed = parseBlockId(partId)
   // Also try part format: ${msgId}-part-${i}

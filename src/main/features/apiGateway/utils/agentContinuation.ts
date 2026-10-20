@@ -4,7 +4,7 @@
  * shell and expose a text-only assistant tail, so authenticated internal Agent
  * requests restore that user semantic explicitly before provider serialization.
  */
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 
 /** Request-only continuation for internal Agent requests. Never persisted. */
 export const AGENT_CONTINUATION_TEXT =
@@ -14,7 +14,7 @@ export const AGENT_CONTINUATION_TEXT =
  * If the converted list ends with a text-only assistant message, return a copy
  * with a minimal user continuation; otherwise return the input unchanged.
  */
-export function appendInternalAgentContinuation(messages: CherryUIMessage[]): CherryUIMessage[] {
+export function appendInternalAgentContinuation(messages: HuaTuoUIMessage[]): HuaTuoUIMessage[] {
   const last = messages.at(-1)
   if (!last || last.role !== 'assistant') return messages
   if (!last.parts.every((part) => part.type === 'text')) return messages

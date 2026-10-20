@@ -19,7 +19,7 @@ vi.mock('@application', () => ({
       if (key === 'feature.binary.data') return 'C:\\data\\binary-manager'
       if (key === 'feature.binary.data.isolated.localappdata') return 'C:\\data\\binary-manager\\localappdata'
       if (key === 'feature.binary.data.isolated.appdata') return 'C:\\data\\binary-manager\\appdata'
-      if (key === 'cherry.bin') return 'C:\\data\\bin'
+      if (key === 'huatuo.bin') return 'C:\\data\\bin'
       return `/mock/${key}`
     }
   }

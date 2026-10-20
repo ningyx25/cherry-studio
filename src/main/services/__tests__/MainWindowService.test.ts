@@ -37,7 +37,7 @@ const { platformState, prefValues, applicationMock, windowManagerMock, loggerMoc
       warn: vi.fn()
     }
     const previewSessionMock = {
-      getUserAgent: vi.fn(() => 'CherryStudio/1.0 Electron/1.0 Browser/1.0'),
+      getUserAgent: vi.fn(() => 'HuaTuoStudio/1.0 Electron/1.0 Browser/1.0'),
       on: vi.fn(),
       removeListener: vi.fn(),
       setPermissionCheckHandler: vi.fn(),

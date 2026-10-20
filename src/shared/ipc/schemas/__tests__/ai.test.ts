@@ -66,7 +66,7 @@ describe('ai.agent.feedback_session.create IPC schema', () => {
       sessionId: 'feedback-session'
     })
     expect(
-      createFeedbackSessionResult.safeParse({ sessionId: 'feedback-session', agentId: 'cherry-assistant' }).success
+      createFeedbackSessionResult.safeParse({ sessionId: 'feedback-session', agentId: 'huatuo-assistant' }).success
     ).toBe(false)
   })
 })

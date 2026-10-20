@@ -147,7 +147,7 @@ describe('LanTransferService - Discovery', () => {
 
       expect(state.isScanning).toBe(true)
       expect(state.lastScanStartedAt).toBeDefined()
-      expect(mocks.bonjour!.find).toHaveBeenCalledWith({ type: 'cherrystudio', protocol: 'tcp' })
+      expect(mocks.bonjour!.find).toHaveBeenCalledWith({ type: 'huatuostudio', protocol: 'tcp' })
       expect(mocks.browser!.start).toHaveBeenCalled()
     })
 
@@ -243,7 +243,7 @@ describe('LanTransferService - Discovery', () => {
         port: 12345,
         addresses: ['192.168.1.100'],
         fqdn: 'test.local',
-        type: 'cherrystudio',
+        type: 'huatuostudio',
         protocol: 'tcp'
       })
 

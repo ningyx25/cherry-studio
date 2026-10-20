@@ -1,4 +1,4 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cherrystudio/ui'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@huatuostudio/ui'
 import { getModelDisplayTags, ModelTag } from '@renderer/components/tags/Model'
 import { deriveThinkingOptions } from '@shared/ai/reasoning'
 import type { Model } from '@shared/data/types/model'

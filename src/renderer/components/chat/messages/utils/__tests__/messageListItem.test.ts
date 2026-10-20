@@ -1,4 +1,4 @@
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import type { MessageListItem } from '../../types'
@@ -19,7 +19,7 @@ describe('toMessageListItem', () => {
         createdAt: '2026-01-01T00:00:00.000Z',
         totalTokens: 20
       }
-    } as CherryUIMessage
+    } as HuaTuoUIMessage
 
     expect(toMessageListItem(message, { topicId: 'topic-1' }).stats).toEqual({ totalTokens: 20 })
   })
@@ -34,7 +34,7 @@ describe('toMessageListItem', () => {
         stats: { totalTokens: 100 },
         totalTokens: 150
       }
-    } as CherryUIMessage
+    } as HuaTuoUIMessage
 
     expect(toMessageListItem(message, { topicId: 'topic-1' }).stats?.totalTokens).toBe(150)
   })
@@ -45,7 +45,7 @@ describe('toMessageListItem', () => {
       role: 'assistant',
       parts: [],
       metadata: { status: 'success', modelId: 'openai::gpt-4o' }
-    } as CherryUIMessage
+    } as HuaTuoUIMessage
 
     const item = toMessageListItem(message, { topicId: 'topic-1' })
 
@@ -54,7 +54,7 @@ describe('toMessageListItem', () => {
   })
 
   it('leaves the model undefined when the row has neither snapshot nor modelId (no live fallback)', () => {
-    const message = { id: 'm2', role: 'assistant', parts: [], metadata: { status: 'success' } } as CherryUIMessage
+    const message = { id: 'm2', role: 'assistant', parts: [], metadata: { status: 'success' } } as HuaTuoUIMessage
 
     const item = toMessageListItem(message, { topicId: 'topic-1' })
 
@@ -68,7 +68,7 @@ describe('toMessageListItem', () => {
       role: 'user',
       parts: [{ type: 'data-clear', data: {} }],
       metadata: { status: 'success' }
-    } as CherryUIMessage
+    } as HuaTuoUIMessage
 
     expect(toMessageListItem(message, { topicId: 'topic-1' }).isContextBoundary).toBe(true)
   })

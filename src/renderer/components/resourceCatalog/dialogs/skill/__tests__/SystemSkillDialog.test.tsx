@@ -41,7 +41,7 @@ vi.mock('@renderer/services/toast', () => ({
   toast: { success: toastSuccess }
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, size, variant, ...props }: ComponentProps<'button'> & { size?: string; variant?: string }) => {
     void size
     void variant

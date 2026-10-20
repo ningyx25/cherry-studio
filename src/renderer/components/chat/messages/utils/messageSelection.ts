@@ -2,7 +2,7 @@ import type { MessageExportView } from '@renderer/types/messageExport'
 import type { ComposerRichClipboardContent } from '@renderer/utils/message/composerClipboard'
 import { createComposerRichClipboardContentFromPartGroups } from '@renderer/utils/message/composerClipboard'
 import { getComposerTextFromParts } from '@renderer/utils/message/composerTokens'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 
 import type { MessageListItem } from '../types'
 import { createMessageExportView } from './messageListItem'
@@ -23,7 +23,7 @@ export function getOrderedSelectedMessageIds(
 export function createSelectedMessageExportViews(
   messageIds: readonly string[],
   orderedMessages: readonly MessageListItem[],
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 ): MessageExportView[] {
   const messageById = new Map(orderedMessages.map((message) => [message.id, message]))
 
@@ -39,7 +39,7 @@ export function createSelectedMessageExportViews(
 export function getSelectedMessagesPlainText(
   messageIds: readonly string[],
   orderedMessages: readonly MessageListItem[],
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 ): string {
   return getOrderedSelectedMessageIds(messageIds, orderedMessages)
     .map((messageId) => getComposerTextFromParts(partsByMessageId[messageId] ?? []))
@@ -50,7 +50,7 @@ export function getSelectedMessagesPlainText(
 export function getSelectedMessagesRichClipboardContent(
   messageIds: readonly string[],
   orderedMessages: readonly MessageListItem[],
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 ): ComposerRichClipboardContent | null {
   const partGroups = getOrderedSelectedMessageIds(messageIds, orderedMessages).map(
     (messageId) => partsByMessageId[messageId] ?? []

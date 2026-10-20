@@ -18,7 +18,7 @@ vi.mock('@renderer/ipc', () => ({
   ipcApi: { request: mocks.ipcApiRequest }
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   EmptyState: ({ title, description }: { title?: string; description?: string }) => (
     <div data-testid="empty-state">
       <div>{title}</div>

@@ -1,5 +1,5 @@
 import type { ComposerAttachment } from '@renderer/utils/message/composerAttachment'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it, vi } from 'vitest'
 
 import type * as ComposerDraftModule from '../../../composerDraft'
@@ -162,6 +162,6 @@ describe('getComposerHistoryText', () => {
   })
 
   it('passes a part without composer metadata through untouched', () => {
-    expect(getComposerHistoryText([{ type: 'text', text: 'plain text' } as CherryMessagePart])).toBe('plain text')
+    expect(getComposerHistoryText([{ type: 'text', text: 'plain text' } as HuaTuoMessagePart])).toBe('plain text')
   })
 })

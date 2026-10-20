@@ -32,7 +32,7 @@ import {
 } from '@shared/ai/agentSessionSlashCommands'
 import type { AgentEntity, UpdateAgentDto } from '@shared/data/api/schemas/agents'
 import type { AgentSessionMessageEntity } from '@shared/data/types/agent'
-import type { CherryMessagePart, CherryUIMessage, MessageSnapshot } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage, MessageSnapshot } from '@shared/data/types/message'
 import { createUniqueModelId, parseUniqueModelId, type UniqueModelId } from '@shared/data/types/model'
 import { type AgentTaskEventPartData, getKnowledgeBaseIdsFromParts } from '@shared/data/types/uiParts'
 import type { ReasoningEffortOption } from '@shared/types/aiSdk'
@@ -180,7 +180,7 @@ type PendingAgentSessionTurn = {
 type BackgroundFlowAccumulator = {
   messageId: string
   controller: ReadableStreamDefaultController<UIMessageChunk>
-  latest?: CherryUIMessage
+  latest?: HuaTuoUIMessage
   done: Promise<void>
   closed: boolean
   /** Broadcast throttle for the live overlay — see {@link AgentSessionRuntimeService.publishBackgroundFlowSnapshot}. */
@@ -1779,7 +1779,7 @@ export class AgentSessionRuntimeService extends BaseService {
     if (existing) return existing
 
     const persisted = agentSessionMessageService.getSessionMessage(entry.sessionId, messageId)
-    const seed: CherryUIMessage = {
+    const seed: HuaTuoUIMessage = {
       id: persisted.id,
       role: 'assistant',
       parts: structuredClone(persisted.data.parts ?? [])
@@ -1805,10 +1805,10 @@ export class AgentSessionRuntimeService extends BaseService {
     entry: AgentSessionRuntimeEntry,
     accumulator: BackgroundFlowAccumulator,
     stream: ReadableStream<UIMessageChunk>,
-    seed: CherryUIMessage
+    seed: HuaTuoUIMessage
   ): Promise<void> {
     try {
-      for await (const snapshot of readUIMessageStream<CherryUIMessage>({
+      for await (const snapshot of readUIMessageStream<HuaTuoUIMessage>({
         stream,
         message: seed,
         terminateOnError: false,
@@ -1858,7 +1858,7 @@ export class AgentSessionRuntimeService extends BaseService {
   }
 
   private publishBackgroundFlowParts(entry: AgentSessionRuntimeEntry, accumulator: BackgroundFlowAccumulator): void {
-    const parts = accumulator.latest?.parts as CherryMessagePart[] | undefined
+    const parts = accumulator.latest?.parts as HuaTuoMessagePart[] | undefined
     if (!parts || !this.isCurrentEntry(entry)) return
     accumulator.lastPublishedAt = Date.now()
     application
@@ -1884,9 +1884,9 @@ export class AgentSessionRuntimeService extends BaseService {
     const flush = Promise.all(accumulators.map((accumulator) => accumulator.done))
       .then(() => {
         const completedMessageIds = new Set<string>()
-        const completedFlows: Array<{ messageId: string; parts: CherryMessagePart[] }> = []
+        const completedFlows: Array<{ messageId: string; parts: HuaTuoMessagePart[] }> = []
         for (const accumulator of accumulators) {
-          const parts = accumulator.latest?.parts as CherryMessagePart[] | undefined
+          const parts = accumulator.latest?.parts as HuaTuoMessagePart[] | undefined
           if (!parts) continue
           completedMessageIds.add(accumulator.messageId)
           agentSessionMessageService.replaceMessageParts(entry.sessionId, accumulator.messageId, parts)
@@ -2020,7 +2020,7 @@ export class AgentSessionRuntimeService extends BaseService {
       input: request.input,
       approval: { id: request.approvalId },
       ...(request.providerMetadata ? { callProviderMetadata: request.providerMetadata } : {})
-    } as CherryMessagePart
+    } as HuaTuoMessagePart
 
     try {
       agentSessionMessageService.saveMessage(
@@ -2790,7 +2790,7 @@ export class AgentSessionRuntimeService extends BaseService {
   private closeEntry(entry: AgentSessionRuntimeEntry): void {
     this.clearIdleTimer(entry)
     for (const accumulator of entry.backgroundFlowAccumulators?.values() ?? []) {
-      const parts = accumulator.latest?.parts as CherryMessagePart[] | undefined
+      const parts = accumulator.latest?.parts as HuaTuoMessagePart[] | undefined
       if (!parts) continue
       application
         .get('CacheService')
@@ -2893,7 +2893,7 @@ function normalizeClaudeModelAlias(value: string): string {
 function createRuntimeSeedMessages(
   userMessage: AgentSessionMessageEntity,
   assistantMessageId: string
-): CherryUIMessage[] {
+): HuaTuoUIMessage[] {
   return [
     {
       id: userMessage.id,
@@ -2905,7 +2905,7 @@ function createRuntimeSeedMessages(
       role: 'assistant',
       parts: []
     }
-  ] as CherryUIMessage[]
+  ] as HuaTuoUIMessage[]
 }
 
 function createSyntheticUserMessage(sessionId: string): AgentSessionMessageEntity {

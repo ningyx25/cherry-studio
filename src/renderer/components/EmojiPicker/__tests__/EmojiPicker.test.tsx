@@ -217,7 +217,7 @@ describe('EmojiPicker', () => {
     expect(screen.getByTestId('emoji-picker-categories')).toHaveTextContent('emoji_picker.categories.smileys_emotion')
   })
 
-  it('uses compact dimensions and Cherry theme variables', async () => {
+  it('uses compact dimensions and HuaTuo theme variables', async () => {
     const { container } = await renderResolvedPicker()
 
     expect(container.firstElementChild).toHaveClass(
@@ -231,7 +231,7 @@ describe('EmojiPicker', () => {
 
     expect(emojiPickerPropsMock.value.width).toBe('100%')
     expect(emojiPickerPropsMock.value.height).toBe('100%')
-    expect(emojiPickerPropsMock.value.className).toBe('cherry-emoji-picker-react')
+    expect(emojiPickerPropsMock.value.className).toBe('huatuo-emoji-picker-react')
     expect(emojiPickerPropsMock.value.style).toMatchObject({
       '--epr-bg-color': 'var(--popover)',
       '--epr-picker-border-color': 'transparent',
@@ -266,7 +266,7 @@ describe('EmojiPicker', () => {
 
   it('keeps category labels, navigation, and icons aligned with the vendor layout', () => {
     const categoryLabelRule = emojiPickerCss.match(
-      /(?:^|\n)\.cherry-emoji-picker-react \.epr-emoji-category-label\s*\{([^}]*)\}/
+      /(?:^|\n)\.huatuo-emoji-picker-react \.epr-emoji-category-label\s*\{([^}]*)\}/
     )?.[1]
     expect(categoryLabelRule).not.toContain('transform:')
     expect(categoryLabelRule).toContain('backdrop-filter: none')
@@ -274,23 +274,23 @@ describe('EmojiPicker', () => {
     expect(categoryLabelRule).toContain('font-size: var(--font-size-body-sm)')
     expect(categoryLabelRule).not.toContain('font-size: 14px')
     expect(categoryLabelRule).toContain('font-weight: var(--font-weight-regular)')
-    expect(emojiPickerCss).not.toContain("body[os='windows'] .cherry-emoji-picker-react .epr-emoji-category-label")
+    expect(emojiPickerCss).not.toContain("body[os='windows'] .huatuo-emoji-picker-react .epr-emoji-category-label")
 
-    const categoryButtonRule = emojiPickerCss.match(/\.cherry-emoji-picker-react \.epr-cat-btn\s*\{([^}]*)\}/)?.[1]
+    const categoryButtonRule = emojiPickerCss.match(/\.huatuo-emoji-picker-react \.epr-cat-btn\s*\{([^}]*)\}/)?.[1]
     expect(categoryButtonRule).toContain('display: flex')
     expect(categoryButtonRule).toContain('align-items: center')
     expect(categoryButtonRule).toContain('justify-content: center')
 
     const categoryNavigationRule = emojiPickerCss.match(
-      /\.cherry-emoji-picker-react \.epr-category-nav\s*\{([^}]*)\}/
+      /\.huatuo-emoji-picker-react \.epr-category-nav\s*\{([^}]*)\}/
     )?.[1]
-    const emojiListRule = emojiPickerCss.match(/\.cherry-emoji-picker-react \.epr-emoji-list\s*\{([^}]*)\}/)?.[1]
+    const emojiListRule = emojiPickerCss.match(/\.huatuo-emoji-picker-react \.epr-emoji-list\s*\{([^}]*)\}/)?.[1]
 
     expect(categoryNavigationRule).toContain('padding-top: 6px')
     expect(emojiListRule).toContain('padding-bottom: var(--epr-horizontal-padding)')
 
     const selectionRingRule = emojiPickerCss.match(
-      /\.cherry-emoji-picker-react \.epr-cat-btn:focus::before\s*\{([^}]*)\}/
+      /\.huatuo-emoji-picker-react \.epr-cat-btn:focus::before\s*\{([^}]*)\}/
     )?.[1]
 
     expect(selectionRingRule).toContain('top: 50%')
@@ -304,7 +304,7 @@ describe('EmojiPicker', () => {
 
   it('uses the bundled country flag font for native emojis on Windows', () => {
     const windowsNativeEmojiRule = emojiPickerCss.match(
-      /body\[os='windows'\] \.cherry-emoji-picker-react \.epr-emoji-native\s*\{([^}]*)\}/
+      /body\[os='windows'\] \.huatuo-emoji-picker-react \.epr-emoji-native\s*\{([^}]*)\}/
     )?.[1]
 
     expect(windowsNativeEmojiRule).toMatch(/font-family:\s*'Twemoji Country Flags'/)
@@ -389,7 +389,7 @@ describe('EmojiPicker', () => {
     })
   })
 
-  it('uses Cherry recent emojis as the third-party picker suggested category', async () => {
+  it('uses HuaTuo recent emojis as the third-party picker suggested category', async () => {
     const { MockUseCacheUtils } = await import('../../../../../tests/__mocks__/renderer/useCache')
     MockUseCacheUtils.setPersistCacheValue('ui.emoji.recently_used', ['🧠', '📁'])
 
@@ -401,7 +401,7 @@ describe('EmojiPicker', () => {
     expect(screen.getByRole('button', { name: '📁' })).toBeInTheDocument()
   })
 
-  it('calls onEmojiClick and updates Cherry recent emojis when an emoji is picked', async () => {
+  it('calls onEmojiClick and updates HuaTuo recent emojis when an emoji is picked', async () => {
     const { MockUseCacheUtils } = await import('../../../../../tests/__mocks__/renderer/useCache')
     MockUseCacheUtils.setPersistCacheValue('ui.emoji.recently_used', ['🧠', '📁'])
 

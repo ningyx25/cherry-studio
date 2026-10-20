@@ -36,7 +36,7 @@ vi.mock('../variants/shared/ComposerControlScaffolding', () => ({
   COMPOSER_SEND_ACCESSORY_BUTTON_CLASS: 'accessory-button'
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Tooltip: ({ children, content }: { children: React.ReactNode; content?: React.ReactNode }) => (
     <div data-testid="tooltip" data-content={String(content)}>
       {children}
@@ -127,5 +127,15 @@ describe('ComposerVoiceInputButton', () => {
     render(<ComposerVoiceInputButton />)
 
     expect(screen.getByRole('button', { name: 'chat.input.voice_input.label' })).toBeDisabled()
+  })
+
+  it('keeps voice mode active through the transcribing leg of the dictation turn', () => {
+    MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
+    mocks.voice = { ...mocks.voice, isTranscribing: true }
+    render(<ComposerVoiceInputButton />)
+
+    // Turn-based: recording ended but the turn is not over until the transcript
+    // is inserted — the switch stays in voice mode (data-active) while disabled.
+    expect(screen.getByRole('button', { name: 'chat.input.voice_input.label' })).toHaveAttribute('aria-pressed', 'true')
   })
 })

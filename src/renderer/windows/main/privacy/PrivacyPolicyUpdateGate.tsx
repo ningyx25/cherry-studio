@@ -1,3 +1,4 @@
+import { usePreference } from '@data/hooks/usePreference'
 import {
   Button,
   Dialog,
@@ -6,8 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui'
-import { usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import { toast } from '@renderer/services/toast'
 import { LATEST_PRIVACY_POLICY_VERSION } from '@shared/utils/constants'
 import { useCallback, useState } from 'react'

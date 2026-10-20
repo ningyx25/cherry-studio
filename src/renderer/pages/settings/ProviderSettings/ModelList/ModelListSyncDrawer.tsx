@@ -1,4 +1,4 @@
-import { Badge, Button, Input, Tooltip } from '@cherrystudio/ui'
+import { Badge, Button, Input, Tooltip } from '@huatuostudio/ui'
 import type { Model, UniqueModelId } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import { ListMinus, ListPlus, RefreshCw, Search, Trash2, X } from 'lucide-react'

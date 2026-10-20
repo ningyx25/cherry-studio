@@ -28,7 +28,7 @@ describe('internal/content/read', () => {
 
   beforeEach(async () => {
     MockMainDbServiceUtils.setDb(dbh.db)
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-readtest-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-readtest-'))
     onFsEventCalls = []
     deps = {
       fileEntryService,

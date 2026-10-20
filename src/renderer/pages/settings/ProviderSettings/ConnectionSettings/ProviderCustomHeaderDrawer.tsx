@@ -10,7 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { useProvider } from '@renderer/hooks/useProvider'
 import { toast } from '@renderer/services/toast'

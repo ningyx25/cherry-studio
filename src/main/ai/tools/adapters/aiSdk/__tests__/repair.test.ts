@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const { generateText } = vi.hoisted(() => ({ generateText: vi.fn() }))
 
-vi.mock('@cherrystudio/ai-core', () => ({ generateText }))
+vi.mock('@huatuostudio/ai-core', () => ({ generateText }))
 
 import { createAiRepair } from '../repair'
 

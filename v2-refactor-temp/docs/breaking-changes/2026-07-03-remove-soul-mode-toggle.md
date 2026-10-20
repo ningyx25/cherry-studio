@@ -10,7 +10,7 @@ date: 2026-07-03
 
 The Soul Mode / Autonomous Mode toggle is gone from agent settings. Every agent
 now always runs with the autonomy features that toggle used to gate: the
-`mcp__cherry-tools__cron/notify/config` autonomy tools, the agent-memory
+`mcp__huatuo-tools__cron/notify/config` autonomy tools, the agent-memory
 tools, and the workspace persona
 prompt (SOUL.md and related workspace files). Scheduled tasks and channels no
 longer require Soul Mode or the bypassPermissions permission mode — any agent
@@ -34,8 +34,8 @@ autonomy tools can restrict individual tools via the agent's tool settings.
 ## Notes for release manager
 
 - Spans the commits of PR #16726: unconditional soul-mode behavior in main,
-  renderer/schema flag removal, CherryClaw branding removal, the i18n cleanup,
-  the interactive-tool overlay removal, and the claw→cherry-tools server
+  renderer/schema flag removal, HuaTuoClaw branding removal, the i18n cleanup,
+  the interactive-tool overlay removal, and the claw→huatuo-tools server
   rename/merge.
 - The blanket disallowed-tools overlay was removed in the same PR: agents
   regain `AskUserQuestion`, the plan-mode tools, and the worktree tools.
@@ -48,10 +48,10 @@ autonomy tools can restrict individual tools via the agent's tool settings.
 - Related earlier entry: `2026-06-18-agent-create-defaults-bypass-soul.md` —
   the create-flow default it describes is superseded for the soul half
   (`soul_enabled` no longer exists); merge when aggregating.
-- CherryClaw branding was removed in the same PR: UI strings and i18n keys now
+- HuaTuoClaw branding was removed in the same PR: UI strings and i18n keys now
   say "channels" / "tasks" without the brand name.
-- The former standalone `claw` MCP server was renamed to `cherry` and then
-  merged into `cherry-tools` in the same PR — the autonomy tools' final names
-  are `mcp__cherry-tools__cron/notify/config`. Persisted `disabledTools`
-  entries using the old `mcp__claw__*` / `mcp__cherry__*` names lose their
+- The former standalone `claw` MCP server was renamed to `huatuo` and then
+  merged into `huatuo-tools` in the same PR — the autonomy tools' final names
+  are `mcp__huatuo-tools__cron/notify/config`. Persisted `disabledTools`
+  entries using the old `mcp__claw__*` / `mcp__huatuo__*` names lose their
   override (accepted pre-release break, no remap shim).

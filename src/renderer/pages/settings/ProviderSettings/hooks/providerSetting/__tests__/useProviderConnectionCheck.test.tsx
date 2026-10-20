@@ -71,22 +71,22 @@ describe('useProviderConnectionCheck', () => {
     inputApiKey = 'sk-a,sk-b'
 
     useProviderMock.mockReturnValue({
-      provider: { id: 'cherryin', name: 'CherryIN', isEnabled: false },
+      provider: { id: 'huatuoin', name: 'HuaTuoIN', isEnabled: false },
       enableProvider: enableProviderMock
     })
     useModelsMock.mockReturnValue({
       models: [
         {
-          id: 'cherryin::claude-4-sonnet',
+          id: 'huatuoin::claude-4-sonnet',
           name: 'Claude 4 Sonnet',
-          providerId: 'cherryin',
+          providerId: 'huatuoin',
           capabilities: [],
           endpointTypes: [ENDPOINT_TYPE.ANTHROPIC_MESSAGES]
         },
         {
-          id: 'cherryin::rerank-1',
+          id: 'huatuoin::rerank-1',
           name: 'Rerank',
-          providerId: 'cherryin',
+          providerId: 'huatuoin',
           capabilities: [MODEL_CAPABILITY.RERANK],
           endpointTypes: [ENDPOINT_TYPE.JINA_RERANK]
         }
@@ -105,7 +105,7 @@ describe('useProviderConnectionCheck', () => {
   })
 
   it('opens the connection drawer with rerank models available for checking', () => {
-    const { result } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     act(() => {
       result.current.openConnectionCheck()
@@ -114,8 +114,8 @@ describe('useProviderConnectionCheck', () => {
     expect(result.current.connectionCheckOpen).toBe(true)
     expect(result.current.checkableApiKeys).toEqual(['sk-a', 'sk-b'])
     expect(result.current.checkableModels.map((model) => model.id)).toEqual([
-      'cherryin::claude-4-sonnet',
-      'cherryin::rerank-1'
+      'huatuoin::claude-4-sonnet',
+      'huatuoin::rerank-1'
     ])
   })
 
@@ -166,7 +166,7 @@ describe('useProviderConnectionCheck', () => {
   })
 
   it('uses the anthropic host for anthropic endpoint models and closes the drawer after checking', async () => {
-    const { result } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     act(() => {
       result.current.openConnectionCheck()
@@ -213,7 +213,7 @@ describe('useProviderConnectionCheck', () => {
   })
 
   it('enables a disabled provider after a successful model connection check', async () => {
-    const { result } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     await act(async () => {
       await result.current.startConnectionCheck({
@@ -226,7 +226,7 @@ describe('useProviderConnectionCheck', () => {
   })
 
   it('persists the pending API key before running the check and before enabling the provider', async () => {
-    const { result } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     await act(async () => {
       await result.current.startConnectionCheck({
@@ -246,7 +246,7 @@ describe('useProviderConnectionCheck', () => {
   it('does not run the check or enable the provider when saving the pending API key fails', async () => {
     const saveError = new Error('save failed')
     commitInputApiKeyNowMock.mockRejectedValueOnce(saveError)
-    const { result } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     await act(async () => {
       await result.current.startConnectionCheck({
@@ -262,8 +262,8 @@ describe('useProviderConnectionCheck', () => {
     expect(checkApiMock).not.toHaveBeenCalled()
     expect(enableProviderMock).not.toHaveBeenCalled()
     expect(loggerErrorMock).toHaveBeenCalledWith('Failed to persist pending API key before connection check', {
-      providerId: 'cherryin',
-      modelId: 'cherryin::claude-4-sonnet',
+      providerId: 'huatuoin',
+      modelId: 'huatuoin::claude-4-sonnet',
       error: saveError
     })
     expect(toast.error).toHaveBeenCalledWith(
@@ -274,10 +274,10 @@ describe('useProviderConnectionCheck', () => {
 
   it('does not patch an already enabled provider after a successful model connection check', async () => {
     useProviderMock.mockReturnValue({
-      provider: { id: 'cherryin', name: 'CherryIN', isEnabled: true },
+      provider: { id: 'huatuoin', name: 'HuaTuoIN', isEnabled: true },
       enableProvider: enableProviderMock
     })
-    const { result } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     await act(async () => {
       await result.current.startConnectionCheck({
@@ -292,7 +292,7 @@ describe('useProviderConnectionCheck', () => {
   it('preserves connection success and warns when provider enablement fails', async () => {
     const enableError = new Error('enable and pin failed')
     enableProviderMock.mockRejectedValueOnce(enableError)
-    const { result } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     await act(async () => {
       await result.current.startConnectionCheck({
@@ -302,8 +302,8 @@ describe('useProviderConnectionCheck', () => {
     })
 
     expect(loggerErrorMock).toHaveBeenCalledWith('Provider connection succeeded but enablement failed', {
-      providerId: 'cherryin',
-      modelId: 'cherryin::claude-4-sonnet',
+      providerId: 'huatuoin',
+      modelId: 'huatuoin::claude-4-sonnet',
       error: enableError
     })
     expect(toast.warning).toHaveBeenCalledWith('settings.provider.enable_failed_after_connection')
@@ -319,7 +319,7 @@ describe('useProviderConnectionCheck', () => {
           rejectEnable = reject
         })
     )
-    const { result, rerender } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result, rerender } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     act(() => {
       void result.current.startConnectionCheck({
@@ -343,7 +343,7 @@ describe('useProviderConnectionCheck', () => {
 
   it('logs provider/model context when the connection check fails', async () => {
     checkApiMock.mockRejectedValueOnce(new Error('timeout'))
-    const { result } = renderHook(() => useProviderConnectionCheck('cherryin'))
+    const { result } = renderHook(() => useProviderConnectionCheck('huatuoin'))
 
     act(() => {
       result.current.openConnectionCheck()
@@ -357,8 +357,8 @@ describe('useProviderConnectionCheck', () => {
     })
 
     expect(loggerErrorMock).toHaveBeenCalledWith('Provider connection check failed', {
-      providerId: 'cherryin',
-      modelId: 'cherryin::claude-4-sonnet',
+      providerId: 'huatuoin',
+      modelId: 'huatuoin::claude-4-sonnet',
       error: expect.any(Error)
     })
     expect(toast.error).not.toHaveBeenCalled()

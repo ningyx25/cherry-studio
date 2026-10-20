@@ -44,7 +44,7 @@ const POP_SCIENCE_ROUTE_PATH = '/app/pop-science'
 function routePathOfTab(tab: Tab): string | null {
   if (tab.type !== 'route') return null
   try {
-    return new URL(tab.url, 'https://www.cherry-ai.com').pathname
+    return new URL(tab.url, 'https://www.huatuo.ai').pathname
   } catch {
     return null
   }

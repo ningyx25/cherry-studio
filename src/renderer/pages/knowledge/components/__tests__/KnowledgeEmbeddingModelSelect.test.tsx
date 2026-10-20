@@ -42,10 +42,10 @@ vi.mock('@renderer/components/ModelSelector', () => ({
 
 vi.mock('@renderer/services/toast', () => ({ toast: { error: mockToastError } }))
 vi.mock('@renderer/services/popup', () => ({ popup: { confirm: mockPopupConfirm } }))
-vi.mock('@cherrystudio/ui/lib/utils', () => ({
+vi.mock('@huatuostudio/ui/lib/utils', () => ({
   cn: (...classNames: Array<string | false | null | undefined>) => classNames.filter(Boolean).join(' ')
 }))
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: string }) => {
     const { variant, ...buttonProps } = props
     void variant

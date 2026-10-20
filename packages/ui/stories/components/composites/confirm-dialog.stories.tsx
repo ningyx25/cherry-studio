@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog } from '@cherrystudio/ui'
+import { Button, ConfirmDialog } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

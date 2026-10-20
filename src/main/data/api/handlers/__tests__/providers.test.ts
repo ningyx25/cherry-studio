@@ -67,7 +67,7 @@ describe('providerHandlers', () => {
     it('accepts a minimal create payload without DB-managed fields', async () => {
       createMock.mockReturnValueOnce({
         id: 'custom-provider',
-        name: 'CherryAI',
+        name: 'HuaTuoAI',
         defaultChatEndpoint: 'openai-chat-completions',
         apiKeys: [],
         authType: 'api-key',
@@ -78,7 +78,7 @@ describe('providerHandlers', () => {
 
       const body = {
         providerId: 'custom-provider',
-        name: 'CherryAI',
+        name: 'HuaTuoAI',
         defaultChatEndpoint: 'openai-chat-completions'
       }
 
@@ -87,7 +87,7 @@ describe('providerHandlers', () => {
       expect(createMock).toHaveBeenCalledWith(body)
       expect(result).toMatchObject({
         id: 'custom-provider',
-        name: 'CherryAI'
+        name: 'HuaTuoAI'
       })
     })
 
@@ -96,7 +96,7 @@ describe('providerHandlers', () => {
         providerHandlers['/providers'].POST({
           body: {
             providerId: 'custom-provider',
-            name: 'CherryAI',
+            name: 'HuaTuoAI',
             createdAt: Date.now()
           }
         } as never)
@@ -244,7 +244,7 @@ describe('providerHandlers', () => {
       })
 
       const result = await providerHandlers['/providers/:providerId/auth-config'].GET({
-        params: { providerId: 'cherryin' }
+        params: { providerId: 'huatuoin' }
       } as never)
 
       expect(result).toEqual({ type: 'oauth', clientId: 'client-1', accountId: 'acc-1', expiresAt: 123 })

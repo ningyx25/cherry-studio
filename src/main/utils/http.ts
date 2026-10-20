@@ -1,6 +1,6 @@
 export const defaultAppHeaders = () => {
   return {
-    'HTTP-Referer': 'https://cherry-ai.com',
+    'HTTP-Referer': 'https://huatuo.ai',
     'X-Title': 'HuaTuo Studio'
   }
 }

@@ -1,11 +1,9 @@
-import { isManagedCherryAiDefaultModel } from '@shared/data/presets/cherryai'
-
 /**
  * Build the gateway-addressable model id the gateway routes expect: `providerId:apiModelId`
  * (single colon, `apiModelId` — NOT the `::`-separated internal `UniqueModelId`). The gateway
  * splits on the first `:` (see `apiGateway/proxyStream.ts`) and advertises the same shape from
  * `/v1/models` (see `apiGateway/utils/models.ts`), so both the CLI-config writer and the in-app
- * Claude Code runtime must format ids identically. CherryAI managed default models are not
+ * Claude Code runtime must format ids identically. HuaTuoAI managed default models are not
  * routable through the gateway and throw, mirroring the gateway's own guard.
  */
 export function formatGatewayModelId(providerId: string, apiModelId: string): string {
@@ -14,9 +12,6 @@ export function formatGatewayModelId(providerId: string, apiModelId: string): st
   // Fail loudly rather than emit an address that silently targets the wrong provider.
   if (providerId.includes(':')) {
     throw new Error(`Provider id "${providerId}" contains ":" and cannot be addressed through the API gateway`)
-  }
-  if (isManagedCherryAiDefaultModel(providerId, apiModelId)) {
-    throw new Error('CherryAI managed default model is not available through the API gateway')
   }
   return `${providerId}:${apiModelId}`
 }
@@ -37,7 +32,7 @@ export function formatGatewayModelId(providerId: string, apiModelId: string): st
  * such ids and the route rejects them, so a listed model always round-trips to the
  * same address once the suffix is stripped.
  */
-export const GEMINI_GATEWAY_MODEL_SUFFIX = '@cherry'
+export const GEMINI_GATEWAY_MODEL_SUFFIX = '@huatuo'
 
 /** {@link formatGatewayModelId} plus the gemini-cli sentinel suffix (see above). */
 export function formatGeminiGatewayModelId(providerId: string, apiModelId: string): string {
@@ -52,8 +47,8 @@ export function stripGeminiGatewayModelSuffix(model: string): string {
 /**
  * A gateway model id is RESERVED — not routable through the Gemini `/v1beta` dialect —
  * when it ends with {@link GEMINI_GATEWAY_MODEL_SUFFIX}: the route strips exactly one
- * such suffix, so it cannot tell Cherry's sentinel apart from a real id that happens to
- * end in `@cherry`. The models list omits these and the route rejects them, keeping
+ * such suffix, so it cannot tell HuaTuo's sentinel apart from a real id that happens to
+ * end in `@huatuo`. The models list omits these and the route rejects them, keeping
  * list→request round-trips unambiguous. No real provider model ends in this marker.
  */
 export function isReservedGeminiGatewayModelId(id: string): boolean {

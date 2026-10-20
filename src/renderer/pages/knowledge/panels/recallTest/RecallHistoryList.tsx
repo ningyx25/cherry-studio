@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { History, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 

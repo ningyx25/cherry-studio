@@ -78,8 +78,8 @@ describe('ProviderAuthConfigOAuthTokenStore', () => {
 
   it('clear() drops tokens but does NOT disable the provider by default (preserves a manual API key)', async () => {
     providerServiceMock.getAuthConfig.mockReturnValue(null)
-    await store.clear('cherryin')
-    expect(providerServiceMock.update).toHaveBeenCalledWith('cherryin', { authConfig: { type: 'api-key' } })
+    await store.clear('huatuoin')
+    expect(providerServiceMock.update).toHaveBeenCalledWith('huatuoin', { authConfig: { type: 'api-key' } })
     expect(providerServiceMock.update.mock.calls[0][1]).not.toHaveProperty('isEnabled')
   })
 

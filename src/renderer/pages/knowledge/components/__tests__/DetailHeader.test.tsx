@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import DetailHeader from '../DetailHeader'
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Badge: ({ children, ...props }: { children: ReactNode; [key: string]: unknown }) => (
     <span {...props}>{children}</span>
   ),

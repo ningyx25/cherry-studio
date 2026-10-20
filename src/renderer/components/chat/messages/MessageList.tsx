@@ -8,7 +8,7 @@ import { removeSpecialCharactersForFileName } from '@renderer/utils/file'
 import { captureScrollable, captureScrollableAsDataUrl } from '@renderer/utils/image'
 import { classNames } from '@renderer/utils/style'
 import type { MultiModelMessageStyle } from '@shared/data/preference/preferenceTypes'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { type ComponentProps, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import NarrowLayout from '../layout/NarrowLayout'
@@ -56,7 +56,7 @@ const RAIL_GUTTER_START_PX = 700
 /** Width range over which the gutter grows in and the rail fades in — a smooth ramp. */
 const RAIL_GUTTER_FADE_PX = 120
 const EMPTY_LIVE_MESSAGE_IDS: readonly string[] = []
-const EMPTY_PARTS_BY_MESSAGE_ID: Record<string, CherryMessagePart[]> = {}
+const EMPTY_PARTS_BY_MESSAGE_ID: Record<string, HuaTuoMessagePart[]> = {}
 
 interface ActiveMessageOutline {
   messageId: string

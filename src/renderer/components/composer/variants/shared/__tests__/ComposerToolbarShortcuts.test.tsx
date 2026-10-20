@@ -35,9 +35,9 @@ vi.mock('@renderer/services/toast', () => ({
   toast: { error: mocks.toastError }
 }))
 
-// Local override of the global @cherrystudio/ui mock: exposes ReorderableList props
+// Local override of the global @huatuostudio/ui mock: exposes ReorderableList props
 // for reorder assertions and gives Switch the real checked/onCheckedChange API.
-vi.mock('@cherrystudio/ui', () => {
+vi.mock('@huatuostudio/ui', () => {
   const React = require('react')
   return {
     Button: ({ children, ...props }: any) => React.createElement('button', props, children),

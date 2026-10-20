@@ -1,4 +1,4 @@
-import { Button, MenuItem, MenuList, Popover, PopoverContent, PopoverTrigger } from '@cherrystudio/ui'
+import { Button, MenuItem, MenuList, Popover, PopoverContent, PopoverTrigger } from '@huatuostudio/ui'
 import { formatRelativeTime } from '@renderer/utils/time'
 import type { KnowledgeItemType } from '@shared/data/types/knowledge'
 import { Plus, RefreshCw, Settings2, Trash2 } from 'lucide-react'

@@ -1,6 +1,6 @@
 import type { FileMetadata } from '@renderer/types/file'
 import type { ExportableMessage } from '@renderer/types/messageExport'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { CodePartData, ErrorPartData, TranslationPartData } from '@shared/data/types/uiParts'
 
 /**
@@ -65,7 +65,7 @@ export interface TopicPreprocessResult {
 }
 
 // ── Parts helpers ────────────────────────────────────────────────────
-// Read content units directly from `Message.parts` (CherryMessagePart[]).
+// Read content units directly from `Message.parts` (HuaTuoMessagePart[]).
 // V2 has no standalone citation parts — citations live on text-part metadata
 // and were never surfaced by the v1 block path either, so they stay at 0.
 
@@ -83,11 +83,11 @@ function filePartUrlToPath(url: string): string {
   }
 }
 
-function getParts(message: ExportableMessage): CherryMessagePart[] {
+function getParts(message: ExportableMessage): HuaTuoMessagePart[] {
   return message.parts ?? []
 }
 
-function getDataPart<T>(part: CherryMessagePart): Partial<T> | undefined {
+function getDataPart<T>(part: HuaTuoMessagePart): Partial<T> | undefined {
   if ('data' in part && part.data && typeof part.data === 'object') {
     return part.data as Partial<T>
   }
@@ -190,7 +190,7 @@ export function processMessageContent(
  * 处理所选类型的文本内容
  */
 function processTextlikePart(
-  part: CherryMessagePart,
+  part: HuaTuoMessagePart,
   index: number,
   messageId: string,
   selectedTypes: Set<ContentType>
@@ -259,7 +259,7 @@ function processTextlikePart(
 /**
  * 将非图片文件 part 转换为文件元信息（图片不计入文件列表）
  */
-function filePartToMetadata(part: CherryMessagePart): FileMetadata | null {
+function filePartToMetadata(part: HuaTuoMessagePart): FileMetadata | null {
   if (part.type !== 'file') return null
   const filePart = part as FilePartLike
   if (isImageFilePart(filePart)) return null

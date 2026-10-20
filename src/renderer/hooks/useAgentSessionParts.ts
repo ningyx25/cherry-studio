@@ -1,5 +1,5 @@
 /**
- * Agent session history data source — returns CherryUIMessage[] for useChatWithHistory.
+ * Agent session history data source — returns HuaTuoUIMessage[] for useChatWithHistory.
  *
  * Backed by DataApi (`/agent-sessions/:sessionId/messages`) with cursor-based
  * infinite pagination so chat-style transcripts of arbitrary length load
@@ -15,14 +15,14 @@ import { useDataChange, useInfiniteFlatItems, useInfiniteQuery, useMutation } fr
 import { AGENT_SESSION_FLOW_PARTS_CACHE_KEY } from '@shared/ai/agentSessionFlowParts'
 import type { CursorPaginationResponse } from '@shared/data/api/types'
 import type { AgentSessionMessageEntity } from '@shared/data/types/agent'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { useCallback, useMemo, useRef } from 'react'
 
 const PAGE_SIZE = 50
 
 interface CachedAgentSessionMessage {
-  liveParts: CherryMessagePart[] | undefined
-  message: CherryUIMessage
+  liveParts: HuaTuoMessagePart[] | undefined
+  message: HuaTuoUIMessage
   modelId: AgentSessionMessageEntity['modelId']
   role: AgentSessionMessageEntity['role']
   sessionId: string
@@ -30,8 +30,8 @@ interface CachedAgentSessionMessage {
   updatedAt: string
 }
 
-export function toAgentSessionUIMessage(row: AgentSessionMessageEntity): CherryUIMessage {
-  const metadata: CherryUIMessage['metadata'] = {}
+export function toAgentSessionUIMessage(row: AgentSessionMessageEntity): HuaTuoUIMessage {
+  const metadata: HuaTuoUIMessage['metadata'] = {}
   if (row.createdAt) metadata.createdAt = row.createdAt
   if (row.updatedAt) metadata.updatedAt = row.updatedAt
   metadata.status = row.status
@@ -44,12 +44,12 @@ export function toAgentSessionUIMessage(row: AgentSessionMessageEntity): CherryU
     role: row.role,
     parts: row.data.parts ?? [],
     metadata: Object.keys(metadata).length > 0 ? metadata : undefined
-  } as CherryUIMessage
+  } as HuaTuoUIMessage
 }
 
 function reservedUIMessageToAgentSessionMessage(
   sessionId: string,
-  message: CherryUIMessage
+  message: HuaTuoUIMessage
 ): AgentSessionMessageEntity {
   const metadata = message.metadata ?? {}
   const createdAt = metadata.createdAt ?? new Date().toISOString()
@@ -57,7 +57,7 @@ function reservedUIMessageToAgentSessionMessage(
     id: message.id,
     sessionId,
     role: message.role,
-    data: { parts: (message.parts ?? []) as CherryMessagePart[] },
+    data: { parts: (message.parts ?? []) as HuaTuoMessagePart[] },
     searchableText: '',
     status:
       metadata.status ?? (message.role === 'assistant' && (message.parts?.length ?? 0) === 0 ? 'pending' : 'success'),
@@ -105,7 +105,7 @@ export function useAgentSessionParts(sessionId: string, options: { enabled?: boo
     [loadedMessageIds, sessionId]
   )
   const selectFlowParts = useCallback(
-    (values: readonly (CherryMessagePart[] | undefined)[]) =>
+    (values: readonly (HuaTuoMessagePart[] | undefined)[]) =>
       Object.fromEntries(loadedMessageIds.map((messageId, index) => [messageId, values[index]])),
     [loadedMessageIds]
   )
@@ -114,7 +114,7 @@ export function useAgentSessionParts(sessionId: string, options: { enabled?: boo
   const messageProjectionRef = useRef<
     | {
         byId: Map<string, CachedAgentSessionMessage>
-        messages: CherryUIMessage[]
+        messages: HuaTuoUIMessage[]
         ownerToken: symbol
       }
     | undefined
@@ -125,7 +125,7 @@ export function useAgentSessionParts(sessionId: string, options: { enabled?: boo
   // `updatedAt` is the persisted row revision. Reuse unchanged projections so
   // downstream WeakMap caches and message-group memoization survive revalidation.
   const projectMessages = useCallback(
-    (sourceRows: AgentSessionMessageEntity[]): CherryUIMessage[] => {
+    (sourceRows: AgentSessionMessageEntity[]): HuaTuoUIMessage[] => {
       const previousProjection = messageProjectionRef.current
       const previousById = previousProjection?.ownerToken === projectionOwnerToken ? previousProjection.byId : undefined
       const nextById = new Map<string, CachedAgentSessionMessage>()
@@ -173,11 +173,11 @@ export function useAgentSessionParts(sessionId: string, options: { enabled?: boo
     [flowParts, projectionOwnerToken]
   )
 
-  const messages = useMemo<CherryUIMessage[]>(() => {
+  const messages = useMemo<HuaTuoUIMessage[]>(() => {
     return projectMessages(rows)
   }, [projectMessages, rows])
 
-  const refreshMessages = useCallback(async (): Promise<CherryUIMessage[]> => {
+  const refreshMessages = useCallback(async (): Promise<HuaTuoUIMessage[]> => {
     if (!enabled) return []
     const fallbackMessages =
       messageProjectionRef.current?.ownerToken === projectionOwnerToken ? messageProjectionRef.current.messages : []
@@ -192,7 +192,7 @@ export function useAgentSessionParts(sessionId: string, options: { enabled?: boo
   }, [enabled, mutate, projectMessages, projectionOwnerToken])
 
   const seedReservedMessages = useCallback(
-    async (messages: CherryUIMessage[]): Promise<void> => {
+    async (messages: HuaTuoUIMessage[]): Promise<void> => {
       const reservedRows = messages.map((message) => reservedUIMessageToAgentSessionMessage(sessionId, message))
       if (reservedRows.length === 0) return
 

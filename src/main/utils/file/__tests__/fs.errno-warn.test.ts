@@ -85,7 +85,7 @@ describe('move (EXDEV cross-device fallback)', () => {
     actualUnlink = actual.unlink
     actualStat = actual.stat
     actualOpen = actual.open
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-move-exdev-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-move-exdev-'))
     mockRename.mockReset()
     mockUnlink.mockReset()
     mockStat.mockReset()
@@ -206,7 +206,7 @@ describe('isSameFile (non-ENOENT stat failure observability)', () => {
     const actual = await vi.importActual<typeof NodeFsPromises>('node:fs/promises')
     actualStat = actual.stat
     actualOpen = actual.open
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-issamefile-warn-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-issamefile-warn-'))
     mockStat.mockReset()
     mockOpen.mockReset()
     mockLoggerWarn.mockClear()
@@ -271,7 +271,7 @@ describe('fsyncDirectoryOf (end-to-end warn observability via atomicWriteFile)',
     actualOpen = actual.open
     actualRename = actual.rename
     actualUnlink = actual.unlink
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-fsync-warn-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-fsync-warn-'))
     mockOpen.mockReset()
     mockRename.mockReset()
     mockUnlink.mockReset()
@@ -347,7 +347,7 @@ describe('atomicWriteFile (write/sync failure cleans up .tmp-{uuid})', () => {
     actualOpen = actual.open
     actualRename = actual.rename
     actualUnlink = actual.unlink
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-atomicwrite-leak-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-atomicwrite-leak-'))
     mockOpen.mockReset()
     mockRename.mockReset()
     mockUnlink.mockReset()
@@ -465,7 +465,7 @@ describe('createAtomicWriteStream (tmp leak observability)', () => {
     actualRename = actual.rename
     actualUnlink = actual.unlink
     actualOpen = actual.open
-    tmp = await mkdtemp(path.join(tmpdir(), 'cherry-fm-stream-leak-'))
+    tmp = await mkdtemp(path.join(tmpdir(), 'huatuo-fm-stream-leak-'))
     mockOpen.mockReset()
     mockRename.mockReset()
     mockUnlink.mockReset()

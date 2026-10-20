@@ -1,7 +1,7 @@
 import type { MessageExportView } from '@renderer/types/messageExport'
 import type { Model } from '@renderer/types/model'
 import { resolveUniqueModelId } from '@renderer/utils/message/modelIdentity'
-import type { CherryMessagePart, CherryUIMessage, MessageStats } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage, MessageStats } from '@shared/data/types/message'
 import {
   createUniqueModelId,
   isUniqueModelId,
@@ -19,14 +19,14 @@ export interface MessageListItemContext {
   topicId: string
 }
 
-function statsFromMetadata(metadata: CherryUIMessage['metadata']): MessageStats | undefined {
+function statsFromMetadata(metadata: HuaTuoUIMessage['metadata']): MessageStats | undefined {
   if (!metadata) return undefined
   const stats: MessageStats = { ...metadata.stats }
   if (metadata.totalTokens !== undefined) stats.totalTokens = metadata.totalTokens
   return Object.keys(stats).length > 0 ? stats : undefined
 }
 
-export function toMessageListItem(message: CherryUIMessage, ctx: MessageListItemContext): MessageListItem {
+export function toMessageListItem(message: HuaTuoUIMessage, ctx: MessageListItemContext): MessageListItem {
   const metadata = message.metadata ?? {}
   const messageSnapshot = metadata.messageSnapshot
   // The snapshot IS the producing author (model nested). Model priority: the frozen author's model →
@@ -160,12 +160,12 @@ export function isMessageListItemProcessing(message: Pick<MessageListItem, 'stat
   return message.status === 'pending'
 }
 
-export function isMessageListItemAwaitingApproval(message: MessageListItem, parts: CherryMessagePart[]): boolean {
+export function isMessageListItemAwaitingApproval(message: MessageListItem, parts: HuaTuoMessagePart[]): boolean {
   if (message.status !== 'paused') return false
   return parts.some((part) => isToolUIPart(part) && part.state === 'approval-requested')
 }
 
-export function createMessageExportView(message: MessageListItem, parts: CherryMessagePart[]): MessageExportView {
+export function createMessageExportView(message: MessageListItem, parts: HuaTuoMessagePart[]): MessageExportView {
   const model = getMessageListItemModel(message)
   return {
     id: message.id,

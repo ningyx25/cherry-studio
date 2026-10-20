@@ -55,7 +55,7 @@ const mocks = vi.hoisted(() => ({
   write: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => (
     <button type="button" {...props}>
       {children}
@@ -424,7 +424,7 @@ describe('HtmlArtifactView', () => {
     const src = webview.getAttribute('src')
     if (!src) throw new Error('Expected an instrumented webview source')
     const instrumentedHtml = decodeURIComponent(src.slice(src.indexOf(',') + 1))
-    const messagePrefix = instrumentedHtml.match(/__cherry_html_artifact_[^:]+:/)?.[0]
+    const messagePrefix = instrumentedHtml.match(/__huatuo_html_artifact_[^:]+:/)?.[0]
     if (!messagePrefix) throw new Error('Expected the bridge message prefix')
 
     const event = new Event('console-message') as Event & { message: string }

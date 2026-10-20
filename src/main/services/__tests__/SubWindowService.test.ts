@@ -164,7 +164,7 @@ describe('SubWindowService', () => {
       const win = createMockWindow()
       windowManagerMock.getWindow.mockReturnValue(win)
 
-      svc.createWindow({ id: 'tab-1', url: 'cherry://chat', title: 'Chat' })
+      svc.createWindow({ id: 'tab-1', url: 'huatuo://chat', title: 'Chat' })
 
       expect(windowManagerMock.open).toHaveBeenCalledTimes(1)
       const { type, args } = lastOpenCall()
@@ -183,7 +183,7 @@ describe('SubWindowService', () => {
       const win = createMockWindow()
       windowManagerMock.getWindow.mockReturnValue(win)
 
-      svc.createWindow({ id: 'tab-2', url: 'cherry://mcp' })
+      svc.createWindow({ id: 'tab-2', url: 'huatuo://mcp' })
 
       const { args } = lastOpenCall()
       expect(args.options).toMatchObject({
@@ -199,7 +199,7 @@ describe('SubWindowService', () => {
 
       svc.createWindow({
         id: 'tab-3',
-        url: 'cherry://agent',
+        url: 'huatuo://agent',
         title: 'Agent',
         type: 'webview',
         isPinned: true
@@ -208,7 +208,7 @@ describe('SubWindowService', () => {
       const { args } = lastOpenCall()
       expect(args.initData).toEqual({
         tabId: 'tab-3',
-        url: 'cherry://agent',
+        url: 'huatuo://agent',
         title: 'Agent',
         type: 'webview',
         isPinned: true
@@ -244,7 +244,7 @@ describe('SubWindowService', () => {
       const win = createMockWindow()
       windowManagerMock.getWindow.mockReturnValue(win)
 
-      svc.createWindow({ id: 'tab-4', url: 'cherry://x', type: 'bogus' })
+      svc.createWindow({ id: 'tab-4', url: 'huatuo://x', type: 'bogus' })
 
       const { args } = lastOpenCall()
       expect((args.initData as { type?: string }).type).toBe('route')

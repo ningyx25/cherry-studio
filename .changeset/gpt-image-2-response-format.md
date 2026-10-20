@@ -1,6 +1,6 @@
 ---
-'@cherrystudio/ai-core': patch
-'@cherrystudio/ai-sdk-provider': patch
+'@huatuostudio/ai-core': patch
+'@huatuostudio/ai-sdk-provider': patch
 ---
 
 Support OpenAI `gpt-image-2`:

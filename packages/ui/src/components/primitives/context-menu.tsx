@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react'

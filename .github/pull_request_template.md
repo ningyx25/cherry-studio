@@ -1,6 +1,6 @@
 <!-- Template from https://github.com/kubevirt/kubevirt/blob/main/.github/PULL_REQUEST_TEMPLATE.md?-->
 <!--  Thanks for sending a pull request!  Here are some tips for you:
-1. Consider creating this PR as draft: https://github.com/ningyx25/cherry-studio/blob/main/CONTRIBUTING.md
+1. Consider creating this PR as draft: https://github.com/huatuostudio/huatuo-studio/blob/main/CONTRIBUTING.md
 -->
 
 > ### 🚨 Branch strategy — read before opening this PR
@@ -50,7 +50,7 @@ Approvers are expected to review this list.
 - [ ] Code: [Write code that humans can understand](https://en.wikiquote.org/wiki/Martin_Fowler#code-for-humans) and [Keep it simple](https://en.wikipedia.org/wiki/KISS_principle)
 - [ ] Refactor: You have [left the code cleaner than you found it (Boy Scout Rule)](https://learning.oreilly.com/library/view/97-things-every/9780596809515/ch08.html)
 - [ ] Upgrade: Impact of this change on upgrade flows was considered and addressed if required
-- [ ] Documentation: A [user-guide update](https://docs.cherry-ai.com) was considered and is present (link) or not required. Check this only when the PR introduces or changes a user-facing feature or behavior.
+- [ ] Documentation: A [user-guide update](https://docs.huatuo.ai) was considered and is present (link) or not required. Check this only when the PR introduces or changes a user-facing feature or behavior.
 - [ ] Self-review: I have reviewed my own code (e.g., via [`/gh-pr-review`](/.claude/skills/gh-pr-review/SKILL.md), `gh pr diff`, or GitHub UI) before requesting review from others
 
 ### Release note

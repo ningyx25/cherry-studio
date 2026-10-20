@@ -1,6 +1,6 @@
 // Original path: src/renderer/components/Preview/ImageToolButton.tsx
-import { Button } from '@cherrystudio/ui/components/primitives/button'
-import { Tooltip } from '@cherrystudio/ui/components/primitives/tooltip'
+import { Button } from '@huatuostudio/ui/components/primitives/button'
+import { Tooltip } from '@huatuostudio/ui/components/primitives/tooltip'
 import { memo } from 'react'
 
 interface ImageToolButtonProps {

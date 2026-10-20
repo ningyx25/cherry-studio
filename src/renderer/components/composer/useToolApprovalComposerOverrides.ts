@@ -1,5 +1,5 @@
 import type { MessageStreamingLayers, MessageToolApprovalInput } from '@renderer/components/chat/messages/types'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { useCallback, useMemo, useState } from 'react'
 
 import type { ComposerOverride } from './ComposerContext'
@@ -9,7 +9,7 @@ import { createPermissionRequestComposerOverride } from './variants/PermissionRe
 import { findLatestPendingPermissionRequest } from './variants/permissionRequestComposerRequest'
 
 type ToolApprovalComposerOverridesOptions = {
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   streamingLayers?: MessageStreamingLayers
   onRespond: (input: MessageToolApprovalInput) => void | Promise<void>
 }
@@ -20,20 +20,20 @@ export function useToolApprovalComposerOverrides({
   onRespond
 }: ToolApprovalComposerOverridesOptions): readonly ComposerOverride[] {
   const [dismissedApprovalIds, setDismissedApprovalIds] = useState<ReadonlySet<string>>(() => new Set())
-  const settledHistoryParts = useMemo<Record<string, CherryMessagePart[]> | null>(() => {
+  const settledHistoryParts = useMemo<Record<string, HuaTuoMessagePart[]> | null>(() => {
     if (!streamingLayers) return null
 
     const liveMessageIdSet = new Set(streamingLayers.liveMessageIds)
-    const historyParts: Record<string, CherryMessagePart[]> = {}
+    const historyParts: Record<string, HuaTuoMessagePart[]> = {}
     for (const [messageId, parts] of Object.entries(streamingLayers.historyPartsByMessageId)) {
       if (!liveMessageIdSet.has(messageId)) historyParts[messageId] = parts
     }
     return historyParts
   }, [streamingLayers])
-  const currentParts = useMemo<Record<string, CherryMessagePart[]>>(() => {
+  const currentParts = useMemo<Record<string, HuaTuoMessagePart[]>>(() => {
     if (!streamingLayers) return partsByMessageId
 
-    const liveParts: Record<string, CherryMessagePart[]> = {}
+    const liveParts: Record<string, HuaTuoMessagePart[]> = {}
     for (const messageId of streamingLayers.liveMessageIds) {
       const parts = partsByMessageId[messageId]
       if (parts) liveParts[messageId] = parts

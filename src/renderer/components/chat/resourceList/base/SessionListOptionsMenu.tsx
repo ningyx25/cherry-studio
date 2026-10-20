@@ -1,4 +1,4 @@
-import { MenuDivider, MenuItem, MenuList, Popover, PopoverContent, PopoverTrigger } from '@cherrystudio/ui'
+import { MenuDivider, MenuItem, MenuList, Popover, PopoverContent, PopoverTrigger } from '@huatuostudio/ui'
 import type { AgentSessionDisplayMode } from '@shared/data/preference/preferenceTypes'
 import { Bot, ChevronsDownUp, ChevronsUpDown, Clock, Folder, History, ListFilter } from 'lucide-react'
 import { type ReactNode, useState } from 'react'

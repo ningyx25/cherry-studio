@@ -17,10 +17,10 @@ const DEFAULT_DEV_USER_DATA_SUFFIX = 'Dev'
 
 export function getNormalizedExecutablePath(): string {
   if (isLinux && process.env.APPIMAGE) {
-    return path.join(path.dirname(process.env.APPIMAGE), 'cherry-studio.appimage')
+    return path.join(path.dirname(process.env.APPIMAGE), 'huatuo-studio.appimage')
   }
   if (isWin && isPortable) {
-    return path.join(process.env.PORTABLE_EXECUTABLE_DIR || '', 'cherry-studio-portable.exe')
+    return path.join(process.env.PORTABLE_EXECUTABLE_DIR || '', 'huatuo-studio-portable.exe')
   }
   return app.getPath('exe')
 }

@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => ({
   request: vi.fn()
 }))
 
-vi.unmock('@cherrystudio/ui')
+vi.unmock('@huatuostudio/ui')
 
 vi.mock('@renderer/ipc', () => ({
   ipcApi: { request: mocks.request }

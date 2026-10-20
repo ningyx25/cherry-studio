@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
 
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
@@ -13,7 +13,7 @@ import { MessageListSearch } from '../MessageListSearch'
 const commandMock = vi.hoisted(() => ({ handler: undefined as (() => void) | undefined }))
 const NO_EXCLUDED_MESSAGE_IDS = new Set<string>()
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Tooltip: ({ children }: { children: ReactNode }) => children
 }))
 
@@ -120,7 +120,7 @@ describe('MessageListSearch', () => {
       createdAt: '2026-01-01T00:00:00.000Z'
     }
     const partsByMessageId = {
-      a1: [{ type: 'text', text: 'apple apple' } as CherryMessagePart]
+      a1: [{ type: 'text', text: 'apple apple' } as HuaTuoMessagePart]
     }
     const locateMessage = vi.fn()
     const scrollToRange = vi.fn()
@@ -197,8 +197,8 @@ describe('MessageListSearch', () => {
         messages={[message]}
         partsByMessageId={{
           a1: [
-            { type: 'text', text: 'apple apple' } as CherryMessagePart,
-            { type: 'text', text: 'apple apple' } as CherryMessagePart
+            { type: 'text', text: 'apple apple' } as HuaTuoMessagePart,
+            { type: 'text', text: 'apple apple' } as HuaTuoMessagePart
           ]
         }}
         renderUserTextAsMarkdown={false}
@@ -266,7 +266,7 @@ describe('MessageListSearch', () => {
     const view = render(
       <MessageListSearch
         {...props}
-        partsByMessageId={{ a1: [{ type: 'text', text: 'apple apple' } as CherryMessagePart] }}
+        partsByMessageId={{ a1: [{ type: 'text', text: 'apple apple' } as HuaTuoMessagePart] }}
       />
     )
 
@@ -279,13 +279,13 @@ describe('MessageListSearch', () => {
     view.rerender(
       <MessageListSearch
         {...props}
-        partsByMessageId={{ a1: [{ type: 'text', text: 'banana' } as CherryMessagePart] }}
+        partsByMessageId={{ a1: [{ type: 'text', text: 'banana' } as HuaTuoMessagePart] }}
       />
     )
     view.rerender(
       <MessageListSearch
         {...props}
-        partsByMessageId={{ a1: [{ type: 'text', text: 'apple apple' } as CherryMessagePart] }}
+        partsByMessageId={{ a1: [{ type: 'text', text: 'apple apple' } as HuaTuoMessagePart] }}
       />
     )
     act(() => {
@@ -332,7 +332,7 @@ describe('MessageListSearch', () => {
     render(
       <MessageListSearch
         messages={[message]}
-        partsByMessageId={{ u1: [{ type: 'text', text: 'preview only hidden apple' } as CherryMessagePart] }}
+        partsByMessageId={{ u1: [{ type: 'text', text: 'preview only hidden apple' } as HuaTuoMessagePart] }}
         renderUserTextAsMarkdown={false}
         excludedMessageIds={NO_EXCLUDED_MESSAGE_IDS}
         isStreaming={false}
@@ -381,7 +381,7 @@ describe('MessageListSearch', () => {
       <MessageListSearch
         {...props}
         isStreaming
-        partsByMessageId={{ a1: [{ type: 'text', text: 'banana' } as CherryMessagePart] }}
+        partsByMessageId={{ a1: [{ type: 'text', text: 'banana' } as HuaTuoMessagePart] }}
       />
     )
 
@@ -390,7 +390,7 @@ describe('MessageListSearch', () => {
     const next = screen.getByRole('button', { name: 'common.next' })
     expect(next).toBeDisabled()
 
-    const updatedParts = { a1: [{ type: 'text', text: 'apple apple' } as CherryMessagePart] }
+    const updatedParts = { a1: [{ type: 'text', text: 'apple apple' } as HuaTuoMessagePart] }
     view.rerender(<MessageListSearch {...props} isStreaming partsByMessageId={updatedParts} />)
     expect(next).toBeDisabled()
 
@@ -430,8 +430,8 @@ describe('MessageListSearch', () => {
       <MessageListSearch
         messages={messages}
         partsByMessageId={{
-          a1: [{ type: 'text', text: 'apple apple' } as CherryMessagePart],
-          a2: [{ type: 'text', text: 'another apple' } as CherryMessagePart]
+          a1: [{ type: 'text', text: 'apple apple' } as HuaTuoMessagePart],
+          a2: [{ type: 'text', text: 'another apple' } as HuaTuoMessagePart]
         }}
         renderUserTextAsMarkdown={false}
         excludedMessageIds={NO_EXCLUDED_MESSAGE_IDS}

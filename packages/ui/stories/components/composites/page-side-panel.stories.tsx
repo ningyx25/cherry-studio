@@ -1,4 +1,4 @@
-import { Button, PageSidePanel, PageSidePanelItem, PageSidePanelSection, Switch } from '@cherrystudio/ui'
+import { Button, PageSidePanel, PageSidePanelItem, PageSidePanelSection, Switch } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

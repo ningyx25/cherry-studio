@@ -166,7 +166,7 @@ describe('WebContentsListener coalescing', () => {
       chunk('text-delta', {
         id: 't1',
         delta: 'B',
-        providerMetadata: { cherry: { references: [] } }
+        providerMetadata: { huatuo: { references: [] } }
       })
     )
 
@@ -176,7 +176,7 @@ describe('WebContentsListener coalescing', () => {
     expect(wc.send.mock.calls[0][2].chunk.delta).toBe('A')
     expect(wc.send.mock.calls[1][2].chunk).toMatchObject({
       delta: 'B',
-      providerMetadata: { cherry: { references: [] } }
+      providerMetadata: { huatuo: { references: [] } }
     })
   })
 

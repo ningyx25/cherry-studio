@@ -1,5 +1,5 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
-import { Form } from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
+import { Form } from '@huatuostudio/ui'
 import type * as EditDialogSharedModule from '@renderer/components/resourceCatalog/dialogs/components/EditDialogShared'
 import type { Model, UniqueModelId } from '@shared/data/types/model'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
@@ -17,7 +17,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => await importOriginal<typeof CherryStudioUi>())
+vi.mock('@huatuostudio/ui', async (importOriginal) => await importOriginal<typeof HuaTuoStudioUi>())
 
 vi.mock('@renderer/components/ModelSelector', () => ({
   ModelSelector: () => null

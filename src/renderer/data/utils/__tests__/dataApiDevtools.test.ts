@@ -13,7 +13,7 @@ describe('DataApiDevtools', () => {
   it('truncates deep, wide, and long payload previews', async () => {
     const { DataApiDevtools, dataApiDevtoolsTesting } = await import('../dataApiDevtools')
     DataApiDevtools.exposeControlSurface()
-    window.__CHERRY_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
+    window.__HUATUO_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
 
     const deepValue = { level1: { level2: { level3: { level4: { level5: { level6: 'hidden' } } } } } }
     expect(JSON.stringify(dataApiDevtoolsTesting.sanitizeValue(deepValue))).toContain('<max-depth>')
@@ -38,7 +38,7 @@ describe('DataApiDevtools', () => {
   it('keeps payloads out of polling summaries and exposes them only by request id', async () => {
     const { DataApiDevtools } = await import('../dataApiDevtools')
     DataApiDevtools.exposeControlSurface()
-    window.__CHERRY_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
+    window.__HUATUO_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
 
     DataApiDevtools.recordStart({
       requestId: 'req_summary',
@@ -54,12 +54,12 @@ describe('DataApiDevtools', () => {
       response: { id: 'req_summary', status: 200, data: { token: 'response-token' } }
     })
 
-    const summaries = window.__CHERRY_DATA_API_DEVTOOLS__?.snapshotSummary() ?? []
+    const summaries = window.__HUATUO_DATA_API_DEVTOOLS__?.snapshotSummary() ?? []
     expect(summaries).toHaveLength(1)
     expect(summaries[0]).toMatchObject({ requestId: 'req_summary', state: 'success', status: 200 })
     expect(summaries[0].body).toBeUndefined()
     expect(summaries[0].response).toBeUndefined()
-    expect(window.__CHERRY_DATA_API_DEVTOOLS__?.getEvent('req_summary')).toMatchObject({
+    expect(window.__HUATUO_DATA_API_DEVTOOLS__?.getEvent('req_summary')).toMatchObject({
       body: { token: 'request-token' },
       response: { token: 'response-token' }
     })
@@ -70,7 +70,7 @@ describe('DataApiDevtools', () => {
     let sanitizing = false
     const nowSpy = vi.spyOn(performance, 'now').mockImplementation(() => (sanitizing ? 100 : 10))
     DataApiDevtools.exposeControlSurface()
-    window.__CHERRY_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
+    window.__HUATUO_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
 
     DataApiDevtools.recordStart({ requestId: 'req_timing', method: 'GET', path: '/providers', retryAttempt: 0 })
     DataApiDevtools.recordSuccess({
@@ -89,7 +89,7 @@ describe('DataApiDevtools', () => {
       }
     })
 
-    expect(window.__CHERRY_DATA_API_DEVTOOLS__?.getEvent('req_timing')?.clientDuration).toBe(0)
+    expect(window.__HUATUO_DATA_API_DEVTOOLS__?.getEvent('req_timing')?.clientDuration).toBe(0)
     nowSpy.mockRestore()
   })
 
@@ -123,7 +123,7 @@ describe('DataApiDevtools', () => {
       error: new Error('secret error details')
     })
 
-    const events = window.__CHERRY_DATA_API_DEVTOOLS__?.snapshot() ?? []
+    const events = window.__HUATUO_DATA_API_DEVTOOLS__?.snapshot() ?? []
     expect(events).toHaveLength(2)
     expect(events[0]).toMatchObject({
       state: 'success',
@@ -144,7 +144,7 @@ describe('DataApiDevtools', () => {
   it('does not throw when payload accessors throw', async () => {
     const { DataApiDevtools } = await import('../dataApiDevtools')
     DataApiDevtools.exposeControlSurface()
-    window.__CHERRY_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
+    window.__HUATUO_DATA_API_DEVTOOLS__?.setOptions({ capturePayloads: true })
     const throwingPayload = {
       get value() {
         throw new Error('payload getter failed')

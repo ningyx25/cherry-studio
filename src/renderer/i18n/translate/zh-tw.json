@@ -32,7 +32,7 @@
       "title": "來自Agent的提問"
     },
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "HuaTuo Studio 內建使用顧問。診斷問題、引導操作、收錄 FAQ、提交 Bug/需求、搜尋和建立 Skills"
       }
     },
@@ -983,38 +983,6 @@
           "description": "在你的環境中執行 Shell 命令",
           "label": "Bash"
         },
-        "CherryConfig": {
-          "description": "檢查並管理此智能體設定和頻道",
-          "label": "智能體設定"
-        },
-        "CherryCron": {
-          "description": "管理應用內的定時排程",
-          "label": "定時任務"
-        },
-        "CherryGenerateImage": {
-          "description": "使用你設定的繪圖模型根據文字提示生成圖片",
-          "label": "生成圖片"
-        },
-        "CherryKbManage": {
-          "description": "新增、刪除或重新整理知識庫中的文件",
-          "label": "知識庫管理"
-        },
-        "CherryKbSearch": {
-          "description": "搜尋你的知識庫",
-          "label": "知識庫搜尋"
-        },
-        "CherryNotify": {
-          "description": "透過已連接的頻道傳送通知",
-          "label": "通知"
-        },
-        "CherryWebFetch": {
-          "description": "擷取並讀取網頁",
-          "label": "網頁擷取"
-        },
-        "CherryWebSearch": {
-          "description": "透過你設定的提供方搜尋網頁",
-          "label": "網頁搜尋"
-        },
         "Edit": {
           "description": "對特定檔案進行精確編輯",
           "label": "編輯檔案"
@@ -1026,6 +994,38 @@
         "Grep": {
           "description": "在檔案內容中搜尋模式",
           "label": "搜尋內容"
+        },
+        "HuaTuoConfig": {
+          "description": "檢查並管理此智能體設定和頻道",
+          "label": "智能體設定"
+        },
+        "HuaTuoCron": {
+          "description": "管理應用內的定時排程",
+          "label": "定時任務"
+        },
+        "HuaTuoGenerateImage": {
+          "description": "使用你設定的繪圖模型根據文字提示生成圖片",
+          "label": "生成圖片"
+        },
+        "HuaTuoKbManage": {
+          "description": "新增、刪除或重新整理知識庫中的文件",
+          "label": "知識庫管理"
+        },
+        "HuaTuoKbSearch": {
+          "description": "搜尋你的知識庫",
+          "label": "知識庫搜尋"
+        },
+        "HuaTuoNotify": {
+          "description": "透過已連接的頻道傳送通知",
+          "label": "通知"
+        },
+        "HuaTuoWebFetch": {
+          "description": "擷取並讀取網頁",
+          "label": "網頁擷取"
+        },
+        "HuaTuoWebSearch": {
+          "description": "透過你設定的提供方搜尋網頁",
+          "label": "網頁搜尋"
         },
         "MultiEdit": {
           "description": "在單一檔案上原子性地執行多次編輯"
@@ -1634,6 +1634,7 @@
         "permission_denied": "[to be translated]:Microphone permission denied",
         "recording_failed": "[to be translated]:Recording failed",
         "stop": "[to be translated]:Stop recording",
+        "switch_hint": "[to be translated]:Switch to voice input",
         "transcribing": "[to be translated]:Transcribing…",
         "transcription_failed": "[to be translated]:Transcription failed"
       },
@@ -2486,7 +2487,8 @@
     "jina-rerank": "Jina Rerank",
     "openai": "OpenAI",
     "openai-embeddings": "嵌入向量（OpenAI）",
-    "openai-response": "OpenAI-Response"
+    "openai-response": "OpenAI-Response",
+    "transcription": "[to be translated]:Speech Transcription (OpenAI)"
   },
   "error": {
     "availableProviders": "可用供應商",
@@ -4692,7 +4694,7 @@
       "missing_model": "請先啟用該服務商下的至少一個模型",
       "missing_provider": "請先啟用一個服務商",
       "next": "下一步",
-      "subtitle": "新增 API Key 或登入 CherryIN，然後啟用一個服務商。",
+      "subtitle": "新增 API Key 或登入 HuaTuoIN，然後啟用一個服務商。",
       "title": "選擇服務商"
     },
     "select_model": {
@@ -4704,10 +4706,10 @@
     "skip": "跳過",
     "toast": {
       "complete_failed": "無法完成引導，請重試",
-      "connected": "成功連接到 CherryIN"
+      "connected": "成功連接到 HuaTuoIN"
     },
     "welcome": {
-      "login_cherryin": "使用 CherryIN 登入",
+      "login_huatuoin": "使用 HuaTuoIN 登入",
       "or_continue_with": "或繼續使用",
       "other_provider": "選擇其他供應商",
       "select_other_provider": "選擇其他供應商",
@@ -4826,7 +4828,7 @@
       "stop": "停止 OVMS",
       "stopping": "停止中"
     },
-    "description": "<div><p>1. 下載 OV 模型。</p><p>2. 在 'Manager' 中新增模型。</p><p>僅支援 Windows！</p><p>OVMS 安裝路徑：'%USERPROFILE%\\.cherrystudio\\ovms' 。</p><p>請參考 <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Intel OVMS 指南</a></p></dev>",
+    "description": "<div><p>1. 下載 OV 模型。</p><p>2. 在 'Manager' 中新增模型。</p><p>僅支援 Windows！</p><p>OVMS 安裝路徑：'%USERPROFILE%\\.huatuostudio\\ovms' 。</p><p>請參考 <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Intel OVMS 指南</a></p></dev>",
     "download": {
       "button": "下載",
       "error": "下載失敗",
@@ -5242,8 +5244,6 @@
     "baidu-cloud": "百度雲千帆",
     "burncloud": "BurnCloud",
     "cerebras": "Cerebras AI",
-    "cherryai": "CherryAI",
-    "cherryin": "CherryIN",
     "claude-code": "Claude Code",
     "copilot": "GitHub Copilot",
     "dashscope": "阿里雲百鍊",
@@ -5259,6 +5259,8 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
+    "huatuoai": "HuaTuoAI",
+    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "騰訊混元",
     "hyperbolic": "Hyperbolic",
@@ -6447,7 +6449,7 @@
         },
         "root": {
           "label": "備份目錄（可選）",
-          "placeholder": "例如：/cherry-studio"
+          "placeholder": "例如：/huatuo-studio"
         },
         "secretAccessKey": {
           "label": "Secret Access Key",
@@ -6611,7 +6613,7 @@
           "placeholder": "https://ghfast.top（留空則直連）"
         },
         "githubToken": {
-          "help": "提高工具查詢時的 GitHub API 速率限制。以純文字儲存在本機。留空則使用 CHERRY_GITHUB_TOKEN 環境變數。",
+          "help": "提高工具查詢時的 GitHub API 速率限制。以純文字儲存在本機。留空則使用 HUATUO_GITHUB_TOKEN 環境變數。",
           "hide": "隱藏權杖",
           "label": "GitHub Token",
           "placeholder": "ghp_…",
@@ -6804,7 +6806,7 @@
       "common": {
         "menu": {
           "presentation_mode": {
-            "cherry": "櫻桃",
+            "huatuo": "櫻桃",
             "native": "原生",
             "restart": {
               "content": "變更選單樣式需要重新啟動應用程式才能生效。您要立即重新啟動嗎？",
@@ -7338,7 +7340,11 @@
             "description": "根據提示生成圖像",
             "label": "圖像生成"
           },
-          "label": "模型用途"
+          "label": "模型用途",
+          "transcription": {
+            "description": "[to be translated]:Transcribe audio input into text via the OpenAI audio API",
+            "label": "[to be translated]:Speech transcription"
+          }
         },
         "supported_text_delta": {
           "label": "支援增量文字輸出",
@@ -7744,12 +7750,6 @@
       "check": "檢查",
       "check_all_keys": "檢查所有金鑰",
       "check_multiple_keys": "檢查多個 API 金鑰",
-      "cherryin": {
-        "api_host": {
-          "acceleration": "加速網域",
-          "international": "國際網域"
-        }
-      },
       "claude_code": {
         "agent_only_note": "Claude Code 提供者僅供代理程式使用 — 無法在聊天或助理中使用。",
         "description": "使用 Claude 訂閱登入",
@@ -7872,6 +7872,12 @@
         "sign_in_success": "已登入 Grok CLI",
         "signing_in": "等待瀏覽器…"
       },
+      "huatuoin": {
+        "api_host": {
+          "acceleration": "加速網域",
+          "international": "國際網域"
+        }
+      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "用於 /images/edits；留空則使用預設聊天端點 Base URL",
@@ -7903,10 +7909,13 @@
         "balance": "餘額",
         "balance_error": "取得餘額失敗",
         "button": "使用 {{provider}} 帳號登入",
-        "cherryIn": {
-          "description": "使用 OAuth 2.0 登入 CherryIN",
+        "connect": "關聯 {{provider}} 帳號",
+        "description": "本服務由 <website>{{provider}}</website> 提供",
+        "error": "認證失敗",
+        "huatuoIn": {
+          "description": "使用 OAuth 2.0 登入 HuaTuoIN",
           "logged_in": "已透過 OAuth 登入",
-          "login_button": "CherryIN 授權登入",
+          "login_button": "HuaTuoIN 授權登入",
           "logout_button": "登出",
           "not_logged_in": "未登入",
           "register_account": "註冊帳戶",
@@ -7915,9 +7924,6 @@
           "title": "OAuth 登入",
           "use_api_key": "使用 API 金鑰登入"
         },
-        "connect": "關聯 {{provider}} 帳號",
-        "description": "本服務由 <website>{{provider}}</website> 提供",
-        "error": "認證失敗",
         "logged_in": "已登入",
         "logout": "登出",
         "logout_confirm": "確定要登出嗎？",

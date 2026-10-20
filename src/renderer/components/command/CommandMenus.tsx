@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
   Scrollbar,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import {
   useCommandContextReader,
@@ -347,7 +347,7 @@ export function CommandContextMenu({
   const extraItemsRequestIdRef = useRef(0)
   const runtime = useCommandRuntime()
   const model = useResolvedCommandMenu(location)
-  const mode = resolveMenuPresentationMode(location, preferredMode ?? 'cherry')
+  const mode = resolveMenuPresentationMode(location, preferredMode ?? 'huatuo')
   const commandItems = useMemo(() => removeEmptySeparators(model.items), [model.items])
   const pendingItems = pendingExtraItems ?? extraItems
   const resolveShortcutLabel = useCallback(
@@ -409,7 +409,7 @@ export function CommandContextMenu({
     [extraItems, getExtraItems]
   )
 
-  const handleCherryContextMenu = useCallback(
+  const handleHuaTuoContextMenu = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
 
@@ -453,7 +453,7 @@ export function CommandContextMenu({
     [getExtraItems, pendingItems]
   )
 
-  const handleCherryOpenChange = useCallback(
+  const handleHuaTuoOpenChange = useCallback(
     (open: boolean) => {
       onOpenChange?.(open)
       if (!open && getExtraItems) {
@@ -464,7 +464,7 @@ export function CommandContextMenu({
     [getExtraItems, onOpenChange]
   )
 
-  const handleCherrySelectItem = useCloseBeforeAction(handleCherryOpenChange)
+  const handleHuaTuoSelectItem = useCloseBeforeAction(handleHuaTuoOpenChange)
 
   const handleNativeContextMenu = useCallback(
     (event: React.MouseEvent) => {
@@ -552,8 +552,8 @@ export function CommandContextMenu({
   }
 
   return (
-    <ContextMenu onOpenChange={handleCherryOpenChange}>
-      <ContextMenuTrigger asChild onContextMenu={handleCherryContextMenu}>
+    <ContextMenu onOpenChange={handleHuaTuoOpenChange}>
+      <ContextMenuTrigger asChild onContextMenu={handleHuaTuoContextMenu}>
         {children}
       </ContextMenuTrigger>
       {combinedItems.length > 0 && (
@@ -566,14 +566,14 @@ export function CommandContextMenu({
               <CommandContextMenuExtraItemView
                 key={`extra-${item.id}`}
                 item={item}
-                onSelectItem={handleCherrySelectItem}
+                onSelectItem={handleHuaTuoSelectItem}
               />
             ) : (
               <CommandMenuItemView
                 key={`${item.type}-${index}`}
                 item={item}
                 onExecute={runtime.execute}
-                onSelectItem={handleCherrySelectItem}
+                onSelectItem={handleHuaTuoSelectItem}
                 renderIcon={renderIcon}
               />
             )
@@ -693,7 +693,7 @@ function CommandDropdownExtraItemView({
 
 /**
  * Click-triggered sibling of {@link CommandContextMenu}. Renders the same item
- * model through Radix DropdownMenu in cherry mode, and (when location resolves
+ * model through Radix DropdownMenu in huatuo mode, and (when location resolves
  * to native) anchors a native OS popup at the trigger's bounding rect. Use this
  * for "more" buttons so they share the same menu pipeline as right-click.
  */
@@ -733,9 +733,9 @@ export function CommandPopupMenu({
   const shortcutPreferences = useCommandShortcutPreferences()
   const runtime = useCommandRuntime()
   const model = useResolvedCommandMenu(location)
-  const mode = resolveMenuPresentationMode(location, presentationMode ?? preferredMode ?? 'cherry')
+  const mode = resolveMenuPresentationMode(location, presentationMode ?? preferredMode ?? 'huatuo')
   const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
-  const pendingCherryActionRef = useRef<(() => void) | null>(null)
+  const pendingHuaTuoActionRef = useRef<(() => void) | null>(null)
   const currentOpen = open ?? internalOpen
   const commandItems = useMemo(() => removeEmptySeparators(model.items), [model.items])
   const resolveShortcutLabel = useCallback(
@@ -797,7 +797,7 @@ export function CommandPopupMenu({
     [combinedItems, decoratedExtraItems, location, mode, runtime, onOpenChange]
   )
 
-  const handleCherryOpenChange = useCallback(
+  const handleHuaTuoOpenChange = useCallback(
     (nextOpen: boolean) => {
       if (open === undefined) {
         setInternalOpen(nextOpen)
@@ -807,26 +807,26 @@ export function CommandPopupMenu({
     [onOpenChange, open]
   )
 
-  const handleCherrySelectItemAfterFrame = useCloseBeforeAction(handleCherryOpenChange)
-  const handleCherrySelectItemAfterClose = useCallback(
+  const handleHuaTuoSelectItemAfterFrame = useCloseBeforeAction(handleHuaTuoOpenChange)
+  const handleHuaTuoSelectItemAfterClose = useCallback(
     (action: () => void) => {
-      pendingCherryActionRef.current = action
-      handleCherryOpenChange(false)
+      pendingHuaTuoActionRef.current = action
+      handleHuaTuoOpenChange(false)
     },
-    [handleCherryOpenChange]
+    [handleHuaTuoOpenChange]
   )
-  const handleCherryCloseAutoFocus = useCallback(() => {
+  const handleHuaTuoCloseAutoFocus = useCallback(() => {
     // Radix fires this after the popup's exit animation and focus cleanup.
     // Heavy actions (such as image capture) must not block that final frame.
-    const action = pendingCherryActionRef.current
-    pendingCherryActionRef.current = null
+    const action = pendingHuaTuoActionRef.current
+    pendingHuaTuoActionRef.current = null
     if (action) {
       window.requestAnimationFrame(action)
     }
   }, [])
-  const handleCherrySelectItem = deferActionsUntilClosed
-    ? handleCherrySelectItemAfterClose
-    : handleCherrySelectItemAfterFrame
+  const handleHuaTuoSelectItem = deferActionsUntilClosed
+    ? handleHuaTuoSelectItemAfterClose
+    : handleHuaTuoSelectItemAfterFrame
 
   if (disabled || combinedItems.length === 0) {
     return <>{children}</>
@@ -851,23 +851,23 @@ export function CommandPopupMenu({
   }
 
   return (
-    <DropdownMenu open={currentOpen} onOpenChange={handleCherryOpenChange}>
+    <DropdownMenu open={currentOpen} onOpenChange={handleHuaTuoOpenChange}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
         align={align}
         side={side}
         sideOffset={sideOffset}
         className={contentClassName}
-        onCloseAutoFocus={deferActionsUntilClosed ? handleCherryCloseAutoFocus : undefined}>
+        onCloseAutoFocus={deferActionsUntilClosed ? handleHuaTuoCloseAutoFocus : undefined}>
         {combinedItems.map((item, index) =>
           isExtraMenuItem(item) ? (
-            <CommandDropdownExtraItemView key={`extra-${item.id}`} item={item} onSelectItem={handleCherrySelectItem} />
+            <CommandDropdownExtraItemView key={`extra-${item.id}`} item={item} onSelectItem={handleHuaTuoSelectItem} />
           ) : (
             <CommandDropdownMenuItemView
               key={`${item.type}-${index}`}
               item={item}
               onExecute={runtime.execute}
-              onSelectItem={handleCherrySelectItem}
+              onSelectItem={handleHuaTuoSelectItem}
               renderIcon={renderIcon}
             />
           )

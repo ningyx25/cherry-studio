@@ -23,7 +23,7 @@ Rich composer copies write three payloads:
 | --- | --- |
 | `text/plain` | Human-readable fallback text. |
 | `text/html` | Human-readable HTML without parseable composer token metadata. |
-| `web application/x-cherry-composer-fragment+json` | Private HuaTuo Studio token fragment. |
+| `web application/x-huatuo-composer-fragment+json` | Private HuaTuo Studio token fragment. |
 
 The private fragment is versioned JSON with ordered text/token segments. Token
 payloads are sanitized before writing. File token payloads never carry a local

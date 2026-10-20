@@ -23,7 +23,7 @@ vi.mock('@renderer/hooks/useProvider', () => ({
 vi.mock('@renderer/ipc', () => ({
   ipcApi: { request: (...args: unknown[]) => requestMock(...args) }
 }))
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, onClick, disabled }: { children: ReactNode; onClick?: () => void; disabled?: boolean }) => (
     <button type="button" onClick={onClick} disabled={disabled}>
       {children}

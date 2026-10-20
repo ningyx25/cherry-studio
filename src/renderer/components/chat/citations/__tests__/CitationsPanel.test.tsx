@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => ({
   fileOpenPath: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   PageSidePanel: ({
     open,
     onClose,

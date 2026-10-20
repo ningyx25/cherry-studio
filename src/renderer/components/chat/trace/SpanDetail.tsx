@@ -10,7 +10,7 @@ import {
   TabsList,
   TabsTrigger,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import CodeViewer from '@renderer/components/CodeViewer'
 import { useTemporaryValue } from '@renderer/hooks/useTemporaryValue'

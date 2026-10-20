@@ -2,7 +2,7 @@ import { OpenAICompatibleChatLanguageModel, OpenAICompatibleEmbeddingModel } fro
 import type { EmbeddingModelV3, ImageModelV3, LanguageModelV3, ProviderV3, RerankingModelV3 } from '@ai-sdk/provider'
 import type { FetchFunction } from '@ai-sdk/provider-utils'
 import { loadApiKey, withoutTrailingSlash } from '@ai-sdk/provider-utils'
-import { OpenAICompatibleRerankingModel } from '@cherrystudio/ai-sdk-provider'
+import { OpenAICompatibleRerankingModel } from '@huatuostudio/ai-sdk-provider'
 
 import { createImageGenerationModel, type ImageGenerationTransport } from '../imageGenerationModel'
 import { createDashScopeTransport, DEFAULT_DASHSCOPE_IMAGE_BASE_URL } from './dashscopeTransport'

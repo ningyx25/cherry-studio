@@ -1,5 +1,5 @@
-import type { DateTimeGranularity } from '@cherrystudio/ui'
-import { DateTimePicker } from '@cherrystudio/ui'
+import type { DateTimeGranularity } from '@huatuostudio/ui'
+import { DateTimePicker } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 

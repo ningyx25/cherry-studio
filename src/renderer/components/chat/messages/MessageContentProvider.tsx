@@ -1,5 +1,5 @@
 import type { Topic } from '@renderer/types/topic'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
@@ -11,7 +11,7 @@ const EMPTY_MESSAGE_ACTIONS: MessageListActions = {}
 
 interface MessageContentProviderProps {
   messages: MessageListItem[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   children: ReactNode
   topic?: Topic
   renderConfig?: Partial<MessageRenderConfig>

@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { findLatestPendingAskUserQuestionRequest } from '../askUserQuestionComposerRequest'
@@ -14,7 +14,7 @@ const input = {
   ]
 }
 
-function makePart(overrides: Partial<Record<string, unknown>> = {}): CherryMessagePart {
+function makePart(overrides: Partial<Record<string, unknown>> = {}): HuaTuoMessagePart {
   return {
     type: 'dynamic-tool',
     toolName: 'AskUserQuestion',
@@ -25,7 +25,7 @@ function makePart(overrides: Partial<Record<string, unknown>> = {}): CherryMessa
     providerExecuted: true,
     callProviderMetadata: { 'claude-code': { parentToolCallId: null } },
     ...overrides
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
 describe('findLatestPendingAskUserQuestionRequest', () => {

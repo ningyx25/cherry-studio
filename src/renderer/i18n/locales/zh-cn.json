@@ -32,7 +32,7 @@
       "title": "来自智能体的问题"
     },
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "HuaTuo Studio 内置使用顾问。诊断问题、引导操作、收录 FAQ、提交 Bug/需求、搜索和创建 Skills"
       }
     },
@@ -983,38 +983,6 @@
           "description": "在你的环境中执行 Shell 命令",
           "label": "Bash"
         },
-        "CherryConfig": {
-          "description": "检查并管理此智能体配置和频道",
-          "label": "智能体配置"
-        },
-        "CherryCron": {
-          "description": "管理应用内的定时调度",
-          "label": "定时任务"
-        },
-        "CherryGenerateImage": {
-          "description": "使用你配置的绘画模型根据文本提示生成图片",
-          "label": "生成图片"
-        },
-        "CherryKbManage": {
-          "description": "添加、删除或刷新知识库中的文档",
-          "label": "知识库管理"
-        },
-        "CherryKbSearch": {
-          "description": "搜索你的知识库",
-          "label": "知识库搜索"
-        },
-        "CherryNotify": {
-          "description": "通过已连接的频道发送通知",
-          "label": "通知"
-        },
-        "CherryWebFetch": {
-          "description": "抓取并读取网页",
-          "label": "网页抓取"
-        },
-        "CherryWebSearch": {
-          "description": "通过你配置的提供方搜索网页",
-          "label": "网页搜索"
-        },
         "Edit": {
           "description": "对特定文件进行精确编辑",
           "label": "编辑文件"
@@ -1026,6 +994,38 @@
         "Grep": {
           "description": "在文件内容中搜索模式",
           "label": "搜索内容"
+        },
+        "HuaTuoConfig": {
+          "description": "检查并管理此智能体配置和频道",
+          "label": "智能体配置"
+        },
+        "HuaTuoCron": {
+          "description": "管理应用内的定时调度",
+          "label": "定时任务"
+        },
+        "HuaTuoGenerateImage": {
+          "description": "使用你配置的绘画模型根据文本提示生成图片",
+          "label": "生成图片"
+        },
+        "HuaTuoKbManage": {
+          "description": "添加、删除或刷新知识库中的文档",
+          "label": "知识库管理"
+        },
+        "HuaTuoKbSearch": {
+          "description": "搜索你的知识库",
+          "label": "知识库搜索"
+        },
+        "HuaTuoNotify": {
+          "description": "通过已连接的频道发送通知",
+          "label": "通知"
+        },
+        "HuaTuoWebFetch": {
+          "description": "抓取并读取网页",
+          "label": "网页抓取"
+        },
+        "HuaTuoWebSearch": {
+          "description": "通过你配置的提供方搜索网页",
+          "label": "网页搜索"
         },
         "MultiEdit": {
           "description": "在单个文件上原子性地执行多次编辑"
@@ -1634,6 +1634,7 @@
         "permission_denied": "麦克风权限被拒绝",
         "recording_failed": "录音失败",
         "stop": "停止录音",
+        "switch_hint": "切换到语音输入",
         "transcribing": "转写中…",
         "transcription_failed": "语音转写失败"
       },
@@ -2486,7 +2487,8 @@
     "jina-rerank": "Jina 重排序",
     "openai": "OpenAI",
     "openai-embeddings": "嵌入 (OpenAI)",
-    "openai-response": "OpenAI-Response"
+    "openai-response": "OpenAI-Response",
+    "transcription": "语音转文字 (OpenAI)"
   },
   "error": {
     "availableProviders": "可用提供商",
@@ -4692,7 +4694,7 @@
       "missing_model": "请先启用该服务商下的至少一个模型",
       "missing_provider": "请先启用一个服务商",
       "next": "下一步",
-      "subtitle": "添加 API Key 或登录 CherryIN，然后启用一个服务商。",
+      "subtitle": "添加 API Key 或登录 HuaTuoIN，然后启用一个服务商。",
       "title": "选择服务商"
     },
     "select_model": {
@@ -4704,10 +4706,10 @@
     "skip": "稍后设置",
     "toast": {
       "complete_failed": "无法完成引导，请重试",
-      "connected": "成功连接 CherryIN"
+      "connected": "成功连接 HuaTuoIN"
     },
     "welcome": {
-      "login_cherryin": "连接 CherryIN",
+      "login_huatuoin": "连接 HuaTuoIN",
       "or_continue_with": "或",
       "other_provider": "配置其他服务商",
       "select_other_provider": "选择其他服务商",
@@ -4826,7 +4828,7 @@
       "stop": "停止 OVMS",
       "stopping": "停止中"
     },
-    "description": "<div><p>1. 下载 OV 模型.</p><p>2. 在 'Manager' 中添加模型.</p><p>仅支持 Windows!</p><p>OVMS 安装路径: '%USERPROFILE%\\.cherrystudio\\ovms' .</p><p>请参考 <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Intel OVMS 指南</a></p></dev>",
+    "description": "<div><p>1. 下载 OV 模型.</p><p>2. 在 'Manager' 中添加模型.</p><p>仅支持 Windows!</p><p>OVMS 安装路径: '%USERPROFILE%\\.huatuostudio\\ovms' .</p><p>请参考 <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Intel OVMS 指南</a></p></dev>",
     "download": {
       "button": "下载",
       "error": "下载失败",
@@ -5242,8 +5244,6 @@
     "baidu-cloud": "百度云千帆",
     "burncloud": "BurnCloud",
     "cerebras": "Cerebras AI",
-    "cherryai": "CherryAI",
-    "cherryin": "CherryIN",
     "claude-code": "Claude Code",
     "copilot": "GitHub Copilot",
     "dashscope": "阿里云百炼",
@@ -5259,6 +5259,8 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
+    "huatuoai": "HuaTuoAI",
+    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "腾讯混元",
     "hyperbolic": "Hyperbolic",
@@ -6447,7 +6449,7 @@
         },
         "root": {
           "label": "备份目录（可选）",
-          "placeholder": "例如：/cherry-studio"
+          "placeholder": "例如：/huatuo-studio"
         },
         "secretAccessKey": {
           "label": "Secret Access Key",
@@ -6611,7 +6613,7 @@
           "placeholder": "https://ghfast.top（留空则直连）"
         },
         "githubToken": {
-          "help": "提高工具查询时的 GitHub API 速率限制。以明文保存在本地。留空则使用 CHERRY_GITHUB_TOKEN 环境变量。",
+          "help": "提高工具查询时的 GitHub API 速率限制。以明文保存在本地。留空则使用 HUATUO_GITHUB_TOKEN 环境变量。",
           "hide": "隐藏令牌",
           "label": "GitHub 令牌",
           "placeholder": "ghp_…",
@@ -6804,7 +6806,7 @@
       "common": {
         "menu": {
           "presentation_mode": {
-            "cherry": "HuaTuo",
+            "huatuo": "HuaTuo",
             "native": "原生",
             "restart": {
               "content": "更改菜单样式需要重启应用才能生效，是否现在重启？",
@@ -7338,7 +7340,11 @@
             "description": "根据提示词生成图片",
             "label": "图像生成"
           },
-          "label": "模型用途"
+          "label": "模型用途",
+          "transcription": {
+            "description": "通过 OpenAI 音频接口将语音输入转写为文字",
+            "label": "语音转文字"
+          }
         },
         "supported_text_delta": {
           "label": "支持增量文本输出",
@@ -7744,12 +7750,6 @@
       "check": "检测",
       "check_all_keys": "检测所有密钥",
       "check_multiple_keys": "检测多个 API 密钥",
-      "cherryin": {
-        "api_host": {
-          "acceleration": "加速域名",
-          "international": "国际域名"
-        }
-      },
       "claude_code": {
         "agent_only_note": "Claude Code 提供商仅供 Agent 使用，无法在聊天或助手中使用。",
         "description": "使用 Claude 订阅登录",
@@ -7872,6 +7872,12 @@
         "sign_in_success": "已登录 Grok CLI",
         "signing_in": "等待浏览器…"
       },
+      "huatuoin": {
+        "api_host": {
+          "acceleration": "加速域名",
+          "international": "国际域名"
+        }
+      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "用于 /images/edits；留空时使用默认对话端点的 Base URL",
@@ -7903,10 +7909,13 @@
         "balance": "余额",
         "balance_error": "获取余额失败",
         "button": "使用 {{provider}} 账号登录",
-        "cherryIn": {
-          "description": "使用 OAuth 2.0 登录 CherryIN",
+        "connect": "关联 {{provider}} 账号",
+        "description": "本服务由 <website>{{provider}}</website> 提供",
+        "error": "认证失败",
+        "huatuoIn": {
+          "description": "使用 OAuth 2.0 登录 HuaTuoIN",
           "logged_in": "已通过 OAuth 登录",
-          "login_button": "CherryIN 授权登录",
+          "login_button": "HuaTuoIN 授权登录",
           "logout_button": "退出登录",
           "not_logged_in": "未登录",
           "register_account": "注册账户",
@@ -7915,9 +7924,6 @@
           "title": "OAuth 登录",
           "use_api_key": "使用 API Key 登录"
         },
-        "connect": "关联 {{provider}} 账号",
-        "description": "本服务由 <website>{{provider}}</website> 提供",
-        "error": "认证失败",
         "logged_in": "已登录",
         "logout": "退出登录",
         "logout_confirm": "确定要退出登录吗？",

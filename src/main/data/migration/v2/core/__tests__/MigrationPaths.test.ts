@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
  * Tests for the v1→v2 legacy custom-userData recovery.
  *
  * v1 records which data directory belongs to which *executable path* in
- * ~/.cherrystudio/config/config.json:
+ * ~/.huatuostudio/config/config.json:
  *
  *   { "appDataPath": [ { "executablePath": "...", "dataPath": "..." } ] }
  *
@@ -18,7 +18,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
  *
  * Reported real config (single entry):
  *   executablePath: D:\HuaTuo Studio\HuaTuo Studio.exe   (v1 custom install dir)
- *   dataPath:       E:\Dropbox\Cherry Data\CherryStudio   (custom data dir, still on disk)
+ *   dataPath:       E:\Dropbox\HuaTuo Data\HuaTuoStudio   (custom data dir, still on disk)
  *
  * Coverage is split in two:
  *   - `selectLegacyUserData` — the pure decision matrix (A0/A1/B1–B4), driven
@@ -27,7 +27,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
  *     write, legacyDataConfirmed) against a path-aware node:fs mock.
  */
 
-const CONFIG_FILE = '/mock/home/.cherrystudio/config/config.json'
+const CONFIG_FILE = '/mock/home/.huatuostudio/config/config.json'
 const DEFAULT_USER_DATA = '/mock/userData'
 
 const h = vi.hoisted(() => ({
@@ -67,9 +67,9 @@ vi.mock('@main/data/bootConfig', () => ({
 }))
 
 vi.mock('@main/core/paths/constants', () => ({
-  CHERRY_HOME: '/mock/home/.cherrystudio',
-  CHERRY_HOME_DIRNAME: '.cherrystudio',
-  BOOT_CONFIG_PATH: '/mock/home/.cherrystudio/boot-config.json',
+  HUATUO_HOME: '/mock/home/.huatuostudio',
+  HUATUO_HOME_DIRNAME: '.huatuostudio',
+  BOOT_CONFIG_PATH: '/mock/home/.huatuostudio/boot-config.json',
   LOGS_DIR: '/mock/logs'
 }))
 
@@ -197,8 +197,8 @@ describe('selectLegacyUserData', () => {
   it('keeps a fresh Windows portable build isolated from setup data', () => {
     const result = selectLegacyUserData({
       currentUserData: 'D:\\Portable\\data',
-      entries: [{ executablePath: 'C:\\Program Files\\CherryStudio\\CherryStudio.exe', dataPath: '/setup/data' }],
-      currentExe: 'D:\\Portable\\cherry-studio-portable.exe',
+      entries: [{ executablePath: 'C:\\Program Files\\HuaTuoStudio\\HuaTuoStudio.exe', dataPath: '/setup/data' }],
+      currentExe: 'D:\\Portable\\huatuo-studio-portable.exe',
       probe: probe({ hasV1Data: (d) => d === '/setup/data' })
     })
     expect(result).toEqual({ kind: 'default' })
@@ -207,8 +207,8 @@ describe('selectLegacyUserData', () => {
   it('keeps different Windows portable locations isolated without an exact mapping', () => {
     const result = selectLegacyUserData({
       currentUserData: 'D:\\NewPortable\\data',
-      entries: [{ executablePath: 'E:\\OldPortable\\cherry-studio-portable.exe', dataPath: 'E:\\OldPortable\\data' }],
-      currentExe: 'D:\\NewPortable\\cherry-studio-portable.exe',
+      entries: [{ executablePath: 'E:\\OldPortable\\huatuo-studio-portable.exe', dataPath: 'E:\\OldPortable\\data' }],
+      currentExe: 'D:\\NewPortable\\huatuo-studio-portable.exe',
       probe: probe({ hasV1Data: (d) => d === 'E:\\OldPortable\\data' })
     })
     expect(result).toEqual({ kind: 'default' })
@@ -216,9 +216,9 @@ describe('selectLegacyUserData', () => {
 
   it('keeps a fresh Windows setup build isolated from portable data', () => {
     const result = selectLegacyUserData({
-      currentUserData: 'C:\\Users\\Alice\\AppData\\Roaming\\CherryStudio',
-      entries: [{ executablePath: 'D:\\Portable\\cherry-studio-portable.exe', dataPath: 'D:\\Portable\\data' }],
-      currentExe: 'C:\\Program Files\\CherryStudio\\CherryStudio.exe',
+      currentUserData: 'C:\\Users\\Alice\\AppData\\Roaming\\HuaTuoStudio',
+      entries: [{ executablePath: 'D:\\Portable\\huatuo-studio-portable.exe', dataPath: 'D:\\Portable\\data' }],
+      currentExe: 'C:\\Program Files\\HuaTuoStudio\\HuaTuoStudio.exe',
       probe: probe({ hasV1Data: (d) => d === 'D:\\Portable\\data' })
     })
     expect(result).toEqual({ kind: 'default' })
@@ -302,7 +302,7 @@ describe('selectLegacyUserData', () => {
 
 const REAL_USER_CONFIG = JSON.stringify({
   appDataPath: [
-    { executablePath: 'D:\\HuaTuo Studio\\HuaTuo Studio.exe', dataPath: 'E:\\Dropbox\\Cherry Data\\CherryStudio' }
+    { executablePath: 'D:\\HuaTuo Studio\\HuaTuo Studio.exe', dataPath: 'E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio' }
   ]
 })
 
@@ -364,7 +364,7 @@ describe('resolveMigrationPaths — legacy custom userData recovery', () => {
 
     const result = resolveMigrationPaths()
 
-    expect(result.paths.databaseFile).toBe(path.join(DEFAULT_USER_DATA, 'Data', 'cherrystudio.sqlite'))
+    expect(result.paths.databaseFile).toBe(path.join(DEFAULT_USER_DATA, 'Data', 'huatuostudio.sqlite'))
     expect(result.paths.legacyClaudeConfigDir).toBe(path.join(DEFAULT_USER_DATA, '.claude'))
     expect(result.paths.legacyClaudeProjectsDir).toBe(path.join(DEFAULT_USER_DATA, '.claude', 'projects'))
     expect(result.paths.claudeConfigDir).toBe(path.join(DEFAULT_USER_DATA, 'Data', 'Agents', '.claude'))
@@ -379,60 +379,60 @@ describe('resolveMigrationPaths — legacy custom userData recovery', () => {
   it('redirects to the matching entry when the current exe matches exactly (regression guard)', () => {
     h.normalizedExe.mockReturnValue('D:\\HuaTuo Studio\\HuaTuo Studio.exe')
     applyFs({
-      dirs: ['E:\\Dropbox\\Cherry Data\\CherryStudio'],
+      dirs: ['E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio'],
       contents: {
         [CONFIG_FILE]: REAL_USER_CONFIG,
-        [marker('E:\\Dropbox\\Cherry Data\\CherryStudio', 'version.log')]: GOOD_VERSION_LOG
+        [marker('E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio', 'version.log')]: GOOD_VERSION_LOG
       }
     })
 
     const result = resolveMigrationPaths()
 
-    expect(result.paths.userData).toBe('E:\\Dropbox\\Cherry Data\\CherryStudio')
+    expect(result.paths.userData).toBe('E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio')
     expect(result.userDataChanged).toBe(true)
     expect(result.legacyDataConfirmed).toBe(true)
-    expect(h.setPath).toHaveBeenCalledWith('userData', 'E:\\Dropbox\\Cherry Data\\CherryStudio')
+    expect(h.setPath).toHaveBeenCalledWith('userData', 'E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio')
   })
 
   it('recovers the sole recorded dataPath when v2 was reinstalled to a new location (exe no longer matches)', () => {
-    h.normalizedExe.mockReturnValue('C:\\Users\\me\\AppData\\Local\\Programs\\cherrystudio\\HuaTuo Studio.exe')
+    h.normalizedExe.mockReturnValue('C:\\Users\\me\\AppData\\Local\\Programs\\huatuostudio\\HuaTuo Studio.exe')
     applyFs({
-      dirs: ['E:\\Dropbox\\Cherry Data\\CherryStudio'],
+      dirs: ['E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio'],
       contents: {
         [CONFIG_FILE]: REAL_USER_CONFIG,
-        [marker('E:\\Dropbox\\Cherry Data\\CherryStudio', 'version.log')]: GOOD_VERSION_LOG
+        [marker('E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio', 'version.log')]: GOOD_VERSION_LOG
       }
     })
 
     const result = resolveMigrationPaths()
 
-    expect(result.paths.userData).toBe('E:\\Dropbox\\Cherry Data\\CherryStudio')
+    expect(result.paths.userData).toBe('E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio')
     expect(result.userDataChanged).toBe(true)
     // B1 fuzzy recovery → notice surfaced to the introduction screen.
-    expect(result.dataLocation).toBe('E:\\Dropbox\\Cherry Data\\CherryStudio')
-    expect(h.setPath).toHaveBeenCalledWith('userData', 'E:\\Dropbox\\Cherry Data\\CherryStudio')
+    expect(result.dataLocation).toBe('E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio')
+    expect(h.setPath).toHaveBeenCalledWith('userData', 'E:\\Dropbox\\HuaTuo Data\\HuaTuoStudio')
   })
 
   it('recovers the only on-disk dataPath among multiple entries when none match the current exe', () => {
     h.normalizedExe.mockReturnValue('/new/install/exe')
     applyFs({
-      dirs: ['/Volumes/Data/CherryStudio'],
+      dirs: ['/Volumes/Data/HuaTuoStudio'],
       contents: {
         [CONFIG_FILE]: JSON.stringify({
           appDataPath: [
-            { executablePath: '/old/portable/exe', dataPath: '/removed/usb/CherryStudio' },
-            { executablePath: '/old/install/exe', dataPath: '/Volumes/Data/CherryStudio' }
+            { executablePath: '/old/portable/exe', dataPath: '/removed/usb/HuaTuoStudio' },
+            { executablePath: '/old/install/exe', dataPath: '/Volumes/Data/HuaTuoStudio' }
           ]
         }),
-        '/Volumes/Data/CherryStudio/version.log': GOOD_VERSION_LOG
+        '/Volumes/Data/HuaTuoStudio/version.log': GOOD_VERSION_LOG
       }
     })
 
     const result = resolveMigrationPaths()
 
-    expect(result.paths.userData).toBe('/Volumes/Data/CherryStudio')
+    expect(result.paths.userData).toBe('/Volumes/Data/HuaTuoStudio')
     expect(result.userDataChanged).toBe(true)
-    expect(h.setPath).toHaveBeenCalledWith('userData', '/Volumes/Data/CherryStudio')
+    expect(h.setPath).toHaveBeenCalledWith('userData', '/Volumes/Data/HuaTuoStudio')
   })
 
   it('string-form config synthesizes an exact entry → recovers even when the exe changed', () => {
@@ -530,7 +530,7 @@ describe('resolveMigrationPaths — legacy custom userData recovery', () => {
     h.normalizedExe.mockReturnValue('/new/exe')
     applyFs({
       dirs: [DEFAULT_USER_DATA, '/stale/custom'],
-      sqlite: { [path.join(DEFAULT_USER_DATA, 'Data', 'cherrystudio.sqlite')]: 4096 },
+      sqlite: { [path.join(DEFAULT_USER_DATA, 'Data', 'huatuostudio.sqlite')]: 4096 },
       contents: {
         [CONFIG_FILE]: JSON.stringify({
           appDataPath: [{ executablePath: '/old/exe', dataPath: '/stale/custom' }]
@@ -549,7 +549,7 @@ describe('resolveMigrationPaths — legacy custom userData recovery', () => {
     h.normalizedExe.mockReturnValue('/new/exe')
     applyFs({
       dirs: [DEFAULT_USER_DATA, '/custom/real'],
-      sqlite: { [path.join(DEFAULT_USER_DATA, 'Data', 'cherrystudio.sqlite')]: 0 }, // 0 bytes → invalid
+      sqlite: { [path.join(DEFAULT_USER_DATA, 'Data', 'huatuostudio.sqlite')]: 0 }, // 0 bytes → invalid
       contents: {
         [CONFIG_FILE]: JSON.stringify({
           appDataPath: [{ executablePath: '/old/exe', dataPath: '/custom/real' }]

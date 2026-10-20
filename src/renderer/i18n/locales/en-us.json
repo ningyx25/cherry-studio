@@ -32,7 +32,7 @@
       "title": "Questions from Agent"
     },
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "Built-in HuaTuo Studio advisor. Diagnose issues, guide operations, collect FAQs, submit bugs/feature requests, and search/create Skills"
       }
     },
@@ -983,38 +983,6 @@
           "description": "Executes shell commands in your environment",
           "label": "Bash"
         },
-        "CherryConfig": {
-          "description": "Inspects and manages this agent configuration and channels",
-          "label": "Agent Config"
-        },
-        "CherryCron": {
-          "description": "Manages the in-app scheduler",
-          "label": "Scheduler"
-        },
-        "CherryGenerateImage": {
-          "description": "Generates an image from a text prompt using your configured painting model",
-          "label": "Generate Image"
-        },
-        "CherryKbManage": {
-          "description": "Adds, deletes, or refreshes documents in your knowledge bases",
-          "label": "Manage Knowledge"
-        },
-        "CherryKbSearch": {
-          "description": "Searches your knowledge bases",
-          "label": "Knowledge Search"
-        },
-        "CherryNotify": {
-          "description": "Sends a notification through a connected channel",
-          "label": "Notify"
-        },
-        "CherryWebFetch": {
-          "description": "Fetches and reads a web page",
-          "label": "Web Fetch"
-        },
-        "CherryWebSearch": {
-          "description": "Searches the web via your configured provider",
-          "label": "Web Search"
-        },
         "Edit": {
           "description": "Makes targeted edits to specific files",
           "label": "Edit"
@@ -1026,6 +994,38 @@
         "Grep": {
           "description": "Searches for patterns in file contents",
           "label": "Grep"
+        },
+        "HuaTuoConfig": {
+          "description": "Inspects and manages this agent configuration and channels",
+          "label": "Agent Config"
+        },
+        "HuaTuoCron": {
+          "description": "Manages the in-app scheduler",
+          "label": "Scheduler"
+        },
+        "HuaTuoGenerateImage": {
+          "description": "Generates an image from a text prompt using your configured painting model",
+          "label": "Generate Image"
+        },
+        "HuaTuoKbManage": {
+          "description": "Adds, deletes, or refreshes documents in your knowledge bases",
+          "label": "Manage Knowledge"
+        },
+        "HuaTuoKbSearch": {
+          "description": "Searches your knowledge bases",
+          "label": "Knowledge Search"
+        },
+        "HuaTuoNotify": {
+          "description": "Sends a notification through a connected channel",
+          "label": "Notify"
+        },
+        "HuaTuoWebFetch": {
+          "description": "Fetches and reads a web page",
+          "label": "Web Fetch"
+        },
+        "HuaTuoWebSearch": {
+          "description": "Searches the web via your configured provider",
+          "label": "Web Search"
         },
         "MultiEdit": {
           "description": "Performs multiple edits on a single file atomically"
@@ -1634,6 +1634,7 @@
         "permission_denied": "Microphone permission denied",
         "recording_failed": "Recording failed",
         "stop": "Stop recording",
+        "switch_hint": "Switch to voice input",
         "transcribing": "Transcribing…",
         "transcription_failed": "Transcription failed"
       },
@@ -2486,7 +2487,8 @@
     "jina-rerank": "Jina Rerank",
     "openai": "OpenAI",
     "openai-embeddings": "Embeddings (OpenAI)",
-    "openai-response": "OpenAI-Response"
+    "openai-response": "OpenAI-Response",
+    "transcription": "Speech Transcription (OpenAI)"
   },
   "error": {
     "availableProviders": "Available Providers",
@@ -4692,7 +4694,7 @@
       "missing_model": "Enable at least one model from the enabled provider",
       "missing_provider": "Enable a provider to continue",
       "next": "Next",
-      "subtitle": "Add an API key or sign in with CherryIN, then enable a provider.",
+      "subtitle": "Add an API key or sign in with HuaTuoIN, then enable a provider.",
       "title": "Choose a Provider"
     },
     "select_model": {
@@ -4704,10 +4706,10 @@
     "skip": "Set up later",
     "toast": {
       "complete_failed": "Unable to complete setup. Please try again.",
-      "connected": "Successfully connected to CherryIN"
+      "connected": "Successfully connected to HuaTuoIN"
     },
     "welcome": {
-      "login_cherryin": "Connect CherryIN",
+      "login_huatuoin": "Connect HuaTuoIN",
       "or_continue_with": "or",
       "other_provider": "Set up another provider",
       "select_other_provider": "Select Other Provider",
@@ -4826,7 +4828,7 @@
       "stop": "Stop OVMS",
       "stopping": "Stopping"
     },
-    "description": "<div><p>1. Download OV Models.</p><p>2. Add Models in 'Manager'.</p><p>Support Windows Only!</p><p>OVMS Install Path: '%USERPROFILE%\\.cherrystudio\\ovms' .</p><p>Please refer to <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Intel OVMS Guide</a></p></dev>",
+    "description": "<div><p>1. Download OV Models.</p><p>2. Add Models in 'Manager'.</p><p>Support Windows Only!</p><p>OVMS Install Path: '%USERPROFILE%\\.huatuostudio\\ovms' .</p><p>Please refer to <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Intel OVMS Guide</a></p></dev>",
     "download": {
       "button": "Download",
       "error": "Download Error",
@@ -5242,8 +5244,6 @@
     "baidu-cloud": "Baidu Cloud",
     "burncloud": "BurnCloud",
     "cerebras": "Cerebras AI",
-    "cherryai": "CherryAI",
-    "cherryin": "CherryIN",
     "claude-code": "Claude Code",
     "copilot": "GitHub Copilot",
     "dashscope": "Alibaba Cloud",
@@ -5259,6 +5259,8 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
+    "huatuoai": "HuaTuoAI",
+    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "Tencent Hunyuan",
     "hyperbolic": "Hyperbolic",
@@ -6447,7 +6449,7 @@
         },
         "root": {
           "label": "Backup Directory (Optional)",
-          "placeholder": "e.g: /cherry-studio"
+          "placeholder": "e.g: /huatuo-studio"
         },
         "secretAccessKey": {
           "label": "Secret Access Key",
@@ -6611,7 +6613,7 @@
           "placeholder": "https://ghfast.top (direct if empty)"
         },
         "githubToken": {
-          "help": "Raises the GitHub API rate limit for tool lookups. Stored locally in plain text. Leave empty to use the CHERRY_GITHUB_TOKEN environment variable.",
+          "help": "Raises the GitHub API rate limit for tool lookups. Stored locally in plain text. Leave empty to use the HUATUO_GITHUB_TOKEN environment variable.",
           "hide": "Hide token",
           "label": "GitHub token",
           "placeholder": "ghp_…",
@@ -6804,7 +6806,7 @@
       "common": {
         "menu": {
           "presentation_mode": {
-            "cherry": "HuaTuo",
+            "huatuo": "HuaTuo",
             "native": "Native",
             "restart": {
               "content": "Changing the menu style requires restarting the app to take effect. Do you want to restart now?",
@@ -7338,7 +7340,11 @@
             "description": "Generate images from a prompt",
             "label": "Image generation"
           },
-          "label": "Model purpose"
+          "label": "Model purpose",
+          "transcription": {
+            "description": "Transcribe audio input into text via the OpenAI audio API",
+            "label": "Speech transcription"
+          }
         },
         "supported_text_delta": {
           "label": "Support incremental text output",
@@ -7744,12 +7750,6 @@
       "check": "Check",
       "check_all_keys": "Check All Keys",
       "check_multiple_keys": "Check Multiple API Keys",
-      "cherryin": {
-        "api_host": {
-          "acceleration": "Acceleration domain",
-          "international": "International domain"
-        }
-      },
       "claude_code": {
         "agent_only_note": "The Claude Code provider is available to Agents only — it can't be used in chat or assistants.",
         "description": "Sign in with your Claude subscription",
@@ -7872,6 +7872,12 @@
         "sign_in_success": "Signed in to Grok CLI",
         "signing_in": "Waiting for browser…"
       },
+      "huatuoin": {
+        "api_host": {
+          "acceleration": "Acceleration domain",
+          "international": "International domain"
+        }
+      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "Used for /images/edits; leave blank to use the default chat endpoint Base URL",
@@ -7903,10 +7909,13 @@
         "balance": "Balance",
         "balance_error": "Failed to fetch balance",
         "button": "Login with {{provider}}",
-        "cherryIn": {
-          "description": "Login to CherryIN using OAuth 2.0",
+        "connect": "Connect {{provider}}",
+        "description": "This service is provided by <website>{{provider}}</website>",
+        "error": "Authentication failed",
+        "huatuoIn": {
+          "description": "Login to HuaTuoIN using OAuth 2.0",
           "logged_in": "Logged in via OAuth",
-          "login_button": "Authorize with CherryIN",
+          "login_button": "Authorize with HuaTuoIN",
           "logout_button": "Logout",
           "not_logged_in": "Not logged in",
           "register_account": "Create account",
@@ -7915,9 +7924,6 @@
           "title": "OAuth Login",
           "use_api_key": "Use API key instead"
         },
-        "connect": "Connect {{provider}}",
-        "description": "This service is provided by <website>{{provider}}</website>",
-        "error": "Authentication failed",
         "logged_in": "Logged in",
         "logout": "Logout",
         "logout_confirm": "Are you sure you want to logout?",

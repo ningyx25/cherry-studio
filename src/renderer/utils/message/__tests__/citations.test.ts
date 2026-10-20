@@ -1,4 +1,4 @@
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -18,10 +18,10 @@ const kbResults = (prefix: string) => [
   { id: `${prefix}-1`, conceptId: 'doc/one.md', title: 'One.md', type: 'file', content: 'kb chunk', score: 0.9 }
 ]
 
-const webToolPart = (results: unknown, state = 'output-available'): CherryMessagePart =>
+const webToolPart = (results: unknown, state = 'output-available'): HuaTuoMessagePart =>
   ({ type: 'tool-web_search', toolCallId: 'c1', state, input: { query: 'q' }, output: results }) as never
 
-const kbToolPart = (results: unknown): CherryMessagePart =>
+const kbToolPart = (results: unknown): HuaTuoMessagePart =>
   ({
     type: 'tool-kb_search',
     toolCallId: 'c2',
@@ -30,7 +30,7 @@ const kbToolPart = (results: unknown): CherryMessagePart =>
     output: results
   }) as never
 
-const kbReadPart = (output: unknown, toolCallId = 'c5'): CherryMessagePart =>
+const kbReadPart = (output: unknown, toolCallId = 'c5'): HuaTuoMessagePart =>
   ({
     type: 'tool-kb_read',
     toolCallId,
@@ -64,7 +64,7 @@ const kbGrepOutput = (id: string) => ({
   ]
 })
 
-const dynamicMcpPart = (toolName: string, content: unknown, serverName = 'cherry-tools'): CherryMessagePart =>
+const dynamicMcpPart = (toolName: string, content: unknown, serverName = 'huatuo-tools'): HuaTuoMessagePart =>
   ({
     type: 'dynamic-tool',
     toolName,
@@ -74,7 +74,7 @@ const dynamicMcpPart = (toolName: string, content: unknown, serverName = 'cherry
     output: { content, metadata: { type: 'mcp', serverName } }
   }) as never
 
-const toolInvokePart = (name: string, output: unknown): CherryMessagePart =>
+const toolInvokePart = (name: string, output: unknown): HuaTuoMessagePart =>
   ({
     type: 'tool-tool_invoke',
     toolCallId: 'c4',
@@ -83,10 +83,10 @@ const toolInvokePart = (name: string, output: unknown): CherryMessagePart =>
     output
   }) as never
 
-const sourceUrlPart = (n: number, url: string, title?: string): CherryMessagePart =>
+const sourceUrlPart = (n: number, url: string, title?: string): HuaTuoMessagePart =>
   ({ type: 'source-url', sourceId: `citation-${n}`, url, title }) as never
 
-const textPart = (text: string): CherryMessagePart => ({ type: 'text', text }) as never
+const textPart = (text: string): HuaTuoMessagePart => ({ type: 'text', text }) as never
 
 describe('resolveMessageCitations', () => {
   it('resolves static assistant tool parts with sequential display numbers', () => {
@@ -97,7 +97,7 @@ describe('resolveMessageCitations', () => {
   })
 
   it('resolves agent dynamic-tool parts with MCP-wrapped output', () => {
-    const mc = resolveMessageCitations([dynamicMcpPart('mcp__cherry-tools__kb_search', kbResults('qqq'))])
+    const mc = resolveMessageCitations([dynamicMcpPart('mcp__huatuo-tools__kb_search', kbResults('qqq'))])
     expect(mc.byId.get('qqq-1')).toMatchObject({ type: 'knowledge', content: 'kb chunk' })
   })
 
@@ -106,12 +106,12 @@ describe('resolveMessageCitations', () => {
     expect(mc.all).toHaveLength(0)
   })
 
-  it('requires cherry-tools metadata for raw same-named dynamic tools', () => {
+  it('requires huatuo-tools metadata for raw same-named dynamic tools', () => {
     const thirdParty = resolveMessageCitations([dynamicMcpPart('web_search', webResults('abc'), 'other-server')])
-    const cherry = resolveMessageCitations([dynamicMcpPart('web_search', webResults('abc'))])
+    const huatuo = resolveMessageCitations([dynamicMcpPart('web_search', webResults('abc'))])
 
     expect(thirdParty.all).toHaveLength(0)
-    expect(cherry.all).toHaveLength(2)
+    expect(huatuo.all).toHaveLength(2)
   })
 
   it('resolves deferred tool_invoke parts by inner tool name', () => {
@@ -170,7 +170,7 @@ describe('resolveMessageCitations', () => {
   it('skips error outputs and string MCP notes', () => {
     const mc = resolveMessageCitations([
       webToolPart({ error: 'provider down', retryable: true }),
-      dynamicMcpPart('mcp__cherry-tools__web_search', 'No matches; refine the query.')
+      dynamicMcpPart('mcp__huatuo-tools__web_search', 'No matches; refine the query.')
     ])
     expect(mc.all).toHaveLength(0)
   })
@@ -194,7 +194,7 @@ describe('resolveMessageCitations', () => {
     const second = {
       ...webToolPart([{ id: 'zzz-1', title: 'Dup', url: 'https://a.com/x', content: 'dup' }]),
       toolCallId: 'c9'
-    } as CherryMessagePart
+    } as HuaTuoMessagePart
     const mc = resolveMessageCitations([first, second])
     expect(mc.all).toHaveLength(2)
     expect(mc.byId.get('zzz-1')).toBe(mc.byId.get('aaa-1'))
@@ -207,7 +207,7 @@ describe('resolveMessageCitations', () => {
   })
 
   it('resolves an MCP-wrapped kb_read slice from the agent path', () => {
-    const mc = resolveMessageCitations([dynamicMcpPart('mcp__cherry-tools__kb_read', kbReadOutput('rrr-1'))])
+    const mc = resolveMessageCitations([dynamicMcpPart('mcp__huatuo-tools__kb_read', kbReadOutput('rrr-1'))])
     expect(mc.byId.get('rrr-1')).toMatchObject({ title: 'Two.md', content: 'read slice', type: 'knowledge' })
   })
 

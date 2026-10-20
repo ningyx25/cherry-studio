@@ -1,5 +1,5 @@
-import { Badge, Dialog, DialogContent, DialogHeader, DialogTitle, Separator } from '@cherrystudio/ui'
-import { DIALOG_UNMOUNT_DELAY_MS } from '@cherrystudio/ui/utils'
+import { Badge, Dialog, DialogContent, DialogHeader, DialogTitle, Separator } from '@huatuostudio/ui'
+import { DIALOG_UNMOUNT_DELAY_MS } from '@huatuostudio/ui/utils'
 import type { InstalledSkill } from '@shared/types/skill'
 import type { TFunction } from 'i18next'
 import { Clock, ToolCase } from 'lucide-react'

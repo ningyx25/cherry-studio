@@ -5,12 +5,12 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Exercise the REAL Radix avatar primitives instead of the dumb-passthrough mock that
-// tests/renderer.setup.ts installs for `@cherrystudio/ui`. The blank-avatar regression lives
+// tests/renderer.setup.ts installs for `@huatuostudio/ui`. The blank-avatar regression lives
 // entirely in Radix's `imageLoadingStatus` state machine, which the global mock bypasses — so
 // only a real-Radix render can guard the fix. Import via the package-internal path so Radix
 // resolves from within `packages/ui` (it is not hoisted to the repo-root node_modules).
-vi.mock('@cherrystudio/ui', async () => {
-  const avatar = (await vi.importActual('@cherrystudio/ui/components/primitives/avatar')) as Record<string, unknown>
+vi.mock('@huatuostudio/ui', async () => {
+  const avatar = (await vi.importActual('@huatuostudio/ui/components/primitives/avatar')) as Record<string, unknown>
   return {
     Avatar: avatar.Avatar,
     AvatarImage: avatar.AvatarImage,
@@ -19,7 +19,7 @@ vi.mock('@cherrystudio/ui', async () => {
 })
 
 // Resolve only `openai` to a recognizable stand-in icon; everything else is unknown.
-vi.mock('@cherrystudio/ui/icons', () => {
+vi.mock('@huatuostudio/ui/icons', () => {
   const BrandIcon = () => <span data-testid="brand-icon" />
   return {
     resolveProviderIconRef: (id: string) =>

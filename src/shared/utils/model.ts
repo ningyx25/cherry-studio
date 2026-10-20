@@ -8,11 +8,10 @@
  *
  * 2. **Model-ID utilities** — name normalization (`getLowerBaseModelName`).
  *    Capability inference from raw ids lives in
- *    `@cherrystudio/provider-registry` (creator-declared data).
+ *    `@huatuostudio/provider-registry` (creator-declared data).
  */
 
-import { endpointImpliedCapability, MODALITY, VENDOR_PATTERNS } from '@cherrystudio/provider-registry'
-import { CHERRYAI_PROVIDER_ID, isManagedCherryAiDefaultModel } from '@shared/data/presets/cherryai'
+import { endpointImpliedCapability, MODALITY, VENDOR_PATTERNS } from '@huatuostudio/provider-registry'
 import type { Model } from '@shared/data/types/model'
 import { MODEL_CAPABILITY, parseUniqueModelId } from '@shared/data/types/model'
 
@@ -45,13 +44,8 @@ export const isFunctionCallingModel = (model: Model): boolean =>
 export const isGenerateImageModel = (model: Model): boolean =>
   model.capabilities.includes(MODEL_CAPABILITY.IMAGE_GENERATION)
 
-export const isFreeModel = (model: Pick<Model, 'id' | 'name' | 'providerId'>): boolean => {
-  if (model.providerId === CHERRYAI_PROVIDER_ID) {
-    return true
-  }
-
-  return (model.id + model.name).toLowerCase().includes('free')
-}
+export const isFreeModel = (model: Pick<Model, 'id' | 'name' | 'providerId'>): boolean =>
+  (model.id + model.name).toLowerCase().includes('free')
 
 export const isGenerateVideoModel = (model: Model): boolean =>
   !!model.capabilities.includes(MODEL_CAPABILITY.VIDEO_GENERATION)
@@ -62,12 +56,23 @@ export const isGenerateAudioModel = (model: Model): boolean =>
 export const isEditImageModel = (model: Model): boolean =>
   !!(model.capabilities.includes(MODEL_CAPABILITY.IMAGE_GENERATION) && model.inputModalities?.includes(MODALITY.IMAGE))
 
+// Dedicated ASR endpoints (OpenAI-compatible transcription / translation): a model
+// carrying one is a speech-to-text model even when its capabilities were never
+// derived (custom providers, opaquely-listed relay models).
+const isSpeechToTextEndpoint = (model: Model): boolean =>
+  model.endpointTypes?.some(
+    (endpointType) => endpointImpliedCapability(endpointType) === MODEL_CAPABILITY.AUDIO_TRANSCRIPT
+  ) ?? false
+
 // Prefer the explicit AUDIO_TRANSCRIPT capability. Catalogs that only expose
 // modalities still identify a dedicated ASR model by audio input + text output
 // with no text input. The no-text-input guard keeps multimodal chat LLMs
-// (Gemini, GPT-4o, …) selectable.
+// (Gemini, GPT-4o, …) selectable. The dedicated transcription/translation
+// endpoint counts too, so manually-added Deepgram / relay ASR models are
+// selectable before their capability is derived.
 export const isSpeechToTextModel = (model: Model): boolean =>
   model.capabilities.includes(MODEL_CAPABILITY.AUDIO_TRANSCRIPT) ||
+  isSpeechToTextEndpoint(model) ||
   (model.capabilities.includes(MODEL_CAPABILITY.AUDIO_RECOGNITION) &&
     model.inputModalities?.includes(MODALITY.AUDIO) === true &&
     !model.inputModalities.includes(MODALITY.TEXT) &&
@@ -99,14 +104,12 @@ export const isNonChatModel = (model: Model): boolean =>
  * Models the API gateway can route — the single predicate shared by the gateway's
  * `/v1/models` listing and the renderer's gateway model picker, so the CLI can only
  * pick what the gateway will actually serve. Excludes non-chat models (the gateway
- * only proxies chat dialects), the CherryAI managed default (the gateway's own
+ * only proxies chat dialects), the HuaTuoAI managed default (the gateway's own
  * guard), and models of a provider whose id contains ':' — the gateway address
  * ("providerId:apiModelId") splits on the FIRST ':', so such ids cannot round-trip.
  */
-export const isGatewayRoutableModel = (model: Model): boolean => {
-  if (model.providerId.includes(':') || isNonChatModel(model)) return false
-  return !isManagedCherryAiDefaultModel(model.providerId, getRawModelId(model))
-}
+export const isGatewayRoutableModel = (model: Model): boolean =>
+  !model.providerId.includes(':') && !isNonChatModel(model)
 
 // ---------------------------------------------------------------------------
 // Reasoning configuration
@@ -165,7 +168,7 @@ export const isMaxTemperatureOneModel = (model: Model): boolean => {
 // ---------------------------------------------------------------------------
 
 // Vendor identity checks all delegate to `VENDOR_PATTERNS` in
-// `@cherrystudio/provider-registry`. Do NOT inline new regex here —
+// `@huatuostudio/provider-registry`. Do NOT inline new regex here —
 // add the vendor to the registry's pattern map instead of duplicating
 // regexes in renderer code.
 

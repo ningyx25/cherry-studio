@@ -1415,7 +1415,7 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
                     导入自测问卷报告
                   </button>
-                  <button class="composer-btn-mini voice-input-btn" id="clinic-voice-btn" data-target="clinic-text-input" title="语音输入" onclick="toggleVoiceInput('clinic-text-input', this)">
+                  <button class="composer-btn-mini voice-input-btn" id="clinic-voice-btn" data-target="clinic-text-input" title="切换到语音输入" onclick="toggleVoiceInput('clinic-text-input', this)">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
                     语音输入
                   </button>
@@ -1458,7 +1458,7 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
               <textarea class="composer-textarea" id="science-text-input" placeholder="输入科普疑问或眼科医学常识... (Enter 发送)"></textarea>
               <div class="composer-toolbar">
                 <div class="composer-tool-group">
-                  <button class="composer-btn-mini voice-input-btn" id="science-voice-btn" data-target="science-text-input" title="语音输入" onclick="toggleVoiceInput('science-text-input', this)">
+                  <button class="composer-btn-mini voice-input-btn" id="science-voice-btn" data-target="science-text-input" title="切换到语音输入" onclick="toggleVoiceInput('science-text-input', this)">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
                     语音输入
                   </button>
@@ -2307,11 +2307,14 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
       inp.focus();
     }
 
-    // Voice input: record via MediaRecorder, POST to the gateway's OpenAI-compatible
-    // /v1/audio/transcriptions (falls back to the desktop-configured voice-input model),
-    // and paste the transcript at the textarea cursor. getUserMedia only works in a
-    // secure context (https or localhost) — on a plain-http LAN address the buttons
-    // are disabled with a hint.
+    // Voice input is an input-mode switch (typing -> voice): one click starts a
+    // dictation turn (record), the next click ends it — the whole recording is
+    // POSTed once to the gateway's OpenAI-compatible /v1/audio/transcriptions
+    // (falls back to the desktop-configured voice-input model), the transcript is
+    // pasted at the textarea cursor, and the button returns to typing mode.
+    // One turn = one request: no streaming partials, no auto-send. getUserMedia
+    // only works in a secure context (https or localhost) — on a plain-http LAN
+    // address the buttons are disabled with a hint.
     const voiceState = { recorder: null, chunks: [], targetId: null, button: null, timer: null };
 
     function setVoiceButtonsEnabled() {
@@ -2364,10 +2367,10 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
           recorder.onstop = () => {
             stream.getTracks().forEach((t) => t.stop());
             clearTimeout(voiceState.timer);
-            resetVoiceButton();
             const blob = new Blob(voiceState.chunks, { type: recorder.mimeType });
             voiceState.recorder = null;
             if (blob.size > 0) transcribeVoice(blob, targetId);
+            else resetVoiceButton();
           };
           recorder.start();
           button.classList.add('recording');
@@ -2386,7 +2389,12 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
 
     function transcribeVoice(blob, targetId) {
       const button = voiceState.button;
-      if (button) button.textContent = '转写中…';
+      if (button) {
+        // The turn is not over until the transcript lands: keep the button in
+        // voice mode and block a new turn while this one is in flight.
+        button.disabled = true;
+        button.textContent = '转写中…';
+      }
       const form = new FormData();
       form.append('file', blob, blob.type.indexOf('mp4') >= 0 ? 'audio.m4a' : 'audio.webm');
       fetch(state.baseUrl + '/v1/audio/transcriptions', {
@@ -2406,6 +2414,7 @@ export function renderWebUiHtml(injectedApiKey: string = ''): string {
           alert('语音转写失败，请在桌面端设置中配置语音输入模型');
         })
         .finally(() => {
+          if (button) button.disabled = false;
           resetVoiceButton();
         });
     }

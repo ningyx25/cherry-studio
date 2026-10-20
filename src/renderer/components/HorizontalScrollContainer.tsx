@@ -1,4 +1,4 @@
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { ChevronRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'

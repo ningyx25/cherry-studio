@@ -73,7 +73,7 @@ describe('initCrashTelemetry', () => {
 
     expect(crashReporterStartMock).toHaveBeenCalledTimes(1)
     expect(crashReporterStartMock).toHaveBeenCalledWith({
-      companyName: 'CherryHQ',
+      companyName: 'HuaTuoHQ',
       productName: 'HuaTuoStudio',
       submitURL: '',
       uploadToServer: false

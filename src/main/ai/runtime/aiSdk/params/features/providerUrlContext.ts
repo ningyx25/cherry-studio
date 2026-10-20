@@ -1,4 +1,4 @@
-import { providerToolPlugin } from '@cherrystudio/ai-core/built-in/plugins'
+import { providerToolPlugin } from '@huatuostudio/ai-core/built-in/plugins'
 
 import type { RequestFeature } from '../feature'
 

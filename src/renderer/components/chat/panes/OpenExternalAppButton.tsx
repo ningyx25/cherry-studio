@@ -1,3 +1,4 @@
+import { usePersistCache } from '@data/hooks/useCache'
 import {
   Button,
   ButtonGroup,
@@ -7,8 +8,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@cherrystudio/ui'
-import { usePersistCache } from '@data/hooks/useCache'
+} from '@huatuostudio/ui'
 import { getEditorIcon } from '@renderer/components/icons/EditorIcon'
 import { FinderIcon } from '@renderer/components/icons/SvgIcon'
 import { useExternalApps } from '@renderer/hooks/useExternalApps'

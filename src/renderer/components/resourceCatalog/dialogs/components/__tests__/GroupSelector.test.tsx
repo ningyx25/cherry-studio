@@ -31,7 +31,7 @@ type SelectContextValue = {
 
 const SelectContext = createContext<SelectContextValue>({ open: false, disabled: false })
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: { children?: ReactNode }) => (
     <button type="button" {...props}>
       {children}

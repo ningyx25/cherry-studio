@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui/components/primitives/button'
+import { Button } from '@huatuostudio/ui/components/primitives/button'
 import {
   Dialog,
   DialogClose,
@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from '@cherrystudio/ui/components/primitives/dialog'
+} from '@huatuostudio/ui/components/primitives/dialog'
 import * as React from 'react'
 
 interface ConfirmDialogProps {

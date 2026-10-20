@@ -332,7 +332,7 @@ describe('buildFunctionCallToolName', () => {
     })
 
     it('should handle hyphenated server names (common in npm packages)', () => {
-      expect(buildFunctionCallToolName('cherry-fetch', 'get_page')).toBe('mcp__cherryFetch__getPage')
+      expect(buildFunctionCallToolName('huatuo-fetch', 'get_page')).toBe('mcp__huatuoFetch__getPage')
       expect(buildFunctionCallToolName('mcp-server-github', 'search')).toBe('mcp__mcpServerGithub__search')
     })
 

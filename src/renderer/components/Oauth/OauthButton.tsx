@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { getProviderLabelKey } from '@renderer/i18n/label'
 import {
   oauthWith302AI,

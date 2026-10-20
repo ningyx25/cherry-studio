@@ -6,7 +6,7 @@
 import { MigrationIpcChannels } from '@shared/data/migration/v2/types'
 import { clampSurrogateBoundary } from '@shared/utils/text'
 
-const PERSIST_KEY = 'persist:cherry-studio'
+const PERSIST_KEY = 'persist:huatuo-studio'
 const EXPORT_CHUNK_CHAR_LIMIT = 1024 * 1024
 
 // Redux slices that need to be migrated

@@ -23,7 +23,7 @@ const filePath = normalizeFilePreviewPath(physicalPath)
 Import `FilePreview` from the module root and place it in a parent with a defined available height. The component fills its parent, and the plugin content area handles scrolling.
 
 ```tsx
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { FilePreview } from '@renderer/components/FilePreview'
 import type { AbsoluteFilePath } from '@shared/types/file'
 import { useTranslation } from 'react-i18next'
@@ -74,7 +74,7 @@ file as an artifact merely to enable scripts.
 Use `useOpenFilePreviewTab` below `TabsProvider`. The hook normalizes the path, creates a URL-encoded `/app/file-preview?path=...` target, and uses the cross-platform basename as the tab title.
 
 ```tsx
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { useOpenFilePreviewTab } from '@renderer/components/FilePreview'
 import type { AbsoluteFilePath } from '@shared/types/file'
 import { useTranslation } from 'react-i18next'
@@ -219,7 +219,7 @@ This composition lets the same plugin work in embedded and tab hosts without for
 
 ## UI and Copy
 
-- Build new UI with `@cherrystudio/ui` and Tailwind CSS, following the repository [DESIGN.md](../../../../DESIGN.md).
+- Build new UI with `@huatuostudio/ui` and Tailwind CSS, following the repository [DESIGN.md](../../../../DESIGN.md).
 - Use Lucide icons in toolbars. Icon buttons require an accessible name and a tooltip.
 - Put plugin-specific copy under `file_preview.*` i18n keys, reuse existing `common.*` or `preview.*` keys for shared controls, and update `en-us` and `zh-cn`.
 - Keep the toolbar at a stable height. Only `FilePreviewLayout.Content` should own content scrolling.

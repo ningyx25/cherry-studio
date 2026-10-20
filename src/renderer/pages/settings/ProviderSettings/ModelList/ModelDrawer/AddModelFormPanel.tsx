@@ -1,4 +1,4 @@
-import { Button } from '@cherrystudio/ui'
+import { Button } from '@huatuostudio/ui'
 import { useModelMutations, useModels } from '@renderer/hooks/useModel'
 import { useProvider } from '@renderer/hooks/useProvider'
 import { getDefaultGroupName } from '@renderer/utils/naming'
@@ -371,7 +371,13 @@ export default function AddModelFormPanel({
                 setClassification((current) => ({
                   ...current,
                   primaryType:
-                    nextPurpose === 'chat' ? (current.primaryType === 'image' ? 'text' : current.primaryType) : 'image'
+                    nextPurpose === 'chat'
+                      ? current.primaryType === 'image' || current.primaryType === null
+                        ? 'text'
+                        : current.primaryType
+                      : nextPurpose === 'transcription'
+                        ? null
+                        : 'image'
                 }))
                 setPurposeFields((current) =>
                   applyModelPurpose(current, nextPurpose, {

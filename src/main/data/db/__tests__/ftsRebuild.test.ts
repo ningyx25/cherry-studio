@@ -93,7 +93,7 @@ describe('FTS5 rowid-reshuffle resistance (fts_rowid keying)', () => {
           parentId: null,
           topicId: 'topic-fts',
           role: 'assistant',
-          data: { parts: [{ type: 'text', text: 'charlie cherry' }] },
+          data: { parts: [{ type: 'text', text: 'charlie huatuo' }] },
           status: 'success',
           createdAt: 30,
           updatedAt: 30
@@ -114,7 +114,7 @@ describe('FTS5 rowid-reshuffle resistance (fts_rowid keying)', () => {
     // Trigger wiring: every row got a non-null fts_rowid, and the FTS join resolves the right row.
     const noNullBefore = await dbh.db.select().from(messageTable).where(isNull(messageTable.ftsRowid))
     expect(noNullBefore).toHaveLength(0)
-    expect(ftsMatchIds(dbh.sqlite, 'message', 'message_fts', 'cherry')).toEqual(['m3'])
+    expect(ftsMatchIds(dbh.sqlite, 'message', 'message_fts', 'huatuo')).toEqual(['m3'])
 
     // Create a rowid hole in the middle, then rebuild (reshuffles the implicit rowid).
     dbh.sqlite.exec(`DELETE FROM message WHERE id = 'm2'`)
@@ -122,7 +122,7 @@ describe('FTS5 rowid-reshuffle resistance (fts_rowid keying)', () => {
 
     // The index is keyed on fts_rowid (carried through the rebuild), so it stays aligned.
     expect(integrityCheck1(dbh.sqlite, 'message_fts')).toBeDefined()
-    expect(ftsMatchIds(dbh.sqlite, 'message', 'message_fts', 'cherry')).toEqual(['m3'])
+    expect(ftsMatchIds(dbh.sqlite, 'message', 'message_fts', 'huatuo')).toEqual(['m3'])
     expect(ftsMatchIds(dbh.sqlite, 'message', 'message_fts', 'date')).toEqual(['m4'])
     const noNullAfter = await dbh.db.select().from(messageTable).where(isNull(messageTable.ftsRowid))
     expect(noNullAfter).toHaveLength(0)
@@ -158,7 +158,7 @@ describe('FTS5 rowid-reshuffle resistance (fts_rowid keying)', () => {
         id: 'a3',
         sessionId: 'sess-1',
         role: 'assistant',
-        data: { parts: [{ type: 'text', text: 'charlie cherry' }] },
+        data: { parts: [{ type: 'text', text: 'charlie huatuo' }] },
         status: 'success',
         createdAt: 30,
         updatedAt: 30
@@ -179,13 +179,13 @@ describe('FTS5 rowid-reshuffle resistance (fts_rowid keying)', () => {
       .from(agentSessionMessageTable)
       .where(isNull(agentSessionMessageTable.ftsRowid))
     expect(noNullBefore).toHaveLength(0)
-    expect(ftsMatchIds(dbh.sqlite, 'agent_session_message', 'agent_session_message_fts', 'cherry')).toEqual(['a3'])
+    expect(ftsMatchIds(dbh.sqlite, 'agent_session_message', 'agent_session_message_fts', 'huatuo')).toEqual(['a3'])
 
     dbh.sqlite.exec(`DELETE FROM agent_session_message WHERE id = 'a2'`)
     rebuildWithRowidReshuffle(dbh.sqlite, 'agent_session_message', AGENT_SESSION_MESSAGE_FTS_STATEMENTS)
 
     expect(integrityCheck1(dbh.sqlite, 'agent_session_message_fts')).toBeDefined()
-    expect(ftsMatchIds(dbh.sqlite, 'agent_session_message', 'agent_session_message_fts', 'cherry')).toEqual(['a3'])
+    expect(ftsMatchIds(dbh.sqlite, 'agent_session_message', 'agent_session_message_fts', 'huatuo')).toEqual(['a3'])
     expect(ftsMatchIds(dbh.sqlite, 'agent_session_message', 'agent_session_message_fts', 'date')).toEqual(['a4'])
     const agentNoNullAfter = await dbh.db
       .select()

@@ -25,7 +25,7 @@ import type { CallToolResult, Tool } from '@modelcontextprotocol/sdk/types.js'
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js'
 import { READ_FILE_TOOL_NAME, readFileInputSchema } from '@shared/ai/builtinTools'
 import { AGENT_SESSION_MESSAGES_MAX_LIMIT } from '@shared/data/api/schemas/agentSessionMessages'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import * as z from 'zod'
 
 const logger = loggerService.withContext('McpServer:AssistantFileTools')
@@ -42,7 +42,7 @@ interface AssistantFileToolHandler {
 }
 
 function listSessionAttachments(sessionId: string): FileAttachmentRef[] {
-  const messages: CherryUIMessage[] = []
+  const messages: HuaTuoUIMessage[] = []
   let cursor: string | undefined
 
   do {
@@ -52,7 +52,7 @@ function listSessionAttachments(sessionId: string): FileAttachmentRef[] {
     })
     for (const message of page.items) {
       if (message.role !== 'user') continue
-      messages.push({ id: message.id, role: 'user', parts: message.data.parts } as CherryUIMessage)
+      messages.push({ id: message.id, role: 'user', parts: message.data.parts } as HuaTuoUIMessage)
     }
     cursor = page.nextCursor
   } while (cursor)

@@ -1,5 +1,5 @@
-import { Button, InfoTooltip, Input, RowFlex } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, InfoTooltip, Input, RowFlex } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import {
   SettingDivider,

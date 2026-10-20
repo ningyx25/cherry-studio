@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, FieldError, Input, Label } from '@cherrystudio/ui'
+import { Button, Dialog, DialogContent, FieldError, Input, Label } from '@huatuostudio/ui'
 import { formatErrorMessageWithPrefix } from '@renderer/utils/error'
 import type { FormEvent } from 'react'
 import { useEffect, useState } from 'react'

@@ -1,4 +1,4 @@
-import type { PopoverContent } from '@cherrystudio/ui/components/primitives/popover'
+import type { PopoverContent } from '@huatuostudio/ui/components/primitives/popover'
 import type { ComponentProps, MouseEvent, ReactElement, ReactNode } from 'react'
 
 export type EntityItemBase = {

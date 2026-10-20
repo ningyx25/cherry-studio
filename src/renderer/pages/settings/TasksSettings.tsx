@@ -1,4 +1,4 @@
-import type { ColumnDef } from '@cherrystudio/ui'
+import type { ColumnDef } from '@huatuostudio/ui'
 import {
   Alert,
   Badge,
@@ -57,7 +57,7 @@ import {
   TabsList,
   TabsTrigger,
   Tooltip
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import CollapsibleSearchBar from '@renderer/components/CollapsibleSearchBar'
 import PromptEditorField from '@renderer/components/PromptEditorField'

@@ -1,4 +1,4 @@
-# @cherrystudio/provider-registry
+# @huatuostudio/provider-registry
 
 Bundled AI provider and model catalog for HuaTuo Studio: static JSON data files plus TypeScript schemas for reading them.
 
@@ -22,7 +22,7 @@ import {
   readModelRegistry,
   readProviderRegistry,
   readProviderModelRegistry
-} from '@cherrystudio/provider-registry/node'
+} from '@huatuostudio/provider-registry/node'
 
 const models = readModelRegistry('/path/to/models.json')
 const providers = readProviderRegistry('/path/to/providers.json')
@@ -39,7 +39,7 @@ import type {
   EndpointType,
   ModelCapability,
   Modality
-} from '@cherrystudio/provider-registry'
+} from '@huatuostudio/provider-registry'
 ```
 
 ## Build

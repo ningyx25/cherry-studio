@@ -1,9 +1,9 @@
-import type * as AiCore from '@cherrystudio/ai-core'
+import type * as AiCore from '@huatuostudio/ai-core'
 import type { ModelMessage } from 'ai'
 import { describe, expect, it, vi } from 'vitest'
 
 const compactModelMessages = vi.fn()
-vi.mock('@cherrystudio/ai-core', async (importOriginal) => ({
+vi.mock('@huatuostudio/ai-core', async (importOriginal) => ({
   ...(await importOriginal<typeof AiCore>()),
   compactModelMessages: (...args: unknown[]) => compactModelMessages(...args)
 }))
@@ -24,7 +24,7 @@ const COMPRESSION_MODEL = { languageModel: COMPRESSION_LANGUAGE_MODEL, contextWi
 
 const scope = (overrides: {
   chatId?: string
-  contextOwner?: 'cherry' | 'caller'
+  contextOwner?: 'huatuo' | 'caller'
   contextWindow?: number
   enabled?: boolean
   compressEnabled?: boolean

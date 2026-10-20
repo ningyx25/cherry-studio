@@ -1,6 +1,6 @@
 import { openaiCompatible } from './types'
 
-const TOKEN_FACTORY_URL = 'https://developer.amd.com.cn/radeon/tokenfactory?source=cherry-studio'
+const TOKEN_FACTORY_URL = 'https://developer.amd.com.cn/radeon/tokenfactory?source=huatuo-studio'
 
 export default openaiCompatible({
   id: 'radeon-cloud',

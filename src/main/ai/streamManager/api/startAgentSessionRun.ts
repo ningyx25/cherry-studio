@@ -1,7 +1,7 @@
 import { application } from '@application'
 import { agentSessionService } from '@data/services/AgentSessionService'
 import { ErrorCode, isDataApiError } from '@shared/data/api/errors'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 
 import { buildAgentSessionTopicId } from '../../agentSession/topic'
 import { agentChatContextProvider } from '../context/AgentChatContextProvider'
@@ -31,7 +31,7 @@ export type StartAgentSessionRunResult =
 
 export async function startAgentSessionRun(input: {
   sessionId: string
-  userParts: CherryMessagePart[]
+  userParts: HuaTuoMessagePart[]
   listeners: StreamListener[]
   headless?: boolean
   requireIdle?: { expectedAgentId: string }

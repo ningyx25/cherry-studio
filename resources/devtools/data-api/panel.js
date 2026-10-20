@@ -207,7 +207,7 @@ function appendSection(title, payload, options = {}) {
 
 async function refresh() {
   const snapshot = await evalInInspectedWindow(
-    'window.__CHERRY_DATA_API_DEVTOOLS__ ? window.__CHERRY_DATA_API_DEVTOOLS__.snapshotSummary() : []'
+    'window.__HUATUO_DATA_API_DEVTOOLS__ ? window.__HUATUO_DATA_API_DEVTOOLS__.snapshotSummary() : []'
   )
   events = Array.isArray(snapshot) ? snapshot : []
   renderRows()
@@ -217,7 +217,7 @@ async function refresh() {
     const nextSummarySignature = JSON.stringify(summary)
     if (!summary || nextSummarySignature === selectedSummarySignature) return
     const selectedEvent = await evalInInspectedWindow(
-      `window.__CHERRY_DATA_API_DEVTOOLS__ && window.__CHERRY_DATA_API_DEVTOOLS__.getEvent(${JSON.stringify(requestedId)})`
+      `window.__HUATUO_DATA_API_DEVTOOLS__ && window.__HUATUO_DATA_API_DEVTOOLS__.getEvent(${JSON.stringify(requestedId)})`
     )
     if (selectedId === requestedId && selectedEvent?.id === requestedId) {
       selectedSummarySignature = nextSummarySignature
@@ -240,7 +240,7 @@ rowsEl.addEventListener('pointerdown', async (pointerEvent) => {
   const nextSummarySignature = JSON.stringify(events.find((event) => event.id === requestedId))
   renderRows(true)
   const selectedEvent = await evalInInspectedWindow(
-    `window.__CHERRY_DATA_API_DEVTOOLS__ && window.__CHERRY_DATA_API_DEVTOOLS__.getEvent(${JSON.stringify(requestedId)})`
+    `window.__HUATUO_DATA_API_DEVTOOLS__ && window.__HUATUO_DATA_API_DEVTOOLS__.getEvent(${JSON.stringify(requestedId)})`
   )
   if (selectedId === requestedId && selectedEvent?.id === requestedId) {
     selectedSummarySignature = nextSummarySignature
@@ -250,7 +250,7 @@ rowsEl.addEventListener('pointerdown', async (pointerEvent) => {
 
 clearEl.addEventListener('click', async () => {
   await evalInInspectedWindow(
-    'window.__CHERRY_DATA_API_DEVTOOLS__ && window.__CHERRY_DATA_API_DEVTOOLS__.clear()'
+    'window.__HUATUO_DATA_API_DEVTOOLS__ && window.__HUATUO_DATA_API_DEVTOOLS__.clear()'
   )
   selectedId = null
   rowsSignature = ''
@@ -263,7 +263,7 @@ clearEl.addEventListener('click', async () => {
 capturePayloadsEl.addEventListener('change', async () => {
   const enabled = capturePayloadsEl.checked ? 'true' : 'false'
   await evalInInspectedWindow(
-    `window.__CHERRY_DATA_API_DEVTOOLS__ && window.__CHERRY_DATA_API_DEVTOOLS__.setOptions({ capturePayloads: ${enabled} })`
+    `window.__HUATUO_DATA_API_DEVTOOLS__ && window.__HUATUO_DATA_API_DEVTOOLS__.setOptions({ capturePayloads: ${enabled} })`
   )
 })
 
@@ -272,7 +272,7 @@ capturePayloadsEl.addEventListener('change', async () => {
 // checkbox default. setOptions({}) returns the current options unchanged.
 async function syncCaptureState() {
   const options = await evalInInspectedWindow(
-    'window.__CHERRY_DATA_API_DEVTOOLS__ && window.__CHERRY_DATA_API_DEVTOOLS__.setOptions({})'
+    'window.__HUATUO_DATA_API_DEVTOOLS__ && window.__HUATUO_DATA_API_DEVTOOLS__.setOptions({})'
   )
   if (options && typeof options.capturePayloads === 'boolean') {
     capturePayloadsEl.checked = options.capturePayloads

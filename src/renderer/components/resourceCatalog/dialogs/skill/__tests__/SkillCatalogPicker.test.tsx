@@ -1,5 +1,5 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
-import { Dialog, DialogContent, DialogTitle } from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
+import { Dialog, DialogContent, DialogTitle } from '@huatuostudio/ui'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
@@ -7,7 +7,7 @@ import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { SkillCatalogPicker } from '../SkillCatalogPicker'
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => importOriginal<typeof CherryStudioUi>())
+vi.mock('@huatuostudio/ui', async (importOriginal) => importOriginal<typeof HuaTuoStudioUi>())
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })

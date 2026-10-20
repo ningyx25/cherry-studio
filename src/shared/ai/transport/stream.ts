@@ -1,6 +1,6 @@
 import type { UIMessageChunk } from 'ai'
 
-import type { AssistantTurnOptions, CherryMessagePart, CherryUIMessage } from '../../data/types/message'
+import type { AssistantTurnOptions, HuaTuoMessagePart, HuaTuoUIMessage } from '../../data/types/message'
 import type { UniqueModelId } from '../../data/types/model'
 import type { ReasoningEffortOption } from '../../types/aiSdk'
 import type { SerializedError } from '../../types/error'
@@ -13,7 +13,7 @@ export interface AiChatRequestBody extends AssistantTurnOptions {
   /** Composer-selected request models; one id overrides the fallback, while supported flows may fan out several. */
   mentionedModels?: UniqueModelId[]
   /** User message parts to persist/display for submit-message turns. */
-  userMessageParts?: CherryMessagePart[]
+  userMessageParts?: HuaTuoMessagePart[]
   /** Uploaded file metadata. */
   files?: Array<{ id: string; name: string; type: string; size: number; url: string }>
 }
@@ -60,7 +60,7 @@ export interface ActiveExecution {
 
 export interface ComposerQueuedMessagePayload {
   text: string
-  userMessageParts: CherryMessagePart[]
+  userMessageParts: HuaTuoMessagePart[]
   /**
    * Composer attachments held for this queued draft. Loosely typed here (the
    * concrete `ComposerAttachment` lives in the renderer); main ignores it — only
@@ -149,7 +149,7 @@ export type AiStreamOpenRequest = {
        */
       parentAnchorId?: string
       /** Content of the new user msg. */
-      userMessageParts: CherryMessagePart[]
+      userMessageParts: HuaTuoMessagePart[]
       /** Canonical reasoning selection captured when the composer submitted. */
       reasoningEffort?: ReasoningEffortOption
       /** Whether to request Fast processing for this turn. */
@@ -233,8 +233,8 @@ export interface AiAgentSessionWarmCloseRequest {
  * when the stream errored before any execution accumulated content.
  */
 export interface AiStreamAttachTerminal {
-  finalMessage?: CherryUIMessage
-  finalMessages: Partial<Record<UniqueModelId, CherryUIMessage>>
+  finalMessage?: HuaTuoUIMessage
+  finalMessages: Partial<Record<UniqueModelId, HuaTuoUIMessage>>
 }
 export type AiStreamAttachResponse =
   | { status: 'not-found' }
@@ -269,7 +269,7 @@ export type AiStreamOpenResponse =
        * intent: a consumer may seed these into its view immediately for an optimistic render, then
        * reconcile final content/status from a DB refresh.
        */
-      reservedMessages?: CherryUIMessage[]
+      reservedMessages?: HuaTuoUIMessage[]
       /**
        * Assistant placeholder ids derived from `reservedMessages` (its assistant rows, or the
        * per-model `request.messageId` fallback). The v2 home page reads this through

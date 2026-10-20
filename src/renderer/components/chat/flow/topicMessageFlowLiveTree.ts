@@ -1,6 +1,6 @@
 import type {
-  CherryMessagePart,
-  CherryUIMessage,
+  HuaTuoMessagePart,
+  HuaTuoUIMessage,
   MessageStatus,
   TreeNode,
   TreeResponse
@@ -30,8 +30,8 @@ export interface TopicMessageFlowLiveState {
 
 interface BuildTopicMessageFlowLiveStateParams {
   topicId: string
-  messages: CherryUIMessage[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  messages: HuaTuoUIMessage[]
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
   activeNodeId: string | null
   streamingMessageIds?: ReadonlySet<string>
 }
@@ -54,7 +54,7 @@ function getObjectField(value: unknown, key: string): Record<string, unknown> | 
   return field && typeof field === 'object' ? (field as Record<string, unknown>) : undefined
 }
 
-function extractTopicMessageFlowLivePreview(parts: CherryMessagePart[]): string {
+function extractTopicMessageFlowLivePreview(parts: HuaTuoMessagePart[]): string {
   for (const part of parts) {
     const data = getObjectField(part, 'data')
     const text =
@@ -90,7 +90,7 @@ export function buildTopicMessageFlowLiveState({
     const parentId = metadata.parentId
     if (parentId == null) return []
 
-    const parts = partsByMessageId[message.id] ?? ((message.parts ?? []) as CherryMessagePart[])
+    const parts = partsByMessageId[message.id] ?? ((message.parts ?? []) as HuaTuoMessagePart[])
     const createdAt = metadata.createdAt ?? new Date().toISOString()
     const isStreamingMessage = streamingMessageIds?.has(message.id) ?? false
     const fallbackStatus = message.role === 'assistant' && parts.length === 0 ? 'pending' : 'success'

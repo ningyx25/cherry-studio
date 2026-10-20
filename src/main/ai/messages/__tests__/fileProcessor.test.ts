@@ -29,7 +29,7 @@ describe('materializeNativeFilePart — file:// inline', () => {
   let imgPath: string
 
   beforeAll(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cherry-fp-'))
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'huatuo-fp-'))
     imgPath = path.join(tmpDir, 'pixel.png')
     const png = Buffer.from(
       '89504E470D0A1A0A0000000D49484452000000010000000108060000001F15C4890000000D4944415478DA636400' +
@@ -80,7 +80,7 @@ describe('materializeNativeFilePart — file:// inline', () => {
     expect(out).toBeNull()
   })
 
-  it('does not call FileManager when there is no cherry meta', async () => {
+  it('does not call FileManager when there is no huatuo meta', async () => {
     readMock.mockClear()
     await materializeNativeFilePart(filePart({ url: `file://${imgPath}`, mediaType: 'image/png' }))
     expect(readMock).not.toHaveBeenCalled()
@@ -92,7 +92,7 @@ describe('materializeNativeFilePart — fileEntryId inline', () => {
     readMock.mockReset()
     readMock.mockResolvedValueOnce({ content: 'QUJD', mime: 'image/png' })
     const out = await materializeNativeFilePart(
-      filePart({ mediaType: '.png', providerMetadata: { cherry: { fileEntryId: 'entry-1' } } })
+      filePart({ mediaType: '.png', providerMetadata: { huatuo: { fileEntryId: 'entry-1' } } })
     )
     expect(out?.mediaType).toBe('image/png')
     expect(out?.url).toBe('data:image/png;base64,QUJD')
@@ -103,7 +103,7 @@ describe('materializeNativeFilePart — fileEntryId inline', () => {
     readMock.mockReset()
     readMock.mockRejectedValueOnce(new Error('entry not found'))
     const out = await materializeNativeFilePart(
-      filePart({ url: '', providerMetadata: { cherry: { fileEntryId: 'gone' } } })
+      filePart({ url: '', providerMetadata: { huatuo: { fileEntryId: 'gone' } } })
     )
     expect(out).toBeNull()
   })

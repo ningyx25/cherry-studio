@@ -723,7 +723,7 @@ export const exportMarkdownToYuque = async (title: string, content: string): Pro
       headers: {
         'Content-Type': 'application/json',
         'X-Auth-Token': yuqueToken,
-        'User-Agent': 'CherryAI'
+        'User-Agent': 'HuaTuoAI'
       },
       body: JSON.stringify({
         title: title,
@@ -745,7 +745,7 @@ export const exportMarkdownToYuque = async (title: string, content: string): Pro
       headers: {
         'Content-Type': 'application/json',
         'X-Auth-Token': yuqueToken,
-        'User-Agent': 'CherryAI'
+        'User-Agent': 'HuaTuoAI'
       },
       body: JSON.stringify({
         action: 'appendNode',
@@ -1008,7 +1008,7 @@ export const exportMarkdownToSiyuan = async (title: string, content: string): Pr
     }
 
     // 确保根路径以/开头
-    const rootPath = siyuanRootPath?.startsWith('/') ? siyuanRootPath : `/${siyuanRootPath || 'CherryStudio'}`
+    const rootPath = siyuanRootPath?.startsWith('/') ? siyuanRootPath : `/${siyuanRootPath || 'HuaTuoStudio'}`
     const renderedRootPath = await renderSprigTemplate(siyuanApiUrl, siyuanToken, rootPath)
     // 创建文档
     const docTitle = `${title.replace(/[#|\\^\\[\]]/g, '')}`

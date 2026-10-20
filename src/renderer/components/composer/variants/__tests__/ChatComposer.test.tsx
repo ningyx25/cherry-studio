@@ -2626,7 +2626,7 @@ describe('ChatComposer', () => {
         url: 'file:///p/fe-1.pdf',
         mediaType: 'application/pdf',
         filename: 'doc.pdf',
-        providerMetadata: { cherry: { fileEntryId: 'fe-1', fileTokenSourceId: 'source-1' } }
+        providerMetadata: { huatuo: { fileEntryId: 'fe-1', fileTokenSourceId: 'source-1' } }
       }
     ])
   })
@@ -3052,7 +3052,7 @@ describe('ChatComposer', () => {
         type: 'text',
         text: '<blockquote>\n\nSelected text\n</blockquote>\n\nFollow up',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             composer: {
               version: 1,
               tokens: [
@@ -3337,7 +3337,7 @@ describe('ChatComposer', () => {
     )
   })
 
-  it('preserves Cherry file metadata when resending an edited message with an existing attachment', async () => {
+  it('preserves HuaTuo file metadata when resending an edited message with an existing attachment', async () => {
     const editMessage = vi.fn().mockResolvedValue(undefined)
     const resend = vi.fn().mockResolvedValue(undefined)
     const forkAndResend = vi.fn().mockResolvedValue(undefined)
@@ -3355,7 +3355,7 @@ describe('ChatComposer', () => {
       mediaType: 'application/pdf',
       filename: 'report.pdf',
       providerMetadata: {
-        cherry: {
+        huatuo: {
           fileEntryId: 'file-entry-1'
         }
       }
@@ -3386,7 +3386,7 @@ describe('ChatComposer', () => {
     expect(editedParts.find((part) => part.type === 'file')).toEqual({
       ...filePart,
       providerMetadata: {
-        cherry: {
+        huatuo: {
           fileEntryId: 'file-entry-1',
           fileTokenSourceId: fileToken?.id.slice('file:'.length)
         }
@@ -3418,7 +3418,7 @@ describe('ChatComposer', () => {
       mediaType: 'application/pdf',
       filename: 'test.pdf',
       providerMetadata: {
-        cherry: {
+        huatuo: {
           fileEntryId: 'file-entry-1'
         }
       }
@@ -3448,7 +3448,7 @@ describe('ChatComposer', () => {
                 type: 'text',
                 text: 'test.pdf 你好',
                 providerMetadata: {
-                  cherry: {
+                  huatuo: {
                     composer: {
                       version: 1,
                       tokens: [fileToken]
@@ -3489,7 +3489,7 @@ describe('ChatComposer', () => {
       type: 'text',
       text: 'test.pdf 你好',
       providerMetadata: {
-        cherry: {
+        huatuo: {
           composer: {
             tokens: [expect.objectContaining({ id: rewrittenToken?.id, kind: 'file', textOffset: 0 })]
           }
@@ -3499,7 +3499,7 @@ describe('ChatComposer', () => {
     expect(editedParts.find((part) => part.type === 'file')).toEqual({
       ...filePart,
       providerMetadata: {
-        cherry: {
+        huatuo: {
           fileEntryId: 'file-entry-1',
           fileTokenSourceId: rewrittenToken?.id.slice('file:'.length)
         }
@@ -3526,14 +3526,14 @@ describe('ChatComposer', () => {
       url: 'file:///tmp/a.pdf',
       mediaType: 'application/pdf',
       filename: 'a.pdf',
-      providerMetadata: { cherry: { fileEntryId: 'entry-pdf' } }
+      providerMetadata: { huatuo: { fileEntryId: 'entry-pdf' } }
     }
     const pngPart = {
       type: 'file',
       url: 'file:///tmp/b.png',
       mediaType: '.png',
       filename: 'b.png',
-      providerMetadata: { cherry: { fileEntryId: 'entry-png' } }
+      providerMetadata: { huatuo: { fileEntryId: 'entry-png' } }
     }
     const pdfToken: ComposerSerializedToken = {
       id: 'file:entry-pdf',
@@ -3565,7 +3565,7 @@ describe('ChatComposer', () => {
                 text: 'a.pdf b.png',
                 // Stored token order is intentionally reversed relative to text offset to prove
                 // matching is by source id, not document position.
-                providerMetadata: { cherry: { composer: { version: 1, tokens: [pngToken, pdfToken] } } }
+                providerMetadata: { huatuo: { composer: { version: 1, tokens: [pngToken, pdfToken] } } }
               },
               pngPart,
               pdfPart
@@ -3596,7 +3596,7 @@ describe('ChatComposer', () => {
       {
         ...pngPart,
         providerMetadata: {
-          cherry: {
+          huatuo: {
             fileEntryId: 'entry-png',
             fileTokenSourceId: rewrittenPngToken?.id.slice('file:'.length)
           }
@@ -3605,7 +3605,7 @@ describe('ChatComposer', () => {
       {
         ...pdfPart,
         providerMetadata: {
-          cherry: {
+          huatuo: {
             fileEntryId: 'entry-pdf',
             fileTokenSourceId: rewrittenPdfToken?.id.slice('file:'.length)
           }
@@ -3635,7 +3635,7 @@ describe('ChatComposer', () => {
       url: 'file:///tmp/x.pdf',
       mediaType: 'application/pdf',
       filename: 'x.pdf',
-      providerMetadata: { cherry: { fileEntryId: 'real-1' } }
+      providerMetadata: { huatuo: { fileEntryId: 'real-1' } }
     }
     const ghostToken: ComposerSerializedToken = {
       id: 'file:ghost',
@@ -3656,7 +3656,7 @@ describe('ChatComposer', () => {
               {
                 type: 'text',
                 text: 'x.pdf 你好',
-                providerMetadata: { cherry: { composer: { version: 1, tokens: [ghostToken] } } }
+                providerMetadata: { huatuo: { composer: { version: 1, tokens: [ghostToken] } } }
               },
               filePart
             ] as any
@@ -3681,7 +3681,7 @@ describe('ChatComposer', () => {
     expect(editedParts.find((part) => part.type === 'file')).toEqual({
       ...filePart,
       providerMetadata: {
-        cherry: {
+        huatuo: {
           fileEntryId: 'real-1',
           fileTokenSourceId: rewrittenToken?.id.slice('file:'.length)
         }
@@ -3724,7 +3724,7 @@ describe('ChatComposer', () => {
                 type: 'text',
                 text: 'question with knowledge',
                 providerMetadata: {
-                  cherry: {
+                  huatuo: {
                     composer: {
                       version: 1,
                       tokens: [
@@ -3775,7 +3775,7 @@ describe('ChatComposer', () => {
       type: 'text',
       text: 'edited question with knowledge',
       providerMetadata: {
-        cherry: {
+        huatuo: {
           composer: {
             tokens: [
               expect.objectContaining({

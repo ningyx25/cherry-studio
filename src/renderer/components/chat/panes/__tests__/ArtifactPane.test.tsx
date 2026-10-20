@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import type * as ChatPrimitives from '@renderer/components/chat/primitives'
 import { useFileEditSession } from '@renderer/hooks/useFileEditSession'
@@ -247,8 +247,8 @@ vi.mock('@renderer/hooks/useCodeStyle', () => ({
   useCodeStyle: () => ({ activeCmTheme: 'light' })
 }))
 
-vi.mock('@cherrystudio/ui', async (importActual) => {
-  const actual = await importActual<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importActual) => {
+  const actual = await importActual<typeof HuaTuoStudioUi>()
   const RealCodeEditor = actual.CodeEditor
 
   return {
@@ -382,7 +382,7 @@ vi.mock('@cherrystudio/ui', async (importActual) => {
   }
 })
 
-vi.mock('@cherrystudio/ui/lib/utils', () => ({
+vi.mock('@huatuostudio/ui/lib/utils', () => ({
   cn: (...args: unknown[]) => args.filter(Boolean).join(' ')
 }))
 

@@ -1,4 +1,4 @@
-import type * as CherryUi from '@cherrystudio/ui'
+import type * as HuaTuoUi from '@huatuostudio/ui'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -38,8 +38,8 @@ vi.mock('react-i18next', () => ({
   })
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoUi>()
   return {
     ...actual,
     error: mocks.toast.error,
@@ -299,7 +299,7 @@ describe('MigrationDiagnosticPanel', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Copy feedback email' }))
 
-    await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledWith('support@cherry-ai.com'))
+    await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledWith('support@huatuo.ai'))
     expect(mocks.toast.success).toHaveBeenCalledWith('Feedback email copied')
   })
 

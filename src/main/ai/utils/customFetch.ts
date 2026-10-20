@@ -14,7 +14,7 @@ import { net, session } from 'electron'
  * hook — the one place Electron lets the outbound UA be set on the Chromium stack
  * (mirrors `WebviewService.initSessionUserAgent`).
  */
-const PROVIDER_USER_AGENT_HEADER = 'x-cherry-studio-user-agent'
+const PROVIDER_USER_AGENT_HEADER = 'x-huatuo-studio-user-agent'
 
 /**
  * Resolve the effective `User-Agent` from a {@link HeadersInit} with

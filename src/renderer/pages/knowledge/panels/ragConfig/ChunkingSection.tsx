@@ -1,4 +1,4 @@
-import { Switch } from '@cherrystudio/ui'
+import { Switch } from '@huatuostudio/ui'
 import { DEFAULT_KNOWLEDGE_CHUNK_SEPARATOR, type KnowledgeChunkStrategy } from '@shared/data/types/knowledge'
 import { useTranslation } from 'react-i18next'
 

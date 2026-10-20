@@ -1,4 +1,4 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cherrystudio/ui'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@huatuostudio/ui'
 import { useInfiniteFlatItems, useInfiniteQuery } from '@renderer/data/hooks/useDataApi'
 import type { MessageStats } from '@shared/data/types/message'
 import type { FC } from 'react'

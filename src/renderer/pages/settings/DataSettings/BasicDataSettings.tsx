@@ -1,5 +1,5 @@
-import { Button, RowFlex, Switch, Tooltip } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, RowFlex, Switch, Tooltip } from '@huatuostudio/ui'
 import {
   SettingDivider,
   SettingGroup,

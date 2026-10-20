@@ -1,5 +1,5 @@
 import { FILE_TYPE, type FileMetadata } from '@renderer/types/file'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import { renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -46,8 +46,8 @@ describe('useMessageLeafCapabilities', () => {
   })
 
   it('loads external apps for the message list regardless of inline path hints', () => {
-    const partsByMessageId: Record<string, CherryMessagePart[]> = {
-      message: [{ type: 'text', text: 'plain response' } as CherryMessagePart]
+    const partsByMessageId: Record<string, HuaTuoMessagePart[]> = {
+      message: [{ type: 'text', text: 'plain response' } as HuaTuoMessagePart]
     }
 
     renderHook(() => useMessageLeafCapabilities({ partsByMessageId }))

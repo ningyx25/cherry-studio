@@ -1,5 +1,5 @@
-import type { ColumnDef } from '@cherrystudio/ui'
-import { Badge, ColFlex, DataTable, Flex, InfoTooltip, RequiredMark, Switch, Tooltip } from '@cherrystudio/ui'
+import type { ColumnDef } from '@huatuostudio/ui'
+import { Badge, ColFlex, DataTable, Flex, InfoTooltip, RequiredMark, Switch, Tooltip } from '@huatuostudio/ui'
 import { McpLogo } from '@renderer/components/icons/SvgIcon'
 import { useIsToolAutoApproved } from '@renderer/hooks/useMcpServer'
 import type { McpTool } from '@renderer/types/tool'

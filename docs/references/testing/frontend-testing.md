@@ -57,7 +57,7 @@ When a no-test change is non-obvious, explain why in the PR instead of adding a 
 | Pure transformation, parser, reducer, or state machine | Unit test | Inputs, outputs, transitions, and meaningful boundaries |
 | Hook with state or external effects | Hook or small harness test | Returned contract and externally observable effects |
 | Renderer component behavior | Component test | What a user can find, do, and observe |
-| Generic `@cherrystudio/ui` primitive/composite | `packages/ui` test using the real component | Accessibility, interaction, and documented visual contract |
+| Generic `@huatuostudio/ui` primitive/composite | `packages/ui` test using the real component | Accessibility, interaction, and documented visual contract |
 | Critical cross-window or cross-process workflow | E2E test | A complete user outcome |
 | Compile-time public type contract | Type test | Accepted and rejected usage, with no duplicate runtime test |
 
@@ -139,12 +139,12 @@ Do not:
 - recreate a complex production component inside a test mock;
 - assert behavior that exists only in the mock.
 
-### `@cherrystudio/ui` transition rule
+### `@huatuostudio/ui` transition rule
 
-Renderer tests currently have lightweight global stand-ins for `@cherrystudio/ui`. They may isolate
+Renderer tests currently have lightweight global stand-ins for `@huatuostudio/ui`. They may isolate
 an unrelated UI leaf, but they do not prove the behavior of the real UI component.
 
-- Do not add new behavior to the global `@cherrystudio/ui` mock for one feature test.
+- Do not add new behavior to the global `@huatuostudio/ui` mock for one feature test.
 - Do not assert tooltip, popover, dialog, menu, focus, keyboard, or accessibility behavior against a
   stand-in and describe it as product coverage.
 - Test generic UI behavior in `packages/ui` with the real component.

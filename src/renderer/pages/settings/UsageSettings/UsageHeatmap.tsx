@@ -1,4 +1,4 @@
-import { NormalTooltip, SegmentedControl, Skeleton } from '@cherrystudio/ui'
+import { NormalTooltip, SegmentedControl, Skeleton } from '@huatuostudio/ui'
 import { formatCompactNumber } from '@renderer/utils/number'
 import { cn } from '@renderer/utils/style'
 import { getLocaleFirstDayOfWeek } from '@renderer/utils/time'

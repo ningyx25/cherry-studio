@@ -1,4 +1,4 @@
-import { definePlugin } from '@cherrystudio/ai-core'
+import { definePlugin } from '@huatuostudio/ai-core'
 import { ENDPOINT_TYPE } from '@shared/data/types/model'
 import { extractReasoningMiddleware } from 'ai'
 

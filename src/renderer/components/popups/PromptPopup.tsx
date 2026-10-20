@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, Textarea } from '@cherrystudio/ui'
+import { Box, Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, Textarea } from '@huatuostudio/ui'
 import { createPopup, type PopupInjectedProps } from '@renderer/services/popup'
 import { X } from 'lucide-react'
 import type { ComponentProps, CSSProperties, KeyboardEvent, ReactNode } from 'react'

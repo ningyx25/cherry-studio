@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
+import { Button, Tooltip } from '@huatuostudio/ui'
 import { cn } from '@renderer/utils/style'
 import type { ReactNode } from 'react'
 

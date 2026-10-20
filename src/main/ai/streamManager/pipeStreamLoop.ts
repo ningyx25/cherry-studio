@@ -1,7 +1,7 @@
 /**
  * Shared chunk-pipe primitive. Drives a `ReadableStream<UIMessageChunk>`,
  * delivers each chunk via `onChunk`, and concurrently runs AI SDK's
- * `readUIMessageStream` to accumulate a `CherryUIMessage` snapshot.
+ * `readUIMessageStream` to accumulate a `HuaTuoUIMessage` snapshot.
  *
  * Contract:
  *  - Never throws. Setup / broadcast errors return as `threw`; in-stream
@@ -16,19 +16,19 @@
  *    callers tracking provider-side completion time aren't inflated.
  */
 
-import { type CherryUIMessage } from '@shared/data/types/message'
+import { type HuaTuoUIMessage } from '@shared/data/types/message'
 import { readUIMessageStream, type UIMessageChunk } from 'ai'
 
 export interface PipeStreamLoopOptions {
   onChunk: (chunk: UIMessageChunk) => void
   /** Seed for `readUIMessageStream`; required by `continue-conversation` so accumulator resumes the existing message. */
-  accumulatorSeed?: CherryUIMessage
+  accumulatorSeed?: HuaTuoUIMessage
   /** Per-snapshot callback for live mid-stream finalMessage visibility. */
-  onAccumulatedSnapshot?: (msg: CherryUIMessage) => void
+  onAccumulatedSnapshot?: (msg: HuaTuoUIMessage) => void
 }
 
 export interface PipeStreamLoopResult {
-  finalMessage?: CherryUIMessage
+  finalMessage?: HuaTuoUIMessage
   /** First in-stream error chunk's `errorText`. */
   streamErrorText?: string
   /** Thrown error from broadcast loop or pre-stream setup. Wrapped so `undefined` remains distinguishable from no error. */
@@ -44,8 +44,8 @@ export async function pipeStreamLoop(
 ): Promise<PipeStreamLoopResult> {
   const [forBroadcast, forAccum] = stream.tee()
 
-  let finalMessage: CherryUIMessage | undefined
-  const accumulator = runAccumulator(forAccum, options.accumulatorSeed, (msg: CherryUIMessage) => {
+  let finalMessage: HuaTuoUIMessage | undefined
+  const accumulator = runAccumulator(forAccum, options.accumulatorSeed, (msg: HuaTuoUIMessage) => {
     finalMessage = msg
     options.onAccumulatedSnapshot?.(msg)
   }).catch(() => {
@@ -86,10 +86,10 @@ export async function pipeStreamLoop(
 
 async function runAccumulator(
   chunkStream: ReadableStream<UIMessageChunk>,
-  seed: CherryUIMessage | undefined,
-  onSnapshot: (msg: CherryUIMessage) => void
+  seed: HuaTuoUIMessage | undefined,
+  onSnapshot: (msg: HuaTuoUIMessage) => void
 ): Promise<void> {
-  const uiStream = readUIMessageStream<CherryUIMessage>({ stream: chunkStream, message: seed })
+  const uiStream = readUIMessageStream<HuaTuoUIMessage>({ stream: chunkStream, message: seed })
   const reader = uiStream.getReader()
   try {
     while (true) {

@@ -1,4 +1,4 @@
-import { Button, RowFlex, Tooltip } from '@cherrystudio/ui'
+import { Button, RowFlex, Tooltip } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { getMessageDeleteUnavailableText } from '@renderer/components/chat/messages/utils/messageDeleteAvailability'
 import { formatErrorMessageWithPrefix } from '@renderer/utils/error'

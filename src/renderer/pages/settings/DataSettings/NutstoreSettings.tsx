@@ -1,5 +1,5 @@
-import { Button, Input, RowFlex, Switch, WarnTooltip } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, Input, RowFlex, Switch, WarnTooltip } from '@huatuostudio/ui'
 import Selector from '@renderer/components/Selector'
 import {
   SettingDivider,
@@ -76,8 +76,8 @@ const NutstoreSettings: FC = () => {
           setNutstoreUsername(decrypted.username)
           setNutstorePass(decrypted.access_token)
           if (!nutstorePath) {
-            void setNutstorePath('/cherry-studio')
-            // setStoragePath('/cherry-studio')
+            void setNutstorePath('/huatuo-studio')
+            // setStoragePath('/huatuo-studio')
           }
         }
       }

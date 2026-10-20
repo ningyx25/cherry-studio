@@ -89,7 +89,7 @@ describe('moveWorkspaceItemToTrash', () => {
       platform: 'win32' as const,
       homeDirectory: 'C:\\Users\\alice',
       downloadsDirectory: 'C:\\Users\\alice\\Downloads',
-      protectedDirectories: ['C:\\Users\\alice\\AppData\\Roaming\\CherryStudio'],
+      protectedDirectories: ['C:\\Users\\alice\\AppData\\Roaming\\HuaTuoStudio'],
       environment: {
         SystemRoot: 'C:\\Windows',
         ProgramFiles: 'C:\\Program Files',
@@ -129,7 +129,7 @@ describe('moveWorkspaceItemToTrash', () => {
       platform: 'darwin' as const,
       homeDirectory: '/Users/alice',
       downloadsDirectory: '/Users/alice/Downloads',
-      protectedDirectories: ['/Users/alice/.cherrystudio']
+      protectedDirectories: ['/Users/alice/.huatuostudio']
     }
 
     expect(getProtectedTrashTargetReason('/System/Library/CoreServices', '/System', context)).toContain(

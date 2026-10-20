@@ -1,4 +1,4 @@
-import { Combobox, type ComboboxOption } from '@cherrystudio/ui'
+import { Combobox, type ComboboxOption } from '@huatuostudio/ui'
 import { SettingRow, SettingRowTitle } from '@renderer/components/SettingsPrimitives'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'

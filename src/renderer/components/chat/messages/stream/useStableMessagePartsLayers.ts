@@ -29,7 +29,7 @@
  * - The upstream `messages` array carries per-message refs that are already
  *   stable for non-streaming items (e.g. `useTopicMessages`'s WeakMap
  *   projection cache on Home). The streaming item gets a new
- *   `CherryUIMessage` ref each chunk, and its `parts` array ref changes
+ *   `HuaTuoUIMessage` ref each chunk, and its `parts` array ref changes
  *   with it.
  * - `historyPartsByMessageId` contains persisted parts plus translations. It
  *   never observes the high-frequency execution overlay.
@@ -40,14 +40,14 @@
  *   identity when no relevant message changed.
  */
 
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { useMemo, useRef } from 'react'
 
 import type { TranslationOverlayEntry } from '../blocks/MessagePartsContext'
 
 export interface StableMessagePartsLayers {
-  historyPartsByMessageId: Record<string, CherryMessagePart[]>
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  historyPartsByMessageId: Record<string, HuaTuoMessagePart[]>
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 }
 
 interface StableMessagePartsLayersCache {
@@ -55,7 +55,7 @@ interface StableMessagePartsLayersCache {
   value: StableMessagePartsLayers
 }
 
-function partsContentEqual(a: CherryMessagePart[], b: CherryMessagePart[]): boolean {
+function partsContentEqual(a: HuaTuoMessagePart[], b: HuaTuoMessagePart[]): boolean {
   if (a === b) return true
   if (a.length !== b.length) return false
   for (let i = 0; i < a.length; i++) {
@@ -77,9 +77,9 @@ function partsContentEqual(a: CherryMessagePart[], b: CherryMessagePart[]): bool
 }
 
 function appendTranslation(
-  parts: CherryMessagePart[],
+  parts: HuaTuoMessagePart[],
   trEntry: TranslationOverlayEntry | undefined
-): CherryMessagePart[] {
+): HuaTuoMessagePart[] {
   if (!trEntry) return parts
   const filtered = parts.filter((part) => part.type !== 'data-translation')
   const translationPart = {
@@ -89,13 +89,13 @@ function appendTranslation(
       targetLanguage: trEntry.targetLanguage,
       ...(trEntry.sourceLanguage && { sourceLanguage: trEntry.sourceLanguage })
     }
-  } as CherryMessagePart
+  } as HuaTuoMessagePart
   return [...filtered, translationPart]
 }
 
 export function useStableMessagePartsLayers(
-  messages: CherryUIMessage[],
-  overlay: Record<string, CherryMessagePart[]>,
+  messages: HuaTuoUIMessage[],
+  overlay: Record<string, HuaTuoMessagePart[]>,
   translationOverlay: Record<string, TranslationOverlayEntry>
 ): StableMessagePartsLayers {
   const cacheRef = useRef<StableMessagePartsLayersCache>({
@@ -110,14 +110,14 @@ export function useStableMessagePartsLayers(
     const previous = cacheRef.current
     const previousHistory = previous.value.historyPartsByMessageId
     const previousCurrent = previous.value.partsByMessageId
-    const nextHistory: Record<string, CherryMessagePart[]> = {}
-    const nextCurrent: Record<string, CherryMessagePart[]> = {}
+    const nextHistory: Record<string, HuaTuoMessagePart[]> = {}
+    const nextCurrent: Record<string, HuaTuoMessagePart[]> = {}
     let historyChanged = previous.messageCount !== messages.length
     let currentChanged = previous.messageCount !== messages.length
     let hasExecutionOverlay = false
 
     for (const message of messages) {
-      const baseParts = (message.parts ?? []) as CherryMessagePart[]
+      const baseParts = (message.parts ?? []) as HuaTuoMessagePart[]
       const translation = translationOverlay[message.id]
       const historyCandidate = appendTranslation(baseParts, translation)
       const previousHistoryParts = previousHistory[message.id]
@@ -186,9 +186,9 @@ export function useStableMessagePartsLayers(
 }
 
 export function useStablePartsByMessageId(
-  messages: CherryUIMessage[],
-  overlay: Record<string, CherryMessagePart[]>,
+  messages: HuaTuoUIMessage[],
+  overlay: Record<string, HuaTuoMessagePart[]>,
   translationOverlay: Record<string, TranslationOverlayEntry>
-): Record<string, CherryMessagePart[]> {
+): Record<string, HuaTuoMessagePart[]> {
   return useStableMessagePartsLayers(messages, overlay, translationOverlay).partsByMessageId
 }

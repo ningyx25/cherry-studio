@@ -4,7 +4,7 @@
 
 `IpcChatTransport`
 (`src/renderer/services/aiTransport/IpcChatTransport.ts`) implements AI SDK's
-`ChatTransport<CherryUIMessage>` over Electron IPC. The renderer feeds
+`ChatTransport<HuaTuoUIMessage>` over Electron IPC. The renderer feeds
 it into `useChat({ id: topicId, transport: ... })`. The `ChatTransport`
 interface has only two methods — `sendMessages` / `reconnectToStream`;
 the transport relays each over `window.api.ai.stream*` to Main's
@@ -41,7 +41,7 @@ Per-topic chunks arrive via `onStreamChunk` listeners filtered by
 | `submit-message` | Includes `userMessageParts` (the latest message) so Main persists it |
 | `regenerate-message` | Sends `parentAnchorId` only; Main re-runs from the existing parent |
 
-Cherry's transport never derives `continue-conversation` from
+HuaTuo's transport never derives `continue-conversation` from
 message-state introspection. Approval-driven resumption goes through the
 explicit `Ai_ToolApproval_Respond` IPC handled by
 [`useToolApprovalBridge`](./tool-approval.md).

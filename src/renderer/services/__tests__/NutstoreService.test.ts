@@ -12,7 +12,7 @@ describe('restoreFromNutstore', () => {
   beforeEach(async () => {
     vi.clearAllMocks()
     await preferenceService.set('data.backup.nutstore.token', 'encrypted-token')
-    await preferenceService.set('data.backup.nutstore.path', '/cherry-studio')
+    await preferenceService.set('data.backup.nutstore.path', '/huatuo-studio')
     mocks.decryptToken.mockResolvedValue({ username: 'user', access_token: 'access-token' })
     Object.assign(window.api, {
       backup: { restoreFromWebdav: mocks.restoreFromWebdav },

@@ -53,7 +53,7 @@ export function getExtraHeaders(provider: Provider): Record<string, string> {
       delete headers[name]
     }
   }
-  return { ...headers, 'X-Source': 'cherry-studio' }
+  return { ...headers, 'X-Source': 'huatuo-studio' }
 }
 
 export function defaultHeaders(provider: Provider): Record<string, string> {

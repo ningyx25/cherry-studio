@@ -6,9 +6,9 @@ import path from 'path'
 import { getBinarySearchDirs } from './binaryEnv'
 
 /**
- * Resolution for Cherry-managed binaries — turns a tool name into the on-disk
+ * Resolution for HuaTuo-managed binaries — turns a tool name into the on-disk
  * path of the bundled-or-installed executable, searching the layout defined by
- * `binaryEnv.getBinarySearchDirs()` (mise shims first, then `cherry.bin`).
+ * `binaryEnv.getBinarySearchDirs()` (mise shims first, then `huatuo.bin`).
  */
 
 export function getBinaryName(name: string): string {
@@ -18,8 +18,8 @@ export function getBinaryName(name: string): string {
 export async function getBinaryPath(name?: string): Promise<string> {
   const searchDirs = getBinarySearchDirs()
   if (!name) {
-    // Legacy: no-arg returns the cherry.bin directory (extract target).
-    return application.getPath('cherry.bin')
+    // Legacy: no-arg returns the huatuo.bin directory (extract target).
+    return application.getPath('huatuo.bin')
   }
 
   const binaryName = getBinaryName(name)

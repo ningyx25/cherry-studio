@@ -1,5 +1,5 @@
-import { Button, Tooltip } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, Tooltip } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import NarrowLayout from '@renderer/components/chat/layout/NarrowLayout'
 import { getPathBasename } from '@renderer/components/chat/panes/artifactPanePath'
 import type {

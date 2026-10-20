@@ -1,14 +1,5 @@
 import { application } from '@application'
 import {
-  type AiPlugin,
-  embedMany as aiCoreEmbedMany,
-  generateImage as aiCoreGenerateImage,
-  rerank as aiCoreRerank,
-  type RuntimeProviderCallEvent,
-  type RuntimeProviderCallHandler
-} from '@cherrystudio/ai-core'
-import type { ParamValues } from '@cherrystudio/provider-registry'
-import {
   type AiUsageCaptureContext,
   aiUsageRecordService,
   type MessageRef,
@@ -17,6 +8,15 @@ import {
 import { assistantDataService } from '@data/services/AssistantService'
 import { jobService } from '@data/services/JobService'
 import { providerRegistryService } from '@data/services/ProviderRegistryService'
+import {
+  type AiPlugin,
+  embedMany as aiCoreEmbedMany,
+  generateImage as aiCoreGenerateImage,
+  rerank as aiCoreRerank,
+  type RuntimeProviderCallEvent,
+  type RuntimeProviderCallHandler
+} from '@huatuostudio/ai-core'
+import type { ParamValues } from '@huatuostudio/provider-registry'
 import { loggerService } from '@logger'
 import type { JobHandle } from '@main/core/job/types'
 import { BaseService, DependsOn, Injectable, Phase, ServicePhase } from '@main/core/lifecycle'

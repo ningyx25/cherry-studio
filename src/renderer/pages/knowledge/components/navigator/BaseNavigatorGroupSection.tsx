@@ -1,4 +1,4 @@
-import { AccordionContent, AccordionItem } from '@cherrystudio/ui'
+import { AccordionContent, AccordionItem } from '@huatuostudio/ui'
 
 import BaseNavigatorSectionTrigger from './BaseNavigatorSectionTrigger'
 import KnowledgeBaseRow from './KnowledgeBaseRow'

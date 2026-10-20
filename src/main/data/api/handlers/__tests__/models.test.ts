@@ -88,7 +88,7 @@ describe('Model handler validation', () => {
 
   it('accepts bulk update payload arrays larger than the create batch limit', () => {
     const items = Array.from({ length: MODELS_BATCH_MAX_ITEMS + 63 }, (_, index) => ({
-      uniqueModelId: `cherryin::model-${index}`,
+      uniqueModelId: `huatuoin::model-${index}`,
       patch: { isEnabled: false }
     }))
 
@@ -96,25 +96,25 @@ describe('Model handler validation', () => {
   })
 
   it('accepts delete query ids larger than the create batch limit', () => {
-    const ids = Array.from({ length: MODELS_BATCH_MAX_ITEMS + 63 }, (_, index) => `cherryin::model-${index}`)
+    const ids = Array.from({ length: MODELS_BATCH_MAX_ITEMS + 63 }, (_, index) => `huatuoin::model-${index}`)
 
     expect(DeleteModelsQuerySchema.parse({ ids }).ids).toHaveLength(ids.length)
   })
 
   it('preserves commas inside delete query ids when passed as an array', () => {
-    const ids = ['cherryin::model,with-comma', 'cherryin::model-2']
+    const ids = ['huatuoin::model,with-comma', 'huatuoin::model-2']
 
     expect(DeleteModelsQuerySchema.parse({ ids }).ids).toEqual(ids)
   })
 
   it('treats a string delete query id as one id without comma splitting', () => {
-    const id = 'cherryin::model,with-comma'
+    const id = 'huatuoin::model,with-comma'
 
     expect(DeleteModelsQuerySchema.parse({ ids: id }).ids).toEqual([id])
   })
 
   it('rejects delete query ids over the configured limit', () => {
-    const ids = Array.from({ length: MODELS_DELETE_MAX_IDS + 1 }, (_, index) => `cherryin::model-${index}`)
+    const ids = Array.from({ length: MODELS_DELETE_MAX_IDS + 1 }, (_, index) => `huatuoin::model-${index}`)
 
     expect(() => DeleteModelsQuerySchema.parse({ ids })).toThrow()
   })
@@ -296,15 +296,15 @@ describe('/models', () => {
   })
 
   it('delegates bulk PATCH to modelService.bulkUpdate', async () => {
-    const updated = [{ id: 'cherryin::model-1', isEnabled: false }]
+    const updated = [{ id: 'huatuoin::model-1', isEnabled: false }]
     bulkUpdateMock.mockReturnValueOnce(updated)
 
     const result = await modelHandlers['/models'].PATCH({
-      body: [{ uniqueModelId: 'cherryin::model-1', patch: { isEnabled: false } }]
+      body: [{ uniqueModelId: 'huatuoin::model-1', patch: { isEnabled: false } }]
     } as any)
 
     expect(bulkUpdateMock).toHaveBeenCalledWith([
-      { providerId: 'cherryin', modelId: 'model-1', patch: { isEnabled: false } }
+      { providerId: 'huatuoin', modelId: 'model-1', patch: { isEnabled: false } }
     ])
     expect(result).toBe(updated)
   })

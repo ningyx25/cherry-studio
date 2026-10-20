@@ -7,7 +7,7 @@
  *   4. multiple markers on path → deepest wins
  */
 
-import type * as AiCore from '@cherrystudio/ai-core'
+import type * as AiCore from '@huatuostudio/ai-core'
 import { createUniqueModelId, type UniqueModelId } from '@shared/data/types/model'
 import { estimateTokenCount } from 'tokenx'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -71,7 +71,7 @@ vi.mock('../../../contextBuild/resolveRequestContextSettings', () => ({
 // Mock the context-module summarizers. summarizeModelMessages (turn-start fold) returns
 // 'SUMMARY_TEXT' by default; compactModelMessages (in-loop hook) is wired so the
 // interaction test can assert it is NOT called at step 0 and IS called on growth.
-vi.mock('@cherrystudio/ai-core', async (importOriginal) => ({
+vi.mock('@huatuostudio/ai-core', async (importOriginal) => ({
   ...(await importOriginal<typeof AiCore>()),
   summarizeModelMessages: mockSummarizeModelMessages,
   compactModelMessages: mockCompactModelMessages
@@ -323,7 +323,7 @@ describe('PersistentChatContextProvider — durable compaction integration', () 
       mediaType: 'text/plain',
       url: 'file:///tmp/log.txt',
       filename: 'log.txt',
-      providerMetadata: { cherry: { fileEntryId: 'fe-1' } }
+      providerMetadata: { huatuo: { fileEntryId: 'fe-1' } }
     })
     const path = [
       attachedMsg,
@@ -361,7 +361,7 @@ describe('PersistentChatContextProvider — durable compaction integration', () 
       mediaType: 'text/plain',
       url: 'file:///tmp/folded.txt',
       filename: 'folded.txt',
-      providerMetadata: { cherry: { fileEntryId: 'fe-1' } }
+      providerMetadata: { huatuo: { fileEntryId: 'fe-1' } }
     })
     const liveMsg = fakeMsg('u2', 'user', 'new question')
     ;(liveMsg.data as { parts: unknown[] }).parts.push({
@@ -369,7 +369,7 @@ describe('PersistentChatContextProvider — durable compaction integration', () 
       mediaType: 'text/plain',
       url: 'file:///tmp/live.txt',
       filename: 'live.txt',
-      providerMetadata: { cherry: { fileEntryId: 'fe-2' } }
+      providerMetadata: { huatuo: { fileEntryId: 'fe-2' } }
     })
     const pathWithLive = [foldedMsg, fakeMsg('a1', 'assistant', 'old answer', 'PRIOR SUMMARY'), liveMsg]
     const pathWithoutLive = [
@@ -737,7 +737,7 @@ describe('PersistentChatContextProvider — durable compaction integration', () 
 // Cross-layer interaction: turn-start (durable) vs in-loop compaction.
 //
 // Two compaction mechanisms run at different altitudes:
-//   • turn-start  — resolveCompactedHistory, on cherry ROWS, runs FIRST and
+//   • turn-start  — resolveCompactedHistory, on huatuo ROWS, runs FIRST and
 //     serves a history that is ≤ 0.8×window BY CONSTRUCTION.
 //   • in-loop     — inLoopCompactionFeature.prepareStep, on ModelMessage[], the
 //     SDK's about-to-send prompt; fires only when estimate ≥ 0.8×window.
@@ -810,7 +810,7 @@ describe('in-loop vs turn-start compaction — no double-compact', () => {
     expect(servedRows[0].id).toBe('compaction:a2')
     expect(servedRows[1].role).toBe('user')
 
-    // Bridge: served CherryUIMessage[] → ModelMessage[] (real conversion).
+    // Bridge: served HuaTuoUIMessage[] → ModelMessage[] (real conversion).
     const modelMessages = await convertToModelMessages(servedRows as any)
     return { servedRows, modelMessages }
   }

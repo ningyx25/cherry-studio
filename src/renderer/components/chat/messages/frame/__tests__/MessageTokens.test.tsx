@@ -22,7 +22,7 @@ const dataApiMocks = vi.hoisted(() => ({
 
 vi.mock('@renderer/data/hooks/useDataApi', () => dataApiMocks)
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   HoverCard: ({ children, onOpenChange }: { children: ReactNode; onOpenChange?: (open: boolean) => void }) => (
     <div data-testid="message-token-hover-root" onMouseEnter={() => onOpenChange?.(true)}>
       {children}

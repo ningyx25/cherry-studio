@@ -34,8 +34,8 @@ import { stripHostReprefix } from '../src/utils/normalize'
 import { deriveLegacyReasoningFields } from '../src/utils/reasoningControls'
 import { canonOf, prefixHit, splitOverrideWireId } from './canonicalize'
 import {
-  type CherryMeta,
   finalizeMeta,
+  type HuaTuoMeta,
   mergeMeta,
   mergeOpenRouterReasoningContracts,
   type ModelsDevApi,
@@ -275,7 +275,7 @@ async function load<T>(env: string, url: string, schema: ZodType<T>): Promise<T>
 }
 
 // ── canonical metadata index: canonId → metadata UNIONED across every source ──
-type IndexEntry = { meta: CherryMeta; providers: Set<string> }
+type IndexEntry = { meta: HuaTuoMeta; providers: Set<string> }
 type Index = Map<string, IndexEntry>
 
 /**
@@ -286,7 +286,7 @@ type Index = Map<string, IndexEntry>
  */
 function buildIndex(md: ModelsDevApi, or: OpenRouterApi): Index {
   const index: Index = new Map()
-  const consider = (id: string, mapped: CherryMeta | null, provider: string) => {
+  const consider = (id: string, mapped: HuaTuoMeta | null, provider: string) => {
     if (!mapped) return
     const k = canonOf(id)
     if (!k) return

@@ -314,16 +314,16 @@ describe('importLegacySessionMessages', () => {
     await dbh.db
       .insert(userProviderTable)
       .values({
-        providerId: 'cherryin',
-        name: 'CherryIN',
+        providerId: 'huatuoin',
+        name: 'HuaTuoIN',
         orderKey: 'a0'
       })
       .onConflictDoNothing()
     await dbh.db
       .insert(userModelTable)
       .values({
-        id: 'cherryin::anthropic/claude-sonnet-4.5',
-        providerId: 'cherryin',
+        id: 'huatuoin::anthropic/claude-sonnet-4.5',
+        providerId: 'huatuoin',
         modelId: 'anthropic/claude-sonnet-4.5',
         presetModelId: 'anthropic/claude-sonnet-4.5',
         name: 'Claude Sonnet 4.5',
@@ -346,7 +346,7 @@ describe('importLegacySessionMessages', () => {
             model: {
               id: 'anthropic/claude-sonnet-4.5',
               name: 'Claude Sonnet 4.5',
-              provider: 'cherryin',
+              provider: 'huatuoin',
               group: 'anthropic'
             },
             modelId: 'anthropic/claude-sonnet-4.5',
@@ -373,7 +373,7 @@ describe('importLegacySessionMessages', () => {
       .select()
       .from(agentSessionMessageTable)
       .where(eq(agentSessionMessageTable.sessionId, 's-stats'))
-    expect(row.modelId).toBe('cherryin::anthropic/claude-sonnet-4.5')
+    expect(row.modelId).toBe('huatuoin::anthropic/claude-sonnet-4.5')
     expect(row.stats).toEqual({
       inputTokens: 8,
       outputTokens: 13,

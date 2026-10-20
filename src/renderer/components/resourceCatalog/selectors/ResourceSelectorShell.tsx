@@ -1,5 +1,5 @@
-import { Checkbox, EmptyState, type EmptyStatePreset } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Checkbox, EmptyState, type EmptyStatePreset } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import {
   MODEL_SELECTOR_ROW_CHECKBOX_CLASS,
   ModelSelectorRow,

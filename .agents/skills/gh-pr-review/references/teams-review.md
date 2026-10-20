@@ -22,7 +22,7 @@ share conversation history.
 |------|---------|
 | `code-checklist.md` | Code review checklist |
 | `doc-checklist.md` | Document review checklist |
-| `cherry-review-guidance.md` | Cherry Studio project-specific review boundaries |
+| `huatuo-review-guidance.md` | HuaTuo Studio project-specific review boundaries |
 | `judgment-matrix.md` | Risk levels, worth-fixing criteria, special rules |
 | `checklist-evolution.md` | Checklist update flow and rules |
 
@@ -151,8 +151,8 @@ Each reviewer receives:
   pass raw diff or file contents.
 - **Checklist**: `code-checklist.md` for code, `doc-checklist.md` for doc, both
   for mixed. Include the checklist content verbatim in the reviewer prompt.
-  Include `cherry-review-guidance.md` verbatim for code, mixed, architecture
-  documentation, and project-skill modules. For doc-only modules outside Cherry
+  Include `huatuo-review-guidance.md` verbatim for code, mixed, architecture
+  documentation, and project-skill modules. For doc-only modules outside HuaTuo
   architecture/policies, include it only when the document describes project
   behavior, paths, tools, or review rules.
   For React/performance-heavy modules, also include relevant rules from

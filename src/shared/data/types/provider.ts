@@ -11,14 +11,14 @@
  * Zod schemas are the single source of truth — all types derived via z.infer<>
  */
 
-import type { EndpointType, ServerTool, ServerToolConfig } from '@cherrystudio/provider-registry'
+import type { EndpointType, ServerTool, ServerToolConfig } from '@huatuostudio/provider-registry'
 import {
   CURRENCY,
   ENDPOINT_TYPE,
   FastModeTransportSchema,
   objectValues,
   ServerToolConfigSchema
-} from '@cherrystudio/provider-registry'
+} from '@huatuostudio/provider-registry'
 import * as z from 'zod'
 
 export type { ServerTool, ServerToolConfig }
@@ -302,7 +302,7 @@ export const ProviderSchema = z.object({
   serverTools: z.array(ServerToolConfigSchema).optional(),
   /**
    * Which credential kinds this provider accepts (`'api-key'` / `'oauth'` /
-   * `'external-cli'`) — a set, since a provider can offer more than one (CherryIN
+   * `'external-cli'`) — a set, since a provider can offer more than one (HuaTuoIN
    * takes both a user key and an OAuth login). Carried from the registry; absent
    * ⇒ `['api-key']`. "Login-based" is the derived `!includes('api-key')`. See
    * {@link isLoginBasedProvider}.

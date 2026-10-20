@@ -1,4 +1,4 @@
-import { Button, ReorderableList, Tooltip } from '@cherrystudio/ui'
+import { Button, ReorderableList, Tooltip } from '@huatuostudio/ui'
 import { type ChatInputTokenKind, type ChatTokenView } from '@renderer/components/composer/chatTokenView'
 import { ComposerToken } from '@renderer/components/composer/tokenView'
 import { isComposerInputTokenKind } from '@renderer/utils/composerTokenPolicy'

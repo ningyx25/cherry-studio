@@ -1,5 +1,5 @@
-import { Button, InfoTooltip, Input, RowFlex, Switch } from '@cherrystudio/ui'
 import { usePreference } from '@data/hooks/usePreference'
+import { Button, InfoTooltip, Input, RowFlex, Switch } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { Client } from '@notionhq/client'
 import {
@@ -72,7 +72,7 @@ const NotionSettings: FC = () => {
   }
 
   const handleNotionTitleClick = () => {
-    void ipcApi.request('system.shell.open_website', 'https://docs.cherry-ai.com/advanced-basic/notion')
+    void ipcApi.request('system.shell.open_website', 'https://docs.huatuo.ai/advanced-basic/notion')
   }
 
   return (

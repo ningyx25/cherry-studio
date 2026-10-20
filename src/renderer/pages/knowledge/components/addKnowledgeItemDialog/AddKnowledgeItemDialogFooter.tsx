@@ -1,4 +1,4 @@
-import { Button, DialogClose } from '@cherrystudio/ui'
+import { Button, DialogClose } from '@huatuostudio/ui'
 import type { KnowledgeItemType } from '@shared/data/types/knowledge'
 import { useTranslation } from 'react-i18next'
 

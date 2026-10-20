@@ -61,12 +61,12 @@ exports.default = async function (configuration) {
     const { path } = configuration
     if (configuration.path) {
       try {
-        const certPath = process.env.CHERRY_CERT_PATH
-        const keyContainer = process.env.CHERRY_CERT_KEY
-        const csp = process.env.CHERRY_CERT_CSP
+        const certPath = process.env.HUATUO_CERT_PATH
+        const keyContainer = process.env.HUATUO_CERT_KEY
+        const csp = process.env.HUATUO_CERT_CSP
 
         if (!certPath || !keyContainer || !csp) {
-          throw new Error('CHERRY_CERT_PATH, CHERRY_CERT_KEY or CHERRY_CERT_CSP is not set')
+          throw new Error('HUATUO_CERT_PATH, HUATUO_CERT_KEY or HUATUO_CERT_CSP is not set')
         }
 
         console.log('Start code signing...')

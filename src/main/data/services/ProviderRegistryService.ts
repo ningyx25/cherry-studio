@@ -9,11 +9,12 @@
  *   with user-row overlay logic) — kept here because they belong to the registry domain
  *   (preset → override resolution, registry-derived reasoning resolution).
  *
- * Pure JSON loading, caching, and lookups live in @cherrystudio/provider-registry
+ * Pure JSON loading, caching, and lookups live in @huatuostudio/provider-registry
  * (RegistryLoader, buildPersistedEndpointConfigs).
  */
 
 import { application } from '@application'
+import type { StoredEndpointConfigOverride } from '@data/db/schemas/userProvider'
 import type {
   ProtoModelConfig,
   ProtoProviderConfig,
@@ -26,8 +27,8 @@ import type {
   ReasoningWireDialect,
   ReasoningWireProfile,
   ServerToolConfig
-} from '@cherrystudio/provider-registry'
-import type { EndpointType, Modality, ModelCapability } from '@cherrystudio/provider-registry'
+} from '@huatuostudio/provider-registry'
+import type { EndpointType, Modality, ModelCapability } from '@huatuostudio/provider-registry'
 import {
   buildPersistedEndpointConfigs,
   deriveLegacyReasoningFields,
@@ -40,9 +41,8 @@ import {
   REASONING_EFFORT,
   REASONING_FORMAT_PROFILES,
   selectFormatWire
-} from '@cherrystudio/provider-registry'
-import { RegistryLoader } from '@cherrystudio/provider-registry/node'
-import type { StoredEndpointConfigOverride } from '@data/db/schemas/userProvider'
+} from '@huatuostudio/provider-registry'
+import { RegistryLoader } from '@huatuostudio/provider-registry/node'
 import { loggerService } from '@logger'
 import { ErrorCode, isDataApiError } from '@shared/data/api/errors'
 import type { ProviderPreset, ProviderPresetField } from '@shared/data/api/schemas/providers'

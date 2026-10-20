@@ -63,7 +63,7 @@ export interface RegisteredKeybindingRule<TCommand extends string = string>
   whenSource?: ContextExprSource
 }
 
-export type MenuPresentationMode = 'native' | 'cherry'
+export type MenuPresentationMode = 'native' | 'huatuo'
 
 export type MenuLocation =
   | 'app.menu'

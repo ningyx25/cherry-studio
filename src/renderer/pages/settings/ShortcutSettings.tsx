@@ -1,3 +1,4 @@
+import { preferenceService } from '@data/PreferenceService'
 import {
   Button,
   Input,
@@ -10,8 +11,7 @@ import {
   RowFlex,
   Switch,
   Tooltip
-} from '@cherrystudio/ui'
-import { preferenceService } from '@data/PreferenceService'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { SettingGroup, SettingsContentBody } from '@renderer/components/SettingsPrimitives'

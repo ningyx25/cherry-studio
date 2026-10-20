@@ -27,7 +27,7 @@ export class McpOAuthClientProvider implements OAuthClientProvider {
       callbackPath: options.callbackPath || '/oauth/callback',
       configDir: options.configDir || configDir,
       clientName: options.clientName || 'HuaTuo Studio',
-      clientUri: options.clientUri || 'https://github.com/ningyx25/cherry-studio'
+      clientUri: options.clientUri || 'https://github.com/huatuostudio/huatuo-studio'
     }
     this.storage = new JsonFileStorage(this.config.serverUrlHash, this.config.configDir)
   }

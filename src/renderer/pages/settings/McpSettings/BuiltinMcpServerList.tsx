@@ -1,4 +1,4 @@
-import { Badge, Button, Popover, PopoverContent, PopoverTrigger, Tabs, TabsList, TabsTrigger } from '@cherrystudio/ui'
+import { Badge, Button, Popover, PopoverContent, PopoverTrigger, Tabs, TabsList, TabsTrigger } from '@huatuostudio/ui'
 import CollapsibleSearchBar from '@renderer/components/CollapsibleSearchBar'
 import { SettingTitle } from '@renderer/components/SettingsPrimitives'
 import { useMcpServers } from '@renderer/hooks/useMcpServer'
@@ -78,7 +78,7 @@ const BuiltinMcpServerList: FC = () => {
                   <span className="truncate text-[14px] leading-5">{server.name}</span>
                   {server?.shouldConfig && (
                     <a
-                      href="https://docs.cherry-ai.com/advanced-basic/mcp/buildin"
+                      href="https://docs.huatuo.ai/advanced-basic/mcp/buildin"
                       target="_blank"
                       rel="noopener noreferrer">
                       <Badge

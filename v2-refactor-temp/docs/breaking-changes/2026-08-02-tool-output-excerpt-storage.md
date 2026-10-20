@@ -20,4 +20,4 @@ Nothing — automatic. Existing conversations keep their full outputs in place; 
 
 ## Notes for release manager
 
-The pre-existing temp directory (`<temp>/CherryStudio/context-build-vfs`) is removed once at startup. The model-facing `fs_read` tool is now restricted to exactly the persisted outputs referenced by the current conversation (previously: the whole temp directory).
+The pre-existing temp directory (`<temp>/HuaTuoStudio/context-build-vfs`) is removed once at startup. The model-facing `fs_read` tool is now restricted to exactly the persisted outputs referenced by the current conversation (previously: the whole temp directory).

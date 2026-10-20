@@ -1,4 +1,4 @@
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { MockUsePreferenceUtils } from '@test-mocks/renderer/usePreference'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -18,8 +18,8 @@ const mocks = vi.hoisted(() => ({
   writeText: vi.fn()
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => ({
-  ...(await importOriginal<typeof CherryStudioUi>()),
+vi.mock('@huatuostudio/ui', async (importOriginal) => ({
+  ...(await importOriginal<typeof HuaTuoStudioUi>()),
   CodeEditor: mocks.CodeEditor
 }))
 

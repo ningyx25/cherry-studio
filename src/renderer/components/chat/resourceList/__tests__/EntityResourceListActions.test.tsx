@@ -37,7 +37,7 @@ const preferenceMocks = vi.hoisted(() => ({
   values: new Map<string, unknown>()
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, onClick, ...props }: { children?: ReactNode; onClick?: () => void }) => (
     <button {...props} type="button" onClick={onClick}>
       {children}
@@ -372,11 +372,11 @@ describe('classic layout entity resource list actions', () => {
     await waitFor(() => expect(onActiveAgentDeleted).toHaveBeenCalledWith('agent-1'))
   })
 
-  it('deletes only tasks for the built-in Cherry Assistant in the classic layout', async () => {
+  it('deletes only tasks for the built-in HuaTuo Assistant in the classic layout', async () => {
     agentDataMocks.agents = [
       {
         id: 'agent-1',
-        name: 'Cherry Assistant',
+        name: 'HuaTuo Assistant',
         orderKey: 'a',
         configuration: { builtin_role: 'assistant' },
         model: 'anthropic::claude-sonnet-4',

@@ -1,4 +1,4 @@
-import { ReorderableList } from '@cherrystudio/ui'
+import { ReorderableList } from '@huatuostudio/ui'
 import { getProviderLabelKey } from '@renderer/i18n/label'
 import { ProviderAvatar } from '@renderer/pages/settings/ProviderSettings/components/ProviderAvatar'
 import { providerListClasses } from '@renderer/pages/settings/ProviderSettings/primitives/ProviderSettingsPrimitives'

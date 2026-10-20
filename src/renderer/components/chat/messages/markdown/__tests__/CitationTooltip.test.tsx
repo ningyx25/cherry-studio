@@ -30,7 +30,7 @@ const uiMocks = vi.hoisted(() => ({
   })
 }))
 
-vi.mock('@cherrystudio/ui', () => uiMocks)
+vi.mock('@huatuostudio/ui', () => uiMocks)
 
 describe('CitationTooltip', () => {
   beforeEach(() => {

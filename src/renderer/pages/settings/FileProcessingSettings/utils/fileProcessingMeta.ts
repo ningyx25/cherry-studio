@@ -1,5 +1,5 @@
-import type { CompoundIcon } from '@cherrystudio/ui'
-import { Application, Doc2x, Intel, Mineru, Mistral, Paddleocr, TesseractJs } from '@cherrystudio/ui/icons'
+import type { CompoundIcon } from '@huatuostudio/ui'
+import { Application, Doc2x, Intel, Mineru, Mistral, Paddleocr, TesseractJs } from '@huatuostudio/ui/icons'
 import { TESSERACT_LANG_MAP } from '@renderer/pages/settings/FileProcessingSettings/ocr'
 import { isWin } from '@renderer/utils/platform'
 import type { FileProcessorFeature, FileProcessorId } from '@shared/data/preference/preferenceTypes'

@@ -2,8 +2,8 @@
  * Streaming agent loop. See `docs/references/ai/agent-loop.md`.
  */
 
-import { createAgent } from '@cherrystudio/ai-core'
-import type { StringKeys } from '@cherrystudio/ai-core/provider'
+import { createAgent } from '@huatuostudio/ai-core'
+import type { StringKeys } from '@huatuostudio/ai-core/provider'
 import { isAbortError } from '@main/utils/error'
 import type { LanguageModelUsage, ModelMessage, ToolSet, UIMessage, UIMessageChunk } from 'ai'
 

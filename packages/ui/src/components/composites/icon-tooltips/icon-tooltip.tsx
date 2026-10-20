@@ -1,4 +1,4 @@
-import { Tooltip } from '@cherrystudio/ui/components/primitives/tooltip'
+import { Tooltip } from '@huatuostudio/ui/components/primitives/tooltip'
 import type { LucideIcon } from 'lucide-react'
 
 import type { IconTooltipProps } from './types'

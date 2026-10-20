@@ -1,4 +1,4 @@
-import { TableCell, TableHeader, TableRow } from '@cherrystudio/extension-table-plus'
+import { TableCell, TableHeader, TableRow } from '@huatuostudio/extension-table-plus'
 import type { Extensions } from '@tiptap/core'
 import { TaskItem, TaskList } from '@tiptap/extension-list'
 import Mention from '@tiptap/extension-mention'
@@ -23,7 +23,7 @@ import { YamlFrontMatter } from './extensions/yamlFrontMatter'
 /** Click handler shape forwarded to EnhancedMath block/inline node options. */
 type MathClickOptions = { onClick?: (node: { attrs: { latex?: string } }, pos: number) => boolean | void }
 
-/** Table row/column action handler shape (mirrors `@cherrystudio/extension-table-plus`). */
+/** Table row/column action handler shape (mirrors `@huatuostudio/extension-table-plus`). */
 type TableActionHandler<T extends 'rowIndex' | 'colIndex'> = (
   args: { [K in T]: number } & { position?: { x: number; y: number } }
 ) => void

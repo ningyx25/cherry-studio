@@ -6,9 +6,9 @@
  */
 
 import { application } from '@application'
-import { ContextPrompts, resolveCompressionOutputTokens, summarizeModelMessages } from '@cherrystudio/ai-core'
 import { assistantDataService } from '@data/services/AssistantService'
 import { topicService } from '@data/services/TopicService'
+import { ContextPrompts, resolveCompressionOutputTokens, summarizeModelMessages } from '@huatuostudio/ai-core'
 import { loggerService } from '@logger'
 import {
   COMPACTION_INPUT_SAFETY_RATIO,
@@ -45,7 +45,7 @@ import type { AiStreamRequest } from '../../types'
 import { PersistenceListener } from '../listeners/PersistenceListener'
 import { TraceFlushListener } from '../listeners/TraceFlushListener'
 import { MessageServiceBackend } from '../persistence/backends/MessageServiceBackend'
-import type { CherryUIMessage, StreamListener } from '../types'
+import type { HuaTuoUIMessage, StreamListener } from '../types'
 import type { ChatContextProvider, DispatchContext, PreparedDispatch } from './ChatContextProvider'
 import {
   applyDeepestMarker,
@@ -165,7 +165,7 @@ function endTurnRootSpansWithError(spans: Array<{ span: Span }>, error: unknown)
  * Wrap the trailing user message's text parts in a steer system-reminder, for the model-facing
  * history copy only — the persisted user row is untouched.
  */
-function withSteerReminder(history: CherryUIMessage[]): CherryUIMessage[] {
+function withSteerReminder(history: HuaTuoUIMessage[]): HuaTuoUIMessage[] {
   for (let i = history.length - 1; i >= 0; i--) {
     if (history[i].role !== 'user') continue
     const message = history[i]
@@ -179,7 +179,7 @@ function withSteerReminder(history: CherryUIMessage[]): CherryUIMessage[] {
   return history
 }
 
-function toReservedUIMessage(message: SharedMessage): CherryUIMessage {
+function toReservedUIMessage(message: SharedMessage): HuaTuoUIMessage {
   return {
     id: message.id,
     role: toContentRole(message.role),
@@ -196,7 +196,7 @@ function toReservedUIMessage(message: SharedMessage): CherryUIMessage {
       isActiveBranch: true,
       ...(message.stats?.totalTokens ? { totalTokens: message.stats.totalTokens } : {})
     }
-  } satisfies CherryUIMessage
+  } satisfies HuaTuoUIMessage
 }
 
 export class PersistentChatContextProvider implements ChatContextProvider {
@@ -617,10 +617,10 @@ export class PersistentChatContextProvider implements ChatContextProvider {
     }
   }
 
-  private toServed(row: CompactionRow): CherryUIMessage {
+  private toServed(row: CompactionRow): HuaTuoUIMessage {
     // Route the role through toContentRole to keep the virtual-root guard that the
     // rest of this file relies on (a `root` row must never reach model history).
-    return { id: row.id, role: toContentRole(row.role as MessageRole), parts: row.parts } as CherryUIMessage
+    return { id: row.id, role: toContentRole(row.role as MessageRole), parts: row.parts } as HuaTuoUIMessage
   }
 
   private estimateTotal(rows: CompactionRow[]): number {
@@ -665,7 +665,7 @@ export class PersistentChatContextProvider implements ChatContextProvider {
     assistantContextOverride?: ContextSettingsOverride | null,
     /** Reports the turn-start fold to the UI; absent when there is no subscriber. */
     compactionSink?: CompactionSink
-  ): Promise<{ messages: CherryUIMessage[]; retainedContext: RetainedContext }> {
+  ): Promise<{ messages: HuaTuoUIMessage[]; retainedContext: RetainedContext }> {
     // Raw path from root → anchor, preserving all Message fields (including compactionSummary).
     // getPathToNode is synchronous (better-sqlite3, main #16626) — no await.
     const messagePath = messageService.getPathToNode(anchorMessageId)
@@ -698,7 +698,7 @@ export class PersistentChatContextProvider implements ChatContextProvider {
     if (!on) return serve(effective)
     if (!compressionModel) return serve(effective)
 
-    // `contextWindow` is optional on `Model` (custom / v1-imported / CherryAI
+    // `contextWindow` is optional on `Model` (custom / v1-imported / HuaTuoAI
     // rows can omit it). Without one there is no budget to compact against —
     // and an `as number` cast here made every derived budget `NaN`, which
     // silently disabled compaction instead of triggering it. Serve as-is; the
@@ -801,7 +801,7 @@ export class PersistentChatContextProvider implements ChatContextProvider {
     topicId: string,
     assistantId: string | undefined,
     uniqueModelId: UniqueModelId,
-    history: CherryUIMessage[],
+    history: HuaTuoUIMessage[],
     messageId: string,
     knowledgeBaseIds: string[] | undefined,
     reasoningEffort: AiStreamRequest['reasoningEffort'],

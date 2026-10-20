@@ -1,7 +1,7 @@
 import { loggerService } from '@logger'
 import { ipcApi } from '@renderer/ipc'
 import type { StreamChunkPayload } from '@shared/ai/transport'
-import type { CherryUIMessageChunk } from '@shared/data/types/message'
+import type { HuaTuoUIMessageChunk } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import type { SerializedError } from '@shared/types/error'
 import type { UIMessageChunk } from 'ai'
@@ -197,7 +197,7 @@ export class TopicStreamSubscription {
 
   /** Mirror PersistenceListener's stored error part into the live branch before it closes. */
   #enqueueError(error: SerializedError, executionId?: UniqueModelId, anchorMessageId?: string): void {
-    const chunk: CherryUIMessageChunk = { type: 'data-error', data: { ...error } }
+    const chunk: HuaTuoUIMessageChunk = { type: 'data-error', data: { ...error } }
 
     if (executionId) {
       const branch = this.#getOrCreateBranch(executionId, anchorMessageId)

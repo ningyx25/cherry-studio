@@ -8,7 +8,7 @@ date: 2026-05-14
 
 ## What changed
 
-The default vertical layout of `Sortable` (from `@cherrystudio/ui`) switched
+The default vertical layout of `Sortable` (from `@huatuostudio/ui`) switched
 its cross-axis alignment from `items-center` to `items-stretch`. Vertical
 sortable lists — used in Provider Settings v2 (provider list, model list,
 api-key list) and elsewhere — now render each item full-width along the
@@ -32,7 +32,7 @@ width of each row changes.
 
 ## Notes for release manager
 
-Component-level change in `@cherrystudio/ui` (`packages/ui/src/components/composites/Sortable/Sortable.tsx`).
+Component-level change in `@huatuostudio/ui` (`packages/ui/src/components/composites/Sortable/Sortable.tsx`).
 External consumers that depended on the previous `items-center` default and
 want the v1 look back can wrap items in a fixed-width container or pass an
 explicit `className` override on the `Sortable` row. No code change is

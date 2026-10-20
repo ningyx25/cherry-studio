@@ -19,7 +19,7 @@ vi.mock('@renderer/i18n/label', () => ({
   getProviderLabelKey: (id: string) => id
 }))
 
-vi.mock('@cherrystudio/ui', async () => {
+vi.mock('@huatuostudio/ui', async () => {
   const React = await import('react')
   const AccordionContext = React.createContext<{ value: string; onValueChange?: (value: string) => void }>({
     value: ''

@@ -1,9 +1,9 @@
-export const CHERRY_NODE_PROXY_RULES_ENV = 'CHERRY_STUDIO_NODE_PROXY_RULES'
-export const CHERRY_NODE_PROXY_BYPASS_RULES_ENV = 'CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES'
+export const HUATUO_NODE_PROXY_RULES_ENV = 'HUATUO_STUDIO_NODE_PROXY_RULES'
+export const HUATUO_NODE_PROXY_BYPASS_RULES_ENV = 'HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES'
 
 const NODE_PROXY_ENV_KEYS = [
-  CHERRY_NODE_PROXY_RULES_ENV,
-  CHERRY_NODE_PROXY_BYPASS_RULES_ENV,
+  HUATUO_NODE_PROXY_RULES_ENV,
+  HUATUO_NODE_PROXY_BYPASS_RULES_ENV,
   'HTTP_PROXY',
   'HTTPS_PROXY',
   'http_proxy',
@@ -73,8 +73,8 @@ export const buildNodeProxyEnvironment = (config: NodeProxyConfig): Record<strin
   const normalizedByPassRules = normalizeProxyBypassRules(config.proxyBypassRules)
   const proxyProtocol = getProxyProtocol(proxyUrl)
   const env: Record<string, string> = {
-    [CHERRY_NODE_PROXY_RULES_ENV]: proxyUrl,
-    [CHERRY_NODE_PROXY_BYPASS_RULES_ENV]: normalizedByPassRules.join(',')
+    [HUATUO_NODE_PROXY_RULES_ENV]: proxyUrl,
+    [HUATUO_NODE_PROXY_BYPASS_RULES_ENV]: normalizedByPassRules.join(',')
   }
 
   if (normalizedByPassRules.length > 0) {

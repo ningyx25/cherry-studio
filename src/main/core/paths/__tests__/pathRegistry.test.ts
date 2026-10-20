@@ -33,7 +33,7 @@ describe('buildPathRegistry', () => {
     const registry = buildPathRegistry()
     const dataRoot = path.join('/mock/userData', 'Data')
 
-    expect(registry['app.database.file']).toBe(path.join(dataRoot, 'cherrystudio.sqlite'))
+    expect(registry['app.database.file']).toBe(path.join(dataRoot, 'huatuostudio.sqlite'))
     expect(registry['feature.backup.restore.file']).toBe(path.join(dataRoot, 'restore-journal.json'))
   })
 
@@ -73,30 +73,30 @@ describe('buildPathRegistry', () => {
     const registry = buildPathRegistry()
 
     expect(registry['feature.agents.assistant.manifest.file']).toBe(
-      '/mock/app/resources/builtin-agents/cherry-assistant/product-manifest.json'
+      '/mock/app/resources/builtin-agents/huatuo-assistant/product-manifest.json'
     )
   })
 })
 
 describe('pathRegistry.shouldAutoEnsure', () => {
-  describe('cherry-owned directories — should auto-ensure', () => {
-    it('returns true for cherry.bin', () => {
-      expect(shouldAutoEnsure('cherry.bin')).toBe(true)
+  describe('huatuo-owned directories — should auto-ensure', () => {
+    it('returns true for huatuo.bin', () => {
+      expect(shouldAutoEnsure('huatuo.bin')).toBe(true)
     })
 
-    it('returns true for cherry.config', () => {
-      expect(shouldAutoEnsure('cherry.config')).toBe(true)
+    it('returns true for huatuo.config', () => {
+      expect(shouldAutoEnsure('huatuo.config')).toBe(true)
     })
 
-    it('returns true for cherry.home', () => {
-      expect(shouldAutoEnsure('cherry.home')).toBe(true)
+    it('returns true for huatuo.home', () => {
+      expect(shouldAutoEnsure('huatuo.home')).toBe(true)
     })
 
-    it('returns true for app.userdata (cherry-owned, no opt-out)', () => {
+    it('returns true for app.userdata (huatuo-owned, no opt-out)', () => {
       expect(shouldAutoEnsure('app.userdata')).toBe(true)
     })
 
-    it('returns true for the cherry-owned sub-key app.userdata.data', () => {
+    it('returns true for the huatuo-owned sub-key app.userdata.data', () => {
       expect(shouldAutoEnsure('app.userdata.data')).toBe(true)
     })
 
@@ -125,7 +125,7 @@ describe('pathRegistry.shouldAutoEnsure', () => {
     })
 
     it('returns true for feature.agents.skills (now that its value is fixed)', () => {
-      // Value was corrected from CHERRY_HOME/skills (the old orphan value)
+      // Value was corrected from HUATUO_HOME/skills (the old orphan value)
       // to appUserDataData/Skills. The shouldAutoEnsure rule itself is
       // unchanged — it's not in NO_ENSURE — but exercising it here makes
       // the rename visible in the test suite.
@@ -133,7 +133,7 @@ describe('pathRegistry.shouldAutoEnsure', () => {
     })
   })
 
-  describe('cherry-owned files — should auto-ensure (Application.getPath ensures the dirname)', () => {
+  describe('huatuo-owned files — should auto-ensure (Application.getPath ensures the dirname)', () => {
     // shouldAutoEnsure does not branch on file vs directory — that
     // distinction is handled at the Application.getPath layer via
     // `key.endsWith('file')`. The data rule simply says "this key is
@@ -188,7 +188,7 @@ describe('pathRegistry.shouldAutoEnsure', () => {
     })
 
     it('returns false for the new external.obsidian.config_file key', () => {
-      // Obsidian's config file lives in a directory that Cherry must
+      // Obsidian's config file lives in a directory that HuaTuo must
       // never create — Obsidian itself owns it. This is the canonical
       // case for the external.* prefix opt-out.
       expect(shouldAutoEnsure('external.obsidian.config_file')).toBe(false)
@@ -242,7 +242,7 @@ describe('pathRegistry.shouldAutoEnsure', () => {
     // app.* key that is not specifically listed must still auto-ensure.
     // Catches accidental over-matching of the NO_ENSURE table.
 
-    it('returns true for app.logs (Electron logs dir, Cherry-owned)', () => {
+    it('returns true for app.logs (Electron logs dir, HuaTuo-owned)', () => {
       expect(shouldAutoEnsure('app.logs')).toBe(true)
     })
 

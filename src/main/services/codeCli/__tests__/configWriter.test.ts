@@ -55,7 +55,7 @@ describe('writeCliConfigFiles', () => {
   const codexAuth = () => path.join(home, '.codex', 'auth.json')
 
   beforeEach(async () => {
-    home = await mkdtemp(path.join(tmpdir(), 'cherry-cli-config-'))
+    home = await mkdtemp(path.join(tmpdir(), 'huatuo-cli-config-'))
     vi.mocked(application.getPath).mockImplementation((key: string) => {
       if (key === 'sys.home') return home
       throw new Error(`Unexpected getPath(${key})`)

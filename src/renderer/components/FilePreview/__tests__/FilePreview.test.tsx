@@ -17,7 +17,7 @@ vi.mock('@renderer/ipc', () => ({
   ipcApi: { request: mocks.ipcApiRequest }
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   EmptyState: ({
     icon: Icon,
     title,

@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from '@cherrystudio/ui/components/primitives/button'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button } from '@huatuostudio/ui/components/primitives/button'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { UploadIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { createContext, use } from 'react'

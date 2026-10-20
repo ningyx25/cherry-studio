@@ -268,12 +268,12 @@ vi.mock('@application', () => ({
       const paths: Record<string, string> = {
         'app.userdata': '/mock/userData',
         'app.userdata.data': '/mock/userData/Data',
-        'app.database.file': '/mock/userData/Data/cherrystudio.sqlite',
+        'app.database.file': '/mock/userData/Data/huatuostudio.sqlite',
         'feature.backup.temp': '/mock/temp/backup',
         'feature.backup.restore.file': '/mock/userData/Data/restore-journal.json',
         'feature.backup.restore.staging': '/mock/userData/restore-staging',
         'feature.agents.claude.root': '/mock/userData/Data/Agents/.claude',
-        'feature.lan_transfer.temp': '/tmp/cherry-studio/lan-transfer'
+        'feature.lan_transfer.temp': '/tmp/huatuo-studio/lan-transfer'
       }
       const base = paths[key] ?? '/mock/unknown'
       return filename ? `${base}/${filename}` : base
@@ -327,7 +327,7 @@ describe('BackupManager direct v2 data compatibility', () => {
   let backupManager: BackupManager
   const metadata = {
     version: 7,
-    appName: 'Cherry Studio',
+    appName: 'HuaTuo Studio',
     appVersion: '2.0.0',
     timestamp: 1,
     platform: process.platform,
@@ -419,7 +419,7 @@ describe('BackupManager direct v2 data compatibility', () => {
     const now = Date.now()
     const staleExtract = 'extract-c3556dcc-5460-420e-b994-a68b89642bd3'
     const freshCreate = 'create-fa46adee-c7e2-4ac4-a73e-9424c4bf2754'
-    const staleArchive = '594c6356-638b-45cc-a2ef-242ea29e39bf-cherry-studio.zip'
+    const staleArchive = '594c6356-638b-45cc-a2ef-242ea29e39bf-huatuo-studio.zip'
     const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(now)
 
     vi.mocked(fs.readdir).mockResolvedValue([
@@ -494,8 +494,8 @@ describe('BackupManager direct v2 data compatibility', () => {
       { spaces: 2 }
     )
     expect(fs.copy).not.toHaveBeenCalledWith(
-      '/mock/userData/Data/cherrystudio.sqlite',
-      '/mock/temp/backup/create-operation-id/cherrystudio.sqlite'
+      '/mock/userData/Data/huatuostudio.sqlite',
+      '/mock/temp/backup/create-operation-id/huatuostudio.sqlite'
     )
     expect(archive.directory).toHaveBeenCalledWith('/mock/temp/backup/create-operation-id', false)
     expect(mockChannelHold.dispose).toHaveBeenCalledOnce()
@@ -551,16 +551,16 @@ describe('BackupManager direct v2 data compatibility', () => {
     expect(dataCopyCall).toBeDefined()
     const options = dataCopyCall?.[3] as { excludeRelativePath: (relativePath: string) => boolean }
     expect(getDirSize).toHaveBeenCalledWith('/mock/userData/Data', dataCopyCall?.[3])
-    expect(options.excludeRelativePath('cherrystudio.sqlite')).toBe(false)
-    expect(options.excludeRelativePath('cherrystudio.sqlite-wal')).toBe(true)
-    expect(options.excludeRelativePath('cherrystudio.sqlite-shm')).toBe(true)
+    expect(options.excludeRelativePath('huatuostudio.sqlite')).toBe(false)
+    expect(options.excludeRelativePath('huatuostudio.sqlite-wal')).toBe(true)
+    expect(options.excludeRelativePath('huatuostudio.sqlite-shm')).toBe(true)
     expect(options.excludeRelativePath('restore-journal.json')).toBe(true)
     expect(options.excludeRelativePath('restore-journal.json.tmp')).toBe(true)
     expect(options.excludeRelativePath('Agents/.claude/projects/session.jsonl')).toBe(false)
     expect(options.excludeRelativePath('Files/document.pdf')).toBe(false)
   })
 
-  it('writes a slim archive with only Data/cherrystudio.sqlite and cache.json', async () => {
+  it('writes a slim archive with only Data/huatuostudio.sqlite and cache.json', async () => {
     vi.mocked(fs.pathExists).mockImplementation(async (entryPath) => {
       return ['/mock/userData/cache.json', '/mock/userData/Data'].includes(String(entryPath))
     })
@@ -576,9 +576,9 @@ describe('BackupManager direct v2 data compatibility', () => {
     expect(dataCopyCall).toBeDefined()
     const options = dataCopyCall?.[3] as { excludeRelativePath: (relativePath: string) => boolean }
     expect(getDirSize).toHaveBeenCalledWith('/mock/userData/Data', dataCopyCall?.[3])
-    expect(options.excludeRelativePath('cherrystudio.sqlite')).toBe(false)
-    expect(options.excludeRelativePath('cherrystudio.sqlite-wal')).toBe(true)
-    expect(options.excludeRelativePath('cherrystudio.sqlite-shm')).toBe(true)
+    expect(options.excludeRelativePath('huatuostudio.sqlite')).toBe(false)
+    expect(options.excludeRelativePath('huatuostudio.sqlite-wal')).toBe(true)
+    expect(options.excludeRelativePath('huatuostudio.sqlite-shm')).toBe(true)
     expect(options.excludeRelativePath('restore-journal.json')).toBe(true)
     expect(options.excludeRelativePath('Agents')).toBe(true)
     expect(options.excludeRelativePath('Files/document.pdf')).toBe(true)
@@ -717,7 +717,7 @@ describe('BackupManager direct v2 data compatibility', () => {
         state: 'staged',
         db: {
           promote: 'restore-staging/operation-id/work.sqlite',
-          aside: 'restore-staging/operation-id/aside/cherrystudio.sqlite',
+          aside: 'restore-staging/operation-id/aside/huatuostudio.sqlite',
           fingerprint: 'same-fingerprint',
           chain: [{ folderMillis: 1, hash: 'migration-hash' }]
         },
@@ -959,19 +959,19 @@ describe('BackupManager direct v2 data compatibility', () => {
     const getDirectoryContents = vi.fn().mockResolvedValue([
       {
         type: 'file',
-        basename: 'cherry-studio.20260804020000.test-host.mac.zip',
+        basename: 'huatuo-studio.20260804020000.test-host.mac.zip',
         lastmod: '2026-08-04T02:00:00.000Z',
         size: 1
       },
       {
         type: 'file',
-        basename: 'cherry-studio.20260804015000.other-test-host.mac.zip',
+        basename: 'huatuo-studio.20260804015000.other-test-host.mac.zip',
         lastmod: '2026-08-04T01:50:00.000Z',
         size: 1
       },
       {
         type: 'file',
-        basename: 'cherry-studio.20260804000000.test-host.mac.zip',
+        basename: 'huatuo-studio.20260804000000.test-host.mac.zip',
         lastmod: '2026-08-04T00:00:00.000Z',
         size: 1
       }
@@ -993,7 +993,7 @@ describe('BackupManager direct v2 data compatibility', () => {
     controller.abort(new DOMException('Stopped.', 'AbortError'))
 
     await expect(backup).resolves.toMatchObject({ result: true, cleanupError: { name: 'AbortError' } })
-    expect(deleteFile).toHaveBeenCalledWith('cherry-studio.20260804000000.test-host.mac.zip', deleteSignal)
+    expect(deleteFile).toHaveBeenCalledWith('huatuo-studio.20260804000000.test-host.mac.zip', deleteSignal)
     expect(deleteSignal?.aborted).toBe(true)
     expect(getDirectoryContents).toHaveBeenCalledWith(expect.any(AbortSignal))
   })
@@ -1042,11 +1042,11 @@ describe('BackupManager direct v2 data compatibility', () => {
     await (backupManager as any).restoreDirect('/extract')
 
     expect(fs.copy).toHaveBeenCalledWith(
-      '/mock/userData/restore-staging/operation-id/resources/Data/cherrystudio.sqlite',
+      '/mock/userData/restore-staging/operation-id/resources/Data/huatuostudio.sqlite',
       '/mock/userData/restore-staging/operation-id/work.sqlite'
     )
     expect(fs.copy).not.toHaveBeenCalledWith(
-      '/extract/cherrystudio.sqlite',
+      '/extract/huatuostudio.sqlite',
       '/mock/userData/restore-staging/operation-id/work.sqlite'
     )
     expect((backupManager as any).copyClaudeState).not.toHaveBeenCalled()
@@ -1107,7 +1107,7 @@ describe('BackupManager direct v2 data compatibility', () => {
         return ['Files', 'Agents'] as never
       }
       if (directory === '/mock/userData/Data') {
-        return ['Files', 'Agents', 'KnowledgeBase', 'cherrystudio.sqlite', 'restore-journal.json'] as never
+        return ['Files', 'Agents', 'KnowledgeBase', 'huatuostudio.sqlite', 'restore-journal.json'] as never
       }
       return [] as never
     })
@@ -1131,7 +1131,7 @@ describe('BackupManager direct v2 data compatibility', () => {
       .map((resource: { livePath: string }) => resource.livePath)
       .filter((livePath: string) => livePath.startsWith('Data/'))
     expect(dataResourcePaths).toEqual(['Data/Agents', 'Data/Files', 'Data/KnowledgeBase'])
-    expect(dataResourcePaths).not.toContain('Data/cherrystudio.sqlite')
+    expect(dataResourcePaths).not.toContain('Data/huatuostudio.sqlite')
     expect(dataResourcePaths).not.toContain('Data/restore-journal.json')
     expect(dataResourcePaths).not.toContain('Data/Agents/.claude')
     expect((backupManager as any).copyClaudeState).toHaveBeenCalledWith(
@@ -1160,7 +1160,7 @@ describe('BackupManager direct v2 data compatibility', () => {
   })
 
   it('rejects a v1 version 6 archive before staging any resources', async () => {
-    vi.mocked(fs.readJson).mockResolvedValue({ version: 6, appName: 'Cherry Studio' } as never)
+    vi.mocked(fs.readJson).mockResolvedValue({ version: 6, appName: 'HuaTuo Studio' } as never)
 
     await expect((backupManager as any).restoreDirect('/extract')).rejects.toThrow(
       'Unsupported backup version 6. HuaTuo Studio v2 can only restore backup version 7.'
@@ -1536,7 +1536,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
       vi.mocked(fs.pathExists).mockResolvedValue(true as never)
       vi.mocked(fs.remove).mockResolvedValue(undefined as never)
 
-      const validPath = '/tmp/cherry-studio/lan-transfer/backup.zip'
+      const validPath = '/tmp/huatuo-studio/lan-transfer/backup.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, validPath)
 
       expect(result).toBe(true)
@@ -1548,7 +1548,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
       vi.mocked(fs.pathExists).mockResolvedValue(true as never)
       vi.mocked(fs.remove).mockResolvedValue(undefined as never)
 
-      const nestedPath = '/tmp/cherry-studio/lan-transfer/sub/dir/file.zip'
+      const nestedPath = '/tmp/huatuo-studio/lan-transfer/sub/dir/file.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, nestedPath)
 
       expect(result).toBe(true)
@@ -1558,7 +1558,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
     it('should return false when file does not exist', async () => {
       vi.mocked(fs.pathExists).mockResolvedValue(false as never)
 
-      const missingPath = '/tmp/cherry-studio/lan-transfer/missing.zip'
+      const missingPath = '/tmp/huatuo-studio/lan-transfer/missing.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, missingPath)
 
       expect(result).toBe(false)
@@ -1568,7 +1568,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
 
   describe('Path Traversal Attacks', () => {
     it('should block basic directory traversal attack (../../../../etc/passwd)', async () => {
-      const attackPath = '/tmp/cherry-studio/lan-transfer/../../../../etc/passwd'
+      const attackPath = '/tmp/huatuo-studio/lan-transfer/../../../../etc/passwd'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, attackPath)
 
       expect(result).toBe(false)
@@ -1587,7 +1587,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
     })
 
     it('should block traversal with multiple slashes', async () => {
-      const attackPath = '/tmp/cherry-studio/lan-transfer/../../../etc/passwd'
+      const attackPath = '/tmp/huatuo-studio/lan-transfer/../../../etc/passwd'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, attackPath)
 
       expect(result).toBe(false)
@@ -1603,7 +1603,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
     })
 
     it('should block traversal to parent directory', async () => {
-      const attackPath = '/tmp/cherry-studio/lan-transfer/../backup/secret.zip'
+      const attackPath = '/tmp/huatuo-studio/lan-transfer/../backup/secret.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, attackPath)
 
       expect(result).toBe(false)
@@ -1613,7 +1613,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
 
   describe('Prefix Attacks', () => {
     it('should block similar prefix attack (lan-transfer-evil)', async () => {
-      const attackPath = '/tmp/cherry-studio/lan-transfer-evil/file.zip'
+      const attackPath = '/tmp/huatuo-studio/lan-transfer-evil/file.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, attackPath)
 
       expect(result).toBe(false)
@@ -1622,7 +1622,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
     })
 
     it('should block path without separator (lan-transferx)', async () => {
-      const attackPath = '/tmp/cherry-studio/lan-transferx'
+      const attackPath = '/tmp/huatuo-studio/lan-transferx'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, attackPath)
 
       expect(result).toBe(false)
@@ -1630,7 +1630,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
     })
 
     it('should block different temp directory prefix', async () => {
-      const attackPath = '/tmp-evil/cherry-studio/lan-transfer/file.zip'
+      const attackPath = '/tmp-evil/huatuo-studio/lan-transfer/file.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, attackPath)
 
       expect(result).toBe(false)
@@ -1643,7 +1643,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
       vi.mocked(fs.pathExists).mockResolvedValue(true as never)
       vi.mocked(fs.remove).mockRejectedValue(new Error('EACCES: permission denied') as never)
 
-      const validPath = '/tmp/cherry-studio/lan-transfer/file.zip'
+      const validPath = '/tmp/huatuo-studio/lan-transfer/file.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, validPath)
 
       expect(result).toBe(false)
@@ -1653,7 +1653,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
     it('should return false on fs.pathExists error', async () => {
       vi.mocked(fs.pathExists).mockRejectedValue(new Error('ENOENT') as never)
 
-      const validPath = '/tmp/cherry-studio/lan-transfer/file.zip'
+      const validPath = '/tmp/huatuo-studio/lan-transfer/file.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, validPath)
 
       expect(result).toBe(false)
@@ -1673,7 +1673,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
       vi.mocked(fs.pathExists).mockResolvedValue(true as never)
       vi.mocked(fs.remove).mockResolvedValue(undefined as never)
 
-      const tempDir = '/tmp/cherry-studio/lan-transfer'
+      const tempDir = '/tmp/huatuo-studio/lan-transfer'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, tempDir)
 
       expect(result).toBe(true)
@@ -1684,7 +1684,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
       vi.mocked(fs.pathExists).mockResolvedValue(true as never)
       vi.mocked(fs.remove).mockResolvedValue(undefined as never)
 
-      const pathWithSlash = '/tmp/cherry-studio/lan-transfer/sub/'
+      const pathWithSlash = '/tmp/huatuo-studio/lan-transfer/sub/'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, pathWithSlash)
 
       // path.normalize removes trailing slash
@@ -1695,7 +1695,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
       vi.mocked(fs.pathExists).mockResolvedValue(true as never)
       vi.mocked(fs.remove).mockResolvedValue(undefined as never)
 
-      const specialPath = '/tmp/cherry-studio/lan-transfer/file with spaces & (special).zip'
+      const specialPath = '/tmp/huatuo-studio/lan-transfer/file with spaces & (special).zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, specialPath)
 
       expect(result).toBe(true)
@@ -1706,7 +1706,7 @@ describe('BackupManager.deleteLanTransferBackup - Security Tests', () => {
       vi.mocked(fs.pathExists).mockResolvedValue(true as never)
       vi.mocked(fs.remove).mockResolvedValue(undefined as never)
 
-      const doubleSlashPath = '/tmp/cherry-studio//lan-transfer//file.zip'
+      const doubleSlashPath = '/tmp/huatuo-studio//lan-transfer//file.zip'
       const result = await backupManager.deleteLanTransferBackup({} as Electron.IpcMainInvokeEvent, doubleSlashPath)
 
       // path.normalize handles double slashes

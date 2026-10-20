@@ -1,5 +1,5 @@
-import { Button, Popover, PopoverContent, PopoverTrigger } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { Check, ChevronDown } from 'lucide-react'
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
 import { isValidElement, useMemo, useState } from 'react'

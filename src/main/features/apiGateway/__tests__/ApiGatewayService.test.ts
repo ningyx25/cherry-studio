@@ -83,7 +83,7 @@ describe('ApiGatewayService reconcile', () => {
       service.isInternalAgentRequest(
         new Headers({
           ...usageHeaders,
-          'x-cherry-internal-usage-token': 'wrong-proof'
+          'x-huatuo-internal-usage-token': 'wrong-proof'
         })
       )
     ).toBe(false)
@@ -93,7 +93,7 @@ describe('ApiGatewayService reconcile', () => {
   it('recognizes an internal agent request without a session id when the process-local token matches', () => {
     const service = new ApiGatewayService()
     const headers = new Headers(service.getAgentSessionUsageHeaders('session-1'))
-    headers.delete('x-cherry-agent-session-id')
+    headers.delete('x-huatuo-agent-session-id')
 
     expect(service.isInternalAgentRequest(headers)).toBe(true)
   })
@@ -111,14 +111,14 @@ describe('ApiGatewayService reconcile', () => {
       service.resolveAgentSessionUsage(
         new Headers({
           ...usageHeaders,
-          'x-cherry-internal-usage-token': 'wrong-proof'
+          'x-huatuo-internal-usage-token': 'wrong-proof'
         })
       )
     ).toBeUndefined()
     expect(
       service.resolveAgentSessionUsage(
         new Headers({
-          'x-cherry-agent-session-id': 'session-1'
+          'x-huatuo-agent-session-id': 'session-1'
         })
       )
     ).toBeUndefined()

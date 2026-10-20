@@ -12,7 +12,7 @@
  */
 
 import type { ProviderOptions } from '@ai-sdk/provider-utils'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import type { Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
 import type { DynamicToolUIPart, FileUIPart, ReasoningUIPart, TextUIPart, ToolSet } from 'ai'
@@ -227,12 +227,12 @@ function geminiSchemaToJsonSchema(schema: unknown): JsonSchemaLike {
 /**
  * Gemini Message Converter
  *
- * Converts a Gemini `GenerateContentRequest` to AI SDK `CherryUIMessage[]` +
+ * Converts a Gemini `GenerateContentRequest` to AI SDK `HuaTuoUIMessage[]` +
  * `ToolSet` for the gateway's unified `AiStreamManager` pipeline.
  */
 export class GeminiMessageConverter implements IMessageConverter<GeminiGenerateContentRequest> {
   /**
-   * Convert Gemini `contents` (+ `systemInstruction`) to `CherryUIMessage[]`.
+   * Convert Gemini `contents` (+ `systemInstruction`) to `HuaTuoUIMessage[]`.
    *
    * `systemInstruction` becomes a leading `role: 'system'` message.
    * `functionResponse` parts are folded into the matching assistant
@@ -241,8 +241,8 @@ export class GeminiMessageConverter implements IMessageConverter<GeminiGenerateC
    * their explicit id when present (Gemini 3); id-less payloads (Gemini 1.5/2.0/2.5)
    * fall back to a per-name FIFO queue so parallel same-name calls stay paired 1:1.
    */
-  toUIMessages(params: GeminiGenerateContentRequest): CherryUIMessage[] {
-    const messages: CherryUIMessage[] = []
+  toUIMessages(params: GeminiGenerateContentRequest): HuaTuoUIMessage[] {
+    const messages: HuaTuoUIMessage[] = []
 
     const systemText = contentToText(params.systemInstruction)
     if (systemText) {
@@ -287,7 +287,7 @@ export class GeminiMessageConverter implements IMessageConverter<GeminiGenerateC
       const role = content.role === 'model' ? 'assistant' : 'user'
       if (!Array.isArray(content.parts)) continue
 
-      const parts: CherryUIMessage['parts'] = []
+      const parts: HuaTuoUIMessage['parts'] = []
       for (const part of content.parts) {
         // Gemini 3 attaches an opaque `thoughtSignature` to the model's thought /
         // text / functionCall parts and requires it echoed back verbatim on the next

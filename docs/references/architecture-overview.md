@@ -76,7 +76,7 @@ The AI pipeline selects a provider, runs a middleware chain (context, knowledge,
 ## Monorepo Structure
 
 ```
-cherry-studio
+huatuo-studio
 ├── src/
 │   ├── main/                    # Main process (Node.js) — directory layout in ./main-process-architecture.md
 │   │
@@ -87,8 +87,8 @@ cherry-studio
 │   └── shared/                  # Cross-process primitives: types, schemas/contracts, pure logic — layout in ./shared-layer-architecture.md
 │
 ├── packages/
-│   ├── ui/                      #   @cherrystudio/ui (Shadcn + Tailwind)
-│   ├── aiCore/                  #   @cherrystudio/ai-core
+│   ├── ui/                      #   @huatuostudio/ui (Shadcn + Tailwind)
+│   ├── aiCore/                  #   @huatuostudio/ai-core
 │   ├── ai-sdk-provider/         #   Custom AI SDK providers
 │   ├── provider-registry/       #   Provider registry
 │   ├── mcp-trace/               #   OpenTelemetry tracing

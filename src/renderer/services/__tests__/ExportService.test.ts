@@ -80,7 +80,7 @@ vi.mock('@renderer/utils/message/find', async (importOriginal) => ({
     return (thinkingBlock as any)?.content || ''
   }),
   getCitationContent: vi.fn((message: Message & { _fullBlocks?: MessageBlock[]; parts?: any[] }) => {
-    const citations = message.parts?.flatMap((part) => (part as any).providerMetadata?.cherry?.references || []) ?? []
+    const citations = message.parts?.flatMap((part) => (part as any).providerMetadata?.huatuo?.references || []) ?? []
     if (citations.length === 0) return ''
     return citations
       .map(
@@ -320,7 +320,7 @@ describe('ExportService', () => {
             type: 'text',
             text: 'Use the find-skills skill. **hello**',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 composer: {
                   version: 1,
                   tokens: [
@@ -353,7 +353,7 @@ describe('ExportService', () => {
           type: 'text',
           text: 'Answer with citation [1]',
           providerMetadata: {
-            cherry: {
+            huatuo: {
               references: [{ category: 'citation', url: 'https://example.com', title: 'Example' }]
             }
           }
@@ -367,7 +367,7 @@ describe('ExportService', () => {
     })
 
     it('should resolve tool-part [cite:id] markers and list their sources', async () => {
-      // Tool-derived citations carry no `cherry.references`; the marker lives in the
+      // Tool-derived citations carry no `huatuo.references`; the marker lives in the
       // text, so an unresolved export leaks the internal id and lists no sources.
       const message = createExportView([
         toolSearchPart([{ id: '3f2a1b9c-1', title: 'Example', url: 'https://example.com', content: 'snippet' }]),
@@ -447,7 +447,7 @@ describe('ExportService', () => {
             type: 'text',
             text: 'Answer with citation',
             providerMetadata: {
-              cherry: {
+              huatuo: {
                 references: [{ category: 'citation', url: 'https://example1.com', title: 'Example Citation 1' }]
               }
             }

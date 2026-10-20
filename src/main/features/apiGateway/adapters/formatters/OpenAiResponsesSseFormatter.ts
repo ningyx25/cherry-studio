@@ -9,7 +9,7 @@
  * @see https://platform.openai.com/docs/api-reference/responses-streaming
  */
 
-import type OpenAI from '@cherrystudio/openai'
+import type OpenAI from 'openai'
 
 import type { ISseFormatter } from '../interfaces'
 

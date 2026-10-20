@@ -98,7 +98,7 @@ describe('OvOcr prepareContext', () => {
       config as never
     )
 
-    expect(first.workingDirectoryPrefix).toBe('/tmp/app-temp/cherry-ovocr-')
+    expect(first.workingDirectoryPrefix).toBe('/tmp/app-temp/huatuo-ovocr-')
   })
 })
 
@@ -117,7 +117,7 @@ describe('OvOcr executeExtraction', () => {
 
   it('passes AbortSignal to child process execution', async () => {
     const controller = new AbortController()
-    const mkdtempSpy = vi.spyOn(fs.promises, 'mkdtemp').mockResolvedValue('/tmp/cherry-ovocr-1' as never)
+    const mkdtempSpy = vi.spyOn(fs.promises, 'mkdtemp').mockResolvedValue('/tmp/huatuo-ovocr-1' as never)
     const copyFileSpy = vi.spyOn(fs.promises, 'copyFile').mockResolvedValue(undefined)
     const rmSpy = vi.spyOn(fs.promises, 'rm').mockResolvedValue(undefined)
     const mkdirSpy = vi.spyOn(fs.promises, 'mkdir').mockResolvedValue(undefined as never)
@@ -135,18 +135,18 @@ describe('OvOcr executeExtraction', () => {
             type: 'image'
           } as never,
           signal: controller.signal,
-          workingDirectoryPrefix: '/tmp/app-temp/cherry-ovocr-'
+          workingDirectoryPrefix: '/tmp/app-temp/huatuo-ovocr-'
         })
       ).resolves.toEqual({
         kind: 'text',
         text: 'recognized text'
       })
 
-      expect(mkdtempSpy).toHaveBeenCalledWith('/tmp/app-temp/cherry-ovocr-')
+      expect(mkdtempSpy).toHaveBeenCalledWith('/tmp/app-temp/huatuo-ovocr-')
       expect(execMock).toHaveBeenCalledWith(
         '"/mock/ovocr"',
         expect.objectContaining({
-          cwd: '/tmp/cherry-ovocr-1',
+          cwd: '/tmp/huatuo-ovocr-1',
           timeout: 60000,
           signal: controller.signal
         }),

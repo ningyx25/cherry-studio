@@ -1,4 +1,4 @@
-import { Button, EmptyState, Popover, PopoverContent, PopoverTrigger, SegmentedControl } from '@cherrystudio/ui'
+import { Button, EmptyState, Popover, PopoverContent, PopoverTrigger, SegmentedControl } from '@huatuostudio/ui'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { formatCompactNumber } from '@renderer/utils/number'
 import { cn } from '@renderer/utils/style'

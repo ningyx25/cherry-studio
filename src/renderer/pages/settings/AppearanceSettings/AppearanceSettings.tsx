@@ -1,3 +1,4 @@
+import { useMultiplePreferences, usePreference } from '@data/hooks/usePreference'
 import {
   Button,
   CodeEditor,
@@ -14,8 +15,7 @@ import {
   SelectValue,
   Switch,
   Tooltip
-} from '@cherrystudio/ui'
-import { useMultiplePreferences, usePreference } from '@data/hooks/usePreference'
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import ChatPreferenceSections from '@renderer/components/chat/settings/ChatPreferenceSections'
 import ResetIcon from '@renderer/components/icons/ResetIcon'
@@ -200,7 +200,7 @@ const AppearanceSettings: FC = () => {
 
   const menuPresentationModeOptions = useMemo(
     () => [
-      { value: 'cherry' as const, label: t('settings.general.common.menu.presentation_mode.cherry') },
+      { value: 'huatuo' as const, label: t('settings.general.common.menu.presentation_mode.huatuo') },
       { value: 'native' as const, label: t('settings.general.common.menu.presentation_mode.native') }
     ],
     [t]

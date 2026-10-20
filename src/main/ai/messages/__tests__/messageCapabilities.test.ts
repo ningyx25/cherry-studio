@@ -1,4 +1,4 @@
-import { MODALITY } from '@cherrystudio/provider-registry'
+import { MODALITY } from '@huatuostudio/provider-registry'
 import type { Model } from '@shared/data/types/model'
 import type { UIMessage } from 'ai'
 import { describe, expect, it } from 'vitest'

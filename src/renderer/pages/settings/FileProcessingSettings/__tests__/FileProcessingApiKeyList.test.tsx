@@ -22,7 +22,7 @@ vi.mock('@renderer/components/icons/EditIcon', () => ({
   default: ({ size }: { size?: number }) => <span data-size={size}>edit</span>
 }))
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ asChild, children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean }) => {
     if (asChild) {
       return <>{children}</>

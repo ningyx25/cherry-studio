@@ -32,7 +32,7 @@
       "title": "Întrebări de la Agent"
     },
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "Consilier integrat HuaTuo Studio. Diagnostică probleme, ghidează operațiuni, colectează întrebări frecvente, trimite rapoarte de erori/cereri de funcționalități și caută/crează Abilități (Skills)"
       }
     },
@@ -983,38 +983,6 @@
           "description": "Execută comenzi shell în mediul tău",
           "label": "Bash"
         },
-        "CherryConfig": {
-          "description": "Inspectează și gestionează această configurație de agent și canalele sale",
-          "label": "Configurare Agent"
-        },
-        "CherryCron": {
-          "description": "Gestionează programatorul din aplicație",
-          "label": "Planificator"
-        },
-        "CherryGenerateImage": {
-          "description": "Generează o imagine dintr-un prompt text folosind modelul de pictură configurat",
-          "label": "Generează imagine"
-        },
-        "CherryKbManage": {
-          "description": "Adaugă, șterge sau reîmprospătează documente în bazele tale de cunoștințe",
-          "label": "Gestionează cunoștințele"
-        },
-        "CherryKbSearch": {
-          "description": "Caută în bazele tale de cunoștințe",
-          "label": "Căutare de cunoștințe"
-        },
-        "CherryNotify": {
-          "description": "Trimite o notificare printr-un canal conectat",
-          "label": "Notificare"
-        },
-        "CherryWebFetch": {
-          "description": "Preia și citește o pagină web",
-          "label": "Preluare Web"
-        },
-        "CherryWebSearch": {
-          "description": "Caută pe web prin furnizorul configurat",
-          "label": "Căutare pe web"
-        },
         "Edit": {
           "description": "Efectuează editări țintite asupra fișierelor specifice",
           "label": "Editează"
@@ -1026,6 +994,38 @@
         "Grep": {
           "description": "Caută modele în conținutul fișierelor",
           "label": "Grep"
+        },
+        "HuaTuoConfig": {
+          "description": "Inspectează și gestionează această configurație de agent și canalele sale",
+          "label": "Configurare Agent"
+        },
+        "HuaTuoCron": {
+          "description": "Gestionează programatorul din aplicație",
+          "label": "Planificator"
+        },
+        "HuaTuoGenerateImage": {
+          "description": "Generează o imagine dintr-un prompt text folosind modelul de pictură configurat",
+          "label": "Generează imagine"
+        },
+        "HuaTuoKbManage": {
+          "description": "Adaugă, șterge sau reîmprospătează documente în bazele tale de cunoștințe",
+          "label": "Gestionează cunoștințele"
+        },
+        "HuaTuoKbSearch": {
+          "description": "Caută în bazele tale de cunoștințe",
+          "label": "Căutare de cunoștințe"
+        },
+        "HuaTuoNotify": {
+          "description": "Trimite o notificare printr-un canal conectat",
+          "label": "Notificare"
+        },
+        "HuaTuoWebFetch": {
+          "description": "Preia și citește o pagină web",
+          "label": "Preluare Web"
+        },
+        "HuaTuoWebSearch": {
+          "description": "Caută pe web prin furnizorul configurat",
+          "label": "Căutare pe web"
         },
         "MultiEdit": {
           "description": "Efectuează mai multe modificări într-un singur fișier atomic"
@@ -1634,6 +1634,7 @@
         "permission_denied": "[to be translated]:Microphone permission denied",
         "recording_failed": "[to be translated]:Recording failed",
         "stop": "[to be translated]:Stop recording",
+        "switch_hint": "[to be translated]:Switch to voice input",
         "transcribing": "[to be translated]:Transcribing…",
         "transcription_failed": "[to be translated]:Transcription failed"
       },
@@ -2486,7 +2487,8 @@
     "jina-rerank": "Jina Rerank",
     "openai": "OpenAI",
     "openai-embeddings": "Înglobări (OpenAI)",
-    "openai-response": "OpenAI-Response"
+    "openai-response": "OpenAI-Response",
+    "transcription": "[to be translated]:Speech Transcription (OpenAI)"
   },
   "error": {
     "availableProviders": "Furnizori disponibili",
@@ -3063,7 +3065,7 @@
           "description": "Introduceți un URL de pagină web:",
           "help": "Textul paginii va fi preluat, împărțit în fragmente și indexat automat",
           "input_label": "URL pagină web",
-          "placeholder": "https://docs.cherry-ai.com/",
+          "placeholder": "https://docs.huatuo.ai/",
           "title": "Importă o singură pagină web"
         }
       },
@@ -4692,7 +4694,7 @@
       "missing_model": "Activați cel puțin un model de la furnizorul activat",
       "missing_provider": "Activați un furnizor pentru a continua",
       "next": "Următorul",
-      "subtitle": "Adaugă o cheie API sau conectează-te cu CherryIN, apoi activează un furnizor.",
+      "subtitle": "Adaugă o cheie API sau conectează-te cu HuaTuoIN, apoi activează un furnizor.",
       "title": "Alegeți un furnizor"
     },
     "select_model": {
@@ -4704,10 +4706,10 @@
     "skip": "Sariți",
     "toast": {
       "complete_failed": "Nu s-a putut finaliza configurarea. Vă rugăm să încercați din nou.",
-      "connected": "Conectat cu succes la CherryIN"
+      "connected": "Conectat cu succes la HuaTuoIN"
     },
     "welcome": {
-      "login_cherryin": "Conectare cu CherryIN",
+      "login_huatuoin": "Conectare cu HuaTuoIN",
       "or_continue_with": "SAU CONTINUAȚI CU",
       "other_provider": "Alegeți alți furnizori",
       "select_other_provider": "Selectați alt furnizor",
@@ -4826,7 +4828,7 @@
       "stop": "Oprește OVMS",
       "stopping": "Se oprește"
     },
-    "description": "<div><p>1. Descarcă modele OV.</p><p>2. Adaugă modele în 'Manager'.</p><p>Suportă doar Windows!</p><p>Cale instalare OVMS: '%USERPROFILE%\\.cherrystudio\\ovms' .</p><p>Te rugăm să consulți <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Ghidul Intel OVMS</a></p></dev>",
+    "description": "<div><p>1. Descarcă modele OV.</p><p>2. Adaugă modele în 'Manager'.</p><p>Suportă doar Windows!</p><p>Cale instalare OVMS: '%USERPROFILE%\\.huatuostudio\\ovms' .</p><p>Te rugăm să consulți <a href=https://github.com/openvinotoolkit/model_server/blob/c55551763d02825829337b62c2dcef9339706f79/docs/deploying_server_baremetal.md>Ghidul Intel OVMS</a></p></dev>",
     "download": {
       "button": "Descarcă",
       "error": "Eroare descărcare",
@@ -5242,8 +5244,6 @@
     "baidu-cloud": "Baidu Cloud",
     "burncloud": "BurnCloud",
     "cerebras": "Cerebras AI",
-    "cherryai": "CherryAI",
-    "cherryin": "CherryIN",
     "claude-code": "Claude Code",
     "copilot": "GitHub Copilot",
     "dashscope": "Alibaba Cloud",
@@ -5259,6 +5259,8 @@
     "grok": "Grok",
     "grok-cli": "Grok CLI",
     "groq": "Groq",
+    "huatuoai": "HuaTuoAI",
+    "huatuoin": "HuaTuoIN",
     "huggingface": "Hugging Face",
     "hunyuan": "Tencent Hunyuan",
     "hyperbolic": "Hyperbolic",
@@ -6447,7 +6449,7 @@
         },
         "root": {
           "label": "Director backup (Opțional)",
-          "placeholder": "de ex.: /cherry-studio"
+          "placeholder": "de ex.: /huatuo-studio"
         },
         "secretAccessKey": {
           "label": "Cheie secretă de acces",
@@ -6611,7 +6613,7 @@
           "placeholder": "https://ghfast.top (direct dacă este gol)"
         },
         "githubToken": {
-          "help": "Crește limita de rată a API-ului GitHub pentru căutările de instrumente. Stocat local în text simplu. Lăsați gol pentru a utiliza variabila de mediu CHERRY_GITHUB_TOKEN.",
+          "help": "Crește limita de rată a API-ului GitHub pentru căutările de instrumente. Stocat local în text simplu. Lăsați gol pentru a utiliza variabila de mediu HUATUO_GITHUB_TOKEN.",
           "hide": "Ascunde tokenul",
           "label": "Token GitHub",
           "placeholder": "ghp_…",
@@ -6804,7 +6806,7 @@
       "common": {
         "menu": {
           "presentation_mode": {
-            "cherry": "Cireașă",
+            "huatuo": "Cireașă",
             "native": "Nativ",
             "restart": {
               "content": "Schimbarea stilului meniului necesită repornirea aplicației pentru a intra în vigoare. Doriți să reporniți acum?",
@@ -7338,7 +7340,11 @@
             "description": "Generează imagini dintr-o descriere",
             "label": "Generare de imagini"
           },
-          "label": "Scopul modelului"
+          "label": "Scopul modelului",
+          "transcription": {
+            "description": "[to be translated]:Transcribe audio input into text via the OpenAI audio API",
+            "label": "[to be translated]:Speech transcription"
+          }
         },
         "supported_text_delta": {
           "label": "Suportă ieșire text incrementală",
@@ -7744,12 +7750,6 @@
       "check": "Verifică",
       "check_all_keys": "Verifică toate cheile",
       "check_multiple_keys": "Verifică chei API multiple",
-      "cherryin": {
-        "api_host": {
-          "acceleration": "Domeniu de accelerație",
-          "international": "Domeniu internațional"
-        }
-      },
       "claude_code": {
         "agent_only_note": "Furnizorul Claude Code este disponibil doar pentru Agenți — nu poate fi utilizat în chat sau asistenți.",
         "description": "Conectează-te cu abonamentul tău Claude",
@@ -7872,6 +7872,12 @@
         "sign_in_success": "Conectat la Grok CLI",
         "signing_in": "Așteptând browserul…"
       },
+      "huatuoin": {
+        "api_host": {
+          "acceleration": "Domeniu de accelerație",
+          "international": "Domeniu internațional"
+        }
+      },
       "image_endpoints": {
         "image_edit_base_url": {
           "help": "Utilizat pentru /images/edits; lăsați gol pentru a utiliza URL-ul de bază implicit al endpoint-ului de chat",
@@ -7903,10 +7909,13 @@
         "balance": "Sold",
         "balance_error": "Nu s-a putut obține soldul",
         "button": "Conectare cu {{provider}}",
-        "cherryIn": {
+        "connect": "Conectează {{provider}}",
+        "description": "Acest serviciu este furnizat de <website>{{provider}}</website>",
+        "error": "Autentificare eșuată",
+        "huatuoIn": {
           "description": "Autentifică-te cu serverul tău auto-găzduit New-API folosind OAuth 2.0 (PKCE)",
           "logged_in": "Conectat prin OAuth",
-          "login_button": "Autorizează cu CherryIN",
+          "login_button": "Autorizează cu HuaTuoIN",
           "logout_button": "Deconectare",
           "not_logged_in": "Neautentificat",
           "register_account": "Create account",
@@ -7915,9 +7924,6 @@
           "title": "Autentificare OAuth",
           "use_api_key": "Use API key instead"
         },
-        "connect": "Conectează {{provider}}",
-        "description": "Acest serviciu este furnizat de <website>{{provider}}</website>",
-        "error": "Autentificare eșuată",
         "logged_in": "Conectat",
         "logout": "Deconectare",
         "logout_confirm": "Ești sigur că vrei să te deconectezi?",

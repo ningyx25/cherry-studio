@@ -119,7 +119,7 @@ describe('getToolCitationExport', () => {
         type: 'text',
         text: 'Legacy answer [3] and [1]',
         providerMetadata: {
-          cherry: {
+          huatuo: {
             references: [
               {
                 category: 'citation',
@@ -156,7 +156,7 @@ describe('getToolCitationExport', () => {
         type: 'text',
         // `citation-N` sourceIds are 0-indexed on the wire, so `citation-2` is marker [3].
         text: 'Claim [3]',
-        providerMetadata: { cherry: { references: [{ category: 'metadata' }] } }
+        providerMetadata: { huatuo: { references: [{ category: 'metadata' }] } }
       }
     ] as MessageExportView['parts'])
 

@@ -1,4 +1,4 @@
-import { Badge } from '@cherrystudio/ui'
+import { Badge } from '@huatuostudio/ui'
 import { CheckCircle, Terminal, XCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 

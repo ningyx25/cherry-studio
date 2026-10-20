@@ -1,7 +1,7 @@
 {
   "sourceRevision": "d316ec5345680f1de511fd6df3a7fbdb3edad151",
   "providers": {
-    "cherryin": {
+    "huatuoin": {
       "type": "openai",
       "apiHost": "https://open.cherryin.net",
       "anthropicApiHost": "https://open.cherryin.net",

@@ -18,7 +18,7 @@ import { application } from '@application'
 import { agentSessionMessageService } from '@data/services/AgentSessionMessageService'
 import { loggerService } from '@logger'
 import type { StreamErrorResult, StreamListener } from '@main/ai/streamManager'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { UniqueModelId } from '@shared/data/types/model'
 import type { UIMessageChunk } from 'ai'
 import { v4 as uuidv4 } from 'uuid'
@@ -150,7 +150,7 @@ export function startWebUiStream(input: {
   /** Upsert the message row with the accumulated parts at the given status. */
   const persistParts = (status: 'pending' | 'success' | 'error' | 'paused'): void => {
     try {
-      const parts: CherryMessagePart[] = []
+      const parts: HuaTuoMessagePart[] = []
       if (entry.reasoning) parts.push({ type: 'reasoning', text: entry.reasoning })
       if (entry.text) parts.push({ type: 'text', text: entry.text })
       agentSessionMessageService.saveMessage({

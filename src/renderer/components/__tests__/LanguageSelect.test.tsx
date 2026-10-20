@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
 
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import type { TranslateLanguage } from '@shared/data/types/translate'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  return await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  return await importOriginal<typeof HuaTuoStudioUi>()
 })
 
 const languageState = vi.hoisted(() => {

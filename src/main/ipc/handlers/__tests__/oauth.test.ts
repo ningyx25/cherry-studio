@@ -63,11 +63,11 @@ describe('oauthHandlers', () => {
   it('forwards the initiator window id, provider, and hosts to startDeepLinkFlow', async () => {
     await expect(
       oauthHandlers['oauth.start_deep_link_flow'](
-        { providerId: 'cherryin', oauthServer: 'https://open.cherryin.ai', apiHost: 'https://api.cherryin.ai' },
+        { providerId: 'huatuoin', oauthServer: 'https://open.cherryin.ai', apiHost: 'https://api.cherryin.ai' },
         ctx
       )
     ).resolves.toEqual({ authUrl: 'https://open.cherryin.ai/auth', state: 'st' })
-    expect(runtimeService.startDeepLinkFlow).toHaveBeenCalledWith('w1', 'cherryin', {
+    expect(runtimeService.startDeepLinkFlow).toHaveBeenCalledWith('w1', 'huatuoin', {
       oauthServer: 'https://open.cherryin.ai',
       apiHost: 'https://api.cherryin.ai'
     })
@@ -77,10 +77,10 @@ describe('oauthHandlers', () => {
   // no window) passes through so the runtime rejects it.
   it('defaults apiHost to oauthServer and passes a null senderId through', async () => {
     await oauthHandlers['oauth.start_deep_link_flow'](
-      { providerId: 'cherryin', oauthServer: 'https://open.cherryin.ai' },
+      { providerId: 'huatuoin', oauthServer: 'https://open.cherryin.ai' },
       { senderId: null }
     )
-    expect(runtimeService.startDeepLinkFlow).toHaveBeenCalledWith(null, 'cherryin', {
+    expect(runtimeService.startDeepLinkFlow).toHaveBeenCalledWith(null, 'huatuoin', {
       oauthServer: 'https://open.cherryin.ai',
       apiHost: 'https://open.cherryin.ai'
     })

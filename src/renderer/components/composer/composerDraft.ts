@@ -1,10 +1,10 @@
 import { isComposerInputTokenKind, isComposerMessageTokenKind } from '@renderer/utils/composerTokenPolicy'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type {
-  CherryProviderMetadata,
   ComposerMessageSnapshot,
   ComposerMessageToken,
-  ComposerMessageTokenPayload
+  ComposerMessageTokenPayload,
+  HuaTuoProviderMetadata
 } from '@shared/data/types/uiParts'
 import { FileTypeSchema } from '@shared/types/file'
 import type { Editor, JSONContent } from '@tiptap/core'
@@ -363,17 +363,17 @@ export function createComposerMessageSnapshot(draft: ComposerSerializedDraft): C
   }
 }
 
-function createComposerTextPart(text: string, composer?: ComposerMessageSnapshot): CherryMessagePart {
-  if (!composer) return { type: 'text', text } as CherryMessagePart
+function createComposerTextPart(text: string, composer?: ComposerMessageSnapshot): HuaTuoMessagePart {
+  if (!composer) return { type: 'text', text } as HuaTuoMessagePart
 
-  const cherry: CherryProviderMetadata = { composer }
+  const huatuo: HuaTuoProviderMetadata = { composer }
   return {
     type: 'text',
     text,
     providerMetadata: {
-      cherry
+      huatuo
     }
-  } as unknown as CherryMessagePart
+  } as unknown as HuaTuoMessagePart
 }
 
 /**
@@ -382,6 +382,6 @@ function createComposerTextPart(text: string, composer?: ComposerMessageSnapshot
  * from `ComposerAttachment`s via `buildFilePartsForAttachments`, not here.
  * The draft must already be normalized with `trimComposerDraftBoundaryBlankLines`.
  */
-export function createComposerUserMessageParts(draft: ComposerSerializedDraft): CherryMessagePart[] {
+export function createComposerUserMessageParts(draft: ComposerSerializedDraft): HuaTuoMessagePart[] {
   return [createComposerTextPart(draft.text, createComposerMessageSnapshot(draft))]
 }

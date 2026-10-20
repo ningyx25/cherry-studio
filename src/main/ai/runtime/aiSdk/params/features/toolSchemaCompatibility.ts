@@ -17,7 +17,7 @@
  */
 
 import type { JSONSchema7, JSONSchema7Definition, LanguageModelV3CallOptions } from '@ai-sdk/provider'
-import { definePlugin } from '@cherrystudio/ai-core'
+import { definePlugin } from '@huatuostudio/ai-core'
 import type { LanguageModelMiddleware } from 'ai'
 
 import type { RequestFeature } from '../feature'

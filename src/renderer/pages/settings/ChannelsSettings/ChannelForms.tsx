@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { PermissionModeIcon, PermissionModeOptionLabel } from '@renderer/components/PermissionModeOption'
 import { ipcApi, useIpcOn } from '@renderer/ipc'
 import type { FeishuChannelConfig, FeishuDomain, PermissionMode } from '@renderer/types/agent'

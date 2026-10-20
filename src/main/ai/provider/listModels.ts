@@ -453,10 +453,7 @@ function normalizeEndpointTypes(values: string[] | undefined): EndpointType[] | 
 
 const newApiFetcher: ModelFetcher = {
   match: (p) =>
-    p.id === SystemProviderIds['new-api'] ||
-    p.presetProviderId === 'new-api' ||
-    p.id === SystemProviderIds.cherryin ||
-    p.id === SystemProviderIds.aionly,
+    p.id === SystemProviderIds['new-api'] || p.presetProviderId === 'new-api' || p.id === SystemProviderIds.aionly,
   fetch: async (provider, signal) => {
     const baseUrl = formatApiHost(getBaseUrl(provider))
     const response = await getFromApi({

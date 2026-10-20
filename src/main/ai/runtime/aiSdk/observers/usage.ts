@@ -4,7 +4,7 @@
  * top-level `finish` part; per-step `usage` chunks survive, modulo the
  * Vercel gateway shape bug handled by `gatewayUsageNormalizeFeature`.
  *
- * Projection (AI SDK v6 `LanguageModelUsage` → Cherry `MessageStats`): names
+ * Projection (AI SDK v6 `LanguageModelUsage` → HuaTuo `MessageStats`): names
  * line up 1:1, so the snapshot is a near-copy:
  *   inputTokens / outputTokens / totalTokens               → same
  *   inputTokenDetails{noCache,cacheRead,cacheWrite}Tokens   → same
@@ -18,7 +18,7 @@
  * `message-metadata` into the accumulating message (`updateMessageMetadata`
  * recurses into plain objects), so a nested key can never be cleared — only
  * overwritten. Emitting the whole snapshot keeps every bucket authoritative
- * each step (see the invariant on `CherryUIMessageMetadata`).
+ * each step (see the invariant on `HuaTuoUIMessageMetadata`).
  */
 
 import type { MessageStats } from '@shared/data/types/message'

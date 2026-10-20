@@ -6,9 +6,9 @@ import path from 'node:path'
 import {
   ASSISTANT_APPROVAL_REQUIRED_RUNTIME_NAMES,
   ASSISTANT_FILE_APPROVAL_REQUIRED_RUNTIME_NAMES,
-  CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES,
-  toCherryBuiltinRuntimeName
-} from '@main/ai/tools/adapters/claudeCode/cherryBuiltinApproval'
+  HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES,
+  toHuaTuoBuiltinRuntimeName
+} from '@main/ai/tools/adapters/claudeCode/huatuoBuiltinApproval'
 import { KB_MANAGE_TOOL_NAME } from '@shared/ai/builtinTools'
 import { CHANNEL_SECURITY_PROMPT } from '@shared/ai/claudecode/constants'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -151,8 +151,8 @@ vi.mock('@main/core/platform', () => ({
 }))
 
 vi.mock('@main/services/proxy/proxyEnv', () => ({
-  CHERRY_NODE_PROXY_BYPASS_RULES_ENV: 'CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES',
-  CHERRY_NODE_PROXY_RULES_ENV: 'CHERRY_STUDIO_NODE_PROXY_RULES',
+  HUATUO_NODE_PROXY_BYPASS_RULES_ENV: 'HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES',
+  HUATUO_NODE_PROXY_RULES_ENV: 'HUATUO_STUDIO_NODE_PROXY_RULES',
   getProxyEnvironment: mocks.getProxyEnvironment
 }))
 
@@ -653,11 +653,11 @@ describe('buildClaudeCodeSessionSettings', () => {
     })
   })
 
-  it('refreshes a cached Cherry proxy after the current proxy is disabled', async () => {
-    const staleProxyUrl = 'http://stale-cherry-proxy.example:7890'
+  it('refreshes a cached HuaTuo proxy after the current proxy is disabled', async () => {
+    const staleProxyUrl = 'http://stale-huatuo-proxy.example:7890'
     mocks.getShellEnv.mockResolvedValue({
-      CHERRY_STUDIO_NODE_PROXY_RULES: staleProxyUrl,
-      CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES: 'stale.internal',
+      HUATUO_STUDIO_NODE_PROXY_RULES: staleProxyUrl,
+      HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES: 'stale.internal',
       HTTP_PROXY: staleProxyUrl,
       HTTPS_PROXY: staleProxyUrl,
       http_proxy: staleProxyUrl,
@@ -679,8 +679,8 @@ describe('buildClaudeCodeSessionSettings', () => {
       {} as never
     )
 
-    expect(settings.env).not.toHaveProperty('CHERRY_STUDIO_NODE_PROXY_RULES')
-    expect(settings.env).not.toHaveProperty('CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES')
+    expect(settings.env).not.toHaveProperty('HUATUO_STUDIO_NODE_PROXY_RULES')
+    expect(settings.env).not.toHaveProperty('HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES')
     expect(settings.env).not.toHaveProperty('HTTP_PROXY')
     expect(settings.env).not.toHaveProperty('HTTPS_PROXY')
     expect(settings.env).not.toHaveProperty('NO_PROXY')
@@ -689,10 +689,10 @@ describe('buildClaudeCodeSessionSettings', () => {
   })
 
   it('preserves an equal user-owned proxy value produced by the refreshed login shell', async () => {
-    const proxyUrl = 'http://stale-cherry-proxy.example:7890'
+    const proxyUrl = 'http://stale-huatuo-proxy.example:7890'
     mocks.getShellEnv.mockResolvedValue({
-      CHERRY_STUDIO_NODE_PROXY_RULES: proxyUrl,
-      CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES: 'stale.internal',
+      HUATUO_STUDIO_NODE_PROXY_RULES: proxyUrl,
+      HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES: 'stale.internal',
       HTTP_PROXY: proxyUrl,
       HTTPS_PROXY: proxyUrl,
       NO_PROXY: 'stale.internal'
@@ -718,16 +718,16 @@ describe('buildClaudeCodeSessionSettings', () => {
       no_proxy: 'stale.internal,localhost,127.0.0.1,::1,[::1]'
     })
     expect(settings.env).not.toHaveProperty('HTTPS_PROXY')
-    expect(settings.env).not.toHaveProperty('CHERRY_STUDIO_NODE_PROXY_RULES')
-    expect(settings.env).not.toHaveProperty('CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES')
+    expect(settings.env).not.toHaveProperty('HUATUO_STUDIO_NODE_PROXY_RULES')
+    expect(settings.env).not.toHaveProperty('HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES')
     expect(mocks.refreshShellEnv).toHaveBeenCalledOnce()
   })
 
-  it('does not refresh when cached Cherry markers match the current proxy', async () => {
-    const proxyUrl = 'http://current-cherry-proxy.example:7890'
+  it('does not refresh when cached HuaTuo markers match the current proxy', async () => {
+    const proxyUrl = 'http://current-huatuo-proxy.example:7890'
     const currentProxyEnvironment = {
-      CHERRY_STUDIO_NODE_PROXY_RULES: proxyUrl,
-      CHERRY_STUDIO_NODE_PROXY_BYPASS_RULES: '',
+      HUATUO_STUDIO_NODE_PROXY_RULES: proxyUrl,
+      HUATUO_STUDIO_NODE_PROXY_BYPASS_RULES: '',
       HTTP_PROXY: proxyUrl
     }
     mocks.getShellEnv.mockResolvedValue(currentProxyEnvironment)
@@ -787,7 +787,7 @@ describe('buildClaudeCodeSessionSettings', () => {
     ).toBe(true)
   })
 
-  it('blocks permanent deletion and destructive Bash only for Cherry Assistant', async () => {
+  it('blocks permanent deletion and destructive Bash only for HuaTuo Assistant', async () => {
     mocks.getAgent.mockReturnValue({
       id: 'agent-1',
       type: 'claude-code',
@@ -872,7 +872,7 @@ describe('buildClaudeCodeSessionSettings', () => {
     ).resolves.toEqual({})
   })
 
-  it('requires a live approval for Cherry Assistant Feishu feedback submission under bypassPermissions', async () => {
+  it('requires a live approval for HuaTuo Assistant Feishu feedback submission under bypassPermissions', async () => {
     let interactionState = { currentTurn: 'interactive', userResponse: 'stream' }
     mocks.applicationGet.mockImplementation((name: string) => {
       if (name === 'PreferenceService') return { get: vi.fn(() => undefined) }
@@ -1060,7 +1060,7 @@ describe('buildClaudeCodeSessionSettings', () => {
 
     expect(settings.permissionMode).toBe('bypassPermissions')
     const requiredTools = [
-      ...CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toCherryBuiltinRuntimeName),
+      ...HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName),
       ...ASSISTANT_APPROVAL_REQUIRED_RUNTIME_NAMES,
       ...ASSISTANT_FILE_APPROVAL_REQUIRED_RUNTIME_NAMES
     ]
@@ -1091,14 +1091,14 @@ describe('buildClaudeCodeSessionSettings', () => {
     const settings = await buildClaudeCodeSessionSettings(session as never, {} as never)
 
     expect(settings.disallowedTools).toEqual(expect.arrayContaining(['Bash', 'Read']))
-    // The injected cherry-tools/agent-memory servers are always pre-approved via the allowlist.
+    // The injected huatuo-tools/agent-memory servers are always pre-approved via the allowlist.
     expect(settings.allowedTools).toEqual(
-      expect.arrayContaining(['mcp__cherry-tools__cron', 'mcp__agent-memory__memory'])
+      expect.arrayContaining(['mcp__huatuo-tools__cron', 'mcp__agent-memory__memory'])
     )
   })
 
   it('does not auto-approve disabled MCP tools', async () => {
-    const disabledTools = ['mcp__cherry-tools__web_fetch', 'mcp__agent-memory__memory']
+    const disabledTools = ['mcp__huatuo-tools__web_fetch', 'mcp__agent-memory__memory']
     mocks.getAgent.mockReturnValue({
       id: 'agent-1',
       type: 'claude-code',
@@ -1118,7 +1118,7 @@ describe('buildClaudeCodeSessionSettings', () => {
 
     expect(settings.disallowedTools).toEqual(expect.arrayContaining(disabledTools))
     for (const toolName of disabledTools) expect(settings.allowedTools).not.toContain(toolName)
-    expect(settings.allowedTools).toContain('mcp__cherry-tools__web_search')
+    expect(settings.allowedTools).toContain('mcp__huatuo-tools__web_search')
   })
 
   it('appends web-only citation guidance to the system prompt by default', async () => {
@@ -1132,8 +1132,8 @@ describe('buildClaudeCodeSessionSettings', () => {
 
     const systemPrompt = systemPromptText(settings.systemPrompt)
     expect(systemPrompt).toContain('## Citations')
-    expect(systemPrompt).toContain('mcp__cherry-tools__web_search')
-    expect(systemPrompt).not.toContain('mcp__cherry-tools__kb_search')
+    expect(systemPrompt).toContain('mcp__huatuo-tools__web_search')
+    expect(systemPrompt).not.toContain('mcp__huatuo-tools__kb_search')
   })
 
   it('includes kb_search in citation guidance when the agent has bound knowledge bases', async () => {
@@ -1154,7 +1154,7 @@ describe('buildClaudeCodeSessionSettings', () => {
 
     const settings = await buildClaudeCodeSessionSettings(session as never, {} as never)
 
-    expect(systemPromptText(settings.systemPrompt)).toContain('mcp__cherry-tools__kb_search')
+    expect(systemPromptText(settings.systemPrompt)).toContain('mcp__huatuo-tools__kb_search')
   })
 
   // The kb_* tools are exposed from the resolved scope, so an unbound Agent still gets them from the
@@ -1179,7 +1179,7 @@ describe('buildClaudeCodeSessionSettings', () => {
       knowledgeBaseIds: ['kb-selected']
     })
 
-    expect(systemPromptText(settings.systemPrompt)).toContain('mcp__cherry-tools__kb_search')
+    expect(systemPromptText(settings.systemPrompt)).toContain('mcp__huatuo-tools__kb_search')
   })
 
   it('omits citation guidance when both web tools are disabled and no knowledge base is bound', async () => {
@@ -1189,7 +1189,7 @@ describe('buildClaudeCodeSessionSettings', () => {
       model: 'anthropic::claude-sonnet',
       mcps: [],
       allowedTools: [],
-      disabledTools: ['mcp__cherry-tools__web_search', 'mcp__cherry-tools__web_fetch'],
+      disabledTools: ['mcp__huatuo-tools__web_search', 'mcp__huatuo-tools__web_fetch'],
       configuration: {}
     })
     const session = {
@@ -1211,7 +1211,7 @@ describe('buildClaudeCodeSessionSettings', () => {
       mcps: [],
       allowedTools: [],
       knowledgeBaseIds: ['kb-1'],
-      disabledTools: ['mcp__cherry-tools__web_search', 'mcp__cherry-tools__web_fetch', 'mcp__cherry-tools__kb_search'],
+      disabledTools: ['mcp__huatuo-tools__web_search', 'mcp__huatuo-tools__web_fetch', 'mcp__huatuo-tools__kb_search'],
       configuration: {}
     })
     const session = {
@@ -1222,7 +1222,7 @@ describe('buildClaudeCodeSessionSettings', () => {
 
     const settings = await buildClaudeCodeSessionSettings(session as never, {} as never)
 
-    expect(settings.disallowedTools).toEqual(expect.arrayContaining(['mcp__cherry-tools__kb_read']))
+    expect(settings.disallowedTools).toEqual(expect.arrayContaining(['mcp__huatuo-tools__kb_read']))
     expect(systemPromptText(settings.systemPrompt)).not.toContain('## Citations')
   })
 
@@ -1292,7 +1292,7 @@ describe('buildClaudeCodeSessionSettings', () => {
     expect(settings.disallowedTools ?? []).not.toEqual(
       expect.arrayContaining(['AskUserQuestion', 'EnterPlanMode', 'ExitPlanMode'])
     )
-    expect(settings.disallowedTools ?? []).not.toContain('mcp__cherry-tools__notify')
+    expect(settings.disallowedTools ?? []).not.toContain('mcp__huatuo-tools__notify')
   })
 
   it('denies interactive no-responder tools at tool fire time for the current headless turn', async () => {
@@ -1315,7 +1315,7 @@ describe('buildClaudeCodeSessionSettings', () => {
       'EnterPlanMode',
       'ExitPlanMode',
       'EnterWorktree',
-      ...CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toCherryBuiltinRuntimeName)
+      ...HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName)
     ]
     for (const toolName of toolsRequiringAResponder) {
       const result = await settings.canUseTool?.(toolName, {}, {
@@ -1364,7 +1364,7 @@ describe('buildClaudeCodeSessionSettings', () => {
         expect.objectContaining({ hookSpecificOutput: expect.objectContaining({ permissionDecision: 'deny' }) })
       )
     }
-    for (const toolName of CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toCherryBuiltinRuntimeName)) {
+    for (const toolName of HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName)) {
       const results = await Promise.all(
         (settings.hooks?.PreToolUse?.[0]?.hooks ?? []).map((hook) =>
           hook(
@@ -1447,7 +1447,7 @@ describe('buildClaudeCodeSessionSettings', () => {
           hook(
             {
               hook_event_name: 'PreToolUse',
-              tool_name: 'mcp__cherry-tools__config',
+              tool_name: 'mcp__huatuo-tools__config',
               tool_input: { action }
             } as never,
             'tool-use-1',
@@ -1635,7 +1635,7 @@ describe('buildClaudeCodeSessionSettings', () => {
         toolName: 'AskUserQuestion',
         input,
         presentation: 'stream',
-        providerMetadata: { cherry: { transport: 'claude-agent', toolName: 'AskUserQuestion' } }
+        providerMetadata: { huatuo: { transport: 'claude-agent', toolName: 'AskUserQuestion' } }
       })
     )
   })
@@ -1686,9 +1686,9 @@ describe('buildClaudeCodeSessionSettings', () => {
       configuration: { builtin_role: 'assistant' }
     })
     mocks.listSkills.mockResolvedValue([{ id: 'skill-1', folderName: 'system-skill', isEnabled: true }])
-    mocks.getBuiltinAgentPluginDirectory.mockReturnValue('/app/feature.agents.builtin/cherry-assistant/.claude')
+    mocks.getBuiltinAgentPluginDirectory.mockReturnValue('/app/feature.agents.builtin/huatuo-assistant/.claude')
     mocks.loadBuiltinAgentDefinition.mockReturnValue({
-      skills: ['cherry-assistant-guide', 'faq-collector']
+      skills: ['huatuo-assistant-guide', 'faq-collector']
     })
     const session = {
       id: 'session-1',
@@ -1706,10 +1706,10 @@ describe('buildClaudeCodeSessionSettings', () => {
     })
     expect(settings.plugins).toContainEqual({
       type: 'local',
-      path: '/app/feature.agents.builtin/cherry-assistant/.claude',
+      path: '/app/feature.agents.builtin/huatuo-assistant/.claude',
       skipMcpDiscovery: true
     })
-    expect(settings.skills).toEqual(expect.arrayContaining(['system-skill', 'cherry-assistant-guide', 'faq-collector']))
+    expect(settings.skills).toEqual(expect.arrayContaining(['system-skill', 'huatuo-assistant-guide', 'faq-collector']))
   })
 
   it('injects and auto-approves Assistant MCP tools for a local assistant session', async () => {
@@ -1762,13 +1762,13 @@ describe('buildClaudeCodeSessionSettings', () => {
       workspacePath: '/workspace/project'
     })
 
-    const cherryServer = (settings.mcpServers?.['cherry-tools'] as any)?.instance
-    const handlers = cherryServer.server._requestHandlers
+    const huatuoServer = (settings.mcpServers?.['huatuo-tools'] as any)?.instance
+    const handlers = huatuoServer.server._requestHandlers
     const listed = await handlers.get('tools/list')({ method: 'tools/list', params: {} }, {})
     expect(listed.tools.map((tool: { name: string }) => tool.name)).toEqual(
       expect.arrayContaining(['kb_search', 'kb_read', 'kb_list', 'kb_manage', 'cli_list', 'cli_search', 'cli_install'])
     )
-    expect(systemPromptText(settings.systemPrompt)).toContain('mcp__cherry-tools__kb_search')
+    expect(systemPromptText(settings.systemPrompt)).toContain('mcp__huatuo-tools__kb_search')
   })
 
   it('exposes CLI management tools to a normal Agent session', async () => {
@@ -1779,8 +1779,8 @@ describe('buildClaudeCodeSessionSettings', () => {
     }
 
     const settings = await buildClaudeCodeSessionSettings(session as never, {} as never)
-    const cherryServer = (settings.mcpServers?.['cherry-tools'] as any)?.instance
-    const handlers = cherryServer.server._requestHandlers
+    const huatuoServer = (settings.mcpServers?.['huatuo-tools'] as any)?.instance
+    const handlers = huatuoServer.server._requestHandlers
     const listed = await handlers.get('tools/list')({ method: 'tools/list', params: {} }, {})
 
     expect(listed.tools.map((tool: { name: string }) => tool.name)).toEqual(
@@ -1846,7 +1846,7 @@ describe('buildClaudeCodeSessionSettings', () => {
     expect(snapshotOptions.autoAllowRuntimeNames).not.toContain('mcp__assistant__navigate')
   })
 
-  it('does not inject a Cherry Assistant-only contract on every submitted prompt', async () => {
+  it('does not inject a HuaTuo Assistant-only contract on every submitted prompt', async () => {
     mocks.getAgent.mockReturnValue({
       id: 'agent-1',
       type: 'claude-code',
@@ -1969,13 +1969,13 @@ describe('buildClaudeCodeSessionSettings', () => {
 
     // settingsBuilder must derive the approval exceptions from the shared constant and pass them to the
     // snapshot. The agentTools test proves those options gate kb_manage; this proves settingsBuilder
-    // actually supplies them — dropping `.map(toCherryBuiltinRuntimeName)` or the exceptions fails here.
-    const exceptions = CHERRY_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toCherryBuiltinRuntimeName)
-    expect(exceptions).toContain(toCherryBuiltinRuntimeName(KB_MANAGE_TOOL_NAME))
+    // actually supplies them — dropping `.map(toHuaTuoBuiltinRuntimeName)` or the exceptions fails here.
+    const exceptions = HUATUO_BUILTIN_APPROVAL_REQUIRED_TOOL_NAMES.map(toHuaTuoBuiltinRuntimeName)
+    expect(exceptions).toContain(toHuaTuoBuiltinRuntimeName(KB_MANAGE_TOOL_NAME))
     expect(mocks.createToolPolicySnapshot).toHaveBeenCalledWith(
       expect.anything(),
       expect.objectContaining({
-        autoAllowRuntimeNames: expect.arrayContaining(['mcp__cherry-tools__notify']),
+        autoAllowRuntimeNames: expect.arrayContaining(['mcp__huatuo-tools__notify']),
         autoAllowRuntimeNameExceptions: exceptions
       })
     )
@@ -2397,7 +2397,7 @@ describe('buildClaudeCodeSessionSettings', () => {
       // Non-mac (platform mock has no isMac): reuse the user's real config dir from the login shell.
       expect(settings.env!.CLAUDE_CONFIG_DIR).toBe('/home/me/.claude')
       // The managed library is injected unconditionally, so it survives external-CLI stripping.
-      expect(settings.env!.CHERRY_STUDIO_SKILLS_DIR).toBe('/app/feature.agents.skills')
+      expect(settings.env!.HUATUO_STUDIO_SKILLS_DIR).toBe('/app/feature.agents.skills')
     })
 
     it('falls back CLAUDE_CONFIG_DIR to ~/.claude when the shell does not set it', async () => {
@@ -2436,8 +2436,8 @@ describe('buildClaudeCodeSessionSettings', () => {
       )
 
       expect(settings.env).not.toHaveProperty('CLAUDE_CONFIG_DIR')
-      // CLAUDE_CONFIG_DIR is dropped on macOS login, but the Cherry managed library stays injected.
-      expect(settings.env!.CHERRY_STUDIO_SKILLS_DIR).toBe('/app/feature.agents.skills')
+      // CLAUDE_CONFIG_DIR is dropped on macOS login, but the HuaTuo managed library stays injected.
+      expect(settings.env!.HUATUO_STUDIO_SKILLS_DIR).toBe('/app/feature.agents.skills')
     })
 
     it('blocks a reserved agent env_var override but passes through non-reserved keys', async () => {
@@ -2454,7 +2454,7 @@ describe('buildClaudeCodeSessionSettings', () => {
         smallModel: 'anthropic::claude-haiku',
         mcps: [],
         allowedTools: [],
-        configuration: { env_vars: { CLAUDE_CODE_USE_VERTEX: '1', CHERRY_CUSTOM_VAR: 'passthrough' } }
+        configuration: { env_vars: { CLAUDE_CODE_USE_VERTEX: '1', HUATUO_CUSTOM_VAR: 'passthrough' } }
       })
 
       const settings = await buildClaudeCodeSessionSettings(
@@ -2463,7 +2463,7 @@ describe('buildClaudeCodeSessionSettings', () => {
       )
 
       expect(settings.env!.CLAUDE_CODE_USE_VERTEX).toBe('0')
-      expect(settings.env!.CHERRY_CUSTOM_VAR).toBe('passthrough')
+      expect(settings.env!.HUATUO_CUSTOM_VAR).toBe('passthrough')
     })
 
     it('leaves inherited Anthropic credentials intact for a non-login provider', async () => {

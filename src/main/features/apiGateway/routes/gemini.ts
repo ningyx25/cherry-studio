@@ -111,7 +111,7 @@ export const geminiRoutes = new Elysia({ prefix: '/v1beta' })
       }
       const { model, method } = parsed
 
-      // The sentinel suffix is reserved: `parseModelMethod` strips one trailing `@cherry`, so a
+      // The sentinel suffix is reserved: `parseModelMethod` strips one trailing `@huatuo`, so a
       // model that STILL ends in it addresses a real id ending in the reserved suffix — which is
       // ambiguous with the sentinel and never advertised by `GET /models`. Reject rather than route.
       if (isReservedGeminiGatewayModelId(model)) {

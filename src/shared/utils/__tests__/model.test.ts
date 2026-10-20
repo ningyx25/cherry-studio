@@ -1,4 +1,3 @@
-import { CHERRYAI_DEFAULT_MODEL_ID, CHERRYAI_PROVIDER_ID } from '@shared/data/presets/cherryai'
 import { ENDPOINT_TYPE, type Model, MODEL_CAPABILITY } from '@shared/data/types/model'
 import {
   deriveModelGroupName,
@@ -122,6 +121,26 @@ describe('shared model capability helpers', () => {
 
       expect(isNonChatModel(embeddingModel)).toBe(true)
     })
+
+    it('classifies a model whose only signal is the transcription endpoint as speech-to-text', () => {
+      // Custom providers / relays list models opaquely: no catalog capability,
+      // no modalities — the dedicated endpoint must be enough to select it for
+      // voice input (e.g. a manually-added Deepgram or localhost relay model).
+      const sttEndpointModel: Model = {
+        ...createModel(),
+        endpointTypes: [ENDPOINT_TYPE.OPENAI_AUDIO_TRANSCRIPTION]
+      }
+
+      expect(isSpeechToTextModel(sttEndpointModel)).toBe(true)
+      expect(isNonChatModel(sttEndpointModel)).toBe(true)
+      expect(isGatewayRoutableModel(sttEndpointModel)).toBe(false)
+    })
+
+    it('does not classify a chat-endpoint model as speech-to-text', () => {
+      const chatModel: Model = { ...createModel(), endpointTypes: [ENDPOINT_TYPE.OPENAI_CHAT_COMPLETIONS] }
+
+      expect(isSpeechToTextModel(chatModel)).toBe(false)
+    })
   })
 
   describe('isGatewayRoutableModel', () => {
@@ -137,16 +156,6 @@ describe('shared model capability helpers', () => {
       expect(isGatewayRoutableModel(createModel([MODEL_CAPABILITY.VIDEO_GENERATION]))).toBe(false)
       expect(isGatewayRoutableModel(createModel([MODEL_CAPABILITY.AUDIO_GENERATION]))).toBe(false)
       expect(isGatewayRoutableModel(createModel([MODEL_CAPABILITY.AUDIO_TRANSCRIPT]))).toBe(false)
-    })
-
-    it('excludes the CherryAI managed default model', () => {
-      const managedDefault: Model = {
-        ...createModel(),
-        id: `${CHERRYAI_PROVIDER_ID}::qwen`,
-        providerId: CHERRYAI_PROVIDER_ID,
-        apiModelId: CHERRYAI_DEFAULT_MODEL_ID
-      }
-      expect(isGatewayRoutableModel(managedDefault)).toBe(false)
     })
 
     it('excludes models of a provider id containing ":" (the gateway address cannot round-trip it)', () => {

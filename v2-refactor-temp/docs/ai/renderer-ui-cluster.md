@@ -24,14 +24,14 @@ field on each message; streaming wrote into Redux through
   `awaiting-approval` / terminal status from the shared cache.
 
 The `blocks` field is gone (commit `78a02662b refactor(agent-message):
-remove deprecated blocks field`); rendering reads `parts: CherryMessagePart[]`
+remove deprecated blocks field`); rendering reads `parts: HuaTuoMessagePart[]`
 directly.
 
 ## Key changes
 
 ### `PartsRenderer`
 
-Renders `CherryMessagePart[]` by dispatching on `part.type`. The per-
+Renders `HuaTuoMessagePart[]` by dispatching on `part.type`. The per-
 type renderers live in `Blocks/` (one component per type). Adding a new
 part type means adding one switch arm + one renderer component.
 
@@ -47,7 +47,7 @@ Commit `6ba5cd20c refactor(v2-chat): extract useIsActiveTurnTarget`.
 
 Two contexts:
 
-- **`PartsContext`** — `Record<messageId, CherryMessagePart[]> | null`.
+- **`PartsContext`** — `Record<messageId, HuaTuoMessagePart[]> | null`.
   `null` means "v1 mode" (no provider mounted) — handlers in Blocks/
   branch on this.
 - **`TranslationOverlayContext` + `TranslationOverlaySetterContext`** —

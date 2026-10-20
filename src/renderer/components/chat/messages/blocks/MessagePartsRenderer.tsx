@@ -1,7 +1,7 @@
 /**
  * MessagePartsRenderer — message parts renderer.
  *
- * Routes CherryMessagePart[] directly to leaf components. No intermediate
+ * Routes HuaTuoMessagePart[] directly to leaf components. No intermediate
  * block conversion — each part type is rendered from its raw data.
  *
  * Active and terminal messages use separate projections. Process narration,
@@ -36,9 +36,9 @@ import {
 } from '@renderer/utils/partsToBlocks'
 import type { CompactionAnchorData } from '@shared/ai/compaction'
 import { classifyTurn } from '@shared/ai/transport'
-import type { CherryMessagePart, ContentReference, ReasoningUIPart } from '@shared/data/types/message'
-import type { CherryProviderMetadata, ComposerMessageSnapshot, ComposerMessageToken } from '@shared/data/types/uiParts'
-import { readCherryMeta } from '@shared/data/types/uiParts'
+import type { ContentReference, HuaTuoMessagePart, ReasoningUIPart } from '@shared/data/types/message'
+import type { ComposerMessageSnapshot, ComposerMessageToken, HuaTuoProviderMetadata } from '@shared/data/types/uiParts'
+import { readHuaTuoMeta } from '@shared/data/types/uiParts'
 import { getToolName, isDataUIPart, isFileUIPart, isToolUIPart } from 'ai'
 import { AnimatePresence, motion, type Variants } from 'motion/react'
 import React, { useMemo } from 'react'
@@ -179,19 +179,19 @@ interface Props {
 // ============================================================================
 
 /** Check if a part is an image file part. */
-function isImageFilePart(part: CherryMessagePart): boolean {
+function isImageFilePart(part: HuaTuoMessagePart): boolean {
   return isFileUIPart(part) && part.mediaType.startsWith('image/')
 }
 
 /** Extract image URL from a file part. */
-function extractImageUrl(part: CherryMessagePart): string | undefined {
+function extractImageUrl(part: HuaTuoMessagePart): string | undefined {
   if (part.type !== 'file' || !('url' in part)) return undefined
   const filePart = part as { url?: string; mediaType?: string }
   return filePart.url || undefined
 }
 
 /** Get video filePath from a data-video part. */
-function getVideoFilePath(part: CherryMessagePart): string | undefined {
+function getVideoFilePath(part: HuaTuoMessagePart): string | undefined {
   if (isDataUIPart(part) && part.type === 'data-video') {
     return part.data.filePath
   }
@@ -209,7 +209,7 @@ interface RenderGroupedEntryOptions {
   enableAnimation?: boolean
   expandedTextPartIds?: ReadonlySet<string>
   messageCitations?: MessageCitations
-  citationProjectionByPart?: ReadonlyMap<CherryMessagePart, ResolvedCitationMarkers>
+  citationProjectionByPart?: ReadonlyMap<HuaTuoMessagePart, ResolvedCitationMarkers>
   readOnlyFilePreviews?: ReadonlyMap<string, ReadOnlyComposerFileTokenPreview>
   onTextPlayoutSettledChange?: (partId: string, settled: boolean) => void
   onTextPartExpandedChange?: (partId: string, expanded: boolean) => void
@@ -219,7 +219,7 @@ interface RenderGroupedEntryOptions {
   toolDisplay?: 'content' | 'disclosure'
 }
 
-const EMPTY_CITATION_PROJECTIONS: ReadonlyMap<CherryMessagePart, ResolvedCitationMarkers> = new Map()
+const EMPTY_CITATION_PROJECTIONS: ReadonlyMap<HuaTuoMessagePart, ResolvedCitationMarkers> = new Map()
 
 function groupPartEntries(entries: readonly PartEntry[]): GroupedEntry[] {
   return entries.reduce<GroupedEntry[]>((acc, entry) => {
@@ -281,7 +281,7 @@ function getComposerFileTokenNames(token: ComposerMessageToken): Set<string> {
 }
 
 function getComposerTokenDisplayText(
-  part: CherryMessagePart,
+  part: HuaTuoMessagePart,
   message: MessageListItem,
   partId: string,
   expandedTextPartIds: ReadonlySet<string>,
@@ -294,13 +294,13 @@ function getComposerTokenDisplayText(
 }
 
 function getVisibleComposerFileTokens(
-  parts: readonly CherryMessagePart[],
+  parts: readonly HuaTuoMessagePart[],
   message: MessageListItem,
   expandedTextPartIds: ReadonlySet<string>
 ): VisibleComposerFileToken[] {
   return parts.flatMap((part, index) => {
     if ((part.type as string) !== 'text') return []
-    const composer = getCherryMeta(part)?.composer
+    const composer = getHuaTuoMeta(part)?.composer
     if (!composer) return []
     const partId = `${message.id}-part-${index}`
     const text = getComposerTokenDisplayText(part, message, partId, expandedTextPartIds, composer)
@@ -313,7 +313,7 @@ function getVisibleComposerFileTokens(
 }
 
 function getFileEntrySourceId(entry: PartEntry): string | undefined {
-  return getCherryMeta(entry.part)?.fileTokenSourceId
+  return getHuaTuoMeta(entry.part)?.fileTokenSourceId
 }
 
 function getFileEntryName(entry: PartEntry): string {
@@ -329,21 +329,21 @@ function getFileEntryName(entry: PartEntry): string {
 }
 
 function getReadOnlyFileTokenPreviews(
-  parts: readonly CherryMessagePart[]
+  parts: readonly HuaTuoMessagePart[]
 ): ReadonlyMap<string, ReadOnlyComposerFileTokenPreview> {
   const previews = new Map<string, ReadOnlyComposerFileTokenPreview>()
 
   for (const part of parts) {
     if (!isFileUIPart(part)) continue
 
-    const cherryMeta = getCherryMeta(part)
-    const sourceId = cherryMeta?.fileTokenSourceId
+    const huatuoMeta = getHuaTuoMeta(part)
+    const sourceId = huatuoMeta?.fileTokenSourceId
     if (!sourceId) continue
 
     previews.set(sourceId, {
       url: part.url,
       mediaType: part.mediaType,
-      ...(cherryMeta.composerFileKind && { composerFileKind: cherryMeta.composerFileKind })
+      ...(huatuoMeta.composerFileKind && { composerFileKind: huatuoMeta.composerFileKind })
     })
   }
 
@@ -447,10 +447,10 @@ function isPotentiallyVisibleEntry(entry: PartEntry, messageId: string): boolean
 // Render helpers — Batch 1 stable components
 // ============================================================================
 
-/** Extract CherryProviderMetadata from a part. */
-function getCherryMeta(part: CherryMessagePart): CherryProviderMetadata | undefined {
+/** Extract HuaTuoProviderMetadata from a part. */
+function getHuaTuoMeta(part: HuaTuoMessagePart): HuaTuoProviderMetadata | undefined {
   if ('providerMetadata' in part && part.providerMetadata) {
-    return part.providerMetadata.cherry as CherryProviderMetadata | undefined
+    return part.providerMetadata.huatuo as HuaTuoProviderMetadata | undefined
   }
   return undefined
 }
@@ -470,7 +470,7 @@ const ErrorPartView = React.memo(function ErrorPartView({
   message
 }: {
   partId: string
-  part: Extract<CherryMessagePart, { type: 'data-error' }>
+  part: Extract<HuaTuoMessagePart, { type: 'data-error' }>
   message: MessageListItem
 }) {
   const rawData = part.data
@@ -483,17 +483,17 @@ const ErrorPartView = React.memo(function ErrorPartView({
     }),
     [rawData]
   )
-  const cachedDiagnosis = useMemo(() => readCherryMeta(part)?.diagnosis, [part])
+  const cachedDiagnosis = useMemo(() => readHuaTuoMeta(part)?.diagnosis, [part])
   return <ErrorBlock partId={partId} error={error} message={message} cachedDiagnosis={cachedDiagnosis} />
 })
 
 /**
- * Render a single part directly from CherryMessagePart — no MessageBlock conversion.
+ * Render a single part directly from HuaTuoMessagePart — no MessageBlock conversion.
  *
  * Data extraction happens HERE — leaf components receive pure view props only.
  */
 function renderPart(
-  part: CherryMessagePart,
+  part: HuaTuoMessagePart,
   partId: string,
   message: MessageListItem,
   isStreaming: boolean,
@@ -556,8 +556,8 @@ function renderPart(
     }
 
     case 'text': {
-      const cherryMeta = getCherryMeta(part)
-      const references = cherryMeta?.references as ContentReference[] | undefined
+      const huatuoMeta = getHuaTuoMeta(part)
+      const references = huatuoMeta?.references as ContentReference[] | undefined
       let converted = references ? referenceCitationsCache.get(references) : undefined
       if (references && !converted) {
         converted = {
@@ -578,7 +578,7 @@ function renderPart(
           messageCitations={message.role === 'assistant' ? options?.messageCitations : undefined}
           toolCitationProjection={options?.citationProjectionByPart?.get(part)}
           role={message.role}
-          composer={cherryMeta?.composer}
+          composer={huatuoMeta?.composer}
           readOnlyFilePreviews={options?.readOnlyFilePreviews}
           userContentExpanded={message.role === 'user' ? options?.expandedTextPartIds?.has(partId) : undefined}
           onPlayoutSettledChange={options?.onTextPlayoutSettledChange}
@@ -683,7 +683,7 @@ interface CachedToolProjection {
 
 const toolProjectionCache = new WeakMap<object, Map<string, CachedToolProjection>>()
 
-function getCachedToolProjection(part: CherryMessagePart, partId: string): CachedToolProjection {
+function getCachedToolProjection(part: HuaTuoMessagePart, partId: string): CachedToolProjection {
   const cacheKey = part as object
   let projectionsById = toolProjectionCache.get(cacheKey)
   if (!projectionsById) {
@@ -713,7 +713,7 @@ const ToolPartView = React.memo(function ToolPartView({
   partId,
   settleActiveTools
 }: {
-  part: CherryMessagePart
+  part: HuaTuoMessagePart
   partId: string
   settleActiveTools?: boolean
 }) {
@@ -722,7 +722,7 @@ const ToolPartView = React.memo(function ToolPartView({
   return <MessageTools toolResponse={settleActiveTools ? settleToolResponse(toolResponse) : toolResponse} />
 })
 
-function renderToolPart(part: CherryMessagePart, partId: string, settleActiveTools?: boolean): React.ReactNode {
+function renderToolPart(part: HuaTuoMessagePart, partId: string, settleActiveTools?: boolean): React.ReactNode {
   return <ToolPartView key={partId} part={part} partId={partId} settleActiveTools={settleActiveTools} />
 }
 
@@ -1341,7 +1341,7 @@ interface MessagePartsRendererContentProps extends Props {
   isActiveTurnProcessing: boolean
   isStreamLive: boolean
   isTranslationOverlayActive: boolean
-  messageParts: CherryMessagePart[]
+  messageParts: HuaTuoMessagePart[]
 }
 
 const MessagePartsRendererContent = React.memo(function MessagePartsRendererContent({
@@ -1420,7 +1420,7 @@ const MessagePartsRendererContent = React.memo(function MessagePartsRendererCont
     if (message.role !== 'assistant' || messageCitations.all.length === 0) return EMPTY_CITATION_PROJECTIONS
     const textParts = messageParts.filter((part) => {
       if (part.type !== 'text') return false
-      const references = getCherryMeta(part)?.references as ContentReference[] | undefined
+      const references = getHuaTuoMeta(part)?.references as ContentReference[] | undefined
       return !references?.length || convertReferencesToCitations(references).length === 0
     })
     const projections = resolveCitationMarkerParts(

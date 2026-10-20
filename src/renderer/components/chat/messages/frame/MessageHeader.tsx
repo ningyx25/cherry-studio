@@ -1,5 +1,5 @@
-import { Checkbox, Tooltip } from '@cherrystudio/ui'
-import { useIcon } from '@cherrystudio/ui/icons'
+import { Checkbox, Tooltip } from '@huatuostudio/ui'
+import { useIcon } from '@huatuostudio/ui/icons'
 import ModelAvatar from '@renderer/components/Avatar/ModelAvatar'
 import { useTheme } from '@renderer/hooks/useTheme'
 import type { Model } from '@renderer/types/model'

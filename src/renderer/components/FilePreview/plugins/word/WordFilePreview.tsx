@@ -1,4 +1,4 @@
-import { EmptyState } from '@cherrystudio/ui'
+import { EmptyState } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { renderAsync } from 'docx-preview'
 import AlertCircle from 'lucide-react/dist/esm/icons/alert-circle'

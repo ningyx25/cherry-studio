@@ -1,4 +1,4 @@
-import { EditableNumber } from '@cherrystudio/ui'
+import { EditableNumber } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { useProvider } from '@renderer/hooks/useProvider'
 import { toast } from '@renderer/services/toast'

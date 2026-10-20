@@ -1,7 +1,7 @@
 {
   "agent": {
     "builtin": {
-      "cherry_assistant": {
+      "huatuo_assistant": {
         "description": "Built-in HuaTuo Studio advisor. Diagnose issues, guide operations, collect FAQs, submit bugs/feature requests, and search/create Skills"
       }
     },
@@ -15,7 +15,7 @@
   },
   "apiGateway": {
     "docs": {
-      "description": "OpenAI・Anthropic・Gemini 互換の HuaTuo Studio HTTP API と、Cherry 独自のエンドポイント（モデル、ナレッジベース）",
+      "description": "OpenAI・Anthropic・Gemini 互換の HuaTuo Studio HTTP API と、HuaTuo 独自のエンドポイント（モデル、ナレッジベース）",
       "language_switcher_label": "ドキュメントの言語",
       "operations": {
         "chat_completions": "チャット補完を作成します。リクエストとレスポンスの形式は OpenAI Chat Completions と同じで、`stream: true` を指定すると逐次出力になります。",
@@ -33,8 +33,8 @@
       },
       "tags": {
         "anthropic": "Anthropic 互換のエンドポイントです。Anthropic SDK のベース URL をこのゲートウェイに向けると利用できます。",
-        "cherry": "HuaTuo Studio 独自のエンドポイント：ナレッジベース、サービス情報、ヘルスチェック。",
         "gemini": "Gemini 互換のエンドポイントです。本家と同じく `/v1beta` 以下で提供されます。",
+        "huatuo": "HuaTuo Studio 独自のエンドポイント：ナレッジベース、サービス情報、ヘルスチェック。",
         "openai": "OpenAI 互換のエンドポイントです。OpenAI SDK のベース URL をこのゲートウェイに向けると利用できます。"
       }
     }

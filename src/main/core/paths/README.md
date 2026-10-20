@@ -9,7 +9,7 @@ All paths are registered in `pathRegistry.ts` and accessed exclusively via `appl
 import { application } from '@application'
 
 const dir  = application.getPath('feature.files.data')
-//=> '/Users/alice/Library/Application Support/CherryStudio/Data/Files'
+//=> '/Users/alice/Library/Application Support/HuaTuoStudio/Data/Files'
 
 const file = application.getPath('feature.files.data', 'avatar.png')
 //=> '.../Data/Files/avatar.png'
@@ -22,7 +22,7 @@ application.getPath('invalid.key')
 
 | File | Role |
 |------|------|
-| `constants.ts` | Earliest path constants (`CHERRY_HOME`, `BOOT_CONFIG_PATH`, `LOGS_DIR`) — used before the registry exists; imported directly by the pre-registry bootstrappers (`LoggerService`, `BootConfigService`) |
+| `constants.ts` | Earliest path constants (`HUATUO_HOME`, `BOOT_CONFIG_PATH`, `LOGS_DIR`) — used before the registry exists; imported directly by the pre-registry bootstrappers (`LoggerService`, `BootConfigService`) |
 | `pathRegistry.ts` | `buildPathRegistry()` + `shouldAutoEnsure` + `PathKey` / `PathMap` types. Imported directly by `Application.ts`. ESLint-enforced key format |
 
 **No barrel.** The module's public access point is `application.getPath()`, not an `index.ts` — its two files are independent building blocks imported directly by their specific consumers (per [Naming §6.4](../../../../docs/references/naming-conventions.md): a directory that merely aggregates independent sub-modules gets no barrel).
@@ -31,14 +31,14 @@ application.getPath('invalid.key')
 
 | Namespace | Ownership | Examples |
 |-----------|-----------|----------|
-| `cherry.*` | Generic infra under `~/.cherrystudio` | `cherry.home`, `cherry.bin` |
+| `huatuo.*` | Generic infra under `~/.huatuostudio` | `huatuo.home`, `huatuo.bin` |
 | `sys.*` | OS-managed directories | `sys.home`, `sys.temp`, `sys.downloads` |
 | `app.*` | Electron app: install dir, userData, database, logs, temp root | `app.userdata`, `app.database.file` |
-| `feature.*` | Cherry-owned feature data (grouped by feature) | `feature.files.data`, `feature.mcp.oauth` |
-| `external.*` | Third-party paths (Cherry reads/writes, does NOT own) | `external.openclaw.config` |
+| `feature.*` | HuaTuo-owned feature data (grouped by feature) | `feature.files.data`, `feature.mcp.oauth` |
+| `external.*` | Third-party paths (HuaTuo reads/writes, does NOT own) | `external.openclaw.config` |
 
 **Default to `feature.*` for new keys.** The other four scopes are effectively closed.
-`feature.*` → Cherry creates/manages/may delete. `external.*` → Cherry MUST NOT delete.
+`feature.*` → HuaTuo creates/manages/may delete. `external.*` → HuaTuo MUST NOT delete.
 
 ## Key Naming Convention
 
@@ -84,7 +84,7 @@ Type-checked via `satisfies` — typos and stale references fail at compile time
 
 | Key | Physical location | Note |
 |-----|-------------------|------|
-| `feature.mcp.oauth` | `~/.cherrystudio/config/mcp/oauth` | Under `config/`, not `mcp/` |
+| `feature.mcp.oauth` | `~/.huatuostudio/config/mcp/oauth` | Under `config/`, not `mcp/` |
 | `feature.agents.skills.install.temp` | `{app.temp}/skill-install` | Sibling `feature.agents.skills` lives at `{userData}/Data/Skills` |
 
 **Never assume filesystem nesting from key nesting.** Consult `pathRegistry.ts` directly.

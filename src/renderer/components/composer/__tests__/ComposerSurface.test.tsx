@@ -86,7 +86,7 @@ function getMockEditorScrollHeight(node: HTMLElement) {
   return Math.max(getMockEditorMinHeight(node), contentHeight)
 }
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({
     children,
     size,
@@ -116,7 +116,7 @@ vi.mock('@cherrystudio/ui', () => ({
   Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>
 }))
 
-vi.mock('@cherrystudio/ui/lib/utils', () => ({
+vi.mock('@huatuostudio/ui/lib/utils', () => ({
   cn: (...values: Array<string | false | null | undefined>) => values.filter(Boolean).join(' ')
 }))
 

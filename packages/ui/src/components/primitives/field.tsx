@@ -1,6 +1,6 @@
-import { Label } from '@cherrystudio/ui/components/primitives/label'
-import { Separator } from '@cherrystudio/ui/components/primitives/separator'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Label } from '@huatuostudio/ui/components/primitives/label'
+import { Separator } from '@huatuostudio/ui/components/primitives/separator'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 

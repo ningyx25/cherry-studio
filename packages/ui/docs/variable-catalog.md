@@ -105,7 +105,7 @@ black, or the page foreground will have sufficient contrast.
 | `--radius` | Canonical Shadcn radius input; Tailwind radii derive from it |
 
 The standard Tailwind adapter derives `radius-sm` through `radius-4xl` from `--radius` with the Shadcn
-multipliers. Cherry's smaller `4xs` through `xs` aliases and `round` alias are compatibility extensions, not
+multipliers. HuaTuo's smaller `4xs` through `xs` aliases and `round` alias are compatibility extensions, not
 inputs to the semantic contract.
 
 ## 5. Stable HuaTuo Studio product variables
@@ -147,7 +147,7 @@ Use `--destructive` for a dangerous action. Use the `--error*` family for error 
 | Search highlights | `--highlight`, `--highlight-foreground`, `--highlight-accent` | Match surface, content, and active-match surface |
 | User message | `--chat-user` | User-message surface |
 
-Product colors are not automatically Tailwind colors. Only names in `CHERRY_PRODUCT_COLOR_TOKENS` generate
+Product colors are not automatically Tailwind colors. Only names in `HUATUO_PRODUCT_COLOR_TOKENS` generate
 utilities; custom-CSS domains such as rich text use the matching unprefixed variable directly.
 
 Unpaired product backgrounds retain the consuming component's existing semantic foreground. Add a shared
@@ -157,7 +157,7 @@ foreground only after concrete consumers establish a repeated contrast invariant
 
 Migration policy is recorded only in `scripts/migrations/shadcn-v2.json`. A migration source may still exist in an
 excluded internal provider such as `tokens/**`, but it is not a public role, is not part of
-`CHERRY_PRODUCT_VARIABLE_TOKENS`, and does not gain Tailwind exposure through that registry entry. An `exact` rule
+`HUATUO_PRODUCT_VARIABLE_TOKENS`, and does not gain Tailwind exposure through that registry entry. An `exact` rule
 may point to an official or stable product variable. A `review`, `contextual`, or `preserve` rule may intentionally
 have no target when the old value belongs to a component, feature, host, or one-off visual implementation.
 
@@ -205,7 +205,7 @@ Before adding a variable:
 6. Define a root value and ensure light/dark resolution is intentional.
 7. Add shared names to `theme-contract.ts`; add Tailwind exposure only when semantic utilities are required.
 8. Add migration metadata when replacing an existing name.
-9. Run `theme:build`, then `pnpm --filter @cherrystudio/ui theme:check`; the check also covers generated output,
+9. Run `theme:build`, then `pnpm --filter @huatuostudio/ui theme:check`; the check also covers generated output,
    migration rules, and the renderer migration boundary.
 10. Update this catalog and the relevant visual guidance.
 

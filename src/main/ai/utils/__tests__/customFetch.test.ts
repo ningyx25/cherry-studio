@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { customFetch, installProviderUserAgentInterceptor } from '../customFetch'
 
-const SENTINEL_HEADER = 'x-cherry-studio-user-agent'
+const SENTINEL_HEADER = 'x-huatuo-studio-user-agent'
 
 describe('customFetch', () => {
   beforeEach(() => {
@@ -100,7 +100,7 @@ describe('installProviderUserAgentInterceptor', () => {
       {
         requestHeaders: {
           'User-Agent': 'Chrome/Electron-default',
-          'X-Cherry-Studio-User-Agent': 'MyAgent/1.0',
+          'X-HuaTuo-Studio-User-Agent': 'MyAgent/1.0',
           Authorization: 'Bearer k'
         }
       },

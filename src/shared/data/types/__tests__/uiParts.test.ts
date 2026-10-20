@@ -1,20 +1,20 @@
 import type { ReasoningUIPart, TextUIPart } from 'ai'
 import { describe, expect, it } from 'vitest'
 
-import type { CherryMessagePart } from '../message'
+import type { HuaTuoMessagePart } from '../message'
 import {
-  CherryErrorMetaSchema,
-  CherryFileMetaSchema,
-  CherryReasoningMetaSchema,
-  CherryTextMetaSchema,
-  CherryToolMetaSchema,
   createClearContextPart,
   type DiagnosisResult,
   getKnowledgeBaseIdsFromParts,
   hasClearContextPart,
+  HuaTuoErrorMetaSchema,
+  HuaTuoFileMetaSchema,
+  HuaTuoReasoningMetaSchema,
+  HuaTuoTextMetaSchema,
+  HuaTuoToolMetaSchema,
   KnowledgeScopePartDataSchema,
-  readCherryMeta,
-  withCherryMeta,
+  readHuaTuoMeta,
+  withHuaTuoMeta,
   withKnowledgeScopePart
 } from '../uiParts'
 
@@ -25,43 +25,43 @@ const diagnosis: DiagnosisResult = {
   steps: [{ text: 'Open provider settings and check the key' }]
 }
 
-function dataErrorPart(cherry?: Record<string, unknown>): Extract<CherryMessagePart, { type: 'data-error' }> {
+function dataErrorPart(huatuo?: Record<string, unknown>): Extract<HuaTuoMessagePart, { type: 'data-error' }> {
   return {
     type: 'data-error',
     data: { name: 'AuthError', message: 'Unauthorized' },
-    ...(cherry ? { providerMetadata: { cherry } } : {})
-  } as unknown as Extract<CherryMessagePart, { type: 'data-error' }>
+    ...(huatuo ? { providerMetadata: { huatuo } } : {})
+  } as unknown as Extract<HuaTuoMessagePart, { type: 'data-error' }>
 }
 
 // ============================================================================
 // Schema sanity — declared shape matches expectation
 // ============================================================================
 
-describe('CherryTextMetaSchema', () => {
+describe('HuaTuoTextMetaSchema', () => {
   it('accepts references as array of anything', () => {
-    expect(CherryTextMetaSchema.safeParse({ references: [{ category: 'citation' }] }).success).toBe(true)
-    expect(CherryTextMetaSchema.safeParse({}).success).toBe(true)
+    expect(HuaTuoTextMetaSchema.safeParse({ references: [{ category: 'citation' }] }).success).toBe(true)
+    expect(HuaTuoTextMetaSchema.safeParse({}).success).toBe(true)
   })
   it('rejects references that is not an array', () => {
-    expect(CherryTextMetaSchema.safeParse({ references: 'not-an-array' }).success).toBe(false)
+    expect(HuaTuoTextMetaSchema.safeParse({ references: 'not-an-array' }).success).toBe(false)
   })
 })
 
-describe('CherryReasoningMetaSchema', () => {
+describe('HuaTuoReasoningMetaSchema', () => {
   it('accepts thinkingMs as number', () => {
-    expect(CherryReasoningMetaSchema.safeParse({ thinkingMs: 1234 }).success).toBe(true)
+    expect(HuaTuoReasoningMetaSchema.safeParse({ thinkingMs: 1234 }).success).toBe(true)
   })
   it('accepts startedAt as number', () => {
-    expect(CherryReasoningMetaSchema.safeParse({ startedAt: 1780913860106 }).success).toBe(true)
+    expect(HuaTuoReasoningMetaSchema.safeParse({ startedAt: 1780913860106 }).success).toBe(true)
   })
   it('rejects thinkingMs that is not a number', () => {
-    expect(CherryReasoningMetaSchema.safeParse({ thinkingMs: '1234' }).success).toBe(false)
+    expect(HuaTuoReasoningMetaSchema.safeParse({ thinkingMs: '1234' }).success).toBe(false)
   })
 })
 
-describe('CherryToolMetaSchema', () => {
+describe('HuaTuoToolMetaSchema', () => {
   it('accepts transport/toolName/tool', () => {
-    const ok = CherryToolMetaSchema.safeParse({
+    const ok = HuaTuoToolMetaSchema.safeParse({
       transport: 'claude-agent',
       toolName: 'web_search',
       tool: { serverId: 's1', serverName: 'search', type: 'mcp' }
@@ -69,14 +69,14 @@ describe('CherryToolMetaSchema', () => {
     expect(ok.success).toBe(true)
   })
   it('rejects tool.type outside the enum', () => {
-    const bad = CherryToolMetaSchema.safeParse({ tool: { type: 'pluggable' } })
+    const bad = HuaTuoToolMetaSchema.safeParse({ tool: { type: 'pluggable' } })
     expect(bad.success).toBe(false)
   })
 })
 
-describe('CherryFileMetaSchema', () => {
+describe('HuaTuoFileMetaSchema', () => {
   it('accepts fileEntryId, fileTokenSourceId, and the safe composer file kind', () => {
-    const ok = CherryFileMetaSchema.safeParse({
+    const ok = HuaTuoFileMetaSchema.safeParse({
       fileEntryId: 'entry-1',
       fileTokenSourceId: 'source-1',
       composerFileKind: 'pasted-text'
@@ -86,30 +86,30 @@ describe('CherryFileMetaSchema', () => {
   })
 
   it('rejects non-string fileTokenSourceId', () => {
-    const bad = CherryFileMetaSchema.safeParse({ fileTokenSourceId: 1 })
+    const bad = HuaTuoFileMetaSchema.safeParse({ fileTokenSourceId: 1 })
 
     expect(bad.success).toBe(false)
   })
 
   it('rejects unsupported composer file kinds', () => {
-    const bad = CherryFileMetaSchema.safeParse({ composerFileKind: 'local-path' })
+    const bad = HuaTuoFileMetaSchema.safeParse({ composerFileKind: 'local-path' })
 
     expect(bad.success).toBe(false)
   })
 })
 
-describe('CherryErrorMetaSchema', () => {
+describe('HuaTuoErrorMetaSchema', () => {
   it('accepts a fully-formed diagnosis and an empty object', () => {
-    expect(CherryErrorMetaSchema.safeParse({ diagnosis }).success).toBe(true)
-    expect(CherryErrorMetaSchema.safeParse({}).success).toBe(true)
+    expect(HuaTuoErrorMetaSchema.safeParse({ diagnosis }).success).toBe(true)
+    expect(HuaTuoErrorMetaSchema.safeParse({}).success).toBe(true)
   })
 
   it('rejects a diagnosis with a non-string summary', () => {
-    expect(CherryErrorMetaSchema.safeParse({ diagnosis: { ...diagnosis, summary: 42 } }).success).toBe(false)
+    expect(HuaTuoErrorMetaSchema.safeParse({ diagnosis: { ...diagnosis, summary: 42 } }).success).toBe(false)
   })
 
   it('rejects a diagnosis whose steps are not step objects', () => {
-    expect(CherryErrorMetaSchema.safeParse({ diagnosis: { ...diagnosis, steps: ['plain'] } }).success).toBe(false)
+    expect(HuaTuoErrorMetaSchema.safeParse({ diagnosis: { ...diagnosis, steps: ['plain'] } }).success).toBe(false)
   })
 })
 
@@ -119,7 +119,7 @@ describe('knowledge scope parts', () => {
       [
         { type: 'text', text: 'hello' },
         { type: 'data-knowledge-scope', data: { baseIds: ['old'] } }
-      ] as CherryMessagePart[],
+      ] as HuaTuoMessagePart[],
       ['kb-1', 'kb-2', 'kb-1']
     )
 
@@ -135,7 +135,7 @@ describe('knowledge scope parts', () => {
       [
         { type: 'text', text: 'hello' },
         { type: 'data-knowledge-scope', data: { baseIds: ['kb-1'] } }
-      ] as CherryMessagePart[],
+      ] as HuaTuoMessagePart[],
       []
     )
 
@@ -147,7 +147,7 @@ describe('knowledge scope parts', () => {
     expect(KnowledgeScopePartDataSchema.safeParse({ baseIds: [''] }).success).toBe(false)
     expect(
       getKnowledgeBaseIdsFromParts([
-        { type: 'data-knowledge-scope', data: { baseIds: [42] } } as unknown as CherryMessagePart
+        { type: 'data-knowledge-scope', data: { baseIds: [42] } } as unknown as HuaTuoMessagePart
       ])
     ).toBeUndefined()
   })
@@ -165,155 +165,155 @@ describe('clear context parts', () => {
 })
 
 // ============================================================================
-// readCherryMeta — runtime validation + narrowing
+// readHuaTuoMeta — runtime validation + narrowing
 // ============================================================================
 
-describe('readCherryMeta', () => {
-  it('reads CherryTextMeta from a TextUIPart with references', () => {
+describe('readHuaTuoMeta', () => {
+  it('reads HuaTuoTextMeta from a TextUIPart with references', () => {
     const part: TextUIPart = {
       type: 'text',
       text: 'hi',
-      providerMetadata: { cherry: { references: [{ category: 'citation' }] } }
+      providerMetadata: { huatuo: { references: [{ category: 'citation' }] } }
     }
-    const meta = readCherryMeta(part)
+    const meta = readHuaTuoMeta(part)
     expect(meta?.references).toEqual([{ category: 'citation' }])
   })
 
-  it('reads CherryReasoningMeta from a ReasoningUIPart with thinking metadata', () => {
+  it('reads HuaTuoReasoningMeta from a ReasoningUIPart with thinking metadata', () => {
     const part: ReasoningUIPart = {
       type: 'reasoning',
       text: 'thinking...',
-      providerMetadata: { cherry: { thinkingMs: 5000, startedAt: 1780913860106 } }
+      providerMetadata: { huatuo: { thinkingMs: 5000, startedAt: 1780913860106 } }
     }
-    const meta = readCherryMeta(part)
+    const meta = readHuaTuoMeta(part)
     expect(meta?.thinkingMs).toBe(5000)
     expect(meta?.startedAt).toBe(1780913860106)
   })
 
-  it('reads CherryToolMeta from a tool-foo part with transport and tool', () => {
+  it('reads HuaTuoToolMeta from a tool-foo part with transport and tool', () => {
     const part = {
       type: 'tool-fetch_url',
       toolCallId: 'tc1',
       providerMetadata: {
-        cherry: { transport: 'claude-agent', tool: { serverId: 's1', type: 'mcp' as const } }
+        huatuo: { transport: 'claude-agent', tool: { serverId: 's1', type: 'mcp' as const } }
       }
-    } as unknown as CherryMessagePart
-    const meta = readCherryMeta(part)
+    } as unknown as HuaTuoMessagePart
+    const meta = readHuaTuoMeta(part)
     expect(meta).toEqual({
       transport: 'claude-agent',
       tool: { serverId: 's1', type: 'mcp' }
     })
   })
 
-  it('reads CherryToolMeta from a dynamic-tool part', () => {
+  it('reads HuaTuoToolMeta from a dynamic-tool part', () => {
     const part = {
       type: 'dynamic-tool',
       toolName: 'x',
       toolCallId: 'tc2',
-      providerMetadata: { cherry: { transport: 'claude-agent' } }
-    } as unknown as Extract<CherryMessagePart, { type: 'dynamic-tool' }>
-    expect(readCherryMeta(part)?.transport).toBe('claude-agent')
+      providerMetadata: { huatuo: { transport: 'claude-agent' } }
+    } as unknown as Extract<HuaTuoMessagePart, { type: 'dynamic-tool' }>
+    expect(readHuaTuoMeta(part)?.transport).toBe('claude-agent')
   })
 
-  it('reads CherryFileMeta from a file part with token source id', () => {
+  it('reads HuaTuoFileMeta from a file part with token source id', () => {
     const part = {
       type: 'file',
       mediaType: 'application/pdf',
       url: 'file:///tmp/report.pdf',
       filename: 'report.pdf',
       providerMetadata: {
-        cherry: { fileEntryId: 'entry-1', fileTokenSourceId: 'source-1', composerFileKind: 'pasted-text' }
+        huatuo: { fileEntryId: 'entry-1', fileTokenSourceId: 'source-1', composerFileKind: 'pasted-text' }
       }
-    } as unknown as Extract<CherryMessagePart, { type: 'file' }>
+    } as unknown as Extract<HuaTuoMessagePart, { type: 'file' }>
 
-    expect(readCherryMeta(part)).toEqual({
+    expect(readHuaTuoMeta(part)).toEqual({
       fileEntryId: 'entry-1',
       fileTokenSourceId: 'source-1',
       composerFileKind: 'pasted-text'
     })
   })
 
-  it('reads CherryErrorMeta diagnosis from a data-error part', () => {
-    expect(readCherryMeta(dataErrorPart({ diagnosis }))?.diagnosis).toEqual(diagnosis)
+  it('reads HuaTuoErrorMeta diagnosis from a data-error part', () => {
+    expect(readHuaTuoMeta(dataErrorPart({ diagnosis }))?.diagnosis).toEqual(diagnosis)
   })
 
   it('returns undefined for a data-error part with a malformed diagnosis', () => {
-    expect(readCherryMeta(dataErrorPart({ diagnosis: { summary: 42 } }))).toBeUndefined()
+    expect(readHuaTuoMeta(dataErrorPart({ diagnosis: { summary: 42 } }))).toBeUndefined()
   })
 
   it('returns undefined when providerMetadata is missing', () => {
     const part: TextUIPart = { type: 'text', text: '' }
-    expect(readCherryMeta(part)).toBeUndefined()
+    expect(readHuaTuoMeta(part)).toBeUndefined()
   })
 
-  it('returns undefined when cherry is missing', () => {
+  it('returns undefined when huatuo is missing', () => {
     const part: TextUIPart = { type: 'text', text: '', providerMetadata: {} }
-    expect(readCherryMeta(part)).toBeUndefined()
+    expect(readHuaTuoMeta(part)).toBeUndefined()
   })
 
-  it('returns undefined when cherry is not an object', () => {
+  it('returns undefined when huatuo is not an object', () => {
     const part = {
       type: 'text',
       text: '',
-      providerMetadata: { cherry: 'oops' }
+      providerMetadata: { huatuo: 'oops' }
     } as unknown as TextUIPart
-    expect(readCherryMeta(part)).toBeUndefined()
+    expect(readHuaTuoMeta(part)).toBeUndefined()
   })
 
   it('returns undefined for a part type without a registered schema', () => {
     const part = {
       type: 'data-translation',
       data: { content: 'x', targetLanguage: 'en' },
-      providerMetadata: { cherry: { references: [] } }
-    } as unknown as CherryMessagePart
-    expect(readCherryMeta(part)).toBeUndefined()
+      providerMetadata: { huatuo: { references: [] } }
+    } as unknown as HuaTuoMessagePart
+    expect(readHuaTuoMeta(part)).toBeUndefined()
   })
 
   it('returns undefined when references is the wrong shape', () => {
     const part = {
       type: 'text',
       text: '',
-      providerMetadata: { cherry: { references: 'oops' } }
+      providerMetadata: { huatuo: { references: 'oops' } }
     } as unknown as TextUIPart
-    expect(readCherryMeta(part)).toBeUndefined()
+    expect(readHuaTuoMeta(part)).toBeUndefined()
   })
 
   it('returns undefined when thinkingMs is the wrong shape', () => {
     const part = {
       type: 'reasoning',
       text: '',
-      providerMetadata: { cherry: { thinkingMs: 'oops' } }
+      providerMetadata: { huatuo: { thinkingMs: 'oops' } }
     } as unknown as ReasoningUIPart
-    expect(readCherryMeta(part)).toBeUndefined()
+    expect(readHuaTuoMeta(part)).toBeUndefined()
   })
 })
 
 // ============================================================================
-// withCherryMeta — typed write boundary
+// withHuaTuoMeta — typed write boundary
 // ============================================================================
 
-describe('withCherryMeta', () => {
+describe('withHuaTuoMeta', () => {
   it('writes references onto a TextUIPart', () => {
     const part: TextUIPart = { type: 'text', text: '' }
-    const next = withCherryMeta(part, { references: [{ url: 'https://ex.com' }] })
-    expect(next.providerMetadata?.cherry).toEqual({ references: [{ url: 'https://ex.com' }] })
+    const next = withHuaTuoMeta(part, { references: [{ url: 'https://ex.com' }] })
+    expect(next.providerMetadata?.huatuo).toEqual({ references: [{ url: 'https://ex.com' }] })
   })
 
-  it('preserves existing cherry fields when merging', () => {
+  it('preserves existing huatuo fields when merging', () => {
     const part: TextUIPart = {
       type: 'text',
       text: '',
-      providerMetadata: { cherry: { references: [{ a: 1 }] } }
+      providerMetadata: { huatuo: { references: [{ a: 1 }] } }
     }
-    const next = withCherryMeta(part, { references: [{ b: 2 }] })
+    const next = withHuaTuoMeta(part, { references: [{ b: 2 }] })
     // shallow merge: new patch overwrites the same key
-    expect(next.providerMetadata?.cherry).toEqual({ references: [{ b: 2 }] })
+    expect(next.providerMetadata?.huatuo).toEqual({ references: [{ b: 2 }] })
   })
 
   it('writes thinking metadata onto a ReasoningUIPart', () => {
     const part: ReasoningUIPart = { type: 'reasoning', text: '' }
-    const next = withCherryMeta(part, { thinkingMs: 1234, startedAt: 1780913860106 })
-    expect(next.providerMetadata?.cherry).toEqual({ thinkingMs: 1234, startedAt: 1780913860106 })
+    const next = withHuaTuoMeta(part, { thinkingMs: 1234, startedAt: 1780913860106 })
+    expect(next.providerMetadata?.huatuo).toEqual({ thinkingMs: 1234, startedAt: 1780913860106 })
   })
 
   it('writes fileTokenSourceId onto a FileUIPart', () => {
@@ -322,36 +322,36 @@ describe('withCherryMeta', () => {
       mediaType: 'application/pdf',
       url: 'file:///tmp/report.pdf',
       filename: 'report.pdf'
-    } as unknown as Extract<CherryMessagePart, { type: 'file' }>
-    const next = withCherryMeta(part, { fileTokenSourceId: 'source-1' })
+    } as unknown as Extract<HuaTuoMessagePart, { type: 'file' }>
+    const next = withHuaTuoMeta(part, { fileTokenSourceId: 'source-1' })
 
-    expect(next.providerMetadata?.cherry).toEqual({ fileTokenSourceId: 'source-1' })
+    expect(next.providerMetadata?.huatuo).toEqual({ fileTokenSourceId: 'source-1' })
   })
 
   it('round-trips a diagnosis onto a data-error part', () => {
-    const next = withCherryMeta(dataErrorPart(), { diagnosis })
-    expect(readCherryMeta(next)?.diagnosis).toEqual(diagnosis)
+    const next = withHuaTuoMeta(dataErrorPart(), { diagnosis })
+    expect(readHuaTuoMeta(next)?.diagnosis).toEqual(diagnosis)
   })
 
   // ── Compile-time negatives — `tsc --noEmit` enforces these. ──────────
   it('rejects writing thinkingMs to TextUIPart at compile time', () => {
     const part: TextUIPart = { type: 'text', text: '' }
-    // @ts-expect-error thinkingMs is not on CherryTextMeta
-    withCherryMeta(part, { thinkingMs: 1 })
+    // @ts-expect-error thinkingMs is not on HuaTuoTextMeta
+    withHuaTuoMeta(part, { thinkingMs: 1 })
     expect(true).toBe(true)
   })
 
   it('rejects writing references to ReasoningUIPart at compile time', () => {
     const part: ReasoningUIPart = { type: 'reasoning', text: '' }
-    // @ts-expect-error references is not on CherryReasoningMeta
-    withCherryMeta(part, { references: [] })
+    // @ts-expect-error references is not on HuaTuoReasoningMeta
+    withHuaTuoMeta(part, { references: [] })
     expect(true).toBe(true)
   })
 
   it('rejects writing transport to TextUIPart at compile time', () => {
     const part: TextUIPart = { type: 'text', text: '' }
-    // @ts-expect-error transport is not on CherryTextMeta
-    withCherryMeta(part, { transport: 'x' })
+    // @ts-expect-error transport is not on HuaTuoTextMeta
+    withHuaTuoMeta(part, { transport: 'x' })
     expect(true).toBe(true)
   })
 })

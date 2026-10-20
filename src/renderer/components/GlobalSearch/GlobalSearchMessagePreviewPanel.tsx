@@ -1,5 +1,5 @@
-import { Button } from '@cherrystudio/ui'
 import { useInfiniteFlatItems, useInfiniteQuery } from '@data/hooks/useDataApi'
+import { Button } from '@huatuostudio/ui'
 import MessageContent from '@renderer/components/chat/messages/frame/MessageContent'
 import { MessageContentProvider } from '@renderer/components/chat/messages/MessageContentProvider'
 import { toMessageListItem } from '@renderer/components/chat/messages/utils/messageListItem'
@@ -8,7 +8,7 @@ import { type Topic, TopicType } from '@renderer/types/topic'
 import { buildAgentSessionTopicId } from '@renderer/utils/agentSession'
 import { sharedMessageToUIMessage, uiMessagesToPartsMap } from '@renderer/utils/message/messageProjection'
 import { cn } from '@renderer/utils/style'
-import type { CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoUIMessage } from '@shared/data/types/message'
 import { buildKeywordRegexes, splitKeywordsToTerms } from '@shared/utils/keywordSearch'
 import { ExternalLink, MessageSquare, MousePointerClick, X } from 'lucide-react'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -220,7 +220,7 @@ export function GlobalSearchMessagePreviewPanel({
 
   const topicBranchItems = useInfiniteFlatItems(topicPages, { reversePages: true })
   const sessionRows = useInfiniteFlatItems(sessionPages, { reversePages: true, reverseItems: true })
-  const messages = useMemo<CherryUIMessage[]>(() => {
+  const messages = useMemo<HuaTuoUIMessage[]>(() => {
     if (target.sourceType === 'topic') {
       return topicBranchItems.map((item) => sharedMessageToUIMessage(item.message))
     }

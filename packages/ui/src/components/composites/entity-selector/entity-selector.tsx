@@ -1,5 +1,5 @@
-import { Popover, PopoverContent, PopoverTrigger } from '@cherrystudio/ui/components/primitives/popover'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Popover, PopoverContent, PopoverTrigger } from '@huatuostudio/ui/components/primitives/popover'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import {
   type KeyboardEvent as ReactKeyboardEvent,
   useCallback,

@@ -176,22 +176,22 @@ describe('getNormalizedExecutablePath', () => {
   it('Linux without APPIMAGE env: returns app.getPath("exe") verbatim', async () => {
     vi.stubEnv('APPIMAGE', '')
     stubConstants({ isLinux: true, isWin: false, isPortable: false })
-    stubElectron({ exePath: '/usr/bin/cherry-studio' })
+    stubElectron({ exePath: '/usr/bin/huatuo-studio' })
     stubBootConfig()
     stubFs()
     const { getNormalizedExecutablePath } = await loadModule()
-    expect(getNormalizedExecutablePath()).toBe('/usr/bin/cherry-studio')
+    expect(getNormalizedExecutablePath()).toBe('/usr/bin/huatuo-studio')
   })
 
   it('Linux with APPIMAGE env: returns normalized AppImage path', async () => {
-    vi.stubEnv('APPIMAGE', '/home/alice/Applications/CherryStudio-1.0.0.AppImage')
+    vi.stubEnv('APPIMAGE', '/home/alice/Applications/HuaTuoStudio-1.0.0.AppImage')
     stubConstants({ isLinux: true, isWin: false, isPortable: false })
-    stubElectron({ exePath: '/tmp/.mount_xxxx/usr/bin/cherry-studio' })
+    stubElectron({ exePath: '/tmp/.mount_xxxx/usr/bin/huatuo-studio' })
     stubBootConfig()
     stubFs()
     const { getNormalizedExecutablePath } = await loadModule()
     // path.join is globally mocked to args.join('/'); path.dirname is real.
-    expect(getNormalizedExecutablePath()).toBe('/home/alice/Applications/cherry-studio.appimage')
+    expect(getNormalizedExecutablePath()).toBe('/home/alice/Applications/huatuo-studio.appimage')
   })
 
   it('Windows non-portable: returns app.getPath("exe") verbatim', async () => {
@@ -203,15 +203,15 @@ describe('getNormalizedExecutablePath', () => {
     expect(getNormalizedExecutablePath()).toBe('C:\\Program Files\\HuaTuo Studio\\HuaTuo Studio.exe')
   })
 
-  it('Windows portable: returns PORTABLE_EXECUTABLE_DIR/cherry-studio-portable.exe', async () => {
-    vi.stubEnv('PORTABLE_EXECUTABLE_DIR', 'D:\\PortableApps\\CherryStudio')
+  it('Windows portable: returns PORTABLE_EXECUTABLE_DIR/huatuo-studio-portable.exe', async () => {
+    vi.stubEnv('PORTABLE_EXECUTABLE_DIR', 'D:\\PortableApps\\HuaTuoStudio')
     stubConstants({ isLinux: false, isWin: true, isPortable: true })
-    stubElectron({ exePath: 'D:\\PortableApps\\CherryStudio\\HuaTuo Studio.exe' })
+    stubElectron({ exePath: 'D:\\PortableApps\\HuaTuoStudio\\HuaTuo Studio.exe' })
     stubBootConfig()
     stubFs()
     const { getNormalizedExecutablePath } = await loadModule()
     // path.join is globally mocked to args.join('/').
-    expect(getNormalizedExecutablePath()).toBe('D:\\PortableApps\\CherryStudio/cherry-studio-portable.exe')
+    expect(getNormalizedExecutablePath()).toBe('D:\\PortableApps\\HuaTuoStudio/huatuo-studio-portable.exe')
   })
 })
 
@@ -377,14 +377,14 @@ describe('resolveUserDataLocation', () => {
     })
 
     it('BootConfig empty + isPortable=true: setPath called with portableDir/data', async () => {
-      vi.stubEnv('PORTABLE_EXECUTABLE_DIR', 'D:\\PortableApps\\CherryStudio')
+      vi.stubEnv('PORTABLE_EXECUTABLE_DIR', 'D:\\PortableApps\\HuaTuoStudio')
       stubConstants({ isLinux: false, isWin: true, isPortable: true })
-      stubElectron({ exePath: 'D:\\PortableApps\\CherryStudio\\HuaTuo Studio.exe' })
+      stubElectron({ exePath: 'D:\\PortableApps\\HuaTuoStudio\\HuaTuo Studio.exe' })
       stubBootConfig({ 'app.user_data_path': {} })
       stubFs()
       const { resolveUserDataLocation } = await loadModule()
       resolveUserDataLocation()
-      expect(setPathMock).toHaveBeenCalledWith('userData', 'D:\\PortableApps\\CherryStudio/data')
+      expect(setPathMock).toHaveBeenCalledWith('userData', 'D:\\PortableApps\\HuaTuoStudio/data')
       expect(setPathMock).toHaveBeenCalledTimes(1)
     })
 
@@ -399,34 +399,34 @@ describe('resolveUserDataLocation', () => {
     })
 
     it('AppImage normalized key matches in BootConfig: setPath called', async () => {
-      vi.stubEnv('APPIMAGE', '/home/alice/Apps/CherryStudio-1.0.0.AppImage')
+      vi.stubEnv('APPIMAGE', '/home/alice/Apps/HuaTuoStudio-1.0.0.AppImage')
       stubConstants({ isLinux: true, isWin: false, isPortable: false })
-      stubElectron({ exePath: '/tmp/.mount_abc/usr/bin/cherry-studio' })
+      stubElectron({ exePath: '/tmp/.mount_abc/usr/bin/huatuo-studio' })
       // Key matches the *normalized* path, not raw exe.
       stubBootConfig({
         'app.user_data_path': {
-          '/home/alice/Apps/cherry-studio.appimage': '/home/alice/cherry-data'
+          '/home/alice/Apps/huatuo-studio.appimage': '/home/alice/huatuo-data'
         }
       })
       stubFs({ existsSyncImpl: () => true, accessSyncImpl: () => undefined })
       const { resolveUserDataLocation } = await loadModule()
       resolveUserDataLocation()
-      expect(setPathMock).toHaveBeenCalledWith('userData', '/home/alice/cherry-data')
+      expect(setPathMock).toHaveBeenCalledWith('userData', '/home/alice/huatuo-data')
     })
 
     it('Windows portable normalized key matches in BootConfig: setPath called', async () => {
-      vi.stubEnv('PORTABLE_EXECUTABLE_DIR', 'D:\\PortableApps\\CherryStudio')
+      vi.stubEnv('PORTABLE_EXECUTABLE_DIR', 'D:\\PortableApps\\HuaTuoStudio')
       stubConstants({ isLinux: false, isWin: true, isPortable: true })
-      stubElectron({ exePath: 'D:\\PortableApps\\CherryStudio\\HuaTuo Studio.exe' })
+      stubElectron({ exePath: 'D:\\PortableApps\\HuaTuoStudio\\HuaTuo Studio.exe' })
       stubBootConfig({
         'app.user_data_path': {
-          'D:\\PortableApps\\CherryStudio/cherry-studio-portable.exe': 'D:\\Data\\Cherry'
+          'D:\\PortableApps\\HuaTuoStudio/huatuo-studio-portable.exe': 'D:\\Data\\HuaTuo'
         }
       })
       stubFs({ existsSyncImpl: () => true, accessSyncImpl: () => undefined })
       const { resolveUserDataLocation } = await loadModule()
       resolveUserDataLocation()
-      expect(setPathMock).toHaveBeenCalledWith('userData', 'D:\\Data\\Cherry')
+      expect(setPathMock).toHaveBeenCalledWith('userData', 'D:\\Data\\HuaTuo')
     })
   })
 

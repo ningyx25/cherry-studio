@@ -1,4 +1,4 @@
-import type { ParamValues } from '@cherrystudio/provider-registry'
+import type { ParamValues } from '@huatuostudio/provider-registry'
 
 import { nativeBindingFor } from './aiSdkNativeBindings'
 

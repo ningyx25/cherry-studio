@@ -25,9 +25,9 @@ const MAX_WIPE_ATTEMPTS = 2
  * The marker is removed separately after a durable completion record is written.
  */
 export const USER_DATA_WIPE = [
-  'cherrystudio.sqlite',
-  'cherrystudio.sqlite-wal',
-  'cherrystudio.sqlite-shm',
+  'huatuostudio.sqlite',
+  'huatuostudio.sqlite-wal',
+  'huatuostudio.sqlite-shm',
   'Data',
   'Data.restore',
   'IndexedDB.restore',

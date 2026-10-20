@@ -1,5 +1,5 @@
 /**
- * The `cherry-tools` MCP server (injected into every Claude Code session by buildMcpServers)
+ * The `huatuo-tools` MCP server (injected into every Claude Code session by buildMcpServers)
  * exposes `report_artifacts`. buildSystemPrompt MUST append REPORT_ARTIFACTS_PROMPT so the model
  * is told to call that tool at task completion — otherwise it is a dangling, never-invoked tool.
  */
@@ -61,8 +61,8 @@ vi.mock('@main/i18n', () => ({
   t: vi.fn((key: string) => key)
 }))
 
-vi.mock('@main/ai/mcp/servers/cherryBuiltinTools', () => ({
-  default: vi.fn(() => ({ mcpServer: { id: 'cherry-tools' } }))
+vi.mock('@main/ai/mcp/servers/huatuoBuiltinTools', () => ({
+  default: vi.fn(() => ({ mcpServer: { id: 'huatuo-tools' } }))
 }))
 
 vi.mock('@data/services/AgentChannelService', () => ({
@@ -182,7 +182,7 @@ describe('buildSystemPrompt — current workspace', () => {
     expect(second).not.toContain('"/workspace/project-a"')
   })
 
-  it('replaces only the Claude Code base with system.md and retains Cherry context', async () => {
+  it('replaces only the Claude Code base with system.md and retains HuaTuo context', async () => {
     mockBuildPrompt.mockResolvedValueOnce({
       base: { kind: 'custom', content: 'CUSTOM SYSTEM PROMPT' },
       context: 'SOUL_PROMPT'
@@ -202,7 +202,7 @@ describe('buildSystemPrompt — current workspace', () => {
     expect(result).not.toContain('## Available Runtimes')
   })
 
-  it('treats an empty system.md as a custom base and still retains Cherry context', async () => {
+  it('treats an empty system.md as a custom base and still retains HuaTuo context', async () => {
     mockBuildPrompt.mockResolvedValueOnce({ base: { kind: 'custom', content: '' }, context: 'SOUL_PROMPT' })
 
     const result = await buildSystemPrompt(
@@ -236,7 +236,7 @@ describe('buildSystemPrompt — report_artifacts prompt', () => {
     expect(expectClaudeCodePreset(result)).toContain(ARTIFACTS_MARKER)
   })
 
-  it('appends it for the Cherry Assistant like every other Agent', async () => {
+  it('appends it for the HuaTuo Assistant like every other Agent', async () => {
     const agent = makeAgent({
       instructions: 'Assistant instructions.',
       configuration: { builtin_role: 'assistant' } as never
@@ -265,7 +265,7 @@ describe('buildSystemPrompt — runtime/CLI handbook', () => {
     expect(result).not.toContain('Install dependencies INTO the project (cwd) only')
   })
 
-  it('does not inject the handbook for the Cherry Assistant', async () => {
+  it('does not inject the handbook for the HuaTuo Assistant', async () => {
     const agent = makeAgent({
       instructions: 'Assistant instructions.',
       configuration: { builtin_role: 'assistant' } as never
@@ -277,7 +277,7 @@ describe('buildSystemPrompt — runtime/CLI handbook', () => {
   })
 })
 
-describe('buildSystemPrompt — builtin Cherry Assistant definition', () => {
+describe('buildSystemPrompt — builtin HuaTuo Assistant definition', () => {
   beforeEach(() => {
     mockFindBySessionId.mockReturnValue(null)
   })
@@ -293,7 +293,7 @@ describe('buildSystemPrompt — builtin Cherry Assistant definition', () => {
     expect(result).toContain('SOUL_PROMPT')
     expect(result).toContain('Assistant instructions.')
     expect(result).toContain(ARTIFACTS_MARKER)
-    expect(result).not.toContain('Non-negotiable Cherry Assistant contract')
+    expect(result).not.toContain('Non-negotiable HuaTuo Assistant contract')
   })
 
   it('uses the bundled template when DB instructions are empty and resolves it on every build', async () => {
@@ -423,7 +423,7 @@ describe('buildSystemPrompt — builtin Cherry Assistant definition', () => {
   })
 
   it('injects the bundled Assistant role exactly once', async () => {
-    const role = 'Within HuaTuo Studio, you serve as Cherry Assistant, its built-in general-purpose Agent'
+    const role = 'Within HuaTuo Studio, you serve as HuaTuo Assistant, its built-in general-purpose Agent'
     mockLoadBuiltinAgentDefinition.mockReturnValue({ instructions: role })
     mockBuildPrompt.mockResolvedValue({
       base: { kind: 'claude_code' },

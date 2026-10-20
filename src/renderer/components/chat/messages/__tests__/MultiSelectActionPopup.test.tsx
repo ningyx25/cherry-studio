@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import MultiSelectActionPopup from '../MultiSelectActionPopup'
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, disabled, onClick }: any) => (
     <button type="button" disabled={disabled} onClick={onClick}>
       {children}

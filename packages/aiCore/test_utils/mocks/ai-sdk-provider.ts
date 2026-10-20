@@ -1,9 +1,9 @@
 /**
- * Mock for @cherrystudio/ai-sdk-provider
+ * Mock for @huatuostudio/ai-sdk-provider
  * This mock is used in tests to avoid importing the actual package
  */
 
-export type CherryInProviderSettings = {
+export type HuaTuoInProviderSettings = {
   apiKey?: string
   baseURL?: string
 }
@@ -32,11 +32,11 @@ export const createOpenAICompatibleRerankingModel = (
 ) => new OpenAICompatibleRerankingModel(modelId, { provider: `${settings.name}.rerank` })
 
 // oxlint-disable-next-line no-unused-vars
-export const createCherryIn = (_options?: CherryInProviderSettings) => ({
+export const createHuaTuoIn = (_options?: HuaTuoInProviderSettings) => ({
   // oxlint-disable-next-line no-unused-vars
   languageModel: (_modelId: string) => ({
     specificationVersion: 'v3',
-    provider: 'cherryin',
+    provider: 'huatuoin',
     modelId: 'mock-model',
     supportedUrls: {},
     doGenerate: async () => ({ text: 'mock response' }),
@@ -45,7 +45,7 @@ export const createCherryIn = (_options?: CherryInProviderSettings) => ({
   // oxlint-disable-next-line no-unused-vars
   chat: (_modelId: string) => ({
     specificationVersion: 'v3',
-    provider: 'cherryin-chat',
+    provider: 'huatuoin-chat',
     modelId: 'mock-model',
     supportedUrls: {},
     doGenerate: async () => ({ text: 'mock response' }),
@@ -54,12 +54,12 @@ export const createCherryIn = (_options?: CherryInProviderSettings) => ({
   // oxlint-disable-next-line no-unused-vars
   textEmbeddingModel: (_modelId: string) => ({
     specificationVersion: 'v3',
-    provider: 'cherryin',
+    provider: 'huatuoin',
     modelId: 'mock-embedding-model'
   }),
   rerankingModel: (modelId: string) => ({
     specificationVersion: 'v3',
-    provider: 'cherryin.rerank',
+    provider: 'huatuoin.rerank',
     modelId
   })
 })

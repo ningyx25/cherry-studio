@@ -79,7 +79,7 @@ jobs:
       - name: Reject hand-edited catalog
         if: steps.catalog-filter.outputs.data == 'true' && steps.catalog-filter.outputs.source == 'false'
         run: |
-          echo "::error::packages/provider-registry/data/*.json changed but no src/ or scripts/ change — that's a hand-edit. The data files are generated: edit src/creators|src/providers and run \`pnpm --filter @cherrystudio/provider-registry generate\`, then commit. Never hand-edit data/*.json."
+          echo "::error::packages/provider-registry/data/*.json changed but no src/ or scripts/ change — that's a hand-edit. The data files are generated: edit src/creators|src/providers and run \`pnpm --filter @huatuostudio/provider-registry generate\`, then commit. Never hand-edit data/*.json."
           exit 1
 
       - name: Install Node.js

@@ -1,4 +1,4 @@
-import { Spinner } from '@cherrystudio/ui'
+import { Spinner } from '@huatuostudio/ui'
 import { useCodeStyle } from '@renderer/hooks/useCodeStyle'
 import { useTheme } from '@renderer/hooks/useTheme'
 import DOMPurify from 'dompurify'

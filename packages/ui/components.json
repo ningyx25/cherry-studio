@@ -1,11 +1,11 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
   "aliases": {
-    "components": "@cherrystudio/ui/components",
-    "hooks": "@cherrystudio/ui/hooks",
-    "lib": "@cherrystudio/ui/lib",
-    "ui": "@cherrystudio/ui/components/primitives",
-    "utils": "@cherrystudio/ui/lib/utils"
+    "components": "@huatuostudio/ui/components",
+    "hooks": "@huatuostudio/ui/hooks",
+    "lib": "@huatuostudio/ui/lib",
+    "ui": "@huatuostudio/ui/components/primitives",
+    "utils": "@huatuostudio/ui/lib/utils"
   },
   "iconLibrary": "lucide",
   "rsc": false,

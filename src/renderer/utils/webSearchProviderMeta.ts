@@ -1,5 +1,5 @@
-import type { CompoundIcon } from '@cherrystudio/ui'
-import { Bocha, Cherryin, Exa, Firecrawl, Jina, Querit, Searxng, Tavily, Zhipu } from '@cherrystudio/ui/icons'
+import type { CompoundIcon } from '@huatuostudio/ui'
+import { Bocha, Exa, Firecrawl, Jina, Querit, Searxng, Tavily, Zhipu } from '@huatuostudio/ui/icons'
 import type {
   WebSearchCapability,
   WebSearchProvider,
@@ -24,7 +24,7 @@ const WEB_SEARCH_CAPABILITY_ORDER: readonly WebSearchCapability[] = ['searchKeyw
 
 type WebSearchProviderDisplayMeta = {
   descriptionKey: string
-  logo: CompoundIcon
+  logo?: CompoundIcon
   officialWebsite?: string
   apiKeyWebsite?: string
 }
@@ -48,8 +48,7 @@ const WEB_SEARCH_PROVIDER_DISPLAY_META: Record<WebSearchProviderId, WebSearchPro
     officialWebsite: 'https://exa.ai'
   },
   fetch: {
-    descriptionKey: 'settings.tool.websearch.provider_description.fetch',
-    logo: Cherryin
+    descriptionKey: 'settings.tool.websearch.provider_description.fetch'
   },
   jina: {
     descriptionKey: 'settings.tool.websearch.provider_description.jina',
@@ -92,7 +91,7 @@ export function getWebSearchProviderDescriptionKey(providerId: WebSearchProvider
   return WEB_SEARCH_PROVIDER_DISPLAY_META[providerId].descriptionKey
 }
 
-export function getWebSearchProviderLogo(providerId: WebSearchProviderId): CompoundIcon {
+export function getWebSearchProviderLogo(providerId: WebSearchProviderId): CompoundIcon | undefined {
   return WEB_SEARCH_PROVIDER_DISPLAY_META[providerId].logo
 }
 

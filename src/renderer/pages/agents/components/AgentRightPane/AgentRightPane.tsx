@@ -1,4 +1,4 @@
-import { Badge, Button, ConfirmDialog, HoverCard, HoverCardContent, HoverCardTrigger, Tooltip } from '@cherrystudio/ui'
+import { Badge, Button, ConfirmDialog, HoverCard, HoverCardContent, HoverCardTrigger, Tooltip } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { ContextUsageSummary, getAgentContextUsageColor } from '@renderer/components/chat/agent/ContextUsageSummary'
 import MessageList from '@renderer/components/chat/messages/MessageList'
@@ -50,7 +50,7 @@ import { cn } from '@renderer/utils/style'
 import type { AgentSessionTaskEvents } from '@shared/ai/agentSessionBackgroundTasks'
 import { isDeferredToolOutput } from '@shared/ai/transport'
 import { AGENT_WORKSPACE_TYPE, type AgentWorkspaceType } from '@shared/data/api/schemas/agentWorkspaces'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { AbsoluteFilePathSchema } from '@shared/types/file'
 import { createFilePathHandle, type TreeDirRoot } from '@shared/utils/file'
 import {
@@ -108,7 +108,7 @@ function getFlowTabTitle(input: AgentToolFlowOpenInput): string {
   return input.title?.trim() || input.toolName?.trim() || input.toolCallId
 }
 
-function findDeferredToolResult(partsByMessageId: Record<string, CherryMessagePart[]>, toolCallId: string | undefined) {
+function findDeferredToolResult(partsByMessageId: Record<string, HuaTuoMessagePart[]>, toolCallId: string | undefined) {
   if (!toolCallId) return undefined
 
   for (const parts of Object.values(partsByMessageId)) {
@@ -151,8 +151,8 @@ interface AgentRightPaneMeta {
 }
 
 interface AgentRightPaneRuntime {
-  messages: CherryUIMessage[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  messages: HuaTuoUIMessage[]
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 }
 
 interface AgentRightPaneFileState {
@@ -204,8 +204,8 @@ interface AgentRightPaneScopeProps extends Omit<AgentRightPaneMeta, 'conversatio
   onFileNavigationRequestChange?: (request: AgentFileNavigationRequest | null) => void
   userOpenIntentSeq?: number
   revealRequest?: ResourceListRevealRequest
-  messages: CherryUIMessage[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  messages: HuaTuoUIMessage[]
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 }
 
 const AgentRightPaneMetaContext = createContext<AgentRightPaneMeta | null>(null)
@@ -678,8 +678,8 @@ const AgentToolFlowMessageList = memo(function AgentToolFlowMessageList({
   messages,
   partsByMessageId
 }: {
-  messages: CherryUIMessage[]
-  partsByMessageId: Record<string, CherryMessagePart[]>
+  messages: HuaTuoUIMessage[]
+  partsByMessageId: Record<string, HuaTuoMessagePart[]>
 }) {
   const actions = useAgentRightPaneActions()
   const meta = useAgentRightPaneMeta()
@@ -959,7 +959,7 @@ function TaskStatusIcon({ status }: { status: AgentStatusTask['status'] | AgentR
 }
 
 /** Foreground runs belong to one assistant row; detached runs use the SDK's per-task edge state. */
-function useAgentRunLiveness(messages: CherryUIMessage[], taskEvents: AgentSessionTaskEvents): AgentRunLiveness {
+function useAgentRunLiveness(messages: HuaTuoUIMessage[], taskEvents: AgentSessionTaskEvents): AgentRunLiveness {
   return useMemo(() => {
     const activeMessageIds = new Set(
       messages

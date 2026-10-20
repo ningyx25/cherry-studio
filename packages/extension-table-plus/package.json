@@ -1,8 +1,8 @@
 {
-  "name": "@cherrystudio/extension-table-plus",
+  "name": "@huatuostudio/extension-table-plus",
   "description": "table extension for tiptap forked from tiptap/extension-table",
   "version": "3.0.12",
-  "homepage": "https://cherry-ai.com",
+  "homepage": "https://huatuo.ai",
   "keywords": ["tiptap", "tiptap extension"],
   "license": "MIT",
   "type": "module",
@@ -76,7 +76,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ningyx25/cherry-studio",
+    "url": "https://github.com/huatuostudio/huatuo-studio",
     "directory": "packages/extension-table-plus"
   },
   "scripts": {

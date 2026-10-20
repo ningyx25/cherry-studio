@@ -1,4 +1,4 @@
-appId: com.kangfenmao.CherryStudio
+appId: com.huatuo.HuaTuoStudio
 productName: HuaTuo Studio
 electronLanguages:
   - zh-CN
@@ -16,7 +16,7 @@ directories:
 protocols:
   - name: HuaTuo Studio
     schemes:
-      - cherrystudio
+      - huatuostudio
 files:
   - "**/*"
   - "!**/{.vscode,.yarn,.yarn-lock,.github,.cursorrules,.prettierrc}"
@@ -143,14 +143,14 @@ linux:
       Name: HuaTuo Studio
       StartupWMClass: HuaTuoStudio
   mimeTypes:
-    - x-scheme-handler/cherrystudio
+    - x-scheme-handler/huatuostudio
 rpm:
   # Workaround for electron build issue on rpm package:
   # https://github.com/electron/forge/issues/3594
   fpm: ["--rpm-rpmbuild-define=_build_id_links none"]
 publish:
   provider: generic
-  url: https://releases.cherry-ai.com
+  url: https://releases.huatuo.ai
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 beforePack: scripts/before-pack.js

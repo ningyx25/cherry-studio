@@ -1,4 +1,4 @@
-import { Skeleton } from '@cherrystudio/ui'
+import { Skeleton } from '@huatuostudio/ui'
 import { useEffect, useState } from 'react'
 
 export const MESSAGE_LIST_INITIAL_LOADING_DELAY_MS = 160

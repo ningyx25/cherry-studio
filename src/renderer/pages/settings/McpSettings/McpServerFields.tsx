@@ -15,7 +15,7 @@ import {
   SelectValue,
   Switch,
   Textarea
-} from '@cherrystudio/ui'
+} from '@huatuostudio/ui'
 import { parseKeyValueString } from '@renderer/utils/env'
 import { cn } from '@renderer/utils/style'
 import type { McpServer } from '@shared/data/types/mcpServer'

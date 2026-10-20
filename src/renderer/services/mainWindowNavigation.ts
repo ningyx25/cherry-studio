@@ -4,7 +4,7 @@ import { DEFAULT_SETTINGS_PATH, normalizeSettingsPath, type SettingsPath } from 
 
 const logger = loggerService.withContext('mainWindowNavigation')
 
-export const OPEN_MAIN_ROUTE_EVENT = 'cherry:open-main-route'
+export const OPEN_MAIN_ROUTE_EVENT = 'huatuo:open-main-route'
 
 export type OpenMainRouteEvent = CustomEvent<{ path: string }>
 

@@ -1,4 +1,4 @@
-import { ImageToolButton } from '@cherrystudio/ui'
+import { ImageToolButton } from '@huatuostudio/ui'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Copy, Download, Maximize2, RotateCw, Trash2, ZoomIn, ZoomOut } from 'lucide-react'
 

@@ -4,9 +4,9 @@
  *
  * The composer holds lean `ComposerAttachment` descriptors; the v2 `FileEntry`
  * is created here, when the message is actually sent. Each attachment is
- * promoted to an internal `FileEntry` via `createInternalEntry` (Cherry copies
+ * promoted to an internal `FileEntry` via `createInternalEntry` (HuaTuo copies
  * the bytes into its own storage); the resulting `fileEntryId` and the
- * composer's stable `fileTokenSourceId` live in `providerMetadata.cherry` so
+ * composer's stable `fileTokenSourceId` live in `providerMetadata.huatuo` so
  * downstream consumers can identify both the stored file and its composer
  * token association — see `packages/shared/data/types/uiParts.ts` for the
  * accessor + Zod.
@@ -15,7 +15,7 @@
 import { ipcApi } from '@renderer/ipc'
 import type { ComposerAttachment } from '@renderer/utils/message/composerAttachment'
 import type { FileUIPart } from '@shared/data/types/message'
-import { withCherryMeta } from '@shared/data/types/uiParts'
+import { withHuaTuoMeta } from '@shared/data/types/uiParts'
 import { createFilePathHandle, toFileUrl } from '@shared/utils/file'
 
 export function withComposerFilePartMeta(
@@ -23,7 +23,7 @@ export function withComposerFilePartMeta(
   attachment: Pick<ComposerAttachment, 'fileTokenSourceId' | 'composerFileKind'>,
   fileEntryId?: string
 ): FileUIPart {
-  return withCherryMeta(part, {
+  return withHuaTuoMeta(part, {
     ...(fileEntryId ? { fileEntryId } : {}),
     fileTokenSourceId: attachment.fileTokenSourceId,
     ...(attachment.composerFileKind ? { composerFileKind: attachment.composerFileKind } : {})
@@ -31,7 +31,7 @@ export function withComposerFilePartMeta(
 }
 
 /**
- * For each `ComposerAttachment`, create a v2 internal FileEntry (Cherry copies
+ * For each `ComposerAttachment`, create a v2 internal FileEntry (HuaTuo copies
  * the bytes into its own storage) and return a `FileUIPart` that carries the new
  * `fileEntryId` plus a `file://` URL pointing at the freshly-copied physical file.
  *

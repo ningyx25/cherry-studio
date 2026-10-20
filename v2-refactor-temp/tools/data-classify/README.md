@@ -246,7 +246,7 @@ npm run validate:gen
 - ✅ 必须在 Node.js 进程启动的最早阶段同步加载（早于 `app.whenReady`、早于 lifecycle 的 `BeforeReady` 阶段）
 - ✅ 影响进程级别的行为，一旦进程启动就无法更改
 - ✅ 不能存储在 SQLite 中（数据库由 lifecycle `BeforeReady` 阶段初始化，远晚于 boot config 的加载时机）
-- ✅ 使用同步文件 I/O 读取（`~/.cherrystudio/boot-config.json`，刻意放在 userData 之外，避免鸡生蛋问题）
+- ✅ 使用同步文件 I/O 读取（`~/.huatuostudio/boot-config.json`，刻意放在 userData 之外，避免鸡生蛋问题）
 
 **时序关系**:
 
@@ -266,7 +266,7 @@ Boot config 在整个启动链的最前端，为后续所有阶段提供基础�
 | | bootConfig | preferences |
 | --- | --- | --- |
 | 加载时机 | 进程启动最早阶段（同步） | lifecycle `BeforeReady` 阶段（异步） |
-| 存储方式 | JSON 文件（`~/.cherrystudio/boot-config.json`） | SQLite 数据库 |
+| 存储方式 | JSON 文件（`~/.huatuostudio/boot-config.json`） | SQLite 数据库 |
 | 访问方式（Main） | `bootConfigService.get()` 同步 | `application.get('PreferenceService').get()` |
 | 访问方式（Renderer） | `usePreference('BootConfig.*')` 统一访问 | `usePreference('key')` |
 
@@ -583,7 +583,7 @@ Boot config 在整个启动链的最前端，为后续所有阶段提供基础�
 redux (最高) > dexieSettings > localStorage > electronStore (最低)
 ```
 
-**已知字段清单**（参考 [PR #10162 comment](https://github.com/ningyx25/cherry-studio/pull/10162#issuecomment-4010796619)）:
+**已知字段清单**（参考 [PR #10162 comment](https://github.com/huatuostudio/huatuo-studio/pull/10162#issuecomment-4010796619)）:
 
 Dexie `settings` 表是一个通用 KV 存储（`{ id: string, value: any }`），所有 `image://` 键由 `ImageStorage` 服务管理。
 

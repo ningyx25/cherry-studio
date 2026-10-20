@@ -8,7 +8,7 @@ date: 2026-07-24
 
 ## What changed
 
-The existing local, WebDAV, Nutstore, and S3 backup settings are enabled again. Newly created direct archives continue to use format version 7 and can be either full or slim: full archives contain `Data`, `IndexedDB`, `Local Storage`, and `cache.json`, while slim archives contain only `Data/cherrystudio.sqlite` and `cache.json`. `metadata.json` records the selected resource layout, and no duplicate top-level database or `.claude` resource is created.
+The existing local, WebDAV, Nutstore, and S3 backup settings are enabled again. Newly created direct archives continue to use format version 7 and can be either full or slim: full archives contain `Data`, `IndexedDB`, `Local Storage`, and `cache.json`, while slim archives contain only `Data/huatuostudio.sqlite` and `cache.json`. `metadata.json` records the selected resource layout, and no duplicate top-level database or `.claude` resource is created.
 
 ## Why this matters to the user
 
@@ -20,4 +20,4 @@ Create a fresh backup after upgrading, and choose a full backup when browser sto
 
 ## Notes for release manager
 
-The `resources` flags distinguish full and slim layouts without increasing the archive version. Earlier version 7 archives with standalone SQLite and `.claude` resources remain restorable. The backup checkpoints SQLite before copying, so committed data is sealed in `cherrystudio.sqlite`; SQLite recreates the excluded `cherrystudio.sqlite-wal` and `cherrystudio.sqlite-shm` sidecars after restore.
+The `resources` flags distinguish full and slim layouts without increasing the archive version. Earlier version 7 archives with standalone SQLite and `.claude` resources remain restorable. The backup checkpoints SQLite before copying, so committed data is sealed in `huatuostudio.sqlite`; SQLite recreates the excluded `huatuostudio.sqlite-wal` and `huatuostudio.sqlite-shm` sidecars after restore.

@@ -13,17 +13,17 @@ export enum CodeCli {
 /**
  * Reserved virtual provider id for the code-CLI "use your own login" option.
  * Persisted as `CodeCliToolState.current` in place of a real provider id so the
- * launch gate passes while no Cherry provider is injected — the CLI then falls
+ * launch gate passes while no HuaTuo provider is injected — the CLI then falls
  * back to its own stored account login. Namespaced so it never collides with a
  * real provider id.
  */
-export const CLI_OWN_LOGIN_PROVIDER_ID = 'cherry:cli-own-login'
+export const CLI_OWN_LOGIN_PROVIDER_ID = 'huatuo:cli-own-login'
 
 /**
  * CLI tools that can run through their own account login (OAuth) instead of a
- * Cherry provider + API key. These surface the virtual "own login" option and,
+ * HuaTuo provider + API key. These surface the virtual "own login" option and,
  * when it is selected, launch provider-less (no credential injection). Distinct
- * from the provider-less tools (Qoder / Copilot), which never accept a Cherry
+ * from the provider-less tools (Qoder / Copilot), which never accept a HuaTuo
  * provider at all.
  */
 export const LOGIN_CAPABLE_CLI_TOOLS: ReadonlySet<CodeCli> = new Set([
@@ -35,17 +35,17 @@ export const LOGIN_CAPABLE_CLI_TOOLS: ReadonlySet<CodeCli> = new Set([
 ])
 
 /**
- * Reserved virtual provider id for the code-CLI "Cherry Gateway" option. Like the
+ * Reserved virtual provider id for the code-CLI "HuaTuo Gateway" option. Like the
  * own-login entry it is a page-local synthetic provider (never persisted to the
  * providers store), but instead of running credential-less it injects the local
  * API gateway's URL + key into the CLI config so the real provider key never
  * lands on disk and any model is reachable through the gateway's dialect
  * conversion. Namespaced so it never collides with a real provider id.
  */
-export const CLI_API_GATEWAY_PROVIDER_ID = 'cherry:api-gateway'
+export const CLI_API_GATEWAY_PROVIDER_ID = 'huatuo:api-gateway'
 
 /**
- * Fixed ASCII provider-name segment for the gateway in CLI config keys (`cherry-gateway`).
+ * Fixed ASCII provider-name segment for the gateway in CLI config keys (`huatuo-gateway`).
  * The synthetic provider's card title is the localized "统一网关" (Unified Gateway), which would
  * sanitize to an empty/garbled segment; this stable name keeps the on-disk key clean and
  * locale-independent.
@@ -57,7 +57,7 @@ export function isApiGatewayProviderId(id: string): boolean {
 }
 
 /**
- * CLI tools that can be backed by the Cherry API gateway. The gateway exposes
+ * CLI tools that can be backed by the HuaTuo API gateway. The gateway exposes
  * Anthropic (`/v1/messages`), OpenAI (`/v1/chat/completions`, `/v1/responses`),
  * and Gemini (`/v1beta/models/*`) dialects, so Gemini CLI routes through the
  * gateway too. OpenClaw is excluded (it has its own gateway sync path).

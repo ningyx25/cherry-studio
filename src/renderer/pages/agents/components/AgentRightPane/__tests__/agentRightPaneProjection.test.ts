@@ -1,10 +1,10 @@
 import { getPartParentToolCallId } from '@renderer/components/chat/messages/tools/toolParentMetadata'
-import type { CherryMessagePart, CherryUIMessage } from '@shared/data/types/message'
+import type { HuaTuoMessagePart, HuaTuoUIMessage } from '@shared/data/types/message'
 import { describe, expect, it } from 'vitest'
 
 import { buildAgentRightPaneStatus, buildAgentToolFlowProjection } from '../agentRightPaneProjection'
 
-const message = (id: string, parts: CherryMessagePart[]): CherryUIMessage =>
+const message = (id: string, parts: HuaTuoMessagePart[]): HuaTuoUIMessage =>
   ({
     id,
     role: 'assistant',
@@ -12,7 +12,7 @@ const message = (id: string, parts: CherryMessagePart[]): CherryUIMessage =>
     metadata: {},
     createdAt: '2026-05-21T00:00:00.000Z',
     updatedAt: '2026-05-21T00:00:00.000Z'
-  }) as CherryUIMessage
+  }) as HuaTuoUIMessage
 
 const toolPart = (
   toolCallId: string,
@@ -21,7 +21,7 @@ const toolPart = (
   state = 'output-available',
   input?: unknown,
   output?: unknown
-): CherryMessagePart =>
+): HuaTuoMessagePart =>
   ({
     type: 'dynamic-tool',
     toolCallId,
@@ -34,9 +34,9 @@ const toolPart = (
         parentToolCallId: parentToolCallId ?? null
       }
     }
-  }) as unknown as CherryMessagePart
+  }) as unknown as HuaTuoMessagePart
 
-const textPart = (text: string, parentToolCallId?: string): CherryMessagePart =>
+const textPart = (text: string, parentToolCallId?: string): HuaTuoMessagePart =>
   ({
     type: 'text',
     text,
@@ -47,7 +47,7 @@ const textPart = (text: string, parentToolCallId?: string): CherryMessagePart =>
           }
         }
       : undefined
-  }) as unknown as CherryMessagePart
+  }) as unknown as HuaTuoMessagePart
 
 describe('agent right pane projections', () => {
   it('builds a selected tool subtree with text and reasoning parts owned by that subtree', () => {
@@ -63,7 +63,7 @@ describe('agent right pane projections', () => {
             parentToolCallId: 'child'
           }
         }
-      } as unknown as CherryMessagePart,
+      } as unknown as HuaTuoMessagePart,
       textPart('outside')
     ]
     const messages = [message('m1', parts)]
@@ -280,7 +280,7 @@ describe('agent right pane projections', () => {
           usage: { totalTokens: 1200, toolUses: 4, durationMs: 9000 }
         }
       }
-    ] as unknown as CherryMessagePart[]
+    ] as unknown as HuaTuoMessagePart[]
     const messages = [message('m1', parts)]
 
     const status = buildAgentRightPaneStatus(messages, { m1: parts })
@@ -352,7 +352,7 @@ describe('agent right pane projections', () => {
         type: 'data-agent-task-event',
         data: { event: 'notification', taskId: 'bg-1', status: 'completed', summary: 'done' }
       }
-    ] as unknown as CherryMessagePart[]
+    ] as unknown as HuaTuoMessagePart[]
     const messages = [message('m1', parts)]
 
     const status = buildAgentRightPaneStatus(
@@ -376,7 +376,7 @@ describe('agent right pane projections', () => {
         type: 'data-agent-task-event',
         data: { event: 'notification', taskId: 'bg-1', status: 'stopped', summary: 'stopped by user' }
       }
-    ] as unknown as CherryMessagePart[]
+    ] as unknown as HuaTuoMessagePart[]
 
     const status = buildAgentRightPaneStatus(
       [message('m1', parts)],
@@ -396,7 +396,7 @@ describe('agent right pane projections', () => {
         type: 'data-agent-task-event',
         data: { event: 'started', taskId: 'bg-1', status: 'in_progress', title: 'sleep 300', taskType: 'local_bash' }
       }
-    ] as unknown as CherryMessagePart[]
+    ] as unknown as HuaTuoMessagePart[]
     const messages = [message('m1', parts)]
 
     const running = buildAgentRightPaneStatus(messages, { m1: parts })
@@ -439,7 +439,7 @@ describe('agent right pane projections', () => {
         type: 'data-agent-task-event',
         data: { event: 'progress', taskId: 'agent-1', status: 'in_progress', description: 'Reading files' }
       }
-    ] as unknown as CherryMessagePart[]
+    ] as unknown as HuaTuoMessagePart[]
     const messages = [message('m1', parts)]
 
     const live = buildAgentRightPaneStatus(
@@ -481,7 +481,7 @@ describe('agent right pane projections', () => {
           taskType: 'subagent'
         }
       }
-    ] as unknown as CherryMessagePart[]
+    ] as unknown as HuaTuoMessagePart[]
     const currentParts = [textPart('new turn')]
     const messages = [message('historical', historicalParts), message('current', currentParts)]
 

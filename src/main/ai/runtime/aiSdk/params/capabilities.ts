@@ -10,7 +10,7 @@
  */
 
 import { application } from '@application'
-import { extensionRegistry } from '@cherrystudio/ai-core/provider'
+import { extensionRegistry } from '@huatuostudio/ai-core/provider'
 import type { Assistant } from '@shared/data/types/assistant'
 import type { Model } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'
@@ -52,7 +52,7 @@ export interface ResolveCapabilitiesOptions {
   serving?: KimiFormulaCredentials
   /**
    * The id the runtime actually instantiates. `config.ts` may override the registry's adapter family
-   * (moonshot and cherryin resolve to `openai-compatible` there but run under their own extension),
+   * (moonshot and huatuoin resolve to `openai-compatible` there but run under their own extension),
    * and `providerToolPlugin` reads its config by THAT id — so the config has to be built under it,
    * not under the registry's. Keying it off the adapter family handed the Kimi factory an empty
    * config, i.e. an empty api key.

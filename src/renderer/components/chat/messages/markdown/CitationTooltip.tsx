@@ -1,4 +1,4 @@
-import { NormalTooltip } from '@cherrystudio/ui'
+import { NormalTooltip } from '@huatuostudio/ui'
 import type { Citation } from '@renderer/types/message'
 import React, { memo, useState } from 'react'
 

@@ -1,5 +1,5 @@
-import { Button, Kbd, Tooltip, type TooltipProps } from '@cherrystudio/ui'
-import { cn } from '@cherrystudio/ui/lib/utils'
+import { Button, Kbd, Tooltip, type TooltipProps } from '@huatuostudio/ui'
+import { cn } from '@huatuostudio/ui/lib/utils'
 import { useResolvedCommand } from '@renderer/hooks/command'
 import type { CommandId } from '@shared/utils/command'
 import type React from 'react'

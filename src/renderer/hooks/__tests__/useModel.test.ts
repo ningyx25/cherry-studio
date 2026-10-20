@@ -504,11 +504,11 @@ describe('useModelMutations', () => {
     const { result } = renderHook(() => useModelMutations())
 
     await act(async () => {
-      await result.current.deleteModel('cherryin', 'qwen/qwen3-vl-30b-a3b-thinking(free)')
+      await result.current.deleteModel('huatuoin', 'qwen/qwen3-vl-30b-a3b-thinking(free)')
     })
 
     expect(deleteTrigger).toHaveBeenCalledWith({
-      params: { uniqueModelId: 'cherryin::qwen/qwen3-vl-30b-a3b-thinking(free)' }
+      params: { uniqueModelId: 'huatuoin::qwen/qwen3-vl-30b-a3b-thinking(free)' }
     })
   })
 
@@ -641,8 +641,8 @@ describe('useDefaultModel', () => {
   })
 
   it('force-cascades setDefaultModel over existing quick and translate models', async () => {
-    MockUsePreferenceUtils.setPreferenceValue('feature.quick_assistant.model_id', 'cherryai::quick')
-    MockUsePreferenceUtils.setPreferenceValue('feature.translate.model_id', 'cherryai::translate')
+    MockUsePreferenceUtils.setPreferenceValue('feature.quick_assistant.model_id', 'huatuoai::quick')
+    MockUsePreferenceUtils.setPreferenceValue('feature.translate.model_id', 'huatuoai::translate')
     const { result } = renderHook(() => useDefaultModel())
 
     await act(async () => {

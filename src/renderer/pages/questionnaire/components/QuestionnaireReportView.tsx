@@ -1,4 +1,4 @@
-import { Badge, Button } from '@cherrystudio/ui'
+import { Badge, Button } from '@huatuostudio/ui'
 import type { QuestionnaireReport, QuestionResult } from '@shared/questionnaire/types'
 import { useTranslation } from 'react-i18next'
 

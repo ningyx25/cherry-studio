@@ -366,7 +366,7 @@ export class CodeCliService extends BaseService {
     const normal = input.mode === 'normal' ? input : null
     const isLoginFlow = input.mode === 'login-flow'
     const isProviderlessCli = cliTool === CodeCli.QODER_CLI || cliTool === CodeCli.GITHUB_COPILOT_CLI
-    // "Own login" run: the CLI uses its own stored account login, so no Cherry
+    // "Own login" run: the CLI uses its own stored account login, so no HuaTuo
     // provider/model is injected (the renderer already cleared any prior config).
     // Gated to login-capable tools so a genuinely missing provider still errors.
     const isOwnLoginRun = input.mode === 'own-login' && LOGIN_CAPABLE_CLI_TOOLS.has(cliTool)
@@ -429,24 +429,24 @@ export class CodeCliService extends BaseService {
     }
 
     const executablePath = availability.path
-    const usesCherryExecutionEnv = availability.source !== 'system'
+    const usesHuaTuoExecutionEnv = availability.source !== 'system'
 
-    // Cherry's MISE_* variables are needed for currently available mise shims
-    // and bundled binaries. A system CLI receives no Cherry environment: adding
-    // it could redirect a user mise shim to Cherry's isolated data directory.
+    // HuaTuo's MISE_* variables are needed for currently available mise shims
+    // and bundled binaries. A system CLI receives no HuaTuo environment: adding
+    // it could redirect a user mise shim to HuaTuo's isolated data directory.
     // The install request above is the only operation that declares ownership;
     // execution depends only on this live availability fact.
-    const rawShellEnv = usesCherryExecutionEnv ? await getRawShellEnv() : undefined
+    const rawShellEnv = usesHuaTuoExecutionEnv ? await getRawShellEnv() : undefined
     const rawPathEnv = Object.fromEntries(
       Object.entries(rawShellEnv ?? {}).filter(([key]) => key.toLowerCase() === 'path')
     )
-    const env: Record<string, string> = usesCherryExecutionEnv
-      ? mergeBinaryExecutionEnv(rawPathEnv, [application.getPath('cherry.bin')])
+    const env: Record<string, string> = usesHuaTuoExecutionEnv
+      ? mergeBinaryExecutionEnv(rawPathEnv, [application.getPath('huatuo.bin')])
       : {}
     // For a managed Windows launch buildEnvPrefix rewrites PATH inside the
     // terminal from `env`, so the bundled-git tail must land here too, not only
     // in the spawn env assembled below.
-    if (usesCherryExecutionEnv && isWin) appendBundledGitPathTail(env)
+    if (usesHuaTuoExecutionEnv && isWin) appendBundledGitPathTail(env)
     logger.debug(`Environment variables:`, Object.keys(env))
 
     // Select different terminal based on operating system
@@ -489,8 +489,8 @@ export class CodeCliService extends BaseService {
             return exportCmd
           })
           .join(' && ')
-        const clearAmbientMise = usesCherryExecutionEnv
-          ? 'for _cherry_mise_key in $(env | sed -n \'s/^\\(MISE_[A-Za-z0-9_]*\\)=.*/\\1/p\'); do unset "$_cherry_mise_key"; done'
+        const clearAmbientMise = usesHuaTuoExecutionEnv
+          ? 'for _huatuo_mise_key in $(env | sed -n \'s/^\\(MISE_[A-Za-z0-9_]*\\)=.*/\\1/p\'); do unset "$_huatuo_mise_key"; done'
           : ''
         return [clearAmbientMise, envCommands].filter(Boolean).join(' && ')
       }
@@ -747,18 +747,18 @@ export class CodeCliService extends BaseService {
         throw new Error(`Unsupported operating system: ${platform}`)
     }
 
-    const baseProcessEnv = usesCherryExecutionEnv ? rawShellEnv! : await getRawShellEnv()
+    const baseProcessEnv = usesHuaTuoExecutionEnv ? rawShellEnv! : await getRawShellEnv()
     const processEnv = Object.fromEntries(
       Object.entries(baseProcessEnv).filter(
         ([key]) =>
-          !usesCherryExecutionEnv ||
+          !usesHuaTuoExecutionEnv ||
           !(platform === 'win32' ? key.toUpperCase().startsWith('MISE_') : key.startsWith('MISE_'))
       )
     )
     Object.assign(processEnv, env)
     // Bundled MinGit rides at the very tail of every Windows launch PATH so a
     // bare `git` resolves even with no system git, while any real git ahead
-    // still wins (#16402). The tail is the only Cherry addition a system CLI
+    // still wins (#16402). The tail is the only HuaTuo addition a system CLI
     // receives — it must not reintroduce MISE_* redirection into the user's env.
     if (platform === 'win32') appendBundledGitPathTail(processEnv)
     removeEnvProxy(processEnv)

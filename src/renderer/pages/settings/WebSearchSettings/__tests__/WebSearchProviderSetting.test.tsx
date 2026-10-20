@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 
-import type * as CherryStudioUi from '@cherrystudio/ui'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { toast } from '@renderer/services/toast'
 import type { WebSearchProviderMenuEntry } from '@renderer/utils/webSearchProviderMeta'
 import type { WebSearchProvider } from '@shared/data/preference/preferenceTypes'
@@ -33,8 +33,8 @@ vi.mock('@renderer/ipc', () => ({
   }
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
   const React = await import('react')
   const SelectContext = React.createContext<{ onValueChange?: (value: string) => void }>({})
 

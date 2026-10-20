@@ -81,7 +81,7 @@ const chunks: KnowledgeItemChunk[] = [
   }
 ]
 
-vi.mock('@cherrystudio/ui', () => ({
+vi.mock('@huatuostudio/ui', () => ({
   Button: ({ children, ...props }: { children: ReactNode; [key: string]: unknown }) => (
     <button type="button" {...props}>
       {children}

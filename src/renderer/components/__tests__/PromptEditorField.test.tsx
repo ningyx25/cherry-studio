@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 
-import type * as CherryStudioUi from '@cherrystudio/ui'
 import { EditorView } from '@codemirror/view'
+import type * as HuaTuoStudioUi from '@huatuostudio/ui'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { loadLanguage } from '@uiw/codemirror-extensions-langs'
 import { type ComponentProps, type ReactNode, type Ref, useImperativeHandle, useRef, useState } from 'react'
@@ -51,8 +51,8 @@ vi.mock('@renderer/hooks/useTheme', () => ({
   })
 }))
 
-vi.mock('@cherrystudio/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof CherryStudioUi>()
+vi.mock('@huatuostudio/ui', async (importOriginal) => {
+  const actual = await importOriginal<typeof HuaTuoStudioUi>()
   return {
     ...actual,
     Markdown: ({ id, children }: { id: string; children: ReactNode }) => (

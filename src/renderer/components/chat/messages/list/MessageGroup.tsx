@@ -1,10 +1,10 @@
-import { Popover, PopoverContent, PopoverTrigger, Scrollbar } from '@cherrystudio/ui'
+import { Popover, PopoverContent, PopoverTrigger, Scrollbar } from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import { useTimer } from '@renderer/hooks/useTimer'
 import { scrollIntoView } from '@renderer/utils/dom'
 import { classNames } from '@renderer/utils/style'
 import type { MultiModelMessageStyle } from '@shared/data/preference/preferenceTypes'
-import type { CherryMessagePart } from '@shared/data/types/message'
+import type { HuaTuoMessagePart } from '@shared/data/types/message'
 import type { Model } from '@shared/data/types/model'
 import type { ComponentProps, ReactNode, WheelEvent as ReactWheelEvent } from 'react'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -23,11 +23,11 @@ import MessageGroupMenuBar from './MessageGroupMenuBar'
 import { useScrollRuntimeNavigation } from './ScrollOwnershipContext'
 
 const logger = loggerService.withContext('MessageGroup')
-const EMPTY_MESSAGE_PARTS: CherryMessagePart[] = []
+const EMPTY_MESSAGE_PARTS: HuaTuoMessagePart[] = []
 
 interface Props {
   messages: MessageListItem[]
-  partsByMessageId?: Record<string, CherryMessagePart[]> | null
+  partsByMessageId?: Record<string, HuaTuoMessagePart[]> | null
   captureMode?: boolean
   registerMessageElement?: (id: string, element: HTMLElement | null) => void
   isLatestAssistantGroup?: boolean
@@ -509,8 +509,8 @@ function messageArrayShallowEqual(a: MessageListItem[], b: MessageListItem[]): b
 }
 
 function messagePartsShallowEqual(
-  previous: Record<string, CherryMessagePart[]> | null | undefined,
-  next: Record<string, CherryMessagePart[]> | null | undefined,
+  previous: Record<string, HuaTuoMessagePart[]> | null | undefined,
+  next: Record<string, HuaTuoMessagePart[]> | null | undefined,
   messages: MessageListItem[]
 ): boolean {
   if (previous === next) return true
