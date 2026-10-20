@@ -1,12 +1,12 @@
 import { application } from '@application'
-import type { TokenUsageData } from '@cherrystudio/analytics-client'
-import { AnalyticsClient } from '@cherrystudio/analytics-client'
 import { loggerService } from '@logger'
 import { createLatestReconciler, type LatestReconciler } from '@main/core/concurrency/latestReconciler'
 import { type Activatable, BaseService, Injectable, Phase, ServicePhase } from '@main/core/lifecycle'
 import { generateUserAgent, getClientId } from '@main/utils/systemInfo'
 import { APP_NAME, LATEST_PRIVACY_POLICY_VERSION } from '@shared/utils/constants'
 import { app } from 'electron'
+
+import { AnalyticsClient, type TokenUsageData } from './analyticsClient'
 
 const logger = loggerService.withContext('AnalyticsService')
 
@@ -68,7 +68,7 @@ export class AnalyticsService extends BaseService implements Activatable {
 
     this.client = new AnalyticsClient({
       clientId,
-      channel: 'cherry-studio',
+      channel: 'huatuo-studio',
       onError: (error) => logger.error('Analytics error:', error),
       headers: {
         'User-Agent': generateUserAgent(),

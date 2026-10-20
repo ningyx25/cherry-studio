@@ -32,7 +32,7 @@ const { mockTrackAppLaunch, mockTrackTokenUsage, mockTrackAppUpdate, mockDestroy
     }
   })
 
-vi.mock('@cherrystudio/analytics-client', () => ({
+vi.mock('../analyticsClient', () => ({
   AnalyticsClient: MockAnalyticsClient
 }))
 
