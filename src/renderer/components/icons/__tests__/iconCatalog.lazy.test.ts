@@ -2,7 +2,8 @@ import { describe, expect, it, vi } from 'vitest'
 
 // Evaluating large module graphs (icon barrels, chat chain) under full-suite
 // concurrency can blow past the global testTimeout — pin a generous bound.
-const PROBE_TIMEOUT = 45_000
+// 90s covers a loaded CI/dev box where this probe legitimately takes 25s+.
+const PROBE_TIMEOUT = 90_000
 
 const providerCatalogEvaluated = vi.hoisted(() => vi.fn())
 const modelCatalogEvaluated = vi.hoisted(() => vi.fn())
