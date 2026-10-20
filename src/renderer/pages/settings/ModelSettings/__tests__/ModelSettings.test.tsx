@@ -15,15 +15,37 @@ const harness = vi.hoisted(() => ({
   selectorFilters: [] as Array<(model: Model) => boolean>
 }))
 
-vi.mock('@huatuostudio/ui', () => ({
-  Avatar: ({ children }: { children: ReactNode }) => <span>{children}</span>,
-  AvatarFallback: ({ children }: { children: ReactNode }) => <span>{children}</span>,
-  Button: ({ children }: { children: ReactNode }) => <button type="button">{children}</button>,
-  Divider: () => <hr />,
-  InfoTooltip: () => null,
-  PageSidePanel: () => null,
-  Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>
-}))
+vi.mock('@huatuostudio/ui', () => {
+  const Select = ({
+    value,
+    onValueChange,
+    children
+  }: {
+    value: string
+    onValueChange: (v: string) => void
+    children: ReactNode
+  }) => (
+    <select value={value} onChange={(event) => onValueChange(event.target.value)}>
+      {children}
+    </select>
+  )
+  return {
+    Avatar: ({ children }: { children: ReactNode }) => <span>{children}</span>,
+    AvatarFallback: ({ children }: { children: ReactNode }) => <span>{children}</span>,
+    Button: ({ children }: { children: ReactNode }) => <button type="button">{children}</button>,
+    Divider: () => <hr />,
+    InfoTooltip: () => null,
+    PageSidePanel: () => null,
+    Select,
+    SelectContent: ({ children }: { children: ReactNode }) => <>{children}</>,
+    SelectItem: ({ value, children }: { value: string; children: ReactNode }) => (
+      <option value={value}>{children}</option>
+    ),
+    SelectTrigger: ({ children }: { children: ReactNode }) => <>{children}</>,
+    SelectValue: () => null,
+    Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>
+  }
+})
 
 vi.mock('@huatuostudio/ui/icons', () => ({
   useIcon: () => undefined

@@ -255,6 +255,13 @@
       "description": "Voice input transcription model UniqueModelId (provider::modelId)"
     },
     {
+      "targetKey": "feature.voice_input.language",
+      "type": "string",
+      "defaultValue": "",
+      "status": "classified",
+      "description": "Voice input transcription language hint (ISO code; empty = auto-detect)"
+    },
+    {
       "targetKey": "feature.paintings.default_model_id",
       "type": "string",
       "defaultValue": null,

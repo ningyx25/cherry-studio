@@ -1,5 +1,14 @@
 import { usePreference } from '@data/hooks/usePreference'
-import { Button, InfoTooltip, PageSidePanel } from '@huatuostudio/ui'
+import {
+  Button,
+  InfoTooltip,
+  PageSidePanel,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@huatuostudio/ui'
 import { loggerService } from '@logger'
 import {
   SettingContainer,
@@ -14,6 +23,7 @@ import {
 import { useDefaultModel, useModelById } from '@renderer/hooks/useModel'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useTheme } from '@renderer/hooks/useTheme'
+import { appLanguageOptions } from '@renderer/i18n/languages'
 import { toast } from '@renderer/services/toast'
 import { cn } from '@renderer/utils/style'
 import { type Model, type UniqueModelId } from '@shared/data/types/model'
@@ -82,6 +92,7 @@ const ModelSettings: FC<ModelSettingsProps> = ({
   const { defaultModel, quickModel, setDefaultModel, setQuickModel } = useDefaultModel()
   const { providers } = useProviders({ enabled: true })
   const [voiceInputModelId, setVoiceInputModelId] = usePreference('feature.voice_input.model_id')
+  const [voiceInputLanguage, setVoiceInputLanguage] = usePreference('feature.voice_input.language')
   const { model: voiceInputModel } = useModelById(voiceInputModelId as UniqueModelId | null)
   const [activePanel, setActivePanel] = useState<ModelSettingsPanel>(null)
   const { theme } = useTheme()
@@ -205,6 +216,23 @@ const ModelSettings: FC<ModelSettingsProps> = ({
               onSelect={onSelectVoiceInput}
               placeholder={t('settings.models.empty')}
             />
+            <Select value={voiceInputLanguage} onValueChange={(value) => void setVoiceInputLanguage(value)}>
+              <SelectTrigger
+                aria-label={t('settings.models.voice_input.language_label')}
+                className="h-7.5 min-w-24 flex-none gap-1 rounded-md border-border-subtle px-2 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="end" className="w-44">
+                <SelectItem value="" className="text-sm">
+                  {t('settings.models.voice_input.language_auto')}
+                </SelectItem>
+                {appLanguageOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value} className="text-sm">
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </ModelSettingRow>
           {showDividers && <SettingDivider />}
         </SettingGroup>

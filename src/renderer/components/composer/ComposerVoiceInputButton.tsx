@@ -32,6 +32,7 @@ export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [modelIdPref] = usePreference('feature.voice_input.model_id')
+  const [languagePref] = usePreference('feature.voice_input.language')
 
   const { providerId, modelId } = useMemo(() => {
     if (!modelIdPref) return { providerId: '', modelId: '' }
@@ -59,7 +60,13 @@ export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
     [t]
   )
 
-  const voice = useVoiceInput({ providerId, modelId, onTranscript: handleTranscript, onError: handleError })
+  const voice = useVoiceInput({
+    providerId,
+    modelId,
+    language: languagePref ?? undefined,
+    onTranscript: handleTranscript,
+    onError: handleError
+  })
   const { supported, isRecording, isTranscribing } = voice
 
   // The button IS the mode switch: voice mode is active for the whole turn —
