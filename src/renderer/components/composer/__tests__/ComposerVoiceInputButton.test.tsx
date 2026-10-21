@@ -4,7 +4,7 @@ import type { QuickPanelInputAdapter } from '@renderer/components/QuickPanel'
 import type { UseVoiceInputOptions, UseVoiceInputResult } from '@renderer/hooks/useVoiceInput'
 import { toast } from '@renderer/services/toast'
 import { MockUsePreferenceUtils } from '@test-mocks/renderer/usePreference'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import type * as ReactI18next from 'react-i18next'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -75,29 +75,49 @@ describe('ComposerVoiceInputButton', () => {
     MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', null)
   })
 
-  it('renders an always-visible mic button', () => {
+  it('renders an always-visible mic switch button', () => {
     render(<ComposerVoiceInputButton />)
-    expect(screen.getByRole('button', { name: 'chat.input.voice_input.label' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' })).toBeEnabled()
   })
 
   it('warns and routes to the model settings when no transcription model is configured', () => {
     render(<ComposerVoiceInputButton />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.label' }))
+    fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' }))
 
     expect(toast.warning).toHaveBeenCalledWith('chat.input.voice_input.no_model')
     expect(mocks.navigate).toHaveBeenCalledWith({ to: '/settings/model' })
-    expect(mocks.voice.toggle).not.toHaveBeenCalled()
+    expect(mocks.voice.start).not.toHaveBeenCalled()
   })
 
-  it('toggles dictation once a model is configured', () => {
+  it('switches into push-to-talk voice mode and configures the transcription model', () => {
     MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
+    mocks.voice = { ...mocks.voice, isRecording: true }
     render(<ComposerVoiceInputButton />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.label' }))
+    fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' }))
 
-    expect(mocks.voice.toggle).toHaveBeenCalled()
+    // Holding the mic records; the hold-to-talk button appears alongside a back-to-typing key.
+    const holdButton = screen.getByRole('button', { name: 'chat.input.voice_input.release_to_stop' })
+    act(() => fireEvent.pointerDown(holdButton))
+    expect(mocks.voice.start).toHaveBeenCalled()
     expect(mocks.lastOptions).toMatchObject({ providerId: 'openai', modelId: 'whisper-1' })
+    expect(screen.getByRole('button', { name: 'chat.input.voice_input.back_to_text' })).toBeEnabled()
+
+    // Releasing the pointer ends the turn and transcribes.
+    act(() => fireEvent.pointerUp(holdButton))
+    expect(mocks.voice.stop).toHaveBeenCalled()
+  })
+
+  it('stops the recording when the pointer is released outside the button', () => {
+    MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
+    mocks.voice = { ...mocks.voice, isRecording: true }
+    render(<ComposerVoiceInputButton />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' }))
+
+    act(() => fireEvent.pointerLeave(screen.getByRole('button', { name: 'chat.input.voice_input.release_to_stop' })))
+    expect(mocks.voice.stop).toHaveBeenCalled()
   })
 
   it('inserts the transcript at the cursor and refocuses the editor', () => {
@@ -110,32 +130,40 @@ describe('ComposerVoiceInputButton', () => {
     expect(inputAdapter.focus).toHaveBeenCalled()
   })
 
-  it('reflects the recording state and stops on a second click', () => {
+  it('reflects the recording state on the hold-to-talk button', () => {
     MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
     mocks.voice = { ...mocks.voice, isRecording: true }
     render(<ComposerVoiceInputButton />)
 
-    const button = screen.getByRole('button', { name: 'chat.input.voice_input.stop' })
-    expect(button).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' }))
 
-    fireEvent.click(button)
-    expect(mocks.voice.toggle).toHaveBeenCalled()
+    const holdButton = screen.getByRole('button', { name: 'chat.input.voice_input.release_to_stop' })
+    expect(holdButton).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'chat.input.voice_input.release_to_stop' })).toHaveAttribute(
+      'data-active',
+      'true'
+    )
   })
 
-  it('disables the button while transcribing', () => {
-    mocks.voice = { ...mocks.voice, isTranscribing: true }
-    render(<ComposerVoiceInputButton />)
-
-    expect(screen.getByRole('button', { name: 'chat.input.voice_input.label' })).toBeDisabled()
-  })
-
-  it('keeps voice mode active through the transcribing leg of the dictation turn', () => {
+  it('disables the controls while transcribing', () => {
     MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
     mocks.voice = { ...mocks.voice, isTranscribing: true }
     render(<ComposerVoiceInputButton />)
 
-    // Turn-based: recording ended but the turn is not over until the transcript
-    // is inserted — the switch stays in voice mode (data-active) while disabled.
-    expect(screen.getByRole('button', { name: 'chat.input.voice_input.label' })).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' }))
+
+    expect(screen.getByRole('button', { name: 'chat.input.voice_input.hold_to_talk' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'chat.input.voice_input.back_to_text' })).toBeDisabled()
+  })
+
+  it('does not start a new turn while transcribing', () => {
+    MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
+    mocks.voice = { ...mocks.voice, isTranscribing: true }
+    render(<ComposerVoiceInputButton />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' }))
+
+    act(() => fireEvent.pointerDown(screen.getByRole('button', { name: 'chat.input.voice_input.hold_to_talk' })))
+    expect(mocks.voice.start).not.toHaveBeenCalled()
   })
 })

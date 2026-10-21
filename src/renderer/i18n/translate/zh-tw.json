@@ -1628,11 +1628,14 @@
         "upload_from_local": "上傳本機檔案..."
       },
       "voice_input": {
+        "back_to_text": "[to be translated]:Switch to typing",
+        "hold_to_talk": "[to be translated]:Hold to talk",
         "label": "[to be translated]:Voice Input",
         "no_model": "[to be translated]:No speech-to-text model configured",
         "not_supported": "[to be translated]:Audio recording is not supported in this environment",
         "permission_denied": "[to be translated]:Microphone permission denied",
         "recording_failed": "[to be translated]:Recording failed",
+        "release_to_stop": "[to be translated]:Release to stop",
         "stop": "[to be translated]:Stop recording",
         "switch_hint": "[to be translated]:Switch to voice input",
         "transcribing": "[to be translated]:Transcribing…",

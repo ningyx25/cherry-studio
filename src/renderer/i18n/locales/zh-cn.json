@@ -1628,11 +1628,14 @@
         "upload_from_local": "上传本地文件..."
       },
       "voice_input": {
+        "back_to_text": "切回打字",
+        "hold_to_talk": "按住说话",
         "label": "语音输入",
         "no_model": "未配置语音转文字模型",
         "not_supported": "当前环境不支持录音",
         "permission_denied": "麦克风权限被拒绝",
         "recording_failed": "录音失败",
+        "release_to_stop": "松开转写",
         "stop": "停止录音",
         "switch_hint": "切换到语音输入",
         "transcribing": "转写中…",

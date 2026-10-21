@@ -1,4 +1,4 @@
-import type { QuickPanelListItem } from '@renderer/components/QuickPanel'
+import type { QuickPanelInputAdapter, QuickPanelListItem } from '@renderer/components/QuickPanel'
 import { COMPOSER_FILE_KIND, FILE_TYPE } from '@renderer/types/file'
 import {
   COMPOSER_CLIPBOARD_FRAGMENT_MIME,
@@ -5035,5 +5035,61 @@ describe('ComposerSurface', () => {
         list: [expect.objectContaining({ label: 'Low', filterText: expect.stringContaining('Low') })]
       })
     )
+  })
+
+  it('inserts transcribed text through inputAdapter into a live editor', async () => {
+    let adapter: QuickPanelInputAdapter | undefined
+    const onTextChange = vi.fn()
+    mocks.chainRun.mockReturnValue(true)
+
+    render(
+      <ComposerSurface
+        {...baseProps}
+        text="原有内容"
+        onTextChange={onTextChange}
+        renderLeftControls={(inputAdapter) => {
+          adapter = inputAdapter
+          return null
+        }}
+      />
+    )
+
+    await waitFor(() => expect(adapter).toBeDefined())
+
+    act(() => adapter!.insertText('转写结果'))
+
+    expect(mocks.insertContent).toHaveBeenCalled()
+    expect(mocks.chainRun).toHaveBeenCalled()
+    expect(onTextChange).not.toHaveBeenCalled()
+  })
+
+  it('falls back to controlled text appending when the editor is unusable', async () => {
+    let adapter: QuickPanelInputAdapter | undefined
+    const onTextChange = vi.fn()
+    mocks.chainRun.mockReturnValue(false)
+    mocks.getJSON.mockReturnValue({
+      type: 'doc',
+      content: [{ type: 'paragraph', content: [{ type: 'text', text: '' }] }]
+    })
+
+    render(
+      <ComposerSurface
+        {...baseProps}
+        text=""
+        onTextChange={onTextChange}
+        renderLeftControls={(inputAdapter) => {
+          adapter = inputAdapter
+          return null
+        }}
+      />
+    )
+
+    await waitFor(() => expect(adapter).toBeDefined())
+
+    act(() => adapter!.insertText('转写结果'))
+
+    // editor is alive but the transaction was rejected (chainRun → false), so
+    // insertText must fall back to the controlled text path instead of dropping.
+    expect(onTextChange).toHaveBeenCalledWith('转写结果')
   })
 })

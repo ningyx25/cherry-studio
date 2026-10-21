@@ -1844,13 +1844,23 @@ export default function ComposerSurface({
       getText: () => getComposerInputText(editor),
       getCursorOffset: () => getComposerCursorTextOffset(editor),
       insertText: (insertedText) => {
-        editor
-          .chain()
-          .focus()
-          .insertContent(
-            createPromptVariableInlineContent(insertedText, { startIndex: getNextPromptVariableIndex(editor) })
-          )
-          .run()
+        const liveEditor = editor && !editor.isDestroyed ? editor : undefined
+        if (liveEditor) {
+          const inserted = liveEditor
+            .chain()
+            .focus()
+            .insertContent(
+              createPromptVariableInlineContent(insertedText, { startIndex: getNextPromptVariableIndex(liveEditor) })
+            )
+            .run()
+          // A successful transaction triggers onUpdate → textRef flows back to
+          // the controlled `text`, so nothing more is needed here.
+          if (inserted) return
+        }
+        // Editor missing / destroyed / non-editable (e.g. the dictation turn
+        // outlived a session switch): fall back to the controlled text path so
+        // the transcript still lands in the input instead of being dropped.
+        applyComposerText(`${textRef.current}${insertedText}`)
       },
       insertToken: (token) => {
         insertComposerTokenAtCursor(editor, token as ComposerDraftToken)
@@ -1868,7 +1878,7 @@ export default function ComposerSurface({
         }
       }
     }
-  }, [editor])
+  }, [applyComposerText, editor])
 
   const isRootQuickPanelVisible =
     quickPanelEnabled && quickPanel.isVisible && quickPanel.symbol === ComposerPanelSymbol.Root

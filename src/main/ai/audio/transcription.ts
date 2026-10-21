@@ -28,6 +28,11 @@ interface TranscribeDeps {
   fetchImpl?: typeof fetch
 }
 
+/** Abort in-flight transcription requests that hang (no response), so a slow or
+ * unreachable provider surfaces an error instead of leaving the renderer's
+ * "transcribing…" state spinning forever. */
+const TRANSCRIBE_TIMEOUT_MS = 45_000
+
 /**
  * Calls an OpenAI-compatible `POST {baseURL}/audio/transcriptions` endpoint with
  * multipart form data. Plain fetch on purpose: `@ai-sdk/openai-compatible` has no
@@ -94,7 +99,8 @@ async function transcribeOpenAiCompatible(
       ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
       ...getExtraHeaders(provider)
     },
-    body: form
+    body: form,
+    signal: AbortSignal.timeout(TRANSCRIBE_TIMEOUT_MS)
   })
 }
 
@@ -133,7 +139,8 @@ async function transcribeWithDeepgram(
       'Content-Type': deepgramContentType(filename),
       ...getExtraHeaders(provider)
     },
-    body: new Uint8Array(audio)
+    body: new Uint8Array(audio),
+    signal: AbortSignal.timeout(TRANSCRIBE_TIMEOUT_MS)
   })
 }
 

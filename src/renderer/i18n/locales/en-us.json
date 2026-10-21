@@ -1628,11 +1628,14 @@
         "upload_from_local": "Upload local file..."
       },
       "voice_input": {
+        "back_to_text": "Switch to typing",
+        "hold_to_talk": "Hold to talk",
         "label": "Voice Input",
         "no_model": "No speech-to-text model configured",
         "not_supported": "Audio recording is not supported in this environment",
         "permission_denied": "Microphone permission denied",
         "recording_failed": "Recording failed",
+        "release_to_stop": "Release to stop",
         "stop": "Stop recording",
         "switch_hint": "Switch to voice input",
         "transcribing": "Transcribing…",
