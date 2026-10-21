@@ -37,6 +37,15 @@ export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
   const [mode, setMode] = useState<InputMode>('text')
   const [modelIdPref] = usePreference('feature.voice_input.model_id')
   const [languagePref] = usePreference('feature.voice_input.language')
+  const [appLanguage] = usePreference('app.language')
+  // An unset voice language falls back to the app/system language: speech-to-text
+  // models default to English, so a Chinese user on "auto" would otherwise get an
+  // empty transcript (Nova returns "" rather than guessing the language).
+  const transcriptionLanguage = useMemo(
+    () =>
+      languagePref || appLanguage || (typeof navigator !== 'undefined' ? navigator.language : undefined) || undefined,
+    [appLanguage, languagePref]
+  )
 
   const { providerId, modelId } = useMemo(() => {
     if (!modelIdPref) return { providerId: '', modelId: '' }
@@ -67,7 +76,7 @@ export const ComposerVoiceInputButton: FC<Props> = ({ inputAdapter }) => {
   const voice = useVoiceInput({
     providerId,
     modelId,
-    language: languagePref ?? undefined,
+    language: transcriptionLanguage,
     onTranscript: handleTranscript,
     onError: handleError
   })

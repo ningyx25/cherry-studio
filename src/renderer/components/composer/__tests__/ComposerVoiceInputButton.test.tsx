@@ -4,7 +4,7 @@ import type { QuickPanelInputAdapter } from '@renderer/components/QuickPanel'
 import type { UseVoiceInputOptions, UseVoiceInputResult } from '@renderer/hooks/useVoiceInput'
 import { toast } from '@renderer/services/toast'
 import { MockUsePreferenceUtils } from '@test-mocks/renderer/usePreference'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import type * as ReactI18next from 'react-i18next'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -99,13 +99,13 @@ describe('ComposerVoiceInputButton', () => {
 
     // Holding the mic records; the hold-to-talk button appears alongside a back-to-typing key.
     const holdButton = screen.getByRole('button', { name: 'chat.input.voice_input.release_to_stop' })
-    act(() => fireEvent.pointerDown(holdButton))
+    fireEvent.pointerDown(holdButton)
     expect(mocks.voice.start).toHaveBeenCalled()
     expect(mocks.lastOptions).toMatchObject({ providerId: 'openai', modelId: 'whisper-1' })
     expect(screen.getByRole('button', { name: 'chat.input.voice_input.back_to_text' })).toBeEnabled()
 
     // Releasing the pointer ends the turn and transcribes.
-    act(() => fireEvent.pointerUp(holdButton))
+    fireEvent.pointerUp(holdButton)
     expect(mocks.voice.stop).toHaveBeenCalled()
   })
 
@@ -116,7 +116,7 @@ describe('ComposerVoiceInputButton', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' }))
 
-    act(() => fireEvent.pointerLeave(screen.getByRole('button', { name: 'chat.input.voice_input.release_to_stop' })))
+    fireEvent.pointerLeave(screen.getByRole('button', { name: 'chat.input.voice_input.release_to_stop' }))
     expect(mocks.voice.stop).toHaveBeenCalled()
   })
 
@@ -128,6 +128,26 @@ describe('ComposerVoiceInputButton', () => {
 
     expect(inputAdapter.insertText).toHaveBeenCalledWith('你好世界')
     expect(inputAdapter.focus).toHaveBeenCalled()
+  })
+
+  it('passes the explicit voice input language to the transcriber', () => {
+    MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
+    MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.language', 'ja-JP')
+    MockUsePreferenceUtils.setPreferenceValue('app.language', 'zh-CN')
+    render(<ComposerVoiceInputButton />)
+
+    expect(mocks.lastOptions).toMatchObject({ language: 'ja-JP' })
+  })
+
+  it('falls back to the app language when no voice language is set', () => {
+    MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.model_id', 'openai::whisper-1')
+    MockUsePreferenceUtils.setPreferenceValue('feature.voice_input.language', '')
+    MockUsePreferenceUtils.setPreferenceValue('app.language', 'zh-CN')
+    render(<ComposerVoiceInputButton />)
+
+    // English-default models return "" for Chinese speech, so the app language
+    // must stand in rather than sending no language at all.
+    expect(mocks.lastOptions).toMatchObject({ language: 'zh-CN' })
   })
 
   it('reflects the recording state on the hold-to-talk button', () => {
@@ -163,7 +183,7 @@ describe('ComposerVoiceInputButton', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'chat.input.voice_input.switch_hint' }))
 
-    act(() => fireEvent.pointerDown(screen.getByRole('button', { name: 'chat.input.voice_input.hold_to_talk' })))
+    fireEvent.pointerDown(screen.getByRole('button', { name: 'chat.input.voice_input.hold_to_talk' }))
     expect(mocks.voice.start).not.toHaveBeenCalled()
   })
 })

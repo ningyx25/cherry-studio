@@ -82,7 +82,27 @@ export function useVoiceInput({
         filename,
         ...(language ? { language } : {})
       })
-      if (text) onTranscript(text)
+      const transcript = text?.trim()
+      if (transcript) {
+        onTranscript(transcript)
+        return
+      }
+      // The provider answered but produced no words. Most often the model's
+      // language does not match the speech (e.g. an English-default Nova model
+      // fed Chinese audio returns ""), so name it instead of silently doing
+      // nothing — the user would otherwise see the turn end with no text.
+      window.console.warn('voice input transcribed to empty text', {
+        providerId,
+        modelId,
+        language: language ?? null,
+        audioBytes: audio.byteLength,
+        mime: filename
+      })
+      onError(
+        language
+          ? 'chat.input.voice_input.empty_transcription'
+          : 'chat.input.voice_input.empty_transcription_no_language'
+      )
     } catch (error) {
       window.console.error('voice input transcription failed', error)
       onError('chat.input.voice_input.transcription_failed')
@@ -113,7 +133,14 @@ export function useVoiceInput({
         cleanupCapture()
         setIsRecording(false)
         const blob = new Blob(chunks, { type: recorder.mimeType })
-        if (blob.size > 0) void transcribe(blob)
+        if (blob.size === 0) {
+          // No audio bytes at all (e.g. a press that ended before the first chunk
+          // was emitted, or a dead mic). Surface it instead of silently dropping.
+          window.console.warn('voice input produced no audio', { mime: recorder.mimeType, chunks: chunks.length })
+          callbacksRef.current.onError('chat.input.voice_input.no_audio')
+          return
+        }
+        void transcribe(blob)
       }
       recorder.start()
       recorderRef.current = recorder

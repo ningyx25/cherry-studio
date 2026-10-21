@@ -1629,8 +1629,11 @@
       },
       "voice_input": {
         "back_to_text": "Switch to typing",
+        "empty_transcription": "No speech recognized, try speaking clearly near the mic",
+        "empty_transcription_no_language": "No speech recognized. Set a voice input language in Settings if you are not speaking English",
         "hold_to_talk": "Hold to talk",
         "label": "Voice Input",
+        "no_audio": "No audio captured, try speaking a bit longer",
         "no_model": "No speech-to-text model configured",
         "not_supported": "Audio recording is not supported in this environment",
         "permission_denied": "Microphone permission denied",
@@ -5248,6 +5251,7 @@
     "claude-code": "Claude Code",
     "copilot": "GitHub Copilot",
     "dashscope": "Alibaba Cloud",
+    "deepgram": "Deepgram",
     "deepseek": "DeepSeek",
     "dmxapi": "DMXAPI",
     "doc2x": "Doc2X",
@@ -7533,7 +7537,7 @@
       "voice_input": {
         "description": "Speech-to-text model used by the composer voice input button",
         "label": "Voice Input Model",
-        "language_auto": "Auto-detect",
+        "language_auto": "Follow app language",
         "language_label": "Voice input language"
       }
     },

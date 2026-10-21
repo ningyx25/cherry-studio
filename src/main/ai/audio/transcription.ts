@@ -66,7 +66,14 @@ export async function transcribeAudio(
   if (!response.ok) {
     const body = await response.text().catch(() => '')
     const excerpt = body.slice(0, 500)
-    throw new TranscriptionError(`Transcription failed with status ${response.status}: ${excerpt}`)
+    // Deepgram's "corrupt or unsupported data" usually means the audio bytes it
+    // received were empty/broken or the Content-Type mismatched them. Attach the
+    // audio diagnostic so a failing build's log pinpoints the cause instead of
+    // just echoing the vendor error.
+    const audioHint = isDeepgramHost(baseUrl)
+      ? ` audio=${audio.byteLength}B filename=${filename} contentType=${deepgramContentType(filename)}`
+      : ` audio=${audio.byteLength}B filename=${filename}`
+    throw new TranscriptionError(`Transcription failed with status ${response.status}${audioHint}: ${excerpt}`)
   }
 
   const json = (await response.json()) as DeepgramListenResponse | { text?: string }

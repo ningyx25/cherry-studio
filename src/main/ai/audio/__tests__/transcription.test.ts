@@ -96,6 +96,24 @@ describe('transcribeAudio', () => {
     ).rejects.toThrow('status 400')
   })
 
+  it('annotates Deepgram failures with the audio bytes and content type sent', async () => {
+    getByProviderIdMock.mockReturnValue({
+      id: 'deepgram',
+      endpointConfigs: { 'openai-audio-transcription': { baseUrl: 'https://api.deepgram.com' } }
+    })
+    const fetchImpl = vi.fn<(input: string, init?: RequestInit) => Promise<Response>>()
+    fetchImpl.mockResolvedValue(
+      new Response('{"err_code":"Bad Request","err_msg":"corrupt or unsupported data"}', { status: 400 })
+    )
+
+    await expect(
+      transcribeAudio(
+        { providerId: 'deepgram', modelId: 'whisper-base', audio: new Uint8Array([1, 2, 3]), filename: 'audio.webm' },
+        { fetchImpl: fetchImpl as unknown as typeof fetch }
+      )
+    ).rejects.toThrow('audio=3B filename=audio.webm contentType=audio/webm')
+  })
+
   it('wraps network failures in TranscriptionError', async () => {
     const fetchImpl = vi.fn<(input: string, init?: RequestInit) => Promise<Response>>()
     fetchImpl.mockRejectedValue(new Error('ECONNREFUSED'))

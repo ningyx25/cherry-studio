@@ -1629,8 +1629,11 @@
       },
       "voice_input": {
         "back_to_text": "切回打字",
+        "empty_transcription": "未识别到语音内容，请靠近麦克风清晰说话",
+        "empty_transcription_no_language": "未识别到语音内容。如果你说的不是英语，请在设置中选择语音输入语言",
         "hold_to_talk": "按住说话",
         "label": "语音输入",
+        "no_audio": "未捕获到音频，请稍长一些再说话",
         "no_model": "未配置语音转文字模型",
         "not_supported": "当前环境不支持录音",
         "permission_denied": "麦克风权限被拒绝",
@@ -5248,6 +5251,7 @@
     "claude-code": "Claude Code",
     "copilot": "GitHub Copilot",
     "dashscope": "阿里云百炼",
+    "deepgram": "Deepgram",
     "deepseek": "深度求索",
     "dmxapi": "DMXAPI",
     "doc2x": "Doc2X",
@@ -7533,7 +7537,7 @@
       "voice_input": {
         "description": "输入框语音输入按钮使用的语音转文字模型",
         "label": "语音输入模型",
-        "language_auto": "自动检测",
+        "language_auto": "跟随应用语言",
         "language_label": "语音输入语言"
       }
     },

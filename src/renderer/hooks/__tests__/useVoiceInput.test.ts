@@ -18,6 +18,9 @@ class FakeMediaRecorder {
   ondataavailable: ((event: { data: Blob }) => void) | null = null
   onstop: (() => void) | null = null
 
+  /** Allow a test to stop the recorder without emitting any audio chunk. */
+  static emitChunkOnStop = true
+
   constructor(
     readonly stream: MediaStream,
     readonly options?: MediaRecorderOptions
@@ -31,7 +34,9 @@ class FakeMediaRecorder {
 
   stop() {
     this.state = 'inactive'
-    this.ondataavailable?.({ data: new Blob(['turn-audio'], { type: this.mimeType }) })
+    if (FakeMediaRecorder.emitChunkOnStop) {
+      this.ondataavailable?.({ data: new Blob(['turn-audio'], { type: this.mimeType }) })
+    }
     this.onstop?.()
   }
 }
@@ -60,6 +65,7 @@ describe('useVoiceInput (turn-based dictation)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     FakeMediaRecorder.instances = []
+    FakeMediaRecorder.emitChunkOnStop = true
     installRecorderEnvironment()
     ipcMocks.request.mockResolvedValue({ text: '你好世界' })
   })
@@ -94,6 +100,26 @@ describe('useVoiceInput (turn-based dictation)', () => {
     expect(onTranscript).toHaveBeenCalledWith('你好世界')
   })
 
+  it('reports an empty transcript instead of silently inserting nothing', async () => {
+    ipcMocks.request.mockResolvedValue({ text: '   ' })
+    const onTranscript = vi.fn()
+    const onError = vi.fn()
+    const { result } = renderHook(() =>
+      useVoiceInput({ providerId: 'deepgram', modelId: 'nova-3', language: 'zh-CN', onTranscript, onError })
+    )
+
+    await act(async () => {
+      await result.current.start()
+    })
+    await act(async () => {
+      result.current.stop()
+    })
+
+    // A model whose language does not match the speech answers 200 with "".
+    await waitFor(() => expect(onError).toHaveBeenCalledWith('chat.input.voice_input.empty_transcription'))
+    expect(onTranscript).not.toHaveBeenCalled()
+  })
+
   it('does not start a second recording while one turn is still active', async () => {
     const { result } = renderHook(() =>
       useVoiceInput({ providerId: 'deepgram', modelId: 'nova-3', onTranscript: vi.fn(), onError: vi.fn() })
@@ -107,5 +133,23 @@ describe('useVoiceInput (turn-based dictation)', () => {
     })
 
     expect(FakeMediaRecorder.instances).toHaveLength(1)
+  })
+
+  it('reports a turn that captured no audio instead of silently dropping it', async () => {
+    FakeMediaRecorder.emitChunkOnStop = false
+    const onError = vi.fn()
+    const { result } = renderHook(() =>
+      useVoiceInput({ providerId: 'deepgram', modelId: 'nova-3', onTranscript: vi.fn(), onError })
+    )
+
+    await act(async () => {
+      await result.current.start()
+    })
+    await act(async () => {
+      result.current.stop()
+    })
+
+    expect(onError).toHaveBeenCalledWith('chat.input.voice_input.no_audio')
+    expect(ipcMocks.request).not.toHaveBeenCalled()
   })
 })
