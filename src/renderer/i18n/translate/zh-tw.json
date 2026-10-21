@@ -1678,6 +1678,12 @@
         "tooltip": "快取讀取 {{cache_read}} / 寫入 {{cache_write}} / 未快取 {{no_cache}} · 節省 {{saved}} 輸入 Token"
       },
       "editing_current": "此訊息正在編輯器中編輯",
+      "feedback": {
+        "down": "[to be translated]:Not helpful",
+        "error": "[to be translated]:Could not save your rating. Please try again.",
+        "label": "[to be translated]:Rate response",
+        "up": "[to be translated]:Helpful"
+      },
       "flow": {
         "branches": "分支",
         "copy_topic": {

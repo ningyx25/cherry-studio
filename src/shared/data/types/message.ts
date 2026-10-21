@@ -141,6 +141,9 @@ export interface AssistantTurnOptions {
   fastMode?: boolean
 }
 
+/** Patient satisfaction rating recorded on an assistant turn. */
+export type MessageFeedback = 'up' | 'down'
+
 /**
  * Message data field structure — the type for the `data` column in the
  * message table. Messages are stored in AI SDK `UIMessage.parts` format.
@@ -153,6 +156,8 @@ export interface MessageData {
   parts?: HuaTuoMessagePart[]
   /** Main-authoritative request controls for resuming this assistant turn. */
   turnOptions?: AssistantTurnOptions
+  /** Patient satisfaction rating recorded on the assistant turn. */
+  feedback?: MessageFeedback
 }
 
 // ── HuaTuo-specific UI message types ────────────────────────────────
@@ -190,6 +195,8 @@ export interface HuaTuoUIMessageMetadata {
   status?: MessageStatus
   /** Main-authoritative request controls frozen with the persisted assistant row. */
   turnOptions?: AssistantTurnOptions
+  /** Patient satisfaction rating recorded on the assistant turn. */
+  feedback?: MessageFeedback
   /**
    * Whether this message is on the currently-active branch of the topic tree. Seeded `true` on
    * locally-reserved skeletons (the row being created is the active leaf). The full branch-tree

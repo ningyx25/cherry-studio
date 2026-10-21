@@ -38,6 +38,7 @@ export function toAgentSessionUIMessage(row: AgentSessionMessageEntity): HuaTuoU
   if (row.modelId) metadata.modelId = row.modelId
   if (row.messageSnapshot) metadata.messageSnapshot = row.messageSnapshot
   if (row.stats) metadata.stats = row.stats
+  if (row.data.feedback) metadata.feedback = row.data.feedback
 
   return {
     id: row.id,

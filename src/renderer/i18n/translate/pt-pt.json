@@ -1678,6 +1678,12 @@
         "tooltip": "Leitura de cache {{cache_read}} / escrita de cache {{cache_write}} / sem cache {{no_cache}} · {{saved}} tokens de entrada economizados"
       },
       "editing_current": "Esta mensagem está sendo editada no compositor",
+      "feedback": {
+        "down": "[to be translated]:Not helpful",
+        "error": "[to be translated]:Could not save your rating. Please try again.",
+        "label": "[to be translated]:Rate response",
+        "up": "[to be translated]:Helpful"
+      },
       "flow": {
         "branches": "ramos",
         "copy_topic": {

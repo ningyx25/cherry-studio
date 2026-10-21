@@ -15,6 +15,7 @@ import type { AiUsageRecordMessageKind } from '@shared/data/types/aiUsageRecord'
 import type {
   HuaTuoMessagePart,
   HuaTuoUIMessage,
+  MessageFeedback,
   MessageSnapshot,
   MessageStats,
   MessageStatus,
@@ -197,6 +198,8 @@ export interface MessageListItem {
   siblingsGroupId?: number
   isActiveBranch?: boolean
   stats?: MessageStats
+  /** Patient satisfaction rating recorded on the assistant turn. */
+  feedback?: MessageFeedback
   mentions?: Array<{
     id: string
     name: string

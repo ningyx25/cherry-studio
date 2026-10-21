@@ -56,7 +56,8 @@ export function toMessageListItem(message: HuaTuoUIMessage, ctx: MessageListItem
     messageSnapshot,
     siblingsGroupId: metadata.siblingsGroupId,
     isActiveBranch: metadata.isActiveBranch,
-    stats: statsFromMetadata(message.metadata)
+    stats: statsFromMetadata(message.metadata),
+    feedback: metadata.feedback
   }
 }
 

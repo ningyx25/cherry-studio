@@ -1678,6 +1678,12 @@
         "tooltip": "Чтение кэша {{cache_read}} / запись кэша {{cache_write}} / без кэша {{no_cache}} · сэкономлено {{saved}} входных токенов"
       },
       "editing_current": "Это сообщение редактируется в композере",
+      "feedback": {
+        "down": "[to be translated]:Not helpful",
+        "error": "[to be translated]:Could not save your rating. Please try again.",
+        "label": "[to be translated]:Rate response",
+        "up": "[to be translated]:Helpful"
+      },
       "flow": {
         "branches": "ветви",
         "copy_topic": {

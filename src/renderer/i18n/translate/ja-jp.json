@@ -1678,6 +1678,12 @@
         "tooltip": "キャッシュ読み込み {{cache_read}} / 書き込み {{cache_write}} / キャッシュなし {{no_cache}} · 入力トークン {{saved}} 節約"
       },
       "editing_current": "このメッセージはコンポーザーで編集中です",
+      "feedback": {
+        "down": "[to be translated]:Not helpful",
+        "error": "[to be translated]:Could not save your rating. Please try again.",
+        "label": "[to be translated]:Rate response",
+        "up": "[to be translated]:Helpful"
+      },
       "flow": {
         "branches": "枝",
         "copy_topic": {

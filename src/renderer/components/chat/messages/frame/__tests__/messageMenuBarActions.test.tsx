@@ -327,6 +327,27 @@ describe('messageMenuBarActions', () => {
     expect(resolveMessageMenuBarMenuActions(context).map((action) => action.id)).not.toContain('edit')
   })
 
+  it('shows feedback only for finished assistant turns', () => {
+    const findFeedback = (overrides: Partial<MessageMenuBarActionContext>) =>
+      resolveMessageMenuBarToolbarActions(createActionContext(overrides)).find((action) => action.id === 'feedback')
+
+    expect(findFeedback({})?.availability).toEqual({ visible: true, enabled: true })
+
+    // Assistant turn still streaming or failed — nothing to rate yet.
+    expect(findFeedback({ isProcessing: true })?.availability).toEqual({ visible: true, enabled: false })
+    expect(findFeedback({ message: { ...createActionContext().message, status: 'pending' } })).toBeUndefined()
+    expect(findFeedback({ message: { ...createActionContext().message, status: 'error' } })).toBeUndefined()
+
+    // Patient messages are not ratable.
+    expect(
+      findFeedback({
+        isAssistantMessage: false,
+        isUserMessage: true,
+        message: { ...createActionContext().message, role: 'user' }
+      })
+    ).toBeUndefined()
+  })
+
   it('resolves assistant toolbar actions from capabilities', () => {
     const toolbarActions = resolveMessageMenuBarToolbarActions(
       createActionContext({
@@ -349,6 +370,7 @@ describe('messageMenuBarActions', () => {
       'assistant-mention-model',
       'translate',
       'useful',
+      'feedback',
       'notes',
       'delete',
       'more-menu'
@@ -667,7 +689,7 @@ describe('messageMenuBarActions', () => {
 
     const toolbarActions = resolveMessageMenuBarToolbarActions(context)
 
-    expect(toolbarActions.map((action) => action.id)).toEqual(['copy', 'notes', 'delete', 'more-menu'])
+    expect(toolbarActions.map((action) => action.id)).toEqual(['copy', 'feedback', 'notes', 'delete', 'more-menu'])
     expect(
       resolveMessageMenuBarMenuActions(context)
         .find((action) => action.id === 'save')

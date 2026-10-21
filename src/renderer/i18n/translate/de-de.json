@@ -1678,6 +1678,12 @@
         "tooltip": "Cache-Lesen {{cache_read}} / Schreiben {{cache_write}} / kein Cache {{no_cache}} · {{saved}} Eingabe-Token gespeichert"
       },
       "editing_current": "Diese Nachricht wird im Composer bearbeitet",
+      "feedback": {
+        "down": "[to be translated]:Not helpful",
+        "error": "[to be translated]:Could not save your rating. Please try again.",
+        "label": "[to be translated]:Rate response",
+        "up": "[to be translated]:Helpful"
+      },
       "flow": {
         "branches": "Zweige",
         "copy_topic": {

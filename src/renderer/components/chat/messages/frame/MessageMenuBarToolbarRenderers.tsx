@@ -1,12 +1,15 @@
 import { ConfirmDialog, Tooltip } from '@huatuostudio/ui'
 import { actionsToCommandMenuExtraItems } from '@renderer/components/chat/actions/actionMenuItems'
 import { type CommandContextMenuExtraItem, CommandPopupMenu } from '@renderer/components/command'
+import { ThumbsDown, ThumbsUp } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { useMessageFeedback } from '../hooks/useMessageFeedback'
 import { MessageActionButton } from './MessageActionButton'
 import type {
+  MessageMenuBarActionContext,
   MessageMenuBarResolvedAction,
   MessageMenuBarToolbarRenderContext,
   MessageMenuBarTranslationItem
@@ -434,4 +437,50 @@ const MoreMenuToolbarAction = ({
 
 export function renderDeleteToolbarAction({ action, executeAction, softHoverBg }: MessageMenuBarToolbarRenderContext) {
   return <DeleteToolbarAction action={action} executeAction={executeAction} softHoverBg={softHoverBg} />
+}
+
+const FeedbackToolbarAction = ({
+  actionContext,
+  softHoverBg
+}: {
+  actionContext: MessageMenuBarActionContext
+  softHoverBg: boolean
+}) => {
+  const { t } = useTranslation()
+  const { feedback, rate } = useMessageFeedback(actionContext.message)
+
+  return (
+    <>
+      <Tooltip content={t('chat.message.feedback.up')} delay={800}>
+        <MessageActionButton
+          className="message-action-button"
+          aria-label={t('chat.message.feedback.up')}
+          aria-pressed={feedback === 'up'}
+          onClick={(e) => {
+            e.stopPropagation()
+            void rate('up').catch(() => actionContext.actions.notifyError?.(t('chat.message.feedback.error')))
+          }}
+          softHoverBg={softHoverBg}>
+          <ThumbsUp size={15} fill={feedback === 'up' ? 'var(--primary)' : 'none'} />
+        </MessageActionButton>
+      </Tooltip>
+      <Tooltip content={t('chat.message.feedback.down')} delay={800}>
+        <MessageActionButton
+          className="message-action-button"
+          aria-label={t('chat.message.feedback.down')}
+          aria-pressed={feedback === 'down'}
+          onClick={(e) => {
+            e.stopPropagation()
+            void rate('down').catch(() => actionContext.actions.notifyError?.(t('chat.message.feedback.error')))
+          }}
+          softHoverBg={softHoverBg}>
+          <ThumbsDown size={15} fill={feedback === 'down' ? 'var(--primary)' : 'none'} />
+        </MessageActionButton>
+      </Tooltip>
+    </>
+  )
+}
+
+export function renderFeedbackToolbarAction({ actionContext, softHoverBg }: MessageMenuBarToolbarRenderContext) {
+  return <FeedbackToolbarAction actionContext={actionContext} softHoverBg={softHoverBg} />
 }

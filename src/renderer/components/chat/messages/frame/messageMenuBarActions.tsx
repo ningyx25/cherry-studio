@@ -44,6 +44,7 @@ import type { MessageMenuConfig } from '../types'
 import { getMessageListItemModelName } from '../utils/messageListItem'
 import {
   renderDeleteToolbarAction,
+  renderFeedbackToolbarAction,
   renderModelPickerToolbarAction,
   renderMoreMenuToolbarAction,
   renderTranslateToolbarAction
@@ -361,6 +362,17 @@ registerToolbarAction({
   availability: toolbarAvailability(
     'useful',
     ({ actions, isAssistantMessage, isGrouped }) => isAssistantMessage && !!isGrouped && !!actions.setActiveBranch
+  )
+})
+
+registerToolbarAction({
+  id: 'feedback',
+  renderToolbar: renderFeedbackToolbarAction,
+  label: ({ t }) => t('chat.message.feedback.label'),
+  icon: <ThumbsUp size={15} />,
+  availability: toolbarAvailability(
+    'feedback',
+    ({ isAssistantMessage, message }) => isAssistantMessage && message.status === 'success'
   )
 })
 

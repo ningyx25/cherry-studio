@@ -1678,6 +1678,12 @@
         "tooltip": "Citire cache {{cache_read}} / scriere {{cache_write}} / fără cache {{no_cache}} · {{saved}} tokeni de intrare salvați"
       },
       "editing_current": "Acest mesaj este editat în compozitor",
+      "feedback": {
+        "down": "[to be translated]:Not helpful",
+        "error": "[to be translated]:Could not save your rating. Please try again.",
+        "label": "[to be translated]:Rate response",
+        "up": "[to be translated]:Helpful"
+      },
       "flow": {
         "branches": "ramuri",
         "copy_topic": {

@@ -1678,6 +1678,12 @@
         "tooltip": "Ανάγνωση cache {{cache_read}} / εγγραφή {{cache_write}} / χωρίς cache {{no_cache}} · εξοικονομήθηκαν {{saved}} tokens εισόδου"
       },
       "editing_current": "Αυτό το μήνυμα επεξεργάζεται στον συνθέτη",
+      "feedback": {
+        "down": "[to be translated]:Not helpful",
+        "error": "[to be translated]:Could not save your rating. Please try again.",
+        "label": "[to be translated]:Rate response",
+        "up": "[to be translated]:Helpful"
+      },
       "flow": {
         "branches": "κλαδιά",
         "copy_topic": {

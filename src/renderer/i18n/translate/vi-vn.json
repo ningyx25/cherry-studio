@@ -1678,6 +1678,12 @@
         "tooltip": "Đọc cache {{cache_read}} / ghi cache {{cache_write}} / không cache {{no_cache}} · đã tiết kiệm {{saved}} token đầu vào"
       },
       "editing_current": "Thông báo này đang được chỉnh sửa trong trình soạn thảo",
+      "feedback": {
+        "down": "[to be translated]:Not helpful",
+        "error": "[to be translated]:Could not save your rating. Please try again.",
+        "label": "[to be translated]:Rate response",
+        "up": "[to be translated]:Helpful"
+      },
       "flow": {
         "branches": "chi nhánh",
         "copy_topic": {
